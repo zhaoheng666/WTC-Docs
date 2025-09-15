@@ -61,29 +61,38 @@ export default defineConfig({
             },
             // 自定义分词器，改善中文搜索
             tokenize: (text) => {
-              // 保留默认分词
-              const defaultTokens = text.split(/[\s\-，。、；：！？【】（）《》""'']+/)
+              // 使用标点符号分词
+              const tokens = text.split(/[\s\-，。、；：！？【】（）《》""''\/\\\n\r\t]+/)
               
-              // 对中文进行字符级分词（2-4字的滑动窗口）
-              const chineseTokens = []
-              const chineseText = text.match(/[\u4e00-\u9fa5]+/g) || []
+              // 对每个分词结果进一步处理
+              const allTokens = []
               
-              chineseText.forEach(str => {
-                // 单字分词
-                for (let i = 0; i < str.length; i++) {
-                  chineseTokens.push(str[i])
-                  // 两字分词
-                  if (i < str.length - 1) {
-                    chineseTokens.push(str.substr(i, 2))
-                  }
-                  // 三字分词
-                  if (i < str.length - 2) {
-                    chineseTokens.push(str.substr(i, 3))
+              tokens.forEach(token => {
+                if (!token) return
+                
+                // 保留完整的词
+                allTokens.push(token)
+                
+                // 对中文文本进行额外处理
+                const chineseMatch = token.match(/[\u4e00-\u9fa5]+/)
+                if (chineseMatch) {
+                  const chineseText = chineseMatch[0]
+                  // 只对较长的中文词组进行分词
+                  if (chineseText.length > 2) {
+                    // 添加2字词和3字词（不使用滑动窗口，避免过度匹配）
+                    // 例如"迟到打卡"会分为："迟到打卡"、"迟到"、"打卡"
+                    if (chineseText.length === 3) {
+                      allTokens.push(chineseText.substring(0, 2)) // 前两字
+                      allTokens.push(chineseText.substring(1, 3)) // 后两字
+                    } else if (chineseText.length === 4) {
+                      allTokens.push(chineseText.substring(0, 2)) // 前两字
+                      allTokens.push(chineseText.substring(2, 4)) // 后两字
+                    }
                   }
                 }
               })
-              
-              return [...defaultTokens, ...chineseTokens].filter(token => token.length > 0)
+
+              return allTokens.filter(token => token && token.length > 0)
             }
           },
           searchOptions: {
