@@ -101,7 +101,7 @@ terminal-notifier -title "Git 提示" \
 
 ### 6. 全文搜索优化
 
-配置 MiniSearch 实现真正的全文搜索，特别优化中文分词：
+使用 Intl.Segmenter API 实现专业的中文分词：
 
 ```javascript
 // config.mjs 搜索配置
@@ -112,10 +112,13 @@ miniSearch: {
       text: 2,     // 正文内容权重
       titles: 1    // 各级标题权重
     },
-    // 自定义分词器
+    // 使用 Intl.Segmenter 进行中文分词
     tokenize: (text) => {
-      // 中文采用滑动窗口分词（1-3字）
-      // 解决"迟到"等词无法搜索的问题
+      const segmenter = new Intl.Segmenter('zh-CN', { 
+        granularity: 'word' 
+      })
+      // 智能识别中文词汇边界
+      // 自动处理"迟到"、"打卡"等词汇
     }
   },
   searchOptions: {
@@ -127,11 +130,11 @@ miniSearch: {
 ```
 
 **搜索特性**：
-- ✅ 索引全部文档内容（不仅是标题）
-- ✅ 智能权重分配
-- ✅ 中文滑动窗口分词（解决分词问题）
-- ✅ 支持模糊搜索
-- ✅ 中英文混合支持
+- ✅ 使用浏览器原生 Intl.Segmenter API
+- ✅ 智能中文分词，准确识别词汇边界
+- ✅ 长词自动生成2字索引，提高匹配率
+- ✅ 回退机制确保兼容性
+- ✅ 去重优化，减少索引体积
 
 ## 📦 构建与部署
 

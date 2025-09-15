@@ -60,39 +60,63 @@ export default defineConfig({
               titles: 1      // 其他标题权重
             },
             // 自定义分词器，改善中文搜索
-            tokenize: (text) => {
-              // 使用标点符号分词
-              const tokens = text.split(/[\s\-，。、；：！？【】（）《》""''\/\\\n\r\t]+/)
+            tokenize: (text, fieldName) => {
+              // 如果是空字符串，直接返回
+              if (!text || typeof text !== 'string') return []
               
-              // 对每个分词结果进一步处理
-              const allTokens = []
+              // 转换为小写
+              text = text.toLowerCase()
               
-              tokens.forEach(token => {
-                if (!token) return
-                
-                // 保留完整的词
-                allTokens.push(token)
-                
-                // 对中文文本进行额外处理
-                const chineseMatch = token.match(/[\u4e00-\u9fa5]+/)
-                if (chineseMatch) {
-                  const chineseText = chineseMatch[0]
-                  // 只对较长的中文词组进行分词
-                  if (chineseText.length > 2) {
-                    // 添加2字词和3字词（不使用滑动窗口，避免过度匹配）
-                    // 例如"迟到打卡"会分为："迟到打卡"、"迟到"、"打卡"
-                    if (chineseText.length === 3) {
-                      allTokens.push(chineseText.substring(0, 2)) // 前两字
-                      allTokens.push(chineseText.substring(1, 3)) // 后两字
-                    } else if (chineseText.length === 4) {
-                      allTokens.push(chineseText.substring(0, 2)) // 前两字
-                      allTokens.push(chineseText.substring(2, 4)) // 后两字
+              // 检查是否支持 Intl.Segmenter（现代浏览器都支持）
+              if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+                try {
+                  // 使用 Intl.Segmenter 进行中文分词
+                  const segmenter = new Intl.Segmenter('zh-CN', { granularity: 'word' })
+                  const segments = segmenter.segment(text)
+                  const tokens = []
+                  
+                  for (const seg of segments) {
+                    // 只保留词汇类的片段（过滤掉空格、标点等）
+                    if (seg.isWordLike && seg.segment.trim()) {
+                      const word = seg.segment.trim()
+                      tokens.push(word)
+                      
+                      // 对于较长的中文词汇，额外生成2字词组合
+                      // 这样"迟到打卡"可以匹配"迟到"或"打卡"
+                      if (/[\u4e00-\u9fa5]/.test(word) && word.length >= 4) {
+                        for (let i = 0; i <= word.length - 2; i++) {
+                          tokens.push(word.substring(i, i + 2))
+                        }
+                      }
                     }
+                  }
+                  
+                  // 去重并返回
+                  return [...new Set(tokens)]
+                } catch (e) {
+                  // 如果 Segmenter 失败，回退到基础方法
+                  console.warn('Intl.Segmenter failed:', e)
+                }
+              }
+              
+              // 回退方案：基于标点和空格的简单分词
+              const tokens = text
+                .split(/[\s\-，。、；：！？【】（）《》""''「」『』〈〉〔〕［］｛｝\/\\\n\r\t,.!?;:()\[\]{}"'`~@#$%^&*+=|<>]+/)
+                .filter(token => token && token.length > 0)
+              
+              // 对中文文本补充2字分词
+              const finalTokens = []
+              tokens.forEach(token => {
+                finalTokens.push(token)
+                // 如果是纯中文且长度>=3，生成2字组合
+                if (/^[\u4e00-\u9fa5]+$/.test(token) && token.length >= 3) {
+                  for (let i = 0; i <= token.length - 2; i++) {
+                    finalTokens.push(token.substring(i, i + 2))
                   }
                 }
               })
-
-              return allTokens.filter(token => token && token.length > 0)
+              
+              return [...new Set(finalTokens)]
             }
           },
           searchOptions: {
