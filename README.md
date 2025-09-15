@@ -209,6 +209,11 @@ miniSearch: {
 
    - 原因：terminal-notifier 未安装
    - 解决：在初始化脚本中自动安装
+6. **ARM64 Mac 上 VS Code 自动启动任务失败**
+
+   - 原因：VS Code Task `shell` 类型环境变量继承问题
+   - 解决：将 Task 类型改为 `process`
+   - 详情：[VS Code Rollup ARM64 问题说明](troubleshooting/vscode-rollup-arm64-issue.md)
 
 ## 📊 性能指标
 
