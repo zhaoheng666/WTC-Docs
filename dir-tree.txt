@@ -1,0 +1,12 @@
+├── .vitepress/
+│   ├── config.js      # 核心配置
+│   └── theme/         # 自定义主题
+├── public/            # 静态资源
+├── guide/             # 开发规范
+│   ├── code-style.md
+│   └── git-flow.md
+├── api/               # API文档
+│   ├── backend.md
+│   └── frontend.md
+├── best-practices/    # 最佳实践
+└── CHANGELOG.md       # 版本日志
