@@ -1,30 +1,37 @@
-name: Deploy Documentation
+name: Deploy to GitHub Pages
 
 on:
+  # 推送到 main 分支时触发
   push:
-    branches: [main, master]
+    branches: [main]
+  # 允许手动触发工作流
   workflow_dispatch:
 
+# 设置 GITHUB_TOKEN 的权限
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 只允许一个并发部署
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
+  # 构建任务
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 获取所有历史记录以启用 lastUpdated
         
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: npm
       
       - name: Install dependencies
@@ -38,6 +45,7 @@ jobs:
         with:
           path: .vitepress/dist
 
+  # 部署任务
   deploy:
     environment:
       name: github-pages

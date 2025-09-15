@@ -5,6 +5,9 @@ import { generateMultiSidebar } from './sidebar.mjs'
 export default defineConfig({
   title: "WorldTourCasino",
   description: "WorldTourCasino 项目文档",
+  
+  // GitHub Pages 部署配置
+  base: '/WTC-Docs/',
 
   // 启用外观切换（深色模式）
   appearance: true,
@@ -62,7 +65,7 @@ export default defineConfig({
 
     // 启用编辑链接
     editLink: {
-      pattern: 'https://github.com/LuckyZen/WorldTourCasino/edit/classic_vegas_cvs_v833_eslint_docs/docs/:path',
+      pattern: 'https://github.com/zhaoheng666/WTC-Docs/edit/main/:path',
       text: '在 GitHub 上编辑此页'
     },
 

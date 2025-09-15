@@ -235,3 +235,36 @@ bash .vscode/git-hooks/install-hooks.sh
 - 主仓库 `.gitignore` 已忽略 `docs/` 目录
 - 每个开发者本地都需要安装 Git Hooks（自动完成）
 - 文档同步失败不会影响主仓库操作
+
+## 🚀 GitHub Pages 部署
+
+文档已配置自动部署到 GitHub Pages，访问地址：https://zhaoheng666.github.io/WTC-Docs/
+
+### 自动部署流程
+
+每次推送到 `main` 分支时，GitHub Actions 会自动：
+1. 构建 VitePress 静态站点
+2. 部署到 GitHub Pages
+3. 通常在 2-3 分钟内完成
+
+### 手动触发部署
+
+可以在 GitHub 仓库的 Actions 页面手动触发部署：
+1. 访问 [Actions 页面](https://github.com/zhaoheng666/WTC-Docs/actions)
+2. 选择 "Deploy to GitHub Pages" 工作流
+3. 点击 "Run workflow"
+
+### 部署配置说明
+
+- **基础路径**：配置在 `.vitepress/config.mjs` 中的 `base: '/WTC-Docs/'`
+- **工作流文件**：`.github/workflows/deploy.yml`
+- **构建输出**：`.vitepress/dist/`
+- **Node 版本**：20.x
+
+### 故障排查
+
+如果部署失败，请检查：
+1. GitHub Pages 是否已启用（Settings → Pages）
+2. 部署源设置为 "GitHub Actions"
+3. 工作流权限是否正确（Settings → Actions → General）
+4. 查看 Actions 页面的错误日志
