@@ -63,10 +63,10 @@ export default defineConfig({
             tokenize: (text, fieldName) => {
               // 如果是空字符串，直接返回
               if (!text || typeof text !== 'string') return []
-              
+
               // 转换为小写
               text = text.toLowerCase()
-              
+
               // 检查是否支持 Intl.Segmenter（现代浏览器都支持）
               if (typeof Intl !== 'undefined' && Intl.Segmenter) {
                 try {
@@ -74,15 +74,14 @@ export default defineConfig({
                   const segmenter = new Intl.Segmenter('zh-CN', { granularity: 'word' })
                   const segments = segmenter.segment(text)
                   const tokens = []
-                  
+
                   for (const seg of segments) {
                     // 只保留词汇类的片段（过滤掉空格、标点等）
                     if (seg.isWordLike && seg.segment.trim()) {
                       const word = seg.segment.trim()
                       tokens.push(word)
-                      
+
                       // 对于较长的中文词汇，额外生成2字词组合
-                      // 这样"迟到打卡"可以匹配"迟到"或"打卡"
                       if (/[\u4e00-\u9fa5]/.test(word) && word.length >= 4) {
                         for (let i = 0; i <= word.length - 2; i++) {
                           tokens.push(word.substring(i, i + 2))
@@ -90,7 +89,7 @@ export default defineConfig({
                       }
                     }
                   }
-                  
+
                   // 去重并返回
                   return [...new Set(tokens)]
                 } catch (e) {
@@ -98,12 +97,12 @@ export default defineConfig({
                   console.warn('Intl.Segmenter failed:', e)
                 }
               }
-              
+
               // 回退方案：基于标点和空格的简单分词
               const tokens = text
                 .split(/[\s\-，。、；：！？【】（）《》""''「」『』〈〉〔〕［］｛｝\/\\\n\r\t,.!?;:()\[\]{}"'`~@#$%^&*+=|<>]+/)
                 .filter(token => token && token.length > 0)
-              
+
               // 对中文文本补充2字分词
               const finalTokens = []
               tokens.forEach(token => {
@@ -115,7 +114,7 @@ export default defineConfig({
                   }
                 }
               })
-              
+
               return [...new Set(finalTokens)]
             }
           },

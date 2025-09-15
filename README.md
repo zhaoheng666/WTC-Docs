@@ -114,11 +114,10 @@ miniSearch: {
     },
     // 使用 Intl.Segmenter 进行中文分词
     tokenize: (text) => {
-      const segmenter = new Intl.Segmenter('zh-CN', { 
-        granularity: 'word' 
+      const segmenter = new Intl.Segmenter('zh-CN', {
+        granularity: 'word'
       })
       // 智能识别中文词汇边界
-      // 自动处理"迟到"、"打卡"等词汇
     }
   },
   searchOptions: {
@@ -130,6 +129,7 @@ miniSearch: {
 ```
 
 **搜索特性**：
+
 - ✅ 使用浏览器原生 Intl.Segmenter API
 - ✅ 智能中文分词，准确识别词汇边界
 - ✅ 长词自动生成2字索引，提高匹配率
