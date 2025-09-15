@@ -5,13 +5,13 @@ import { generateMultiSidebar } from './sidebar.mjs'
 export default defineConfig({
   title: "WorldTourCasino",
   description: "WorldTourCasino 项目文档",
-  
+
   // GitHub Pages 部署配置
   base: '/WTC-Docs/',
 
   // 启用外观切换（深色模式）
   appearance: true,
-  
+
   // 忽略死链接检查（对于一些动态链接）
   ignoreDeadLinks: [
     // 忽略以 localhost 开头的链接
@@ -24,7 +24,7 @@ export default defineConfig({
   themeConfig: {
     // 顶部导航栏
     nav: [
-      { text: '首页', link: '/' },
+      { text: '首页', link: '/README' },
       { text: 'Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
       { text: '程序排期', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=130371487#gid=130371487' },
       { text: '程序总表', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=0#gid=0' },
