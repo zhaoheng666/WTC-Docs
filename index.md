@@ -243,9 +243,15 @@ bash .vscode/git-hooks/install-hooks.sh
 ### 自动部署流程
 
 每次推送到 `main` 分支时，GitHub Actions 会自动：
-1. 构建 VitePress 静态站点
-2. 部署到 GitHub Pages
-3. 通常在 2-3 分钟内完成
+1. **构建阶段** (Build) - 构建 VitePress 静态站点（约 18 秒）
+2. **部署阶段** (Deploy) - 部署到 GitHub Pages（约 10 秒）
+3. **总耗时**：约 40 秒完成整个部署流程
+
+### 部署状态监控
+
+- **查看部署进度**：[Actions 页面](https://github.com/zhaoheng666/WTC-Docs/actions)
+- **部署历史**：每次部署都会在 Actions 中留下记录
+- **部署状态徽章**：可在 README 中添加状态徽章显示部署状态
 
 ### 手动触发部署
 
@@ -253,6 +259,7 @@ bash .vscode/git-hooks/install-hooks.sh
 1. 访问 [Actions 页面](https://github.com/zhaoheng666/WTC-Docs/actions)
 2. 选择 "Deploy to GitHub Pages" 工作流
 3. 点击 "Run workflow"
+4. 选择分支（默认 main）并确认
 
 ### 部署配置说明
 
@@ -260,11 +267,49 @@ bash .vscode/git-hooks/install-hooks.sh
 - **工作流文件**：`.github/workflows/deploy.yml`
 - **构建输出**：`.vitepress/dist/`
 - **Node 版本**：20.x
+- **包管理器**：npm（使用 `package-lock.json`）
 
-### 故障排查
+### 常见问题排查
 
-如果部署失败，请检查：
-1. GitHub Pages 是否已启用（Settings → Pages）
-2. 部署源设置为 "GitHub Actions"
-3. 工作流权限是否正确（Settings → Actions → General）
-4. 查看 Actions 页面的错误日志
+#### Build 阶段失败
+
+1. **依赖安装失败**
+   - 检查 `package-lock.json` 是否已提交
+   - 确保没有将 `package-lock.json` 加入 `.gitignore`
+   - 运行 `npm ci` 验证本地依赖是否正常
+
+2. **死链接错误**
+   ```
+   Found dead link(s) in file...
+   ```
+   - 检查文档中的链接是否正确
+   - 必要时在 `config.mjs` 中配置 `ignoreDeadLinks`
+   - 避免使用 `localhost` 等本地链接
+
+3. **构建错误**
+   - 检查 Markdown 语法是否正确
+   - 确保没有使用不支持的 VitePress 功能
+   - 查看详细错误日志定位问题
+
+#### Deploy 阶段失败
+
+1. **权限问题**
+   - 进入 Settings → Actions → General
+   - 确保 "Workflow permissions" 设置为 "Read and write permissions"
+   - 检查 GITHUB_TOKEN 权限配置
+
+2. **GitHub Pages 未启用**
+   - 进入 Settings → Pages
+   - Source 选择 "GitHub Actions"
+   - 确保仓库为 Public 或有 GitHub Pages 权限
+
+3. **部署目标错误**
+   - 检查 workflow 中的 `path: .vitepress/dist` 是否正确
+   - 确认构建输出目录与配置一致
+
+### 部署优化建议
+
+1. **缓存优化**：workflow 已配置 npm 缓存，加快依赖安装
+2. **并行构建**：利用 GitHub Actions 的并行能力
+3. **增量部署**：只有文件变更时才触发部署
+4. **部署通知**：可配置部署完成后的通知（如 Slack、邮件等）
