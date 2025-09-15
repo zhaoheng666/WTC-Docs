@@ -44,6 +44,34 @@ export default defineConfig({
     search: {
       provider: 'local',
       options: {
+        // 搜索选项
+        _render(src, env, md) {
+          const html = md.render(src, env)
+          if (env.frontmatter?.search === false) return ''
+          return html
+        },
+        // 提取文本内容进行索引
+        miniSearch: {
+          options: {
+            // 配置搜索字段权重
+            boost: {
+              title: 4,      // 标题权重最高
+              text: 2,       // 正文内容权重
+              titles: 1      // 其他标题权重
+            }
+          },
+          searchOptions: {
+            // 搜索时的配置
+            boost: {
+              title: 4,
+              text: 2,
+              titles: 1
+            },
+            fuzzy: 0.2,      // 模糊搜索
+            prefix: true     // 前缀匹配
+          }
+        },
+        // 本地化配置
         locales: {
           root: {
             translations: {

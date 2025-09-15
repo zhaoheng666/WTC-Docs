@@ -99,6 +99,33 @@ terminal-notifier -title "Git 提示" \
   -sound Glass
 ```
 
+### 6. 全文搜索优化
+
+配置 MiniSearch 实现真正的全文搜索：
+
+```javascript
+// config.mjs 搜索配置
+miniSearch: {
+  options: {
+    boost: {
+      title: 4,    // 标题权重最高
+      text: 2,     // 正文内容权重
+      titles: 1    // 各级标题权重
+    }
+  },
+  searchOptions: {
+    fuzzy: 0.2,    // 模糊匹配容错
+    prefix: true   // 前缀匹配
+  }
+}
+```
+
+**搜索特性**：
+- ✅ 索引全部文档内容（不仅是标题）
+- ✅ 智能权重分配
+- ✅ 支持模糊搜索
+- ✅ 中英文混合支持
+
 ## 📦 构建与部署
 
 ### GitHub Actions 自动部署
