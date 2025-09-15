@@ -58,6 +58,32 @@ export default defineConfig({
               title: 4,      // 标题权重最高
               text: 2,       // 正文内容权重
               titles: 1      // 其他标题权重
+            },
+            // 自定义分词器，改善中文搜索
+            tokenize: (text) => {
+              // 保留默认分词
+              const defaultTokens = text.split(/[\s\-，。、；：！？【】（）《》""'']+/)
+              
+              // 对中文进行字符级分词（2-4字的滑动窗口）
+              const chineseTokens = []
+              const chineseText = text.match(/[\u4e00-\u9fa5]+/g) || []
+              
+              chineseText.forEach(str => {
+                // 单字分词
+                for (let i = 0; i < str.length; i++) {
+                  chineseTokens.push(str[i])
+                  // 两字分词
+                  if (i < str.length - 1) {
+                    chineseTokens.push(str.substr(i, 2))
+                  }
+                  // 三字分词
+                  if (i < str.length - 2) {
+                    chineseTokens.push(str.substr(i, 3))
+                  }
+                }
+              })
+              
+              return [...defaultTokens, ...chineseTokens].filter(token => token.length > 0)
             }
           },
           searchOptions: {
@@ -68,7 +94,8 @@ export default defineConfig({
               titles: 1
             },
             fuzzy: 0.2,      // 模糊搜索
-            prefix: true     // 前缀匹配
+            prefix: true,    // 前缀匹配
+            combineWith: 'OR' // 使用 OR 逻辑，提高召回率
           }
         },
         // 本地化配置

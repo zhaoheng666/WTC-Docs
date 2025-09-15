@@ -101,7 +101,7 @@ terminal-notifier -title "Git 提示" \
 
 ### 6. 全文搜索优化
 
-配置 MiniSearch 实现真正的全文搜索：
+配置 MiniSearch 实现真正的全文搜索，特别优化中文分词：
 
 ```javascript
 // config.mjs 搜索配置
@@ -111,11 +111,17 @@ miniSearch: {
       title: 4,    // 标题权重最高
       text: 2,     // 正文内容权重
       titles: 1    // 各级标题权重
+    },
+    // 自定义分词器
+    tokenize: (text) => {
+      // 中文采用滑动窗口分词（1-3字）
+      // 解决"迟到"等词无法搜索的问题
     }
   },
   searchOptions: {
-    fuzzy: 0.2,    // 模糊匹配容错
-    prefix: true   // 前缀匹配
+    fuzzy: 0.2,      // 模糊匹配容错
+    prefix: true,    // 前缀匹配
+    combineWith: 'OR' // OR逻辑提高召回率
   }
 }
 ```
@@ -123,6 +129,7 @@ miniSearch: {
 **搜索特性**：
 - ✅ 索引全部文档内容（不仅是标题）
 - ✅ 智能权重分配
+- ✅ 中文滑动窗口分词（解决分词问题）
 - ✅ 支持模糊搜索
 - ✅ 中英文混合支持
 
