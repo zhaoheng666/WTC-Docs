@@ -1,14 +1,16 @@
-# 文档系统技术实现
+# WTC-docs 技术实现
 
 ## 🏗️ 系统架构
 
 ### 技术栈
+
 - **框架**：VitePress 1.6.4
 - **构建**：Vite + Vue 3
 - **部署**：GitHub Pages + Actions
 - **同步**：Git Hooks 自动化
 
 ### 项目结构
+
 ```
 docs/
 ├── .github/workflows/deploy.yml   # 自动部署配置
@@ -34,6 +36,7 @@ docs/
 ```
 
 **特性**：
+
 - ✅ 无需手动维护侧边栏
 - ✅ 支持无限层级嵌套
 - ✅ 中文目录友好支持
@@ -44,6 +47,7 @@ docs/
 将文档独立为单独仓库，实现主项目与文档解耦：
 
 **优势**：
+
 - 独立的版本控制
 - 减小主仓库体积
 - 独立的部署流程
@@ -61,6 +65,7 @@ docs/
 ```
 
 **同步机制**：
+
 - 主项目 `git pull` → 自动拉取文档更新
 - 切换分支 → 同步对应文档
 - 推送前 → 检查文档状态并通知
@@ -71,12 +76,13 @@ docs/
 
 ```json
 // .vscode/tasks.json
-- setup_docs_environment    # 一键初始化
+- check_docs_setup    # 检查、初始化环境
 - start_local_docs_server  # 后台启动服务
 - open_local_docs          # 打开浏览器
 ```
 
 **自动化流程**：
+
 1. 打开项目自动检查环境
 2. 克隆文档仓库（如需要）
 3. 安装依赖并启动服务
@@ -98,6 +104,7 @@ terminal-notifier -title "Git 提示" \
 ### GitHub Actions 自动部署
 
 **工作流配置**：
+
 ```yaml
 # .github/workflows/deploy.yml
 - 触发：推送到 main 分支
@@ -146,22 +153,23 @@ terminal-notifier -title "Git 提示" \
 ### 已解决的问题
 
 1. **目录排序失效**
+
    - 原因：使用了错误的属性名
    - 解决：改用 item.text 进行排序
-
 2. **死链接构建失败**
+
    - 原因：URL 编码的中文路径
    - 解决：配置 ignoreDeadLinks 规则
-
 3. **GitHub Actions 失败**
+
    - 原因：缺少 package-lock.json
    - 解决：提交锁文件，使用 npm ci
-
 4. **重复初始化**
+
    - 原因：每次启动都执行完整流程
    - 解决：添加标记文件快速跳过
-
 5. **通知不显示**
+
    - 原因：terminal-notifier 未安装
    - 解决：在初始化脚本中自动安装
 
@@ -176,16 +184,17 @@ terminal-notifier -title "Git 提示" \
 ## 🎯 最佳实践
 
 1. **文档组织**
+
    - 按功能模块分类
    - 保持目录层级简洁
    - 使用中文命名提高可读性
-
 2. **提交规范**
+
    - 文档更新使用 `docs:` 前缀
    - 配置更新使用 `chore:` 前缀
    - 错误修复使用 `fix:` 前缀
-
 3. **协作流程**
+
    - 文档直接在 main 分支修改
    - 大型重构创建 feature 分支
    - 推送自动触发部署
@@ -194,8 +203,4 @@ terminal-notifier -title "Git 提示" \
 
 - **在线文档**：https://zhaoheng666.github.io/WTC-Docs/
 - **文档仓库**：https://github.com/zhaoheng666/WTC-Docs
-- **主项目**：https://github.com/LuckyZen/WorldTourCasino
-
----
-
-*WorldTourCasino 文档系统 - 高效、自动化的文档管理方案*
+- **主项目仓库**：https://github.com/LuckyZen/WorldTourCasino
