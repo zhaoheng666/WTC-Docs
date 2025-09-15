@@ -24,7 +24,7 @@ npm install
 npm run dev
 ```
 
-访问 http://localhost:5173 查看文档
+访问本地服务器查看文档（默认端口 5173）
 
 ### VS Code 快速启动
 
@@ -56,13 +56,12 @@ docs/
 
 1. **创建 Markdown 文件**
 
-在相应目录下创建 `.md` 文件：
+   在相应目录下创建 `.md` 文件：
 
-```bash
-# 例如：在"其他"目录创建新文档
-touch docs/其他/新文档.md
-```
-
+   ```shell
+   # 例如：在"其他"目录创建新文档
+   touch docs/其他/新文档.md
+   ```
 2. **编写文档内容**
 
 ```markdown
@@ -78,8 +77,7 @@ touch docs/其他/新文档.md
 ```
 
 3. **添加到侧边栏**（如需要）
-
-编辑 `.vitepress/sidebar.mjs` 添加链接
+   编辑 `.vitepress/sidebar.mjs` 添加链接
 
 ### Markdown 增强功能
 

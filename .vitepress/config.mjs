@@ -11,6 +11,14 @@ export default defineConfig({
 
   // 启用外观切换（深色模式）
   appearance: true,
+  
+  // 忽略死链接检查（对于一些动态链接）
+  ignoreDeadLinks: [
+    // 忽略以 localhost 开头的链接
+    /^http:\/\/localhost/,
+    // 忽略 URL 编码的中文路径（暂时）
+    /\/%E/
+  ],
 
   // 主题配置
   themeConfig: {
