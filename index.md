@@ -150,3 +150,63 @@ themeConfig: {
 - 支持模糊匹配
 - 支持多关键词搜索（空格分隔）
 - 搜索结果按相关度排序
+
+## 🔄 文档同步机制
+
+文档仓库与主项目采用 Git Hooks 自动同步机制，确保文档始终保持最新。
+
+### 自动同步功能
+
+**同步时机**：
+- 主仓库执行 `git pull` 后自动拉取文档更新
+- 主仓库切换分支时自动拉取文档最新内容
+- 主仓库推送前检查并提醒文档状态
+
+**Git Hooks 配置**：
+- **post-merge**: pull/merge 后自动同步文档
+- **post-checkout**: 分支切换时同步文档
+- **pre-push**: 推送前检查文档仓库状态
+
+### 初始化设置
+
+**自动安装**：
+- VS Code 打开项目时自动安装 Git Hooks
+- 钩子脚本位于 `.vscode/git-hooks/` 目录
+
+**手动安装**：
+```bash
+# 安装 Git Hooks
+bash .vscode/git-hooks/install-hooks.sh
+
+# 克隆文档仓库（如果尚未设置）
+git clone git@github.com:zhaoheng666/WTC-Docs.git docs
+```
+
+### 工作流程
+
+1. **开发者 A 更新文档**：
+   ```bash
+   cd docs
+   git add .
+   git commit -m "docs: 更新API文档"
+   git push
+   ```
+
+2. **开发者 B 拉取主项目**：
+   ```bash
+   git pull  # 自动触发文档同步
+   # ✅ 文档仓库同步完成
+   ```
+
+3. **切换分支开发**：
+   ```bash
+   git checkout feature/new-feature
+   # 📝 文档仓库自动拉取最新更新
+   ```
+
+### 注意事项
+
+- 文档仓库独立维护在: https://github.com/zhaoheng666/WTC-Docs
+- 主仓库 `.gitignore` 已忽略 `docs/` 目录
+- 每个开发者本地都需要安装 Git Hooks（自动完成）
+- 文档同步失败不会影响主仓库操作
