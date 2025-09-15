@@ -151,6 +151,23 @@ themeConfig: {
 - 支持多关键词搜索（空格分隔）
 - 搜索结果按相关度排序
 
+### 本地预览说明
+
+**VitePress 热更新行为**：
+
+- **文档内容修改**：自动热更新，实时同步显示
+- **新增/删除文档**：需要刷新或重启 VitePress 服务器
+
+**重启服务方法**：
+
+vscode 中，找到运行中任务 start_local_docs_server ，输入 h 进入 vitepress shortcuts，选择 r 重启服务。
+
+```bash
+# 停止当前服务（Ctrl+C）
+# 重新启动
+npm run dev
+```
+
 ## 🔄 文档同步机制
 
 文档仓库与主项目采用 Git Hooks 自动同步机制，确保文档始终保持最新。
@@ -173,6 +190,7 @@ themeConfig: {
 
 **自动流程**：
 VS Code 打开项目时会自动执行 `setup_docs_environment` 任务：
+
 1. 检查并克隆文档仓库（如需要）
 2. 安装文档依赖
 3. 安装 Git Hooks
