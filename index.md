@@ -31,8 +31,6 @@
 
 ## 🚀 快速开始
 
-test
-
 ### 查看文档
 
 直接点击上方链接访问相应的文档分类，或使用左侧导航栏浏览。
@@ -173,19 +171,21 @@ themeConfig: {
 
 ### 初始化设置
 
-**自动安装**：
-
-- VS Code 打开项目时自动安装 Git Hooks
-- 钩子脚本位于 `.vscode/git-hooks/` 目录
+**自动流程**：
+VS Code 打开项目时会自动执行 `setup_docs_environment` 任务：
+1. 检查并克隆文档仓库（如需要）
+2. 安装文档依赖
+3. 安装 Git Hooks
+4. 启动文档服务
 
 **手动安装**：
 
 ```bash
-# 安装 Git Hooks
-bash .vscode/git-hooks/install-hooks.sh
+# 完整设置流程
+bash .vscode/scripts/check_docs_setup.sh
 
-# 克隆文档仓库（如果尚未设置）
-git clone git@github.com:zhaoheng666/WTC-Docs.git docs
+# 或单独安装 Git Hooks
+bash .vscode/git-hooks/install-hooks.sh
 ```
 
 ### 工作流程
