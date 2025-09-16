@@ -24,10 +24,8 @@ export default defineConfig({
   themeConfig: {
     // 顶部导航栏
     nav: [
-      { text: '首页', link: '/README' },
+      { text: '首页', link: '/' },
       { text: 'Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
-      { text: '程序排期', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=130371487#gid=130371487' },
-      { text: '程序总表', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=0#gid=0' },
       { text: '关于', link: '/about' },
       {
         text: '更多',

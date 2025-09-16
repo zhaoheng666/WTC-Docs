@@ -10,8 +10,8 @@ const manualSection = [
     text: '简介',
     collapsed: false,
     items: [
-      { text: '快速开始', link: '/getting-started' },
-      { text: '部署指南', link: '/deployment' }]
+      { text: '快速开始', link: '/其他/隐藏/快速开始' },
+      { text: '技术说明', link: '/README' }]
   },
   {
     text: '快速链接',
@@ -59,7 +59,7 @@ const ignoreList = [
   // 在下面添加需要忽略的文件或目录：
   '/其他/测试文档.md',
   'README.md',
-  'guide'
+  '/隐藏/'
 ]
 
 // 检查文件或目录是否应该被忽略
