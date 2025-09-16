@@ -1,4 +1,4 @@
-# 开发规范
+# Vscode 环境、工具开发规范
 
 ## 命名约定
 
@@ -18,12 +18,14 @@ WorldTourCasino 项目采用**差异化命名策略**，通过文件名风格区
 **适用范围**：业务逻辑相关的所有文件
 
 **目录位置**：
+
 - `scripts/` - 构建和部署脚本
 - `src/` - 源代码
 - `res/` - 资源文件
 - `config/` - 配置文件
 
 **命名示例**：
+
 ```bash
 # Shell 脚本
 build_local_app.sh
@@ -47,6 +49,7 @@ check_json_format.py
 **目录位置**：`.vscode/` 目录下的所有文件和目录
 
 **命名示例**：
+
 ```bash
 # 目录
 .vscode/google-drive/
@@ -86,18 +89,19 @@ upload-to-google-drive
 这种差异化命名带来以下好处：
 
 1. **清晰的边界**
+
    - 一眼区分产品代码与辅助工具
    - 新成员快速理解项目结构
-
 2. **便于管理**
+
    - 可通过命名模式批量处理
    - `.gitignore` 规则更简单
-
 3. **降低误操作风险**
+
    - 不会混淆关键业务脚本
    - 工具脚本修改不影响产品
-
 4. **搜索效率**
+
    - 自动补全时快速定位
    - grep/find 时精确过滤
 
@@ -106,15 +110,16 @@ upload-to-google-drive
 以下情况可以不遵循上述规范：
 
 1. **第三方要求的固定名称**
+
    - VSCode 插件图标：`userButton01_light.svg`
    - npm 包配置：`package.json`
    - Git 配置：`.gitignore`
-
 2. **框架约定**
+
    - Vue 组件：遵循 Vue 规范
    - React 组件：遵循 React 规范
-
 3. **已有规范的配置文件**
+
    - `tsconfig.json`
    - `webpack.config.js`
    - `.eslintrc.js`
@@ -122,15 +127,17 @@ upload-to-google-drive
 ### 实践示例
 
 #### ❌ 错误示例
+
 ```bash
 # 开发工具使用了下划线
-.vscode/fix_environment.sh  
+.vscode/fix_environment.sh
 
 # 主项目使用了连字符
-scripts/build-local-app.sh  
+scripts/build-local-app.sh
 ```
 
 #### ✅ 正确示例
+
 ```bash
 # 主项目 - 下划线
 scripts/build_local_app.sh
@@ -140,19 +147,3 @@ config/popup_pools.json
 .vscode/scripts/fix-environment.sh
 .vscode/tasks.json 中的 "label": "build-local-cv"
 ```
-
-### 迁移指南
-
-如果需要重命名现有文件：
-
-1. **评估影响**：检查所有引用
-2. **批量重命名**：使用脚本统一处理
-3. **更新引用**：修改所有配置文件
-4. **测试验证**：确保功能正常
-5. **提交说明**：详细记录变更原因
-
-### 相关文档
-
-- [VSCode 任务配置](/.vscode/tasks.json)
-- [项目构建脚本](/scripts/)
-- [文档同步工具](/工具/google-drive-upload)
