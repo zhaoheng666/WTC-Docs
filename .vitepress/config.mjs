@@ -173,7 +173,7 @@ export default defineConfig({
       }
     },
 
-    // 页脚
+    // 页脚 - 有侧边栏时不生效
     footer: {
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2024-present WorldTourCasino'
