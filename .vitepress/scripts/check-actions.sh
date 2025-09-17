@@ -52,7 +52,7 @@ if [ -z "$RECENT_RUNS" ] || [ "$RECENT_RUNS" = "[]" ]; then
 fi
 
 # 解析并显示运行状态
-echo "$RECENT_RUNS" | jq -r '.[] | "\(.status)|\(.conclusion)|\(.name)|\(.createdAt)|\(.event)|\(.headBranch)|\(.databaseId)"' | while IFS='|' read -r status conclusion name created_at event branch run_id; do
+echo "$RECENT_RUNS" | /usr/local/bin/jq -r '.[] | "\(.status)|\(.conclusion)|\(.name)|\(.createdAt)|\(.event)|\(.headBranch)|\(.databaseId)"' | while IFS='|' read -r status conclusion name created_at event branch run_id; do
     # 格式化时间
     formatted_time=$(echo "$created_at" | cut -d'T' -f1,2 | sed 's/T/ /')
     

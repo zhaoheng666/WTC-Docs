@@ -87,14 +87,14 @@ send_notification() {
 LAST_CHECK=""
 while true; do
     # 获取最新的运行
-    LATEST_RUN=$(gh run list --limit 1 --json databaseId,status,conclusion,name,headBranch 2>/dev/null | jq -r '.[0]')
+    LATEST_RUN=$(gh run list --limit 1 --json databaseId,status,conclusion,name,headBranch 2>/dev/null | /usr/local/bin/jq -r '.[0]')
     
     if [ -n "$LATEST_RUN" ] && [ "$LATEST_RUN" != "null" ]; then
-        RUN_ID=$(echo "$LATEST_RUN" | jq -r '.databaseId')
-        STATUS=$(echo "$LATEST_RUN" | jq -r '.status')
-        CONCLUSION=$(echo "$LATEST_RUN" | jq -r '.conclusion')
-        NAME=$(echo "$LATEST_RUN" | jq -r '.name')
-        BRANCH=$(echo "$LATEST_RUN" | jq -r '.headBranch')
+        RUN_ID=$(echo "$LATEST_RUN" | /usr/local/bin/jq -r '.databaseId')
+        STATUS=$(echo "$LATEST_RUN" | /usr/local/bin/jq -r '.status')
+        CONCLUSION=$(echo "$LATEST_RUN" | /usr/local/bin/jq -r '.conclusion')
+        NAME=$(echo "$LATEST_RUN" | /usr/local/bin/jq -r '.name')
+        BRANCH=$(echo "$LATEST_RUN" | /usr/local/bin/jq -r '.headBranch')
         
         # 检查是否已通知过
         if ! grep -q "$RUN_ID" "$NOTIFIED_RUNS" 2>/dev/null; then
