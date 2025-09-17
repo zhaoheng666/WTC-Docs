@@ -92,19 +92,38 @@ fi
 # 5. 生成提交信息
 echo -e "${CYAN}📝 准备提交...${NC}"
 
-# 统计更改
-ADDED=$(git diff --cached --numstat | wc -l)
-MODIFIED=$(git diff --cached --name-status | grep "^M" | wc -l)
-DELETED=$(git diff --cached --name-status | grep "^D" | wc -l)
+# 获取更改的文件列表（只显示 .md 文件，不包含路径）
+CHANGED_MD_FILES=$(git diff --cached --name-only | grep "\.md$" | xargs -I {} basename {} .md | head -5)
+CHANGED_MD_COUNT=$(git diff --cached --name-only | grep "\.md$" | wc -l)
+
+# 获取其他类型更改
+OTHER_CHANGES=$(git diff --cached --name-only | grep -v "\.md$" | wc -l)
 
 # 生成提交信息
-COMMIT_MSG="docs: 更新文档"
-if [ $ADDED -gt 0 ] || [ $MODIFIED -gt 0 ] || [ $DELETED -gt 0 ]; then
-    DETAILS=""
-    [ $ADDED -gt 0 ] && DETAILS="新增 $ADDED"
-    [ $MODIFIED -gt 0 ] && DETAILS="${DETAILS:+$DETAILS, }修改 $MODIFIED"
-    [ $DELETED -gt 0 ] && DETAILS="${DETAILS:+$DETAILS, }删除 $DELETED"
-    COMMIT_MSG="docs: 更新文档 ($DETAILS)"
+if [ "$CHANGED_MD_COUNT" -gt 0 ]; then
+    # 将文件名转换为逗号分隔的列表
+    FILE_LIST=$(echo "$CHANGED_MD_FILES" | paste -sd ", " -)
+    
+    if [ "$CHANGED_MD_COUNT" -gt 5 ]; then
+        # 如果文件太多，显示前5个和总数
+        COMMIT_MSG="docs: 更新 ${FILE_LIST} 等 ${CHANGED_MD_COUNT} 个文档"
+    elif [ "$CHANGED_MD_COUNT" -eq 1 ]; then
+        COMMIT_MSG="docs: 更新 ${FILE_LIST}"
+    else
+        COMMIT_MSG="docs: 更新 ${FILE_LIST}"
+    fi
+    
+    # 如果有其他文件更改，添加说明
+    if [ "$OTHER_CHANGES" -gt 0 ]; then
+        COMMIT_MSG="${COMMIT_MSG} (含配置文件)"
+    fi
+else
+    # 没有 md 文件更改，可能只是配置文件
+    if [ "$OTHER_CHANGES" -gt 0 ]; then
+        COMMIT_MSG="chore: 更新配置文件"
+    else
+        COMMIT_MSG="docs: 更新文档"
+    fi
 fi
 
 # 6. 创建提交
