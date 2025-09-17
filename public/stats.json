@@ -1,14 +1,12 @@
 {
   "recentUpdates": [
-    { "date": "09-17", "file": "index", "path": "/活动/index.md", "message": "docs: 更新 index" },
-    { "date": "09-17", "file": "README", "path": "/README.md", "message": "docs: 更新 README,统计仪表板 (含配置文件)" },
-    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新 index,统计仪表板 (含配置文件)" },
-    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新 index" },
-    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新文档 (新增        4, 修改   " },
-    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新文档 (新增        1, 修改   " },
-    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新文档 (新增        1, 修改   " },
-    { "date": "09-17", "file": "index", "path": "/index.md", "message": "fix: 修复图片路径并改进同步脚本显示" },
-    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新文档 (新增        3, 修改   " },
-    { "date": "09-17", "file": "快速开始", "path": "/其他/隐藏/快速开始.md", "message": "docs: 更新文档 (新增        3, 修改   " }
+    { "date": "09-17", "file": "Q3`25-Slots-FB 零权限网络网络迁移-程序", "path": "/成员/赵恒/Q3`25-Slots-FB 零权限网络网络迁移-程序.md", "message": "fix: 下载 Gitee 图片到本地解决防盗链问题" },
+    { "date": "09-17", "file": "Q3`25-Slots-Jenkins 管道迁移+共享工程-程序", "path": "/成员/赵恒/Q3`25-Slots-Jenkins 管道迁移+共享工程-程序.md", "message": "fix: 下载 Gitee 图片到本地解决防盗链问题" },
+    { "date": "09-17", "file": "index", "path": "/index.md", "message": "fix: 替换不支持的语法高亮标记消除警告" },
+    { "date": "09-17", "file": "VSCode 编辑器前端开发环境", "path": "/其他/VSCode 编辑器前端开发环境.md", "message": "fix: 替换不支持的语法高亮标记消除警告" },
+    { "date": "09-17", "file": "最近更新", "path": "/其他/隐藏/最近更新.md", "message": "fix: 替换不支持的语法高亮标记消除警告" },
+    { "date": "09-17", "file": "Q1`25-Slots-DH线上crash-ProgressTimer__initWithSprite问题-程序", "path": "/成员/赵恒/Q1`25-Slots-DH线上crash-ProgressTimer__initWithSprite问题-程序.md", "message": "fix: 替换不支持的语法高亮标记消除警告" },
+    { "date": "09-17", "file": "Q1`25-Slots-SOP-问题记录模板-程序", "path": "/成员/赵恒/Q1`25-Slots-SOP-问题记录模板-程序.md", "message": "fix: 替换不支持的语法高亮标记消除警告" },
+    { "date": "09-17", "file": "Q2`25-Slots-AI-编辑器前端开发环境-程序", "path": "/成员/赵恒/Q2`25-Slots-AI-编辑器前端开发环境-程序.md", "message": "fix: 替换不支持的语法高亮标记消除警告" }
   ]
 }

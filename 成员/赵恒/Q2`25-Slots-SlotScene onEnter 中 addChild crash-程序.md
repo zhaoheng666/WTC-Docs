@@ -516,7 +516,7 @@ update: function (dt) {
 
 - #### **关键特征：**
 
-  1. [onEnter 走完](((20250414154702-bgov1b7%20'GrandLottoSpinJackpotController.prototype.onEnter%20=%20function%20()%20{%20%20%20%20game.SmartCCBController.pro...')))，并没有 crash 在 onEnter 中的 addChild 上；[js 代码：](#20250414154655-x3rxxw8)
+  1. onEnter 走完，并没有 crash 在 onEnter 中的 addChild 上；[js 代码：](#20250414154655-x3rxxw8)
   2. 堆栈中未出现嵌套的 addChild 过程，且测试时使用的 new cc.Node(), 可以排除是当前子节点异常；
   3. spidermonkey 接口流转正常结束，js_cocos2dx_Node_onEnter 中 cobj 的有效性检查通过；
   4. 如果去掉 onEnter 中的 addchild 普通关卡和 HR 关卡均无异常，可以排除是其他节点导致的；
