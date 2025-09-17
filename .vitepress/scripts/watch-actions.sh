@@ -87,14 +87,26 @@ send_notification() {
 LAST_CHECK=""
 while true; do
     # 获取最新的运行
-    LATEST_RUN=$(gh run list --limit 1 --json databaseId,status,conclusion,name,headBranch 2>/dev/null | /usr/local/bin/jq -r '.[0]')
+    # 清理 PATH，移除 node_modules/.bin
+    export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v "node_modules" | tr '\n' ':' | sed 's/:$//')
     
-    if [ -n "$LATEST_RUN" ] && [ "$LATEST_RUN" != "null" ]; then
-        RUN_ID=$(echo "$LATEST_RUN" | /usr/local/bin/jq -r '.databaseId')
-        STATUS=$(echo "$LATEST_RUN" | /usr/local/bin/jq -r '.status')
-        CONCLUSION=$(echo "$LATEST_RUN" | /usr/local/bin/jq -r '.conclusion')
-        NAME=$(echo "$LATEST_RUN" | /usr/local/bin/jq -r '.name')
-        BRANCH=$(echo "$LATEST_RUN" | /usr/local/bin/jq -r '.headBranch')
+    LATEST_RUN=$(gh run list --limit 1 --json databaseId,status,conclusion,name,headBranch 2>/dev/null)
+    
+    if [ -n "$LATEST_RUN" ] && [ "$LATEST_RUN" != "[]" ]; then
+        # 使用 Python 解析 JSON
+        RUN_INFO=$(echo "$LATEST_RUN" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+if data:
+    run = data[0]
+    print(f\"{run['databaseId']}|{run['status']}|{run['conclusion']}|{run['name']}|{run['headBranch']}\")
+")
+        
+        if [ -n "$RUN_INFO" ]; then
+            IFS='|' read -r RUN_ID STATUS CONCLUSION NAME BRANCH <<< "$RUN_INFO"
+        else
+            continue
+        fi
         
         # 检查是否已通知过
         if ! grep -q "$RUN_ID" "$NOTIFIED_RUNS" 2>/dev/null; then

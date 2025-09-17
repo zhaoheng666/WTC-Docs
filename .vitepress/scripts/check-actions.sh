@@ -43,6 +43,9 @@ echo -e "${CYAN}🔍 检查 GitHub Actions 状态...${NC}"
 echo -e "${CYAN}仓库: $REPO_INFO${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
+# 清理 PATH，移除 node_modules/.bin
+export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v "node_modules" | tr '\n' ':' | sed 's/:$//')
+
 # 获取最近的 workflow 运行状态
 RECENT_RUNS=$(gh run list --limit 5 --json databaseId,status,conclusion,name,createdAt,event,headBranch 2>/dev/null)
 
@@ -51,8 +54,17 @@ if [ -z "$RECENT_RUNS" ] || [ "$RECENT_RUNS" = "[]" ]; then
     exit 0
 fi
 
-# 解析并显示运行状态
-echo "$RECENT_RUNS" | /usr/local/bin/jq -r '.[] | "\(.status)|\(.conclusion)|\(.name)|\(.createdAt)|\(.event)|\(.headBranch)|\(.databaseId)"' | while IFS='|' read -r status conclusion name created_at event branch run_id; do
+# 使用 Python 解析 JSON（避免 jq 依赖）
+echo "$RECENT_RUNS" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+for run in data:
+    print(f\"{run['status']}|{run['conclusion']}|{run['name']}|{run['createdAt']}|{run['event']}|{run['headBranch']}|{run['databaseId']}\")
+" | while IFS='|' read -r status conclusion name created_at event branch run_id; do
+    # 如果没有数据，跳过
+    if [ -z "$status" ]; then
+        continue
+    fi
     # 格式化时间
     formatted_time=$(echo "$created_at" | cut -d'T' -f1,2 | sed 's/T/ /')
     
