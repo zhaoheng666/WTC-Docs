@@ -51,21 +51,15 @@ if [ ! -L "images" ] && [ -d "public/images" ]; then
     fi
 fi
 
-# 2. 生成统计数据（仅当有文档更改时）
-if [ -f ".vitepress/scripts/generate-stats-simple.sh" ]; then
-    # 检查是否有 MD 文件更改
-    MD_CHANGES=$(git diff --cached --name-only | grep "\.md$" | head -1)
-    
-    if [ -n "$MD_CHANGES" ]; then
-        echo -e "${CYAN}📊 更新统计数据...${NC}"
-        if bash .vitepress/scripts/generate-stats-simple.sh > /dev/null 2>&1; then
-            echo -e "${GREEN}  ✓ 统计数据已更新${NC}"
-        else
-            echo -e "${YELLOW}  ⚠️  统计更新失败（非关键）${NC}"
-        fi
+# 2. 生成统计页面（本地版本，不含提交历史）
+if [ -f ".vitepress/scripts/generate-stats.js" ]; then
+    echo -e "${CYAN}📊 生成统计页面...${NC}"
+    if node .vitepress/scripts/generate-stats.js > /tmp/stats-gen.log 2>&1; then
+        echo -e "${GREEN}  ✓ 统计页面已生成${NC}"
     else
-        echo -e "${GREEN}  ✓ 跳过统计更新（无文档更改）${NC}"
+        echo -e "${YELLOW}  ⚠️  统计生成失败（继续构建）${NC}"
     fi
+    rm -f /tmp/stats-gen.log
 fi
 
 # 3. 执行构建

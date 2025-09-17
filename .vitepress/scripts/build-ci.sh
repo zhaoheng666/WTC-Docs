@@ -7,6 +7,12 @@ set -e
 
 echo "🚀 Starting CI Build..."
 
+# 生成统计页面（CI 环境，包含完整提交历史）
+if [ -f ".vitepress/scripts/generate-stats.js" ]; then
+    echo "📊 Generating stats page..."
+    node .vitepress/scripts/generate-stats.js
+fi
+
 # 设置 GitHub Pages URL
 export VITE_BASE_URL="https://zhaoheng666.github.io/WTC-Docs"
 

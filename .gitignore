@@ -57,6 +57,10 @@ lerna-debug.log*
 # public 目录中的图片需要被提交
 !public/images/
 !public/images/**/*
+
+# 自动生成的统计文件（避免循环提交）
+public/stats.json
+
 # 图片符号链接（编辑器预览用）
 # 注释掉，我们要提交这个符号链接
 # images
