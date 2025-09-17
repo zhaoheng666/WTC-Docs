@@ -93,7 +93,7 @@ fi
 echo -e "${CYAN}📝 准备提交...${NC}"
 
 # 获取更改的文件列表（只显示 .md 文件，不包含路径）
-CHANGED_MD_FILES=$(git diff --cached --name-only | grep "\.md$" | xargs -I {} basename {} .md | head -5)
+CHANGED_MD_FILES=$(git diff --cached --name-only | grep "\.md$" | head -5 | xargs -I {} basename {} .md 2>/dev/null)
 CHANGED_MD_COUNT=$(git diff --cached --name-only | grep "\.md$" | wc -l)
 
 # 获取其他类型更改
