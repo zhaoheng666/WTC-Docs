@@ -43,8 +43,26 @@ echo -e "${CYAN}🔍 检查 GitHub Actions 状态...${NC}"
 echo -e "${CYAN}仓库: $REPO_INFO${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-# 清理 PATH，移除 node_modules/.bin
-export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v "node_modules" | tr '\n' ':' | sed 's/:$//')
+# 设置 jq 命令 - 优先使用系统 jq，回退到 node-jq
+if command -v jq &> /dev/null; then
+    JQ_CMD="jq"
+else
+    # 确保 node_modules 存在
+    if [ ! -d "node_modules" ]; then
+        echo -e "${YELLOW}⚠️  未找到 node_modules，正在安装依赖...${NC}"
+        npm install > /dev/null 2>&1
+    fi
+    
+    # 使用 node-jq
+    if [ -f "node_modules/.bin/jq" ]; then
+        JQ_CMD="node_modules/.bin/jq"
+    else
+        echo -e "${RED}❌ 未找到 jq 工具${NC}"
+        echo -e "${YELLOW}请运行以下命令修复环境：${NC}"
+        echo -e "${CYAN}  npm run init${NC}"
+        exit 1
+    fi
+fi
 
 # 获取最近的 workflow 运行状态
 RECENT_RUNS=$(gh run list --limit 5 --json databaseId,status,conclusion,name,createdAt,event,headBranch 2>/dev/null)
@@ -54,13 +72,8 @@ if [ -z "$RECENT_RUNS" ] || [ "$RECENT_RUNS" = "[]" ]; then
     exit 0
 fi
 
-# 使用 Python 解析 JSON（避免 jq 依赖）
-echo "$RECENT_RUNS" | python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-for run in data:
-    print(f\"{run['status']}|{run['conclusion']}|{run['name']}|{run['createdAt']}|{run['event']}|{run['headBranch']}|{run['databaseId']}\")
-" | while IFS='|' read -r status conclusion name created_at event branch run_id; do
+# 使用 jq 解析 JSON
+echo "$RECENT_RUNS" | $JQ_CMD -r '.[] | "\(.status)|\(.conclusion // "none")|\(.name)|\(.createdAt)|\(.event)|\(.headBranch)|\(.databaseId)"' | while IFS='|' read -r status conclusion name created_at event branch run_id; do
     # 如果没有数据，跳过
     if [ -z "$status" ]; then
         continue
@@ -105,19 +118,11 @@ for run in data:
     echo ""
 done
 
-# 检查最近一次运行状态（使用 Python 解析避免 jq 依赖）
-LATEST_INFO=$(echo "$RECENT_RUNS" | python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-if data and len(data) > 0:
-    latest = data[0]
-    print(f\"{latest.get('status', 'unknown')}|{latest.get('conclusion', 'none')}|{latest.get('name', 'unknown')}|{latest.get('databaseId', 0)}\")
-else:
-    print('unknown|none|unknown|0')
-")
-
-# 解析最新运行信息
-IFS='|' read -r LATEST_STATUS LATEST_CONCLUSION LATEST_NAME LATEST_RUN_ID <<< "$LATEST_INFO"
+# 检查最近一次运行状态
+LATEST_STATUS=$(echo "$RECENT_RUNS" | $JQ_CMD -r '.[0].status // "unknown"')
+LATEST_CONCLUSION=$(echo "$RECENT_RUNS" | $JQ_CMD -r '.[0].conclusion // "none"')
+LATEST_NAME=$(echo "$RECENT_RUNS" | $JQ_CMD -r '.[0].name // "unknown"')
+LATEST_RUN_ID=$(echo "$RECENT_RUNS" | $JQ_CMD -r '.[0].databaseId // 0')
 
 # 根据状态发送相应通知
 if [ "$LATEST_STATUS" = "completed" ]; then
@@ -139,10 +144,13 @@ if [ "$LATEST_STATUS" = "completed" ]; then
         
         # 如果在 macOS 上，发送系统通知
         if [ "$(uname)" = "Darwin" ]; then
+            # 使用 osascript 发送基础通知
             osascript -e "display notification \"$LATEST_NAME 运行失败\" with title \"GitHub Actions\" subtitle \"文档构建失败\" sound name \"Basso\""
             
             # 如果安装了 terminal-notifier，使用更好的通知
             if command -v terminal-notifier &> /dev/null; then
+                # 稍微延迟以避免通知冲突
+                sleep 0.5
                 terminal-notifier -title "GitHub Actions 失败" \
                     -subtitle "$LATEST_NAME" \
                     -message "点击查看详情" \
@@ -150,6 +158,9 @@ if [ "$LATEST_STATUS" = "completed" ]; then
                     -sound Basso \
                     -group "github-actions"
             fi
+            
+            # 给通知系统一点时间处理
+            sleep 0.5
         fi
         
         exit 1
@@ -160,10 +171,13 @@ if [ "$LATEST_STATUS" = "completed" ]; then
         
         # 成功通知（仅在 macOS 上）
         if [ "$(uname)" = "Darwin" ]; then
+            # 使用 osascript 发送基础通知
             osascript -e "display notification \"$LATEST_NAME 运行成功\" with title \"GitHub Actions\" subtitle \"文档构建成功\" sound name \"Glass\""
             
             # 如果安装了 terminal-notifier，使用更好的通知
             if command -v terminal-notifier &> /dev/null; then
+                # 稍微延迟以避免通知冲突
+                sleep 0.5
                 terminal-notifier -title "GitHub Actions 成功" \
                     -subtitle "$LATEST_NAME" \
                     -message "文档已成功部署" \
@@ -171,6 +185,9 @@ if [ "$LATEST_STATUS" = "completed" ]; then
                     -sound Glass \
                     -group "github-actions"
             fi
+            
+            # 给通知系统一点时间处理
+            sleep 0.5
         fi
         
         exit 0

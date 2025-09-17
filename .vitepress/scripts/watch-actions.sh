@@ -16,6 +16,27 @@ DOCS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 cd "$DOCS_DIR" || exit 1
 
+# 设置 jq 命令 - 优先使用系统 jq，回退到 node-jq
+if command -v jq &> /dev/null; then
+    JQ_CMD="jq"
+else
+    # 确保 node_modules 存在
+    if [ ! -d "node_modules" ]; then
+        echo -e "${YELLOW}⚠️  未找到 node_modules，正在安装依赖...${NC}"
+        npm install > /dev/null 2>&1
+    fi
+    
+    # 使用 node-jq
+    if [ -f "node_modules/.bin/jq" ]; then
+        JQ_CMD="node_modules/.bin/jq"
+    else
+        echo -e "${RED}❌ 未找到 jq 工具${NC}"
+        echo -e "${YELLOW}请运行以下命令修复环境：${NC}"
+        echo -e "${CYAN}  npm run init${NC}"
+        exit 1
+    fi
+fi
+
 # 检查依赖
 if ! command -v gh &> /dev/null; then
     echo -e "${RED}❌ 未安装 GitHub CLI${NC}"
@@ -93,18 +114,14 @@ while true; do
     LATEST_RUN=$(gh run list --limit 1 --json databaseId,status,conclusion,name,headBranch 2>/dev/null)
     
     if [ -n "$LATEST_RUN" ] && [ "$LATEST_RUN" != "[]" ]; then
-        # 使用 Python 解析 JSON
-        RUN_INFO=$(echo "$LATEST_RUN" | python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-if data:
-    run = data[0]
-    print(f\"{run['databaseId']}|{run['status']}|{run['conclusion']}|{run['name']}|{run['headBranch']}\")
-")
+        # 使用 jq 解析 JSON
+        RUN_ID=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].databaseId // ""')
+        STATUS=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].status // ""')
+        CONCLUSION=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].conclusion // ""')
+        NAME=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].name // ""')
+        BRANCH=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].headBranch // ""')
         
-        if [ -n "$RUN_INFO" ]; then
-            IFS='|' read -r RUN_ID STATUS CONCLUSION NAME BRANCH <<< "$RUN_INFO"
-        else
+        if [ -z "$RUN_ID" ]; then
             continue
         fi
         
