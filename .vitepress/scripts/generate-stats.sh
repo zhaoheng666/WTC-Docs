@@ -21,8 +21,8 @@ NC='\033[0m'
 
 echo -e "${CYAN}正在生成文档统计数据...${NC}"
 
-# 获取当前时间
-CURRENT_TIME=$(date '+%Y-%m-%d %H:%M:%S')
+# 获取当前日期（不包含时间，减少更新频率）
+CURRENT_DATE=$(date '+%Y-%m-%d')
 
 # 统计文档数量
 MD_COUNT=$(find . -name "*.md" -type f | grep -v node_modules | grep -v ".vitepress" | wc -l | tr -d ' ')

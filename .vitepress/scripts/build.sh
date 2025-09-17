@@ -44,8 +44,12 @@ if [ ! -L "images" ] && [ -d "public/images" ]; then
     fi
 fi
 
-# 2. 生成统计数据
-if [ -f ".vitepress/scripts/generate-stats.sh" ]; then
+# 2. 生成统计数据（优先使用简化版）
+if [ -f ".vitepress/scripts/generate-stats-simple.sh" ]; then
+    echo -e "${CYAN}📊 更新统计数据（简化版）...${NC}"
+    bash .vitepress/scripts/generate-stats-simple.sh > /dev/null 2>&1
+    echo -e "${GREEN}  ✓ 统计数据已生成${NC}"
+elif [ -f ".vitepress/scripts/generate-stats.sh" ]; then
     echo -e "${CYAN}📊 更新统计数据...${NC}"
     if bash .vitepress/scripts/generate-stats.sh > /dev/null 2>&1; then
         echo -e "${GREEN}  ✓ 统计数据已更新${NC}"
