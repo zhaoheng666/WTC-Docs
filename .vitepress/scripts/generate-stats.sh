@@ -2,7 +2,9 @@
 
 # 文档统计数据生成脚本
 
-DOCS_DIR="/Users/ghost/work/WorldTourCasino/docs"
+# 获取脚本所在目录的上上级目录（docs目录）
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOCS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 OUTPUT_FILE="$DOCS_DIR/统计仪表板.md"
 
 cd "$DOCS_DIR" || exit 1
