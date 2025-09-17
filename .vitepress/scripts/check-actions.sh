@@ -47,13 +47,6 @@ echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━�
 if command -v jq &> /dev/null; then
     JQ_CMD="jq"
 else
-    # 确保 node_modules 存在
-    if [ ! -d "node_modules" ]; then
-        echo -e "${YELLOW}⚠️  未找到 node_modules，正在安装依赖...${NC}"
-        npm install > /dev/null 2>&1
-    fi
-    
-    # 使用 npx jq (jq-cli-wrapper)
     JQ_CMD="npx jq"
 fi
 

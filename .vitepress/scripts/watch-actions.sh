@@ -16,17 +16,10 @@ DOCS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 cd "$DOCS_DIR" || exit 1
 
-# 设置 jq 命令 - 优先使用系统 jq，回退到 node-jq
+# 设置 jq 命令 - 优先使用系统 jq，回退到 npx jq
 if command -v jq &> /dev/null; then
     JQ_CMD="jq"
 else
-    # 确保 node_modules 存在
-    if [ ! -d "node_modules" ]; then
-        echo -e "${YELLOW}⚠️  未找到 node_modules，正在安装依赖...${NC}"
-        npm install > /dev/null 2>&1
-    fi
-    
-    # 使用 npx jq (jq-cli-wrapper)
     JQ_CMD="npx jq"
 fi
 

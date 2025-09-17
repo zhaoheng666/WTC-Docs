@@ -178,9 +178,8 @@ if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     
     # 设置 jq 命令
-    if command -v jq &> /dev/null; then
-        JQ_CMD="jq"
-    else
+    JQ_CMD="jq"  # 假设系统已安装 jq 或 npx jq 可用
+    if ! command -v jq &> /dev/null; then
         JQ_CMD="npx jq"
     fi
     
