@@ -57,3 +57,5 @@ lerna-debug.log*
 # public 目录中的图片需要被提交
 !public/images/
 !public/images/**/*
+# 图片符号链接（编辑器预览用）
+images

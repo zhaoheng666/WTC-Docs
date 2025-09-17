@@ -175,6 +175,23 @@ echo -e "\n${CYAN}设置脚本权限...${NC}"
 chmod +x .vitepress/scripts/*.sh
 echo -e "${GREEN}✅ 脚本权限已设置${NC}"
 
+# 8.5 创建图片符号链接（用于编辑器预览）
+if [ ! -L "images" ] && [ -d "public/images" ]; then
+    echo -e "\n${CYAN}创建图片符号链接...${NC}"
+    ln -s public/images images 2>/dev/null
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✅ 图片符号链接已创建${NC}"
+        
+        # 确保 gitignore 配置
+        if ! grep -q "^images$" .gitignore 2>/dev/null; then
+            echo -e "\n# 图片符号链接（编辑器预览用）" >> .gitignore
+            echo "images" >> .gitignore
+        fi
+    fi
+elif [ -L "images" ]; then
+    echo -e "${GREEN}✅ 图片符号链接已存在${NC}"
+fi
+
 # 9. 环境检查汇总
 echo -e "\n${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "${CYAN}环境状态汇总：${NC}"

@@ -36,6 +36,14 @@ if [ -f ".vitepress/scripts/collect-images-incremental.sh" ]; then
     rm -f /tmp/collect-images.log
 fi
 
+# 1.5 确保符号链接存在（用于编辑器预览）
+if [ ! -L "images" ] && [ -d "public/images" ]; then
+    ln -s public/images images 2>/dev/null
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}  ✓ 创建图片符号链接${NC}"
+    fi
+fi
+
 # 2. 生成统计数据
 if [ -f ".vitepress/scripts/generate-stats.sh" ]; then
     echo -e "${CYAN}📊 更新统计数据...${NC}"
