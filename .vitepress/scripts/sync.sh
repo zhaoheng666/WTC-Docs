@@ -156,4 +156,15 @@ echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━�
 echo -e "${GREEN}✅ 文档同步完成！${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
+# 10. 等待并检查 GitHub Actions 状态（如果有 gh CLI）
+if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
+    echo -e "${CYAN}等待 GitHub Actions 启动...${NC}"
+    sleep 5
+    
+    # 检查 Actions 状态
+    if [ -f ".vitepress/scripts/check-actions.sh" ]; then
+        bash .vitepress/scripts/check-actions.sh || true
+    fi
+fi
+
 exit 0

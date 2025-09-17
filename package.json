@@ -14,7 +14,9 @@
     "sync:silent": "bash .vitepress/scripts/sync.sh > /dev/null 2>&1",
     "pull": "git pull origin $(git branch --show-current)",
     "push": "git push origin $(git branch --show-current)",
-    "status": "bash .vitepress/scripts/status.sh"
+    "status": "bash .vitepress/scripts/status.sh",
+    "actions": "bash .vitepress/scripts/check-actions.sh",
+    "actions:watch": "bash .vitepress/scripts/watch-actions.sh"
   },
   "devDependencies": {
     "vitepress": "^1.6.4"
