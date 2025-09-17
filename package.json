@@ -7,17 +7,8 @@
     "init": "bash .vitepress/scripts/init.sh",
     "dev": "vitepress dev",
     "build": "bash .vitepress/scripts/build.sh",
-    "preview": "vitepress preview",
-    "commit": "bash .vitepress/scripts/sync.sh",
-    "clean": "rm -rf .vitepress/dist .vitepress/cache",
-    "fix:rollup": "bash .vitepress/scripts/fix-rollup.sh",
     "sync": "bash .vitepress/scripts/sync.sh",
-    "sync:silent": "bash .vitepress/scripts/sync.sh > /dev/null 2>&1",
-    "pull": "git pull origin $(git branch --show-current)",
-    "push": "git push origin $(git branch --show-current)",
-    "status": "bash .vitepress/scripts/status.sh",
-    "actions": "bash .vitepress/scripts/check-actions.sh",
-    "actions:watch": "bash .vitepress/scripts/watch-actions.sh"
+    "status": "bash .vitepress/scripts/status.sh"
   },
   "devDependencies": {
     "vitepress": "^1.6.4"

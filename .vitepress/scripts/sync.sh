@@ -165,6 +165,8 @@ if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
     if [ -f ".vitepress/scripts/check-actions.sh" ]; then
         bash .vitepress/scripts/check-actions.sh || true
     fi
+else
+    echo -e "${YELLOW}提示：运行 'npm run init' 配置 GitHub Actions 监控${NC}"
 fi
 
 exit 0

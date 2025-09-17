@@ -16,52 +16,19 @@ DOCS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 cd "$DOCS_DIR" || exit 1
 
-# 检查是否安装了 gh CLI
+# 检查依赖
 if ! command -v gh &> /dev/null; then
-    echo -e "${YELLOW}⚠️  未安装 GitHub CLI (gh)${NC}"
-    echo -e "${CYAN}正在安装...${NC}"
-    
-    # 根据系统自动安装
-    if [ "$(uname)" = "Darwin" ]; then
-        # macOS
-        if command -v brew &> /dev/null; then
-            brew install gh
-        else
-            echo -e "${RED}请先安装 Homebrew: https://brew.sh${NC}"
-            exit 1
-        fi
-    elif [ -f /etc/debian_version ]; then
-        # Debian/Ubuntu
-        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-        sudo apt update && sudo apt install gh -y
-    else
-        echo -e "${RED}请手动安装 GitHub CLI: https://cli.github.com/${NC}"
-        exit 1
-    fi
+    echo -e "${RED}❌ 未安装 GitHub CLI${NC}"
+    echo -e "${YELLOW}请运行以下命令修复环境：${NC}"
+    echo -e "${CYAN}  npm run init${NC}"
+    exit 1
 fi
 
-# 检查是否已登录
-if ! gh auth status &> /dev/null; then
-    echo -e "${YELLOW}⚠️  需要登录 GitHub${NC}"
-    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${CYAN}请按照提示完成 GitHub 登录：${NC}"
-    echo -e "  1. 选择 GitHub.com"
-    echo -e "  2. 选择 HTTPS 协议"
-    echo -e "  3. 认证方式选择 'Login with a web browser'"
-    echo -e "  4. 按 Enter 打开浏览器完成授权"
-    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    
-    # 自动运行登录流程
-    gh auth login --hostname github.com --protocol https --web
-    
-    # 再次检查登录状态
-    if ! gh auth status &> /dev/null; then
-        echo -e "${RED}❌ 登录失败，请重试${NC}"
-        exit 1
-    fi
-    
-    echo -e "${GREEN}✅ GitHub 登录成功${NC}"
+if ! gh auth status &> /dev/null 2>&1; then
+    echo -e "${RED}❌ GitHub CLI 未登录${NC}"
+    echo -e "${YELLOW}请运行以下命令修复环境：${NC}"
+    echo -e "${CYAN}  npm run init${NC}"
+    exit 1
 fi
 
 # 获取仓库信息
