@@ -10,7 +10,7 @@ const manualSection = [
     text: '文档中心',
     collapsed: false,
     items: [
-      { text: '📊 统计仪表', link: '/其他/隐藏/统计仪表板' },
+      { text: '🕐 最近更新', link: '/其他/隐藏/最近更新' },
       { text: '📖 技术实现', link: '/README' }
     ]
   },
@@ -82,7 +82,8 @@ const ignoreList = [
   // 在下面添加需要忽略的文件或目录：
   '/其他/测试文档.md',
   'README.md',
-  '/隐藏/'
+  '/隐藏/',
+  '/成员/'
 ]
 
 // 检查文件或目录是否应该被忽略

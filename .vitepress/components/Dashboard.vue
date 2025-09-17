@@ -38,17 +38,24 @@ onMounted(() => {
 
 const loadDashboardData = async () => {
   try {
-    const response = await fetch('/stats.json')
+    // 获取基础 URL - 兼容开发和生产环境
+    const base = import.meta.env.BASE_URL || '/'
+    const statsPath = `${base}stats.json`.replace('//', '/')
+    
+    console.log('Loading stats from:', statsPath)
+    
+    const response = await fetch(statsPath)
     if (response.ok) {
       const data = await response.json()
-      
-      // 更新最近更新列表
-      if (data.recentUpdates) {
+      if (data && data.recentUpdates) {
         recentUpdates.value = data.recentUpdates
+        console.log('Stats loaded successfully:', data.recentUpdates.length, 'items')
       }
+    } else {
+      throw new Error(`Failed to fetch: ${response.status}`)
     }
   } catch (error) {
-    console.log('加载数据失败，使用默认数据')
+    console.log('加载数据失败，使用默认数据:', error)
     // 默认数据
     recentUpdates.value = [
       { date: '09-17', file: 'index', path: '/活动/index.md', message: 'docs: 更新 index' },

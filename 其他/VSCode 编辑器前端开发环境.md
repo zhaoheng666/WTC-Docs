@@ -330,7 +330,7 @@
 
    - 目前工程中添加了 user action 1（热更），user action 2（CV），user action 3（DH），可以通过脚本替换生效：
 
-   ```shell
+   ```bash
    cd WorldTourCasino/.vscode/scripts/
    ./replace_shortcut-menu-bar_icons.sh
    ```

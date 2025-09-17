@@ -6,7 +6,7 @@
 # 获取脚本所在目录的上上级目录（docs目录）
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOCS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
-OUTPUT_FILE="$DOCS_DIR/统计仪表板.md"
+OUTPUT_FILE="$DOCS_DIR/其他/隐藏/最近更新.md"
 JSON_FILE="$DOCS_DIR/public/stats.json"
 
 cd "$DOCS_DIR" || exit 1
@@ -82,9 +82,9 @@ JSON_RECENT="$JSON_RECENT
 
 # 生成 Markdown 文件
 cat > "$OUTPUT_FILE" << EOF
-# 📊 文档统计仪表板
+# 🕐 最近更新
 
-## 🕐 最近更新
+## 📋 最近更新列表
 
 | 更新日期 | 文档 | 最后提交 |
 |----------|------|----------|

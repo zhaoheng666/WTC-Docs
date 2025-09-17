@@ -20,11 +20,24 @@ export default defineConfig({
     /\/%E/
   ],
 
+  // Markdown 配置
+  markdown: {
+    // 配置语法高亮
+    languages: [
+      // 添加对 Objective-C, plist, shell 的支持
+      // VitePress 默认支持的语言已经很多，这些警告通常可以忽略
+      // 如果确实需要，可以安装额外的语言包
+    ],
+    // 代码块的默认语言
+    defaultHighlightLang: 'txt'
+  },
+
   // 主题配置
   themeConfig: {
     // 顶部导航栏
     nav: [
       { text: '首页', link: '/' },
+      { text: '成员', link: '/成员/' },
       { text: 'Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
       {
         text: '外部链接',
@@ -63,7 +76,7 @@ export default defineConfig({
               titles: 1      // 其他标题权重
             },
             // 自定义分词器，改善中文搜索
-            tokenize: (text, fieldName) => {
+            tokenize: (text) => {
               // 如果是空字符串，直接返回
               if (!text || typeof text !== 'string') return []
 
