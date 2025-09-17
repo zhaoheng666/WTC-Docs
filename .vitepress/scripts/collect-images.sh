@@ -110,8 +110,24 @@ while IFS= read -r md_file; do
                 m=$((m + 1))
                 echo "$t $m $u" > "$TEMP_STATS"
                 
-                # 计算新的引用路径
-                new_path="/images/$target_subdir/$img_name"
+                # 计算新的引用路径（相对路径）
+                # 根据 MD 文件的深度计算相对路径
+                if [ "$md_dir" = "." ]; then
+                    # 根目录的文件
+                    new_path="./images/$target_subdir/$img_name"
+                else
+                    # 子目录的文件，需要先返回上级
+                    depth=$(echo "$md_dir" | awk -F'/' '{print NF}')
+                    rel_prefix=""
+                    for ((i=0; i<depth; i++)); do
+                        if [ -z "$rel_prefix" ]; then
+                            rel_prefix=".."
+                        else
+                            rel_prefix="$rel_prefix/.."
+                        fi
+                    done
+                    new_path="$rel_prefix/images/$target_subdir/$img_name"
+                fi
                 
                 # 记录需要替换的内容
                 echo "$md_file|$img_path|$new_path" >> "$TEMP_CHANGES"
@@ -174,8 +190,24 @@ while IFS= read -r md_file; do
                 m=$((m + 1))
                 echo "$t $m $u" > "$TEMP_STATS"
                 
-                # 计算新的引用路径
-                new_path="/images/$target_subdir/$img_name"
+                # 计算新的引用路径（相对路径）
+                # 根据 MD 文件的深度计算相对路径
+                if [ "$md_dir" = "." ]; then
+                    # 根目录的文件
+                    new_path="./images/$target_subdir/$img_name"
+                else
+                    # 子目录的文件，需要先返回上级
+                    depth=$(echo "$md_dir" | awk -F'/' '{print NF}')
+                    rel_prefix=""
+                    for ((i=0; i<depth; i++)); do
+                        if [ -z "$rel_prefix" ]; then
+                            rel_prefix=".."
+                        else
+                            rel_prefix="$rel_prefix/.."
+                        fi
+                    done
+                    new_path="$rel_prefix/images/$target_subdir/$img_name"
+                fi
                 
                 # 记录需要替换的内容
                 echo "$md_file|$img_path|$new_path" >> "$TEMP_CHANGES"
