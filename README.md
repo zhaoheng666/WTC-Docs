@@ -30,7 +30,7 @@ npm run sync
 ### 技术栈
 
 - **框架**：VitePress 1.6.4
-- **构建**：Vite + Vue 3  
+- **构建**：Vite + Vue 3
 - **部署**：GitHub Pages + Actions
 - **脚本**：Bash + Node.js
 
@@ -56,13 +56,13 @@ docs/
 
 ## 📝 核心命令
 
-| 命令 | 说明 | 使用场景 |
-|------|------|----------|
-| `npm run init` | 环境初始化和修复 | 首次使用或环境问题 |
-| `npm run dev` | 启动开发服务器 | 日常文档编写 |
-| `npm run build` | 构建生产版本 | 需要静态文件 |
-| `npm run sync` | 同步到远程 | 提交并推送更新 |
-| `npm run status` | 检查仓库状态 | 主项目调用 |
+| 命令               | 说明             | 使用场景           |
+| ------------------ | ---------------- | ------------------ |
+| `npm run init`   | 环境初始化和修复 | 首次使用或环境问题 |
+| `npm run dev`    | 启动开发服务器   | 日常文档编写       |
+| `npm run build`  | 构建生产版本     | 需要静态文件       |
+| `npm run sync`   | 同步到远程       | 提交并推送更新     |
+| `npm run status` | 检查仓库状态     | 主项目调用         |
 
 ## 🚀 核心功能
 
@@ -128,17 +128,18 @@ docs/
 ### 日常工作流程
 
 1. **首次设置**
+
    ```bash
    npm run init  # 配置环境
    npm run dev   # 启动开发
    ```
-
 2. **编写文档**
+
    - 在相应目录创建 `.md` 文件
    - 图片放在文档同目录（自动整理）
    - 使用中文命名提高可读性
-
 3. **提交更新**
+
    ```bash
    npm run sync  # 自动构建、提交、推送
    ```
@@ -189,14 +190,15 @@ npm run init -- --fix # 自动修复模式
 ### 常见问题
 
 1. **构建失败**
+
    - 运行 `npm run init` 修复环境
    - 检查 Node.js 版本（需要 18+）
-
 2. **GitHub Actions 失败**
+
    - 检查 GitHub CLI 登录状态
    - 运行 `npm run init` 重新配置
-
 3. **Mac ARM64 问题**
+
    - `npm run init` 会自动安装兼容包
    - 详见故障排查文档
 
@@ -213,11 +215,5 @@ npm run init -- --fix # 自动修复模式
 - **在线文档**：https://zhaoheng666.github.io/WTC-Docs/
 - **文档仓库**：https://github.com/zhaoheng666/WTC-Docs
 - **主项目**：https://github.com/LuckyZen/WorldTourCasino
-
-## 📄 许可证
-
-MIT License
-
----
 
 > 💡 **提示**：详细的脚本使用说明请查看 [SCRIPTS.md](./SCRIPTS.md)

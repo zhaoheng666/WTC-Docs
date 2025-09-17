@@ -99,7 +99,13 @@ send_notification() {
 
 # 监控循环
 LAST_CHECK=""
+CHECK_COUNT=0
 while true; do
+    # 显示检查状态（每次检查都显示）
+    CHECK_COUNT=$((CHECK_COUNT + 1))
+    CURRENT_TIME=$(date "+%H:%M:%S")
+    echo -ne "\r${CYAN}[${CURRENT_TIME}] 检查 #${CHECK_COUNT} - 监控中...${NC}"
+    
     # 获取最新的运行
     # 清理 PATH，移除 node_modules/.bin
     export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v "node_modules" | tr '\n' ':' | sed 's/:$//')
@@ -126,7 +132,7 @@ while true; do
                 
                 if [ "$CONCLUSION" = "success" ]; then
                     # 成功通知
-                    echo -e "${GREEN}✅ [$BRANCH] $NAME - 构建成功${NC}"
+                    echo -e "\n${GREEN}✅ [$BRANCH] $NAME - 构建成功${NC}"
                     send_notification "✅ GitHub Actions 成功" \
                         "$NAME 在 $BRANCH 分支构建成功" \
                         "https://github.com/$REPO_INFO/actions/runs/$RUN_ID" \
@@ -134,7 +140,7 @@ while true; do
                         
                 elif [ "$CONCLUSION" = "failure" ]; then
                     # 失败通知（重要）
-                    echo -e "${RED}❌ [$BRANCH] $NAME - 构建失败${NC}"
+                    echo -e "\n${RED}❌ [$BRANCH] $NAME - 构建失败${NC}"
                     
                     # 获取失败详情
                     FAILED_JOBS=$(gh run view "$RUN_ID" --json jobs -q '.jobs[] | select(.conclusion == "failure") | .name' 2>/dev/null | head -3)
@@ -146,7 +152,7 @@ while true; do
                         
                 elif [ "$CONCLUSION" = "cancelled" ]; then
                     # 取消通知
-                    echo -e "${YELLOW}⏹ [$BRANCH] $NAME - 已取消${NC}"
+                    echo -e "\n${YELLOW}⏹ [$BRANCH] $NAME - 已取消${NC}"
                     send_notification "⏹ GitHub Actions 取消" \
                         "$NAME 在 $BRANCH 分支被取消" \
                         "https://github.com/$REPO_INFO/actions/runs/$RUN_ID" \
@@ -156,13 +162,20 @@ while true; do
                 # 显示运行中状态（不通知）
                 CURRENT_CHECK="$RUN_ID-$STATUS"
                 if [ "$CURRENT_CHECK" != "$LAST_CHECK" ]; then
-                    echo -e "${CYAN}🔄 [$BRANCH] $NAME - 运行中...${NC}"
+                    echo -e "\n${CYAN}🔄 [$BRANCH] $NAME - 运行中...${NC}"
+                    LAST_CHECK="$CURRENT_CHECK"
+                fi
+            elif [ "$STATUS" = "queued" ]; then
+                # 显示排队状态
+                CURRENT_CHECK="$RUN_ID-$STATUS"
+                if [ "$CURRENT_CHECK" != "$LAST_CHECK" ]; then
+                    echo -e "\n${YELLOW}⏳ [$BRANCH] $NAME - 排队中...${NC}"
                     LAST_CHECK="$CURRENT_CHECK"
                 fi
             fi
         fi
     fi
     
-    # 等待30秒后再次检查
-    sleep 30
+    # 等待10秒后再次检查
+    sleep 10
 done
