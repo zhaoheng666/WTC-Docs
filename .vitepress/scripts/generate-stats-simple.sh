@@ -18,43 +18,6 @@ NC='\033[0m'
 
 echo -e "${CYAN}生成简化版统计数据...${NC}"
 
-# 统计文档数量
-MD_COUNT=$(find . -name "*.md" -type f | grep -v node_modules | grep -v ".vitepress" | wc -l | tr -d ' ')
-DIR_COUNT=$(find . -type d | grep -v node_modules | grep -v ".vitepress" | grep -v ".git" | wc -l | tr -d ' ')
-
-# 统计各目录文档数量
-CATEGORY_STATS=""
-JSON_CATEGORIES="["
-first=true
-for dir in 关卡 活动 native 协议 工具 其他 故障排查; do
-    if [ -d "$dir" ]; then
-        count=$(find "$dir" -name "*.md" -type f | wc -l | tr -d ' ')
-        CATEGORY_STATS="$CATEGORY_STATS| $dir | $count |\n"
-        
-        # 为目录分配颜色
-        case $dir in
-            关卡) color="#7c3aed" ;;
-            活动) color="#ec4899" ;;
-            native|Native) color="#f59e0b" ;;
-            协议) color="#10b981" ;;
-            工具) color="#3b82f6" ;;
-            故障排查) color="#ef4444" ;;
-            *) color="#6b7280" ;;
-        esac
-        
-        if [ "$first" = true ]; then
-            first=false
-        else
-            JSON_CATEGORIES="$JSON_CATEGORIES,"
-        fi
-        
-        JSON_CATEGORIES="$JSON_CATEGORIES
-    { \"name\": \"$dir\", \"count\": $count, \"color\": \"$color\" }"
-    fi
-done
-JSON_CATEGORIES="$JSON_CATEGORIES
-  ]"
-
 # 获取最近更新的文档（从 git 日志）
 RECENT_UPDATES=""
 JSON_RECENT="["
@@ -121,19 +84,6 @@ JSON_RECENT="$JSON_RECENT
 cat > "$OUTPUT_FILE" << EOF
 # 📊 文档统计仪表板
 
-## 📈 总体统计
-
-| 指标 | 数值 |
-|------|------|
-| 📄 文档总数 | **${MD_COUNT}** 个 |
-| 📁 目录总数 | **${DIR_COUNT}** 个 |
-
-## 📂 分类统计
-
-| 分类 | 文档数量 |
-|------|----------|
-$(echo -e "$CATEGORY_STATS")
-
 ## 🕐 最近更新
 
 | 更新日期 | 文档 | 最后提交 |
@@ -165,9 +115,6 @@ EOF
 # 生成简化的 JSON 文件
 cat > "$JSON_FILE" << EOF
 {
-  "totalDocs": $MD_COUNT,
-  "totalDirs": $DIR_COUNT,
-  "categoryStats": $JSON_CATEGORIES,
   "recentUpdates": $JSON_RECENT
 }
 EOF

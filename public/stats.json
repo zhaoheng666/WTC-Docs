@@ -1,15 +1,4 @@
 {
-  "totalDocs": 16,
-  "totalDirs": 19,
-  "categoryStats": [
-    { "name": "关卡", "count": 1, "color": "#7c3aed" },
-    { "name": "活动", "count": 1, "color": "#ec4899" },
-    { "name": "native", "count": 1, "color": "#f59e0b" },
-    { "name": "协议", "count": 1, "color": "#10b981" },
-    { "name": "工具", "count": 2, "color": "#3b82f6" },
-    { "name": "其他", "count": 5, "color": "#6b7280" },
-    { "name": "故障排查", "count": 1, "color": "#ef4444" }
-  ],
   "recentUpdates": [
     { "date": "09-17", "file": "index", "path": "/活动/index.md", "message": "docs: 更新 index" },
     { "date": "09-17", "file": "README", "path": "/README.md", "message": "docs: 更新 README,统计仪表板 (含配置文件)" },
