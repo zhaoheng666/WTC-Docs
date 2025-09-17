@@ -5,9 +5,10 @@
   "private": true,
   "scripts": {
     "dev": "vitepress dev",
-    "build": "vitepress build",
+    "build": "bash .vitepress/scripts/collect-images.sh && vitepress build",
     "preview": "vitepress preview",
     "serve": "vitepress serve",
+    "collect-images": "bash .vitepress/scripts/collect-images.sh",
     "fix-rollup": "bash .vitepress/scripts/fix-rollup.sh",
     "test-build": "bash .vitepress/scripts/test-build.sh",
     "pre-commit": "bash .vitepress/scripts/pre-commit-check.sh"

@@ -28,7 +28,22 @@ if [ -n "$UNSTAGED" ]; then
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 fi
 
-# 2. 生成最新的统计数据
+# 2. 收集和整理图片资源
+echo -e "${CYAN}🖼️  收集图片资源...${NC}"
+if [ -f ".vitepress/scripts/collect-images.sh" ]; then
+    if bash .vitepress/scripts/collect-images.sh > /tmp/collect-images.log 2>&1; then
+        echo -e "${GREEN}  ✓ 图片已收集到 public/images${NC}"
+        # 添加收集后的图片和更新的 MD 文件
+        git add public/images/ 2>/dev/null
+        git add "*.md" 2>/dev/null
+    else
+        echo -e "${YELLOW}  ⚠️  图片收集失败${NC}"
+        cat /tmp/collect-images.log | grep -E "⚠️|❌" | head -3
+    fi
+    rm -f /tmp/collect-images.log
+fi
+
+# 3. 生成最新的统计数据
 echo -e "${CYAN}📊 更新统计数据...${NC}"
 if [ -f ".vitepress/scripts/generate-stats.sh" ]; then
     bash .vitepress/scripts/generate-stats.sh > /dev/null 2>&1
@@ -42,7 +57,7 @@ if [ -f ".vitepress/scripts/generate-stats.sh" ]; then
     fi
 fi
 
-# 3. 运行构建测试
+# 4. 运行构建测试
 echo -e "${CYAN}🔨 执行构建测试...${NC}"
 BUILD_LOG="/tmp/pre-commit-build.log"
 if npm run build > "$BUILD_LOG" 2>&1; then

@@ -36,3 +36,24 @@ lerna-debug.log*
 # Temporary files
 *.tmp
 *~
+
+# 明确不忽略图片目录（支持多种命名习惯）
+!**/image/
+!**/images/
+!**/assets/
+!**/img/
+!**/pics/
+!**/resources/
+!**/media/
+
+# 确保图片文件不被忽略
+!**/*.png
+!**/*.jpg
+!**/*.jpeg
+!**/*.gif
+!**/*.svg
+!**/*.webp
+
+# public 目录中的图片需要被提交
+!public/images/
+!public/images/**/*

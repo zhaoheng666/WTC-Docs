@@ -275,9 +275,9 @@
 
    `Command+Shift+P` ->  setting(打开设置) -> 扩展 -> Shortcut Menu Bar
 
-   ![image](assets/image-20250519161151-up71al6.png)
+   ![image](/images/其他/image-20250519161151-up71al6.png)
 
-   ![image](assets/image-20250519161527-653ggko.png)
+   ![image](/images/其他/image-20250519161527-653ggko.png)
 4. ‍
 
 ---
@@ -291,14 +291,14 @@
    ```
 2. 状态栏始终显示调试菜单：
 
-   ![image](assets/image-20250519173459-tde4u0z.png)
+   ![image](/images/其他/image-20250519173459-tde4u0z.png)
 
    ```json
    "debug.showInStatusBar": "always",
    ```
 3. 启动代码片段导航
 
-   ![image](assets/image-20250519173559-pvvbq14.png)
+   ![image](/images/其他/image-20250519173559-pvvbq14.png)
 
    ```json
    "editor.snippetSuggestions": "top"
@@ -314,18 +314,18 @@
 2. 安装依赖库：`npm install`
 3. 方式一：命令触发 Command+Shift+P -> task
 
-   ![image](assets/image-20250519162210-72srn82.png)
+   ![image](/images/其他/image-20250519162210-72srn82.png)
 4. 方式二：状态栏 -> 调试运行菜单
 
-   ![image](assets/image-20250519162419-jgubsu7.png)
+   ![image](/images/其他/image-20250519162419-jgubsu7.png)
 
-   ![image](assets/image-20250519162434-uyq90pa.png)
+   ![image](/images/其他/image-20250519162434-uyq90pa.png)
 5. 方式三：运行调试菜单
 
-   ![image](assets/image-20250519162527-cklcuu7.png)
+   ![image](/images/其他/image-20250519162527-cklcuu7.png)
 6. 方式四：插件按钮
 
-   ![image](assets/image-20250519162607-klfazdk.png)
+   ![image](/images/其他/image-20250519162607-klfazdk.png)
 7. 自定义插件按钮图标：
 
    - 目前工程中添加了 user action 1（热更），user action 2（CV），user action 3（DH），可以通过脚本替换生效：
@@ -337,6 +337,6 @@
 
    - 想自定义的话，可以自己做 svg 图，放到 `WorldTourCasino/.vscode/scripts/replace_shortcut-menu-bar_icons/icons`
 
-   ![image](assets/image-20250912115144-adr58ft.png)
+   ![image](/images/其他/image-20250912115144-adr58ft.png)
 
 ‍
