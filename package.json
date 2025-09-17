@@ -11,8 +11,8 @@
     "status": "bash .vitepress/scripts/status.sh"
   },
   "devDependencies": {
-    "vitepress": "^1.6.4",
-    "node-jq": "^6.0.1"
+    "jq-cli-wrapper": "^1.6.1",
+    "vitepress": "^1.6.4"
   },
   "repository": {
     "type": "git",

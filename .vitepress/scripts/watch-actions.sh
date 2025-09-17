@@ -26,15 +26,8 @@ else
         npm install > /dev/null 2>&1
     fi
     
-    # 使用 node-jq
-    if [ -f "node_modules/.bin/jq" ]; then
-        JQ_CMD="node_modules/.bin/jq"
-    else
-        echo -e "${RED}❌ 未找到 jq 工具${NC}"
-        echo -e "${YELLOW}请运行以下命令修复环境：${NC}"
-        echo -e "${CYAN}  npm run init${NC}"
-        exit 1
-    fi
+    # 使用 npx jq (jq-cli-wrapper)
+    JQ_CMD="npx jq"
 fi
 
 # 检查依赖

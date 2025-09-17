@@ -43,7 +43,7 @@ echo -e "${CYAN}🔍 检查 GitHub Actions 状态...${NC}"
 echo -e "${CYAN}仓库: $REPO_INFO${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-# 设置 jq 命令 - 优先使用系统 jq，回退到 node-jq
+# 设置 jq 命令 - 优先使用系统 jq，回退到 npx jq
 if command -v jq &> /dev/null; then
     JQ_CMD="jq"
 else
@@ -53,15 +53,8 @@ else
         npm install > /dev/null 2>&1
     fi
     
-    # 使用 node-jq
-    if [ -f "node_modules/.bin/jq" ]; then
-        JQ_CMD="node_modules/.bin/jq"
-    else
-        echo -e "${RED}❌ 未找到 jq 工具${NC}"
-        echo -e "${YELLOW}请运行以下命令修复环境：${NC}"
-        echo -e "${CYAN}  npm run init${NC}"
-        exit 1
-    fi
+    # 使用 npx jq (jq-cli-wrapper)
+    JQ_CMD="npx jq"
 fi
 
 # 获取最近的 workflow 运行状态
