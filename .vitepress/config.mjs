@@ -29,15 +29,33 @@ export default defineConfig({
       // 如果确实需要，可以安装额外的语言包
     ],
     // 代码块的默认语言
-    defaultHighlightLang: 'txt'
+    defaultHighlightLang: 'txt',
+    // 允许在 markdown 中使用 HTML
+    html: true,
+    // 配置图片处理
+    image: {
+      // 启用图片懒加载
+      lazyLoading: true
+    }
   },
+
+  // 配置 head 标签，添加 CSP 以允许远程图片
+  head: [
+    // 允许加载远程图片
+    [
+      'meta',
+      {
+        'http-equiv': 'Content-Security-Policy',
+        content: "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: http: data: blob:; img-src 'self' https: http: data: blob:;"
+      }
+    ]
+  ],
 
   // 主题配置
   themeConfig: {
     // 顶部导航栏
     nav: [
       { text: '首页', link: '/' },
-      { text: '成员', link: '/成员/' },
       { text: 'Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
       {
         text: '外部链接',

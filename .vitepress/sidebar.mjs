@@ -82,8 +82,7 @@ const ignoreList = [
   // 在下面添加需要忽略的文件或目录：
   '/其他/测试文档.md',
   'README.md',
-  '/隐藏/',
-  '/成员/'
+  '/隐藏/'
 ]
 
 // 检查文件或目录是否应该被忽略
@@ -213,12 +212,19 @@ export function generateSidebar() {
 
   // 将扫描到的内容按目录分组
   const directories = []
+  let memberDirectory = null
   const rootFiles = []
 
   rootItems.forEach(item => {
     if (item.items) {
-      // 是目录
-      directories.push(item)
+      // 检查是否是成员目录
+      if (item.text === '成员') {
+        // 单独处理成员目录
+        memberDirectory = item
+      } else {
+        // 其他目录
+        directories.push(item)
+      }
     } else if (item.link !== '/' && !item.link.startsWith('/index')) {
       // 是根目录下的文件（排除 index.md）
       rootFiles.push(item)
@@ -249,10 +255,18 @@ export function generateSidebar() {
     })
   }
 
-  // 合并手动和自动部分
+  // 准备成员部分（作为独立的 section）
+  const memberSection = memberDirectory ? [{
+    text: '团队成员',
+    collapsed: false,
+    items: memberDirectory.items || []
+  }] : []
+
+  // 合并手动、自动和成员部分
   return [
     ...manualSection,
-    ...autoSection
+    ...autoSection,
+    ...memberSection
   ]
 }
 

@@ -1,8 +1,9 @@
 # Q3`25-Slots-Jenkins 管道迁移+共享工程-程序
 
 ## Jenkins 管道迁移
+![618ce630e73691587.jpg](https://pic.616pic.com/photoone/00/00/15/618ce630e73691587.jpg!/fw/1120)
 
-![250813185616266.png](https://gitee.com/fegnze/pic/raw/master/2025-08/250813185616266_1755082576304.png)​
+![250813185616266.png](./assets/250813185616266.png)
 
 - #### Debug **管道迁移：**
 
@@ -12,21 +13,18 @@
   DoubleHit\_Debug\_Res2\_deploy (Exclusive)
   迁移到组内共享机器（机器性能有限，暂时只迁移 4 个）
 
-  **迁移后：** 
+  **迁移后：**
   各管道独占 workspace，互不影响、不排队、CV、DH 发版期间均可使用；
-
 - #### **新增管道：**
 
   DoubleHit\_Debug\_deploy (Exclusive)
   新增到组内共享机器，与原管道 DoubleHit\_Debug\_deploy 、DoubleHit\_Release\_deploy 互斥（排队）， CV 发版期间可用；
+- #### **`<u>`解决的问题`</u>`** **：**
 
-- #### **<u>解决的问题</u>**​ **：**
 
-  1. <u>疏解原打包机磁盘压力，减少故障率；（释放空间 100G+）</u>
-
-  2. ​<u>研发期版本可随时发布，不用再相互等，不用再等发完版；</u>
-
-  3. <u>CV 发版期间不再影响 DH 内容提测；</u>
+  1. `<u>`疏解原打包机磁盘压力，减少故障率；（释放空间 100G+）`</u>`
+  2. `<u>`研发期版本可随时发布，不用再相互等，不用再等发完版；`</u>`
+  3. `<u>`CV 发版期间不再影响 DH 内容提测；`</u>`
 
 ‍
 
@@ -36,19 +34,21 @@
 
   [https://ghoststudio.feishu.cn/file/Z7uSbh5kPo2CBuxbDgvcsbYWnDh?from=from_copylink](https://ghoststudio.feishu.cn/file/Z7uSbh5kPo2CBuxbDgvcsbYWnDh?from=from_copylink)
 
+
   <video controls="controls" src="https://ghoststudio.feishu.cn/file/Z7uSbh5kPo2CBuxbDgvcsbYWnDh" data-src="" style="width: 714px; height: 357px;"></video>
 
   [视频文本](#20250908113936-3zoychu)
 - #### 多人远程共享：
 
+
   1. 组内打包机部署完整的开发环境；
   2. 代码编辑器使用 TraeCN，添加更友好的操作辅助按钮；
   3. 不建议直接在共享机器提交改动；
+- #### `<u>`解决的问题`</u>`：
 
-- #### <u>解决的问题</u>：
 
-  1. <u>美术、动画产出无法及时预览，反复盲调、严重影响自身及上下游工作；</u>
-  2. <u>部分基础配置策划无法直接调试、预览，找程序现场调效率低；</u>
+  1. `<u>`美术、动画产出无法及时预览，反复盲调、严重影响自身及上下游工作；`</u>`
+  2. `<u>`部分基础配置策划无法直接调试、预览，找程序现场调效率低；`</u>`
 
 ‍
 
@@ -59,45 +59,41 @@
   10.10.31.23
   user：slots
   password: slots
+- ##### 2、工作目录：`/Users/slots/work`
 
-- ##### 2、工作目录：`/Users/slots/work`​
+  Jenkins 工作目录：`normal_builder`
 
-  Jenkins 工作目录：`normal_builder`​
+  第三方依赖：`Software`
 
-  第三方依赖：`Software`​
+  nginx 静态托管：`localResources`
 
-  nginx 静态托管：`localResources`​
-
-  Jenkins 美术工程：`WorldTourCasinoResource_builder`​
+  Jenkins 美术工程：`WorldTourCasinoResource_builder`
 
   **公共工程：（主要给美术、策划用）**
 
-  公共代码工程：`WorldTourCasino`​
+  公共代码工程：`WorldTourCasino`
 
-  公共美术工程：`WorldTourCasinoResource`​
+  公共美术工程：`WorldTourCasinoResource`
 - #### 3、Jenkins 管道迁移方案：
+
 
   - 拆分、同步工作目录到共享机，各管道配备专属工作目录；
   - 原打包机 Jenkins 命令改造为 ssh ，远程调用共享机本地脚本；
   - 共享机搭建 nginx 静态托管，作为新的内网站点使用，404 转发测试资源服；
-
 - #### 4、工具辅助：
 
   尽量配合抹平使用障碍，期望是美术、动画这边能尽可能的使用共享机做自测；
 
-  ![250814182608816.png](https://gitee.com/fegnze/pic/raw/master/2025-08/250814182608816_1755167168827.png)​
+  ![250814182608816.png](./assets/250814182608816.png)
+
 
   - 快速打开目录；
-
   - 一键打开 CCB 工程；
-
   - 一键打开指定关卡 CCB 工程；
-
   - 一切重置共享机的工作目录；
-
 - #### 5、安全设置：
 
-  ​`WorldTourCasino` `WorldTourCasinoResource` 启用 git pre-commit 钩子，共享机禁止提交；
+  `WorldTourCasino` `WorldTourCasinoResource` 启用 git pre-commit 钩子，共享机禁止提交；
 
 ‍
 
@@ -105,16 +101,16 @@
 
 - #### 1、连接：
 
-  ![250815101400710.png](https://gitee.com/fegnze/pic/raw/master/2025-08/250815101400710_1755224040767.png)![250815101809695.png](https://gitee.com/fegnze/pic/raw/master/2025-08/250815101809695_1755224289723.png)
+  ![250815101400710.png](./assets/250815101400710.png)![250815101809695.png](./assets/250815101809695.png)
   ![image](assets/image-20250815101945-hi1fu7h.png)
-  ![1755225233416.png](https://gitee.com/fegnze/pic/raw/master/2025-08/1755225233416_1755225233428.png)​
-
+  ![1755225233416.png](./assets/1755225233416.png)
 - #### 2、重置工作区：
 
-  ![250815142225985.png](https://gitee.com/fegnze/pic/raw/master/2025-08/250815142225985_1755238946001.png)​
+  ![250815142225985.png](./assets/250815142225985.png)
 
-  ![250815142655239.png](https://gitee.com/fegnze/pic/raw/master/2025-08/250815142655239_1755239215279.png)​
+  ![250815142655239.png](./assets/250815142655239.png)
 - #### 3、文件同步：
+
 
   - ##### 方式一：（推荐）
 
@@ -124,16 +120,17 @@
     本机-共享机之间文件拖拽；
 - #### 4、发布预览：
 
-  ![250815145923208.png](https://gitee.com/fegnze/pic/raw/master/2025-08/250815145923208_1755241163243.png)
-  ![250815150034172.png](https://gitee.com/fegnze/pic/raw/master/2025-08/250815150034172_1755241234193.png)​
+  ![250815145923208.png](./assets/250815145923208.png)
+  ![250815150034172.png](./assets/250815150034172.png)
 - #### 5、协作：
+
 
   - 检查共享机占用，使用时间冲突在群里自行协调；
 
-    ![250815145257593.png](https://gitee.com/fegnze/pic/raw/master/2025-08/250815145257593_1755240777626.png)​
+    ![250815145257593.png](./assets/250815145257593.png)
   - 共享机做了提交限制，任何人不允许在共享机直接提交；
 
-    ![250815145147150.png](https://gitee.com/fegnze/pic/raw/master/2025-08/250815145147150_1755240707194.png)​
+    ![250815145147150.png](./assets/250815145147150.png)
   - 在共享机做的改动及时同步走，其他人不对共享机上的改动丢失等情况负责；
   - 每次使用共享机时，先做“清理工作分支”操作；
 
@@ -141,7 +138,7 @@
 
 ‍
 
-#### <span id="20250908113936-3zoychu" style="display: none;"></span>视频文本
+#### `<span id="20250908113936-3zoychu" style="display: none;">`视频文本
 
 1、打开“启动台”，输入“屏幕”找到“屏幕共享”，点击打开；
 
