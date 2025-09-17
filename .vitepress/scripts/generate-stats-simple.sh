@@ -55,6 +55,59 @@ done
 JSON_CATEGORIES="$JSON_CATEGORIES
   ]"
 
+# 获取最近更新的文档（从 git 日志）
+RECENT_UPDATES=""
+JSON_RECENT="["
+first=true
+
+# 获取最近修改的 md 文件
+if git rev-parse --git-dir > /dev/null 2>&1; then
+    # 获取最近10个不同的文档更新
+    count=0
+    processed_files=""
+    
+    # 获取每个md文件的最后提交信息
+    for file in $(git ls-files "*.md" | grep -v "统计仪表板.md" | head -20); do
+        if [ -f "$file" ]; then
+            # 获取该文件的最后提交
+            last_info=$(git log -1 --format="%cd|%s" --date=format:"%m-%d" -- "$file" 2>/dev/null)
+            if [ -n "$last_info" ]; then
+                commit_date=$(echo "$last_info" | cut -d'|' -f1)
+                commit_msg=$(echo "$last_info" | cut -d'|' -f2 | cut -c1-30)
+                filename=$(basename "$file" .md)
+                
+                # 根据目录添加图标
+                icon=""
+                if [[ "$file" == "活动/"* ]]; then icon="📋 "
+                elif [[ "$file" == "关卡/"* ]]; then icon="🎮 "
+                elif [[ "$file" == "工具/"* ]]; then icon="🛠️ "
+                elif [[ "$file" == "协议/"* ]]; then icon="🔌 "
+                elif [[ "$file" == "native/"* ]]; then icon="🏙️ "
+                fi
+                
+                RECENT_UPDATES="${RECENT_UPDATES}| $commit_date | ${icon}[$filename](/$file) | $commit_msg |\n"
+                
+                if [ "$first" = true ]; then
+                    first=false
+                else
+                    JSON_RECENT="$JSON_RECENT,"
+                fi
+                
+                JSON_RECENT="$JSON_RECENT
+    { \"date\": \"$commit_date\", \"file\": \"$filename\", \"path\": \"/$file\", \"message\": \"$commit_msg\" }"
+                
+                count=$((count + 1))
+                if [ $count -ge 10 ]; then
+                    break
+                fi
+            fi
+        fi
+    done
+fi
+
+JSON_RECENT="$JSON_RECENT
+  ]"
+
 # 生成 Markdown 文件
 cat > "$OUTPUT_FILE" << EOF
 # 📊 文档统计仪表板
@@ -71,6 +124,12 @@ cat > "$OUTPUT_FILE" << EOF
 | 分类 | 文档数量 |
 |------|----------|
 $(echo -e "$CATEGORY_STATS")
+
+## 🕐 最近更新
+
+| 更新日期 | 文档 | 最后提交 |
+|----------|------|----------|
+$(echo -e "$RECENT_UPDATES")
 
 ## 📚 文档导航
 
@@ -99,7 +158,8 @@ cat > "$JSON_FILE" << EOF
 {
   "totalDocs": $MD_COUNT,
   "totalDirs": $DIR_COUNT,
-  "categoryStats": $JSON_CATEGORIES
+  "categoryStats": $JSON_CATEGORIES,
+  "recentUpdates": $JSON_RECENT
 }
 EOF
 
