@@ -1,9 +1,9 @@
 {
-  "updateTime": "2025-09-17 15:53:13",
+  "updateTime": "2025-09-17 16:00:30",
   "totalDocs": 16,
   "totalDirs": 19,
   "totalContributors": 1,
-  "totalCommits": 73,
+  "totalCommits": 74,
   "categoryStats": [
     { "name": "关卡", "count": 1, "color": "#7c3aed" },
     { "name": "活动", "count": 1, "color": "#ec4899" },
@@ -13,9 +13,9 @@
     { "name": "其他", "count": 5, "color": "#6b7280" }
   ],
   "recentDocs": [
+    { "time": "2025-09-17 16:00", "path": "/README.md", "title": "README" },
     { "time": "2025-09-17 15:53", "path": "/index.md", "title": "index" },
     { "time": "2025-09-17 14:46", "path": "/其他/隐藏/快速开始.md", "title": "快速开始" },
-    { "time": "2025-09-17 14:19", "path": "/README.md", "title": "README" },
     { "time": "2025-09-17 13:53", "path": "/SCRIPTS.md", "title": "SCRIPTS" },
     { "time": "2025-09-17 11:30", "path": "/native/index.md", "title": "index" },
     { "time": "2025-09-17 10:27", "path": "/活动/index.md", "title": "index" },
