@@ -8,7 +8,6 @@
     "build": "vitepress build",
     "preview": "vitepress preview",
     "serve": "vitepress serve",
-    "postinstall": "bash .vitepress/scripts/fix-rollup.sh 2>/dev/null || true",
     "fix-rollup": "bash .vitepress/scripts/fix-rollup.sh",
     "test-build": "bash .vitepress/scripts/test-build.sh",
     "pre-commit": "bash .vitepress/scripts/pre-commit-check.sh"
@@ -23,7 +22,6 @@
   "author": "",
   "license": "MIT",
   "optionalDependencies": {
-    "@rollup/rollup-darwin-arm64": "^4.50.2",
-    "@rollup/rollup-darwin-x64": "^4.50.2"
+    "@rollup/rollup-darwin-arm64": "4"
   }
 }
