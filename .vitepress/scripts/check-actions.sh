@@ -105,53 +105,94 @@ for run in data:
     echo ""
 done
 
-# 检查最近一次运行是否失败
-LATEST_CONCLUSION=$(echo "$RECENT_RUNS" | jq -r '.[0].conclusion')
-LATEST_STATUS=$(echo "$RECENT_RUNS" | jq -r '.[0].status')
-LATEST_NAME=$(echo "$RECENT_RUNS" | jq -r '.[0].name')
-LATEST_RUN_ID=$(echo "$RECENT_RUNS" | jq -r '.[0].databaseId')
+# 检查最近一次运行状态（使用 Python 解析避免 jq 依赖）
+LATEST_INFO=$(echo "$RECENT_RUNS" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+if data and len(data) > 0:
+    latest = data[0]
+    print(f\"{latest.get('status', 'unknown')}|{latest.get('conclusion', 'none')}|{latest.get('name', 'unknown')}|{latest.get('databaseId', 0)}\")
+else:
+    print('unknown|none|unknown|0')
+")
 
-# 如果最近的运行失败了，发送通知
-if [ "$LATEST_STATUS" = "completed" ] && [ "$LATEST_CONCLUSION" = "failure" ]; then
-    echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${RED}⚠️  最近的 Actions 运行失败了！${NC}"
-    echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    
-    # 获取失败的详细信息
-    echo -e "${CYAN}获取失败详情...${NC}"
-    FAILED_JOBS=$(gh run view "$LATEST_RUN_ID" --json jobs -q '.jobs[] | select(.conclusion == "failure") | .name' 2>/dev/null)
-    
-    if [ -n "$FAILED_JOBS" ]; then
-        echo -e "${YELLOW}失败的任务：${NC}"
-        echo "$FAILED_JOBS" | while read -r job; do
-            echo -e "  • $job"
-        done
-    fi
-    
-    # 如果在 macOS 上，发送系统通知
-    if [ "$(uname)" = "Darwin" ]; then
-        osascript -e "display notification \"$LATEST_NAME 运行失败\" with title \"GitHub Actions\" subtitle \"文档构建失败\" sound name \"Basso\""
+# 解析最新运行信息
+IFS='|' read -r LATEST_STATUS LATEST_CONCLUSION LATEST_NAME LATEST_RUN_ID <<< "$LATEST_INFO"
+
+# 根据状态发送相应通知
+if [ "$LATEST_STATUS" = "completed" ]; then
+    if [ "$LATEST_CONCLUSION" = "failure" ]; then
+        echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${RED}⚠️  最近的 Actions 运行失败了！${NC}"
+        echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
         
-        # 如果安装了 terminal-notifier，使用更好的通知
-        if command -v terminal-notifier &> /dev/null; then
-            terminal-notifier -title "GitHub Actions 失败" \
-                -subtitle "$LATEST_NAME" \
-                -message "点击查看详情" \
-                -open "https://github.com/$REPO_INFO/actions/runs/$LATEST_RUN_ID" \
-                -sound Basso \
-                -group "github-actions"
+        # 获取失败的详细信息
+        echo -e "${CYAN}获取失败详情...${NC}"
+        FAILED_JOBS=$(gh run view "$LATEST_RUN_ID" --json jobs -q '.jobs[] | select(.conclusion == "failure") | .name' 2>/dev/null)
+        
+        if [ -n "$FAILED_JOBS" ]; then
+            echo -e "${YELLOW}失败的任务：${NC}"
+            echo "$FAILED_JOBS" | while read -r job; do
+                echo -e "  • $job"
+            done
         fi
+        
+        # 如果在 macOS 上，发送系统通知
+        if [ "$(uname)" = "Darwin" ]; then
+            osascript -e "display notification \"$LATEST_NAME 运行失败\" with title \"GitHub Actions\" subtitle \"文档构建失败\" sound name \"Basso\""
+            
+            # 如果安装了 terminal-notifier，使用更好的通知
+            if command -v terminal-notifier &> /dev/null; then
+                terminal-notifier -title "GitHub Actions 失败" \
+                    -subtitle "$LATEST_NAME" \
+                    -message "点击查看详情" \
+                    -open "https://github.com/$REPO_INFO/actions/runs/$LATEST_RUN_ID" \
+                    -sound Basso \
+                    -group "github-actions"
+            fi
+        fi
+        
+        exit 1
+    elif [ "$LATEST_CONCLUSION" = "success" ]; then
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${GREEN}✅ 最近的 Actions 运行成功！${NC}"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        
+        # 成功通知（仅在 macOS 上）
+        if [ "$(uname)" = "Darwin" ]; then
+            osascript -e "display notification \"$LATEST_NAME 运行成功\" with title \"GitHub Actions\" subtitle \"文档构建成功\" sound name \"Glass\""
+            
+            # 如果安装了 terminal-notifier，使用更好的通知
+            if command -v terminal-notifier &> /dev/null; then
+                terminal-notifier -title "GitHub Actions 成功" \
+                    -subtitle "$LATEST_NAME" \
+                    -message "文档已成功部署" \
+                    -open "https://github.com/$REPO_INFO/actions/runs/$LATEST_RUN_ID" \
+                    -sound Glass \
+                    -group "github-actions"
+            fi
+        fi
+        
+        exit 0
+    else
+        echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${YELLOW}⏸ 最近的 Actions 运行状态：$LATEST_CONCLUSION${NC}"
+        echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        exit 0
     fi
-    
-    exit 1
 elif [ "$LATEST_STATUS" = "in_progress" ]; then
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${CYAN}🔄 Actions 正在运行中...${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     exit 0
+elif [ "$LATEST_STATUS" = "queued" ]; then
+    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${YELLOW}⏳ Actions 正在队列中等待...${NC}"
+    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    exit 0
 else
-    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${GREEN}✅ 所有 Actions 运行正常${NC}"
-    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${CYAN}📊 Actions 状态：$LATEST_STATUS${NC}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     exit 0
 fi
