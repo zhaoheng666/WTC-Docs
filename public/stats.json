@@ -1,9 +1,12 @@
 {
   "recentUpdates": [
-    { "date": "09-17", "file": "最近更新", "path": "/其他/隐藏/最近更新.md", "message": "docs: 更新 最近更新,Q2`25-Slots-Slot" },
-    { "date": "09-17", "file": "index", "path": "/index.md", "message": "fix: 替换不支持的语法高亮标记消除警告" },
-    { "date": "09-17", "file": "VSCode 编辑器前端开发环境", "path": "/其他/VSCode 编辑器前端开发环境.md", "message": "fix: 替换不支持的语法高亮标记消除警告" },
-    { "date": "09-17", "file": "最近更新", "path": "/其他/隐藏/最近更新.md", "message": "fix: 替换不支持的语法高亮标记消除警告" },
-    { "date": "09-17", "file": "index", "path": "/活动/index.md", "message": "docs: 更新 index" }
+    { "date": "09-17", "file": "IMAGE_HANDLING", "path": "/IMAGE_HANDLING.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
+    { "date": "09-17", "file": "README", "path": "/README.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
+    { "date": "09-17", "file": "SCRIPTS", "path": "/SCRIPTS.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
+    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
+    { "date": "09-17", "file": "VSCode 编辑器前端开发环境", "path": "/其他/VSCode 编辑器前端开发环境.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
+    { "date": "09-17", "file": "9 月程序会", "path": "/其他/工作记录/9 月程序会.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
+    { "date": "09-17", "file": "快速开始", "path": "/其他/隐藏/快速开始.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
+    { "date": "09-17", "file": "最近更新", "path": "/其他/隐藏/最近更新.md", "message": "docs: 更新 最近更新,Q2`25-Slots-Slot" }
   ]
 }

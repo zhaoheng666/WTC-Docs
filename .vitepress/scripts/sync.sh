@@ -72,21 +72,25 @@ if git diff --cached --quiet; then
     exit 0
 fi
 
-# 4. 执行构建测试
-echo -e "${CYAN}🔨 执行构建测试...${NC}"
-if bash .vitepress/scripts/build.sh > /tmp/sync-build.log 2>&1; then
-    echo -e "${GREEN}  ✓ 构建成功${NC}"
-else
-    echo -e "${RED}  ✗ 构建失败${NC}"
-    echo -e "${YELLOW}查看详细日志：cat /tmp/sync-build.log${NC}"
-    
-    # 询问是否继续
-    read -p "构建失败，是否仍要继续提交？(y/n) " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        echo -e "${YELLOW}已取消同步${NC}"
-        exit 1
+# 4. 执行构建测试（可选）
+if [ "$1" != "--skip-build" ]; then
+    echo -e "${CYAN}🔨 执行构建测试...${NC}"
+    if bash .vitepress/scripts/build.sh > /tmp/sync-build.log 2>&1; then
+        echo -e "${GREEN}  ✓ 构建成功${NC}"
+    else
+        echo -e "${RED}  ✗ 构建失败${NC}"
+        echo -e "${YELLOW}查看详细日志：cat /tmp/sync-build.log${NC}"
+        
+        # 询问是否继续
+        read -p "构建失败，是否仍要继续提交？(y/n) " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo -e "${YELLOW}已取消同步${NC}"
+            exit 1
+        fi
     fi
+else
+    echo -e "${YELLOW}  ⏭ 跳过构建测试（使用 --skip-build 参数）${NC}"
 fi
 
 # 5. 生成提交信息

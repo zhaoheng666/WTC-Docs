@@ -20,20 +20,27 @@ echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━�
 echo -e "${CYAN}🏗️  开始构建文档...${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-# 0. 处理图片引用和下载
+# 0. 处理图片引用和下载（仅当有 md 文件更改或包含图片时）
 if [ -f ".vitepress/scripts/image-processor.js" ]; then
-    echo -e "${CYAN}🖼️  处理图片引用...${NC}"
-    if node .vitepress/scripts/image-processor.js > /tmp/image-processor.log 2>&1; then
-        MODIFIED=$(grep "Files modified:" /tmp/image-processor.log | grep -o "[0-9]*" | tail -1)
-        if [ -n "$MODIFIED" ] && [ "$MODIFIED" -gt 0 ]; then
-            echo -e "${GREEN}  ✓ 处理了 $MODIFIED 个文件的图片引用${NC}"
+    # 检查是否有包含图片的 MD 文件更改
+    HAS_IMAGE_CHANGES=$(git diff --cached --name-only | grep "\.md$" | xargs grep -l "!\[.*\](" 2>/dev/null | head -1)
+    
+    if [ -n "$HAS_IMAGE_CHANGES" ]; then
+        echo -e "${CYAN}🖼️  处理图片引用...${NC}"
+        if node .vitepress/scripts/image-processor.js > /tmp/image-processor.log 2>&1; then
+            MODIFIED=$(grep "Files modified:" /tmp/image-processor.log | grep -o "[0-9]*" | tail -1)
+            if [ -n "$MODIFIED" ] && [ "$MODIFIED" -gt 0 ]; then
+                echo -e "${GREEN}  ✓ 处理了 $MODIFIED 个文件的图片引用${NC}"
+            else
+                echo -e "${GREEN}  ✓ 图片引用已是最新${NC}"
+            fi
         else
-            echo -e "${GREEN}  ✓ 图片引用已是最新${NC}"
+            echo -e "${YELLOW}  ⚠️  图片处理失败（继续构建）${NC}"
         fi
+        rm -f /tmp/image-processor.log
     else
-        echo -e "${YELLOW}  ⚠️  图片处理失败（继续构建）${NC}"
+        echo -e "${GREEN}  ✓ 跳过图片处理（无图片更改）${NC}"
     fi
-    rm -f /tmp/image-processor.log
 fi
 
 # 1. 确保符号链接存在（用于编辑器预览）
@@ -44,13 +51,20 @@ if [ ! -L "images" ] && [ -d "public/images" ]; then
     fi
 fi
 
-# 2. 生成统计数据
+# 2. 生成统计数据（仅当有文档更改时）
 if [ -f ".vitepress/scripts/generate-stats-simple.sh" ]; then
-    echo -e "${CYAN}📊 更新统计数据...${NC}"
-    if bash .vitepress/scripts/generate-stats-simple.sh > /dev/null 2>&1; then
-        echo -e "${GREEN}  ✓ 统计数据已更新${NC}"
+    # 检查是否有 MD 文件更改
+    MD_CHANGES=$(git diff --cached --name-only | grep "\.md$" | head -1)
+    
+    if [ -n "$MD_CHANGES" ]; then
+        echo -e "${CYAN}📊 更新统计数据...${NC}"
+        if bash .vitepress/scripts/generate-stats-simple.sh > /dev/null 2>&1; then
+            echo -e "${GREEN}  ✓ 统计数据已更新${NC}"
+        else
+            echo -e "${YELLOW}  ⚠️  统计更新失败（非关键）${NC}"
+        fi
     else
-        echo -e "${YELLOW}  ⚠️  统计更新失败（非关键）${NC}"
+        echo -e "${GREEN}  ✓ 跳过统计更新（无文档更改）${NC}"
     fi
 fi
 
