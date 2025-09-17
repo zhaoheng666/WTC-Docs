@@ -1,118 +1,133 @@
 # WorldTourCasino 文档中心
 
-## 🕐最近更新
+## 🚀 快速开始
 
-| 更新日期 | 文档                            | 最后提交                                  |
-| -------- | ------------------------------- | ----------------------------------------- |
-| 09-17    | 📋[index](/活动/index.md)          | docs: 更新 index                          |
-| 09-17    | [README](/README.md)               | docs: 更新 README,统计仪表板 (含配置文件) |
-| 09-17    | [index](/index.md)                 | docs: 更新 index,统计仪表板 (含配置文件)  |
-| 09-17    | [index](/index.md)                 | docs: 更新 index                          |
-| 09-17    | [index](/index.md)                 | docs: 更新文档 (新增        4, 修改       |
-| 09-17    | [index](/index.md)                 | docs: 更新文档 (新增        1, 修改       |
-| 09-17    | [index](/index.md)                 | docs: 更新文档 (新增        1, 修改       |
-| 09-17    | [index](/index.md)                 | fix: 修复图片路径并改进同步脚本显示       |
-| 09-17    | [index](/index.md)                 | docs: 更新文档 (新增        3, 修改       |
-| 09-17    | [快速开始](/其他/隐藏/快速开始.md) | docs: 更新文档 (新增        3, 修改       |
+```bash
+npm run init    # 初始化环境（首次使用）
+npm run dev     # 启动开发服务器
+npm run sync    # 一键同步文档
+```
 
-## 🚀 快速访问
+访问 http://localhost:5173 查看文档
+
+## 📚 在线访问
 
 - **在线文档**：https://zhaoheng666.github.io/WTC-Docs/
-- **技术实现**：[查看技术实现文档](/README)
+- **GitHub 仓库**：https://github.com/zhaoheng666/WTC-Docs
+- **查看进度**：[GitHub Actions](https://github.com/zhaoheng666/WTC-Docs/actions)
 
-## 🔍 文档搜索
+## ✨ 核心功能
 
-### 快捷键
+### 🔍 智能搜索
+- **快捷键**：`Cmd/Ctrl + K`
+- **中文优化**：专业分词算法
+- **模糊匹配**：支持拼写容错
+- **实时预览**：输入即显示结果
 
-- **Mac**：`Cmd + K`
-- **Windows/Linux**：`Ctrl + K`
+### 📸 图片自动处理
+- **直接插入**：无需特殊操作
+- **自动下载**：外部图片本地化
+- **统一管理**：集中存储到 assets
+- **防盗链解决**：Gitee 图片自动处理
 
-### 搜索功能
+### 🔄 一键同步
+```bash
+npm run sync    # 自动完成所有操作
+```
+- ✅ 处理所有图片
+- ✅ 构建测试
+- ✅ 智能提交
+- ✅ 推送部署
+- ✅ 监控状态
+- ✅ 完成通知
 
-- **全文索引**：搜索文档标题、各级标题和正文内容
-- **权重优化**：标题匹配优先级高于正文
-- **模糊搜索**：支持拼写容错（fuzzy: 0.2）
-- **前缀匹配**：输入部分文字即可匹配
-- **实时预览**：输入即显示搜索结果
-- **中英混合**：支持中英文混合搜索
+## 📝 编写文档
 
-## 🔄 同步机制
+### 创建文档
+1. 在相应目录创建 `.md` 文件
+2. 使用标准 Markdown 语法
+3. 直接插入图片，无需管理路径
 
-### 本地同步
+### 目录结构
+```
+docs/
+├── 成员/           # 成员相关
+├── 工具/           # 工具使用
+├── 故障排查/       # 问题解决
+├── 关卡/           # 游戏关卡
+├── 活动/           # 活动相关
+├── 其他/           # 其他文档
+└── 协议/           # 协议文档
+```
 
-通过 Git Hooks 自动同步：
+### 插入图片示例
+```markdown
+![本地图片](./images/screenshot.png)
+![Gitee图片](https://gitee.com/xxx/xxx.png)
+![外部图片](https://example.com/image.jpg)
+```
 
-- **文档仓库**：https://github.com/zhaoheng666/WTC-Docs
-- **自动同步**：主项目 pull/checkout 时触发
-- **手动更新**：`cd docs && git pull`
-
-运行文档更新任务：
-
-* **launch**：【文档】同步
-* **task**：sync-docs
-
-### GitHub Pages 自动部署
-
-- **触发方式**：推送到 main 分支自动部署
-- **部署耗时**：约 40 秒（Build 18s + Deploy 10s）
-- **访问地址**：https://zhaoheng666.github.io/WTC-Docs/
-- **查看进度**：[Actions](https://github.com/zhaoheng666/WTC-Docs/actions)
-
-### Google Drive 上传工具
-
-- 一键上传文档到 Google Drive，Markdown 文件自动转 PDF 后上传。[查看手册](/工具/vscode/google-drive-upload)
-
-## 📝 文档管理
-
-### 新增、删除分类目录
-
-1. 在 docs 目录下增、删目录；
-2. 自动映射到侧边栏；
-3. 支持目录多级嵌套；
-4. 建议子目录创建自己的 index.md;空目录侧边栏不显示、无法提交 git,另外
-5. 及时提交、推送；
-
-### 新增、删除文档
-
-1. 在相应目录创建 `.md` 文件；
-2. 仅支持 md 文件，其他文件类型自动忽略显示；
-3. 自动映射到侧边栏；
-4. 及时提交、推送；
-
-### 文档规范
-
-- **命名**：中文或英文小写，避免特殊字符，推荐使用-连接符（区分于主项目命名风格 [查看详情](/工具/vscode/vscode环境工具开发规范)）
-- **格式**：标准 Markdown 语法过于复杂的进阶 md 语法需要额外增加插件支持；
-- **软换行**：使用反斜杠
-- **提交**：文档提交日志使用 `docs:` 前缀
+## 🛠 高级功能
 
 ### 侧边栏配置
+通过 `.vitepress/sidebar.mjs` 控制：
+- **目录排序**：`directoryOrder` 配置
+- **忽略文件**：`ignoreList` 设置
+- **名称映射**：`specialCases` 定义
 
-通过 `.vitepress/sidebar.mjs` 控制：[查看手册](README)；
+### Google Drive 集成
+一键上传文档，Markdown 自动转 PDF
+[查看详情](/工具/vscode/google-drive-upload)
 
-- **目录排序**：`directoryOrder` 配置显示顺序
-- **忽略文件**：`ignoreList` 屏蔽特定文件
-- **名称映射**：`specialCases` 定义友好名称
+### 文档规范
+- **命名**：中文或英文，避免特殊字符
+- **格式**：标准 Markdown 语法
+- **提交**：使用 `docs:` 前缀
 
-### 图床
+## 💡 使用技巧
 
-- 无需额外图床，截图、图片直接按引用路径存放即可
-- 不同 MD 编辑器、插件生成的图片目录有差异，assets、images等
-- 提交同步时，会自动收集图片到 images/ 并修正文档引用
-- 不支持远程图片
-
-### markdown 编辑器
-
-- 推荐使用 vscode 插件：
-  ![1758077097119](./images/root/1758077097119.png)
-- 其他 vscode 插件：按个人习惯自行选择；
-- 第三方专用 markdown 编辑器：
-  不推荐，需手动拷贝文档、引用资源到 docs 目录
-
-## ⚠️ 注意事项
-
-- 文档内容修改会自动热更新
+### 开发模式
+- 文档修改自动热更新
 - 新增/删除文档需重启服务
-- VS Code 中找到 docs-server 任务，按 `h` 然后 `r` 可重启服务
+- VS Code 中按 `h` 然后 `r` 重启
 
-  ![1758091570595](./images/root/1758091570595.png)
+### 常用命令
+| 命令 | 说明 | 场景 |
+|------|------|------|
+| `npm run init` | 初始化环境 | 首次使用/修复问题 |
+| `npm run dev` | 开发模式 | 编写文档 |
+| `npm run build` | 构建测试 | 验证文档 |
+| `npm run sync` | 一键同步 | 提交部署 |
+
+## 🆘 常见问题
+
+### 环境问题？
+```bash
+npm run init    # 一键修复
+```
+
+### 图片不显示？
+- 开发模式会自动处理
+- 运行 `npm run sync` 确保处理
+
+### 构建失败？
+```bash
+npm run build   # 查看具体错误
+```
+
+## 📊 项目状态
+
+- **文档数量**：查看 public/stats.json
+- **部署状态**：[GitHub Actions](https://github.com/zhaoheng666/WTC-Docs/actions)
+- **在线地址**：https://zhaoheng666.github.io/WTC-Docs/
+
+## 📄 更多文档
+
+- [脚本使用说明](./SCRIPTS.md)
+- [图片处理系统](./IMAGE_HANDLING.md)
+- [技术实现文档](./README.md)
+- [开发环境配置](/其他/VSCode 编辑器前端开发环境.md)
+
+---
+
+> 💡 **提示**：使用 `npm run sync` 一键完成所有操作，无需记住复杂命令！

@@ -38,9 +38,7 @@ jobs:
         run: npm ci
       
       - name: Build with VitePress
-        run: |
-          # 直接构建，不需要收集图片和生成统计（已在本地完成）
-          npx vitepress build
+        run: bash .vitepress/scripts/build-ci.sh
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

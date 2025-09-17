@@ -3,8 +3,6 @@
 > 目的：更方便的使用 AI，提升 AI - 开发工程的融合程度，为以后项目“强 AI 辅助”打基础；
 >
 > 可以基于项目共享 AI context、rules、mcp 配置等；
->
-> 12312312321
 
 ---
 
@@ -275,9 +273,9 @@
 
    `Command+Shift+P` ->  setting(打开设置) -> 扩展 -> Shortcut Menu Bar
 
-   ![image](../images/其他/image-20250519161151-up71al6.png)
+   ![image](http://localhost:5173/WTC-Docs/assets/1758120878187_1ab5ac61.png)
 
-   ![image](../images/其他/image-20250519161527-653ggko.png)
+   ![image](http://localhost:5173/WTC-Docs/assets/1758120878188_03ba2518.png)
 4. ‍
 
 ---
@@ -291,14 +289,14 @@
    ```
 2. 状态栏始终显示调试菜单：
 
-   ![image](../images/其他/image-20250519173459-tde4u0z.png)
+   ![image](http://localhost:5173/WTC-Docs/assets/1758120878188_cb1dde1a.png)
 
    ```json
    "debug.showInStatusBar": "always",
    ```
 3. 启动代码片段导航
 
-   ![image](../images/其他/image-20250519173559-pvvbq14.png)
+   ![image](http://localhost:5173/WTC-Docs/assets/1758120878189_81050d0c.png)
 
    ```json
    "editor.snippetSuggestions": "top"
@@ -314,18 +312,18 @@
 2. 安装依赖库：`npm install`
 3. 方式一：命令触发 Command+Shift+P -> task
 
-   ![image](../images/其他/image-20250519162210-72srn82.png)
+   ![image](http://localhost:5173/WTC-Docs/assets/1758120878189_ef821822.png)
 4. 方式二：状态栏 -> 调试运行菜单
 
-   ![image](../images/其他/image-20250519162419-jgubsu7.png)
+   ![image](http://localhost:5173/WTC-Docs/assets/1758120878189_afdab9c2.png)
 
-   ![image](../images/其他/image-20250519162434-uyq90pa.png)
+   ![image](http://localhost:5173/WTC-Docs/assets/1758120878190_ff48aaca.png)
 5. 方式三：运行调试菜单
 
-   ![image](../images/其他/image-20250519162527-cklcuu7.png)
+   ![image](http://localhost:5173/WTC-Docs/assets/1758120878190_cf81f112.png)
 6. 方式四：插件按钮
 
-   ![image](../images/其他/image-20250519162607-klfazdk.png)
+   ![image](http://localhost:5173/WTC-Docs/assets/1758120878191_00a49c99.png)
 7. 自定义插件按钮图标：
 
    - 目前工程中添加了 user action 1（热更），user action 2（CV），user action 3（DH），可以通过脚本替换生效：
@@ -337,6 +335,6 @@
 
    - 想自定义的话，可以自己做 svg 图，放到 `WorldTourCasino/.vscode/scripts/replace_shortcut-menu-bar_icons/icons`
 
-   ![image](../images/其他/image-20250912115144-adr58ft.png)
+   ![image](http://localhost:5173/WTC-Docs/assets/1758120878191_70957f85.png)
 
 ‍

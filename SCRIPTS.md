@@ -3,128 +3,119 @@
 ## 🚀 快速开始
 
 ```bash
-# 首次使用或环境有问题时
-npm run init
+# 首次使用
+npm run init    # 初始化环境
 
-# 启动开发服务器
-npm run dev
-
-# 同步文档到远程
-npm run sync
+# 日常使用
+npm run dev     # 启动开发服务器
+npm run sync    # 一键同步到远程
 ```
 
-## 📝 核心命令
+## 📝 核心命令（仅需这些）
 
 | 命令 | 说明 | 使用场景 |
 |------|------|----------|
-| `npm run init` | 环境初始化和修复 | 首次使用或环境有问题时 |
-| `npm run dev` | 启动开发服务器 | 日常文档编写 |
-| `npm run build` | 构建生产版本 | 需要构建静态文件时 |
-| `npm run sync` | 同步文档到远程 | 提交并推送文档更新 |
-| `npm run status` | 检查仓库状态 | 主项目调用，检查文档状态 |
+| `npm run init` | 初始化环境 | 首次使用或修复环境问题 |
+| `npm run dev` | 启动开发服务器 | 日常文档编写和预览 |
+| `npm run sync` | 一键同步 | 自动构建、提交、推送、监控部署 |
+| `npm run build` | 本地构建 | 测试构建是否成功 |
+| `npm run status` | 检查状态 | 查看文档仓库状态 |
 
-## 🔧 其他可用功能
+## 💡 日常工作流
 
-以下功能可通过直接运行脚本或命令来使用：
-
-### 预览和清理
+### 1. 首次设置
 ```bash
-npx vitepress preview                    # 预览构建结果
-rm -rf .vitepress/dist .vitepress/cache  # 清理缓存
+npm run init    # 配置环境（安装依赖、配置 Git 等）
+npm run dev     # 启动开发服务器
 ```
 
-### GitHub Actions 监控
+### 2. 编写文档
 ```bash
-bash .vitepress/scripts/check-actions.sh    # 检查 Actions 状态
-bash .vitepress/scripts/watch-actions.sh    # 持续监控 Actions
+npm run dev     # 启动开发服务器，访问 http://localhost:5173
+# 编写 Markdown 文档，实时预览
+# 插入图片无需特殊处理，构建时自动优化
 ```
 
-### Git 操作
+### 3. 提交更新
 ```bash
-git pull origin $(git branch --show-current)  # 拉取当前分支
-git push origin $(git branch --show-current)  # 推送当前分支
+npm run sync    # 一键完成所有操作
+# ✅ 自动处理图片（下载外部图片、统一管理）
+# ✅ 自动构建测试
+# ✅ 自动生成提交信息
+# ✅ 自动推送到远程
+# ✅ 自动监控 GitHub Actions 部署
+# ✅ 部署完成后发送通知
 ```
 
-### 修复工具
-```bash
-bash .vitepress/scripts/fix-rollup.sh        # 修复 Mac ARM64 Rollup 问题
-```
+## 🎯 功能特性
 
-## 🔧 脚本文件说明
+### 图片自动处理
+- **无需手动管理**：直接在 Markdown 中插入图片
+- **支持多种来源**：本地图片、Gitee 图片、其他外部链接
+- **自动优化**：
+  - 下载外部图片到本地（解决防盗链问题）
+  - 统一存储到 `public/assets/` 目录
+  - 生成唯一 ID 避免冲突
+  - 自动更新 Markdown 中的引用
 
-所有脚本文件位于 `.vitepress/scripts/` 目录：
-
-### 核心脚本
-
-- **`init.sh`** - 环境初始化和修复
-  - 检查并安装 Node.js 依赖
-  - 配置 GitHub CLI
-  - 设置 Git 中文路径支持
-  - 支持 `--silent` 和 `--fix` 参数
-
-- **`build.sh`** - 完整构建流程
-  - 增量收集图片资源
-  - 生成统计数据
-  - 执行 VitePress 构建
-  - 自动处理构建错误
-
-- **`sync.sh`** - 文档同步流程
-  - 暂存本地更改
-  - 执行构建测试
-  - 自动生成提交信息
-  - 使用 rebase 保持线性历史
-  - 推送到远程仓库
-
-- **`status.sh`** - 状态检查
-  - 自动 stash 本地更改
-  - 拉取远程更新
-  - 恢复本地更改
-  - 供主项目调用
-
-### 辅助脚本
-
-- **`collect-images-incremental.sh`** - 增量图片收集
-- **`collect-images.sh`** - 全量图片收集
-- **`generate-stats.sh`** - 统计数据生成
-- **`check-actions.sh`** - GitHub Actions 状态检查
-- **`watch-actions.sh`** - GitHub Actions 持续监控
-- **`fix-rollup.sh`** - Rollup ARM64 修复
-
-## 💡 使用建议
-
-### 日常工作流程
-
-1. **首次设置**
-   ```bash
-   npm run init  # 配置环境
-   npm run dev   # 启动开发
-   ```
-
-2. **提交更新**
-   ```bash
-   npm run sync  # 自动构建、提交、推送
-   ```
-
-3. **遇到问题**
-   ```bash
-   npm run init  # 修复环境问题
-   ```
+### 智能同步
+- **构建测试**：推送前自动测试构建
+- **智能提交**：根据更改内容生成提交信息
+- **冲突处理**：自动使用 rebase 保持线性历史
+- **部署监控**：推送后自动监控 GitHub Actions
+- **结果通知**：部署成功或失败时发送系统通知
 
 ### 环境修复
-
-`npm run init` 可以解决大多数环境问题：
-- 缺少依赖包
+`npm run init` 可以解决：
+- Node.js 依赖缺失
 - GitHub CLI 未配置
-- Git 配置问题
+- Git 中文路径问题
 - 脚本权限问题
 
-支持参数：
-- `npm run init -- --silent` - 静默模式
-- `npm run init -- --fix` - 自动修复模式
+## 📁 项目结构
+
+```
+docs/
+├── .vitepress/
+│   ├── config.mjs          # VitePress 配置
+│   └── scripts/            # 自动化脚本
+│       ├── build.sh        # 本地构建
+│       ├── build-ci.sh     # CI 构建
+│       ├── sync.sh         # 同步脚本
+│       ├── init.sh         # 初始化脚本
+│       └── ...
+├── public/
+│   └── assets/            # 统一的图片存储
+├── 各种文档目录/
+└── package.json           # 项目配置
+```
 
 ## ⚠️ 注意事项
 
-1. **精简原则**：npm scripts 只保留必要命令，避免冗余
-2. **主项目集成**：`status` 和 `sync` 是主项目调用的接口
-3. **环境问题**：任何环境问题都可以通过 `npm run init` 解决
-4. **自动化**：`sync` 包含完整的构建和提交流程，无需手动操作
+1. **保持简洁**：只使用 npm 命令，避免直接调用脚本
+2. **图片处理**：无需手动处理，`sync` 会自动优化
+3. **提交前测试**：`sync` 包含构建测试，确保质量
+4. **网络问题**：如果部署监控超时，可手动查看 GitHub Actions
+
+## 🆘 常见问题
+
+### 环境问题
+```bash
+npm run init    # 一键修复大部分环境问题
+```
+
+### 构建失败
+```bash
+npm run build   # 本地测试构建，查看具体错误
+```
+
+### 图片显示问题
+- 开发模式：图片会自动创建符号链接用于预览
+- 生产构建：图片会被处理并更新引用
+- 无需手动干预，系统自动处理
+
+## 📞 需要帮助？
+
+- 查看构建日志：`cat /tmp/vitepress-build.log`
+- 查看同步日志：`cat /tmp/sync-build.log`
+- GitHub Actions：访问仓库的 Actions 页面查看部署详情

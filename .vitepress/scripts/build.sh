@@ -20,23 +20,23 @@ echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━�
 echo -e "${CYAN}🏗️  开始构建文档...${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-# 1. 增量收集图片资源
-if [ -f ".vitepress/scripts/collect-images-incremental.sh" ]; then
-    echo -e "${CYAN}🖼️  收集图片资源...${NC}"
-    if bash .vitepress/scripts/collect-images-incremental.sh > /tmp/collect-images.log 2>&1; then
-        COLLECTED=$(grep "收集了" /tmp/collect-images.log | grep -o "[0-9]*" | head -1)
-        if [ -n "$COLLECTED" ] && [ "$COLLECTED" -gt 0 ]; then
-            echo -e "${GREEN}  ✓ 收集了 $COLLECTED 个新图片${NC}"
+# 0. 处理图片引用和下载
+if [ -f ".vitepress/scripts/image-processor.js" ]; then
+    echo -e "${CYAN}🖼️  处理图片引用...${NC}"
+    if node .vitepress/scripts/image-processor.js > /tmp/image-processor.log 2>&1; then
+        MODIFIED=$(grep "Files modified:" /tmp/image-processor.log | grep -o "[0-9]*" | tail -1)
+        if [ -n "$MODIFIED" ] && [ "$MODIFIED" -gt 0 ]; then
+            echo -e "${GREEN}  ✓ 处理了 $MODIFIED 个文件的图片引用${NC}"
         else
-            echo -e "${GREEN}  ✓ 图片资源已是最新${NC}"
+            echo -e "${GREEN}  ✓ 图片引用已是最新${NC}"
         fi
     else
-        echo -e "${YELLOW}  ⚠️  图片收集失败（继续构建）${NC}"
+        echo -e "${YELLOW}  ⚠️  图片处理失败（继续构建）${NC}"
     fi
-    rm -f /tmp/collect-images.log
+    rm -f /tmp/image-processor.log
 fi
 
-# 1.5 确保符号链接存在（用于编辑器预览）
+# 1. 确保符号链接存在（用于编辑器预览）
 if [ ! -L "images" ] && [ -d "public/images" ]; then
     ln -s public/images images 2>/dev/null
     if [ $? -eq 0 ]; then
@@ -44,14 +44,10 @@ if [ ! -L "images" ] && [ -d "public/images" ]; then
     fi
 fi
 
-# 2. 生成统计数据（优先使用简化版）
+# 2. 生成统计数据
 if [ -f ".vitepress/scripts/generate-stats-simple.sh" ]; then
-    echo -e "${CYAN}📊 更新统计数据（简化版）...${NC}"
-    bash .vitepress/scripts/generate-stats-simple.sh > /dev/null 2>&1
-    echo -e "${GREEN}  ✓ 统计数据已生成${NC}"
-elif [ -f ".vitepress/scripts/generate-stats.sh" ]; then
     echo -e "${CYAN}📊 更新统计数据...${NC}"
-    if bash .vitepress/scripts/generate-stats.sh > /dev/null 2>&1; then
+    if bash .vitepress/scripts/generate-stats-simple.sh > /dev/null 2>&1; then
         echo -e "${GREEN}  ✓ 统计数据已更新${NC}"
     else
         echo -e "${YELLOW}  ⚠️  统计更新失败（非关键）${NC}"
@@ -61,6 +57,9 @@ fi
 # 3. 执行构建
 echo -e "${CYAN}🔨 执行 VitePress 构建...${NC}"
 BUILD_LOG="/tmp/vitepress-build.log"
+
+# 本地构建使用本地 URL
+export VITE_BASE_URL="http://localhost:5173/WTC-Docs"
 
 if npx vitepress build > "$BUILD_LOG" 2>&1; then
     echo -e "${GREEN}  ✓ 构建成功${NC}"
