@@ -1,17 +1,22 @@
 #!/bin/bash
 
 # 文档统计数据生成脚本
+# 只在内容实际变化时才更新，避免不必要的 git 变更
 
 # 获取脚本所在目录的上上级目录（docs目录）
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOCS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 OUTPUT_FILE="$DOCS_DIR/统计仪表板.md"
+JSON_FILE="$DOCS_DIR/public/stats.json"
+TEMP_FILE="/tmp/stats_temp_$$.md"
+TEMP_JSON="/tmp/stats_temp_$$.json"
 
 cd "$DOCS_DIR" || exit 1
 
 # 颜色定义
 GREEN='\033[0;32m'
 CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
 NC='\033[0m'
 
 echo -e "${CYAN}正在生成文档统计数据...${NC}"
@@ -23,18 +28,57 @@ CURRENT_TIME=$(date '+%Y-%m-%d %H:%M:%S')
 MD_COUNT=$(find . -name "*.md" -type f | grep -v node_modules | grep -v ".vitepress" | wc -l | tr -d ' ')
 DIR_COUNT=$(find . -type d | grep -v node_modules | grep -v ".vitepress" | grep -v ".git" | wc -l | tr -d ' ')
 
+# 获取 git 统计（如果可用）
+CONTRIBUTORS=0
+COMMITS=0
+if git rev-parse --git-dir > /dev/null 2>&1; then
+    CONTRIBUTORS=$(git log --format='%aN' | sort -u | wc -l | tr -d ' ')
+    COMMITS=$(git rev-list --count HEAD 2>/dev/null || echo "0")
+fi
+
 # 统计各目录文档数量
 CATEGORY_STATS=""
+JSON_CATEGORIES="["
+first=true
 for dir in 关卡 活动 native 协议 工具 其他; do
     if [ -d "$dir" ]; then
         count=$(find "$dir" -name "*.md" -type f | wc -l | tr -d ' ')
         CATEGORY_STATS="$CATEGORY_STATS| $dir | $count |\n"
+        
+        # 为目录分配颜色
+        case $dir in
+            关卡) color="#7c3aed" ;;
+            活动) color="#ec4899" ;;
+            native) color="#f59e0b" ;;
+            协议) color="#10b981" ;;
+            工具) color="#3b82f6" ;;
+            其他) color="#6b7280" ;;
+            *) color="#9ca3af" ;;
+        esac
+        
+        # 首字母大写处理
+        display_name=$dir
+        if [ "$dir" = "native" ]; then
+            display_name="Native"
+        fi
+        
+        if [ "$first" = true ]; then
+            first=false
+        else
+            JSON_CATEGORIES="$JSON_CATEGORIES,"
+        fi
+        JSON_CATEGORIES="$JSON_CATEGORIES
+    { \"name\": \"$display_name\", \"count\": $count, \"color\": \"$color\" }"
     fi
 done
+JSON_CATEGORIES="$JSON_CATEGORIES
+  ]"
 
 # 获取最近更新的文档（最近10个）
 RECENT_LIST=""
-for file in $(find . -name "*.md" -type f | grep -v node_modules | grep -v ".vitepress" | xargs ls -t | head -10); do
+JSON_RECENT="["
+first=true
+for file in $(find . -name "*.md" -type f | grep -v node_modules | grep -v ".vitepress" | grep -v "统计仪表板.md" | xargs ls -t 2>/dev/null | head -10); do
     # 获取相对路径
     file_path=$(echo "$file" | sed 's|^\./||')
     # 获取修改时间 - macOS 兼容
@@ -47,123 +91,210 @@ for file in $(find . -name "*.md" -type f | grep -v node_modules | grep -v ".vit
     link_path="/$file_path"
     title=$(basename "$file_path" .md)
     RECENT_LIST="$RECENT_LIST| $mod_time | [$title]($link_path) |\n"
-done
-
-# 获取 Git 贡献者统计
-if [ -d .git ]; then
-    # 获取贡献者和提交数
-    CONTRIBUTORS=$(git shortlog -sn --all --no-merges | head -10)
-    CONTRIB_LIST=""
-    TOTAL_COMMITS=0
-    while IFS= read -r line; do
-        commits=$(echo "$line" | awk '{print $1}')
-        author=$(echo "$line" | sed 's/^[[:space:]]*[0-9]*[[:space:]]*//')
-        TOTAL_COMMITS=$((TOTAL_COMMITS + commits))
-        CONTRIB_LIST="$CONTRIB_LIST| $author | $commits |\n"
-    done <<< "$CONTRIBUTORS"
     
-    # 计算百分比
-    CONTRIB_LIST_WITH_PERCENT=""
+    if [ "$first" = true ]; then
+        first=false
+    else
+        JSON_RECENT="$JSON_RECENT,"
+    fi
+    JSON_RECENT="$JSON_RECENT
+    { \"time\": \"$mod_time\", \"path\": \"$link_path\", \"title\": \"$title\" }"
+done
+JSON_RECENT="$JSON_RECENT
+  ]"
+
+# 获取贡献者统计
+CONTRIBUTOR_LIST=""
+if git rev-parse --git-dir > /dev/null 2>&1; then
+    # 获取每个贡献者的提交数
     while IFS= read -r line; do
-        commits=$(echo "$line" | awk '{print $1}')
-        author=$(echo "$line" | sed 's/^[[:space:]]*[0-9]*[[:space:]]*//')
-        if [ "$TOTAL_COMMITS" -gt 0 ]; then
-            percent=$(echo "scale=1; $commits * 100 / $TOTAL_COMMITS" | bc)
-            bar_length=$(echo "scale=0; $percent / 5" | bc)
-            bar=$(printf '█%.0s' $(seq 1 $bar_length))
-            CONTRIB_LIST_WITH_PERCENT="$CONTRIB_LIST_WITH_PERCENT| $author | $commits | ${bar} ${percent}% |\n"
+        count=$(echo "$line" | awk '{print $1}')
+        author=$(echo "$line" | cut -d' ' -f2-)
+        # 计算百分比
+        if [ "$COMMITS" -gt 0 ]; then
+            percentage=$(awk "BEGIN {printf \"%.1f\", $count * 100 / $COMMITS}")
+        else
+            percentage="0.0"
         fi
-    done <<< "$CONTRIBUTORS"
+        # 生成进度条（每5%一个块，最多20个块）
+        bar_count=$(awk "BEGIN {printf \"%.0f\", $percentage / 5}")
+        bar=$(printf '█%.0s' $(seq 1 $bar_count 2>/dev/null))
+        
+        CONTRIBUTOR_LIST="$CONTRIBUTOR_LIST| $author | $count | $bar $percentage% |\n"
+    done < <(git shortlog -sn --all | head -10)
 fi
 
-# 获取最近7天的提交活跃度
-ACTIVITY_LAST_7_DAYS=""
+# 获取最近7天活跃度
+ACTIVITY_LIST=""
 for i in {6..0}; do
-    date=$(date -v-${i}d '+%Y-%m-%d' 2>/dev/null || date -d "$i days ago" '+%Y-%m-%d' 2>/dev/null)
-    commits=$(git log --since="$date 00:00:00" --until="$date 23:59:59" --format=oneline 2>/dev/null | wc -l | tr -d ' ')
-    day_name=$(date -v-${i}d '+%a' 2>/dev/null || date -d "$i days ago" '+%a' 2>/dev/null)
-    ACTIVITY_LAST_7_DAYS="$ACTIVITY_LAST_7_DAYS| $day_name | $date | $commits |\n"
+    # macOS 兼容的日期计算
+    if [ "$(uname)" = "Darwin" ]; then
+        date_str=$(date -v-${i}d '+%Y-%m-%d')
+        weekday=$(date -v-${i}d '+%a' | sed 's/Mon/一/;s/Tue/二/;s/Wed/三/;s/Thu/四/;s/Fri/五/;s/Sat/六/;s/Sun/日/')
+    else
+        date_str=$(date -d "$i days ago" '+%Y-%m-%d')
+        weekday=$(date -d "$i days ago" '+%a')
+    fi
+    
+    # 统计该日的提交数
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+        day_commits=$(git log --since="$date_str 00:00:00" --until="$date_str 23:59:59" --format="%H" | wc -l | tr -d ' ')
+    else
+        day_commits=0
+    fi
+    
+    ACTIVITY_LIST="$ACTIVITY_LIST| $weekday | $date_str | $day_commits |\n"
 done
 
-# 生成 JSON 数据文件供 Vue 组件使用
-JSON_FILE="$DOCS_DIR/public/stats.json"
-mkdir -p "$DOCS_DIR/public"
+# 计算文档增长趋势（基于 git 历史）
+NEW_DOCS_30D=0
+NEW_DOCS_7D=0
+NEW_DOCS_TODAY=0
 
-cat > "$JSON_FILE" << EOF
+if git rev-parse --git-dir > /dev/null 2>&1; then
+    # 计算各时间段的新增文档
+    for file in $(find . -name "*.md" -type f | grep -v node_modules | grep -v ".vitepress"); do
+        # 获取文件的创建时间（第一次提交时间）
+        first_commit=$(git log --diff-filter=A --format="%ai" -- "$file" | tail -1)
+        if [ -n "$first_commit" ]; then
+            # 转换为时间戳进行比较
+            file_timestamp=$(date -d "$first_commit" +%s 2>/dev/null || date -j -f "%Y-%m-%d %H:%M:%S %z" "$first_commit" +%s 2>/dev/null)
+            now_timestamp=$(date +%s)
+            
+            # 计算天数差
+            days_diff=$(( (now_timestamp - file_timestamp) / 86400 ))
+            
+            if [ $days_diff -le 30 ]; then
+                NEW_DOCS_30D=$((NEW_DOCS_30D + 1))
+            fi
+            if [ $days_diff -le 7 ]; then
+                NEW_DOCS_7D=$((NEW_DOCS_7D + 1))
+            fi
+            if [ $days_diff -eq 0 ]; then
+                NEW_DOCS_TODAY=$((NEW_DOCS_TODAY + 1))
+            fi
+        fi
+    done
+fi
+
+# 生成 JSON 文件（不包含更新时间）
+cat > "$TEMP_JSON" << EOF
 {
-  "updateTime": "$CURRENT_TIME",
   "totalDocs": $MD_COUNT,
   "totalDirs": $DIR_COUNT,
-  "totalContributors": $(git shortlog -sn --all --no-merges | wc -l | tr -d ' '),
-  "totalCommits": $(git rev-list --all --count),
-  "categoryStats": [
-    { "name": "关卡", "count": $(find 关卡 -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' '), "color": "#7c3aed" },
-    { "name": "活动", "count": $(find 活动 -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' '), "color": "#ec4899" },
-    { "name": "Native", "count": $(find native -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' '), "color": "#f59e0b" },
-    { "name": "协议", "count": $(find 协议 -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' '), "color": "#10b981" },
-    { "name": "工具", "count": $(find 工具 -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' '), "color": "#3b82f6" },
-    { "name": "其他", "count": $(find 其他 -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' '), "color": "#6b7280" }
-  ],
-  "growth": {
-    "today": $(find . -name "*.md" -type f -mtime -1 | wc -l | tr -d ' '),
-    "week": $(find . -name "*.md" -type f -mtime -7 | wc -l | tr -d ' '),
-    "month": $(find . -name "*.md" -type f -mtime -30 | wc -l | tr -d ' ')
-  }
+  "totalContributors": $CONTRIBUTORS,
+  "totalCommits": $COMMITS,
+  "categoryStats": $JSON_CATEGORIES,
+  "recentDocs": $JSON_RECENT,
+  "newDocs30d": $NEW_DOCS_30D,
+  "newDocs7d": $NEW_DOCS_7D,
+  "newDocsToday": $NEW_DOCS_TODAY
 }
 EOF
 
-echo -e "${GREEN}✅ JSON 数据已生成到: $JSON_FILE${NC}"
-
-# 生成统计页面
-cat > "$OUTPUT_FILE" << EOF
+# 生成 Markdown 文件（不包含更新时间）
+cat > "$TEMP_FILE" << EOF
 # 📊 文档统计仪表板
-
-> 最后更新时间：$CURRENT_TIME
 
 ## 📈 总体统计
 
 | 指标 | 数值 |
 |------|------|
-| 📄 文档总数 | **$MD_COUNT** 个 |
-| 📁 目录总数 | **$DIR_COUNT** 个 |
-| 👥 贡献者数 | **$(git shortlog -sn --all --no-merges | wc -l | tr -d ' ')** 人 |
-| 🔄 总提交数 | **$(git rev-list --all --count)** 次 |
+| 📄 文档总数 | **${MD_COUNT}** 个 |
+| 📁 目录总数 | **${DIR_COUNT}** 个 |
+| 👥 贡献者数 | **${CONTRIBUTORS}** 人 |
+| 🔄 总提交数 | **${COMMITS}** 次 |
 
 ## 📂 分类统计
 
 | 分类 | 文档数量 |
 |------|----------|
-$(echo -e "$CATEGORY_STATS")
+$(echo -e "$CATEGORY_STATS" | grep -v '^$')
 
 ## 🕒 最近更新
 
 | 更新时间 | 文档路径 |
 |----------|----------|
-$(echo -e "$RECENT_LIST")
+$(echo -e "$RECENT_LIST" | grep -v '^$')
 
 ## 👥 贡献者排行
 
 | 贡献者 | 提交数 | 贡献比例 |
 |--------|--------|----------|
-$(echo -e "$CONTRIB_LIST_WITH_PERCENT")
+$(echo -e "$CONTRIBUTOR_LIST" | grep -v '^$')
 
 ## 📅 最近7天活跃度
 
 | 星期 | 日期 | 提交数 |
 |------|------|--------|
-$(echo -e "$ACTIVITY_LAST_7_DAYS")
+$(echo -e "$ACTIVITY_LIST" | grep -v '^$')
 
 ## 📊 文档增长趋势
 
 \`\`\`
-最近30天新增文档：$(find . -name "*.md" -type f -mtime -30 | wc -l | tr -d ' ') 个
-最近7天新增文档：$(find . -name "*.md" -type f -mtime -7 | wc -l | tr -d ' ') 个
-今日新增文档：$(find . -name "*.md" -type f -mtime -1 | wc -l | tr -d ' ') 个
+最近30天新增文档：${NEW_DOCS_30D} 个
+最近7天新增文档：${NEW_DOCS_7D} 个
+今日新增文档：${NEW_DOCS_TODAY} 个
 \`\`\`
 
 ---
 
-*此页面由自动脚本生成，每次构建时更新*
+<div style="text-align: center; color: #6b7280; font-size: 12px; margin-top: 20px;">
+生成时间：$CURRENT_TIME | 
+<a href="https://github.com/yourusername/worldtourcasino-docs" style="color: #3b82f6;">查看仓库</a>
+</div>
+
+<Dashboard />
 EOF
 
-echo -e "${GREEN}✅ 统计数据已生成到: $OUTPUT_FILE${NC}"
+# 比较新旧文件内容（忽略时间戳）
+CONTENT_CHANGED=false
+
+# 比较 JSON（忽略 updateTime 字段）
+if [ -f "$JSON_FILE" ]; then
+    OLD_JSON=$(cat "$JSON_FILE" | grep -v "updateTime" | grep -v '^$')
+    NEW_JSON=$(cat "$TEMP_JSON" | grep -v "updateTime" | grep -v '^$')
+    if [ "$OLD_JSON" != "$NEW_JSON" ]; then
+        CONTENT_CHANGED=true
+    fi
+else
+    CONTENT_CHANGED=true
+fi
+
+# 比较 Markdown（忽略时间戳行）
+if [ -f "$OUTPUT_FILE" ]; then
+    OLD_MD=$(cat "$OUTPUT_FILE" | grep -v "最后更新时间" | grep -v "生成时间" | grep -v '^$')
+    NEW_MD=$(cat "$TEMP_FILE" | grep -v "最后更新时间" | grep -v "生成时间" | grep -v '^$')
+    if [ "$OLD_MD" != "$NEW_MD" ]; then
+        CONTENT_CHANGED=true
+    fi
+else
+    CONTENT_CHANGED=true
+fi
+
+# 只有内容变化时才更新文件
+if [ "$CONTENT_CHANGED" = true ]; then
+    # 添加时间戳到 JSON
+    echo "{" > "$JSON_FILE"
+    echo "  \"updateTime\": \"$CURRENT_TIME\"," >> "$JSON_FILE"
+    cat "$TEMP_JSON" | tail -n +2 >> "$JSON_FILE"
+    
+    # 添加时间戳到 Markdown
+    echo "# 📊 文档统计仪表板" > "$OUTPUT_FILE"
+    echo "" >> "$OUTPUT_FILE"
+    echo "> 最后更新时间：$CURRENT_TIME" >> "$OUTPUT_FILE"
+    echo "" >> "$OUTPUT_FILE"
+    cat "$TEMP_FILE" | tail -n +3 >> "$OUTPUT_FILE"
+    
+    echo -e "${GREEN}✅ 统计数据已更新${NC}"
+    echo -e "  • 文档总数：$MD_COUNT"
+    echo -e "  • 统计文件已生成：统计仪表板.md"
+    echo -e "  • JSON数据已生成：public/stats.json"
+else
+    echo -e "${YELLOW}⚠️  统计数据无变化，跳过更新${NC}"
+fi
+
+# 清理临时文件
+rm -f "$TEMP_FILE" "$TEMP_JSON"
+
+exit 0

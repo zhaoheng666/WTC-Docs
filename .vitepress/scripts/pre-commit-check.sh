@@ -28,14 +28,19 @@ if [ -n "$UNSTAGED" ]; then
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 fi
 
-# 2. 收集和整理图片资源
-echo -e "${CYAN}🖼️  收集图片资源...${NC}"
-if [ -f ".vitepress/scripts/collect-images.sh" ]; then
-    if bash .vitepress/scripts/collect-images.sh > /tmp/collect-images.log 2>&1; then
-        echo -e "${GREEN}  ✓ 图片已收集到 public/images${NC}"
-        # 添加收集后的图片和更新的 MD 文件
-        git add public/images/ 2>/dev/null
-        git add "*.md" 2>/dev/null
+# 2. 增量收集图片资源（只处理新增或修改的文件）
+echo -e "${CYAN}🖼️  增量收集图片资源...${NC}"
+if [ -f ".vitepress/scripts/collect-images-incremental.sh" ]; then
+    if bash .vitepress/scripts/collect-images-incremental.sh > /tmp/collect-images.log 2>&1; then
+        COLLECTED=$(grep "收集了" /tmp/collect-images.log | grep -o "[0-9]*" | head -1)
+        if [ -n "$COLLECTED" ] && [ "$COLLECTED" -gt 0 ]; then
+            echo -e "${GREEN}  ✓ 收集了 $COLLECTED 个新图片到 public/images${NC}"
+            # 添加收集后的图片和更新的 MD 文件
+            git add public/images/ 2>/dev/null
+            git add "*.md" 2>/dev/null
+        else
+            echo -e "${GREEN}  ✓ 没有新图片需要收集${NC}"
+        fi
     else
         echo -e "${YELLOW}  ⚠️  图片收集失败${NC}"
         cat /tmp/collect-images.log | grep -E "⚠️|❌" | head -3
