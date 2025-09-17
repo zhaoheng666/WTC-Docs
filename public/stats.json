@@ -1,0 +1,20 @@
+{
+  "updateTime": "2025-09-17 10:12:49",
+  "totalDocs": 12,
+  "totalDirs": 17,
+  "totalContributors": 1,
+  "totalCommits": 41,
+  "categoryStats": [
+    { "name": "关卡", "count": 1, "color": "#7c3aed" },
+    { "name": "活动", "count": 0, "color": "#ec4899" },
+    { "name": "Native", "count": 0, "color": "#f59e0b" },
+    { "name": "协议", "count": 1, "color": "#10b981" },
+    { "name": "工具", "count": 2, "color": "#3b82f6" },
+    { "name": "其他", "count": 4, "color": "#6b7280" }
+  ],
+  "growth": {
+    "today": 147,
+    "week": 149,
+    "month": 149
+  }
+}

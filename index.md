@@ -23,7 +23,7 @@
 ## 🚀 快速访问
 
 - **在线文档**：https://zhaoheng666.github.io/WTC-Docs/
-- **技术架构**：[查看技术实现文档](/README)
+- **技术实现**：[查看技术实现文档](/README)
 
 ## 🔍 文档搜索
 
@@ -65,7 +65,7 @@
 
 ### Google Drive 上传工具
 
-- 一键上传文档到 Google Drive，Markdown 文件自动转 PDF 后上传。[查看手册](/工具/google-drive-upload)
+- 一键上传文档到 Google Drive，Markdown 文件自动转 PDF 后上传。[查看手册](/工具/vscode/google-drive-upload)
 
 ## 📝 文档管理
 
@@ -107,11 +107,10 @@
 ### markdown 编辑器
 
 - 推荐使用 vscode 插件：
-
-  ![1757993861164](image/index/1757993861164.png)
+  ![1758046982464](image/index/1758046982464.png)
 - 其他 vscode 插件：按个人习惯自行选择；
 - 第三方专用 markdown 编辑器：
-  不推荐，需手动拷贝文档、引用资源到 docs 目录；
+  不推荐，需手动拷贝文档、引用资源到 docs 目录
 
 ## ⚠️ 注意事项
 

@@ -213,7 +213,7 @@ miniSearch: {
 
    - 原因：VS Code Task `shell` 类型环境变量继承问题
    - 解决：将 Task 类型改为 `process`
-   - 详情：[VS Code Rollup ARM64 问题说明](troubleshooting/vscode-rollup-arm64-issue.md)
+   - 详情：[VS Code Rollup ARM64 问题说明](/故障排查/vscode-rollup-arm64-issue.md)
 
 ## 📊 性能指标
 

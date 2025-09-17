@@ -26,7 +26,6 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: 'Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
-      { text: '关于', link: '/about' },
       {
         text: '更多',
         items: [
