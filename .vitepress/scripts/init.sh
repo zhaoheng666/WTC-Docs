@@ -125,7 +125,7 @@ if command -v gh &> /dev/null; then
             echo
             
             if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-                gh auth login --hostname github.com --protocol https --web
+                gh auth login --hostname github.com --git-protocol https --web
                 if gh auth status &> /dev/null 2>&1; then
                     echo -e "${GREEN}✅ GitHub 登录成功${NC}"
                 else

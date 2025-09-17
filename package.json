@@ -20,6 +20,6 @@
   "author": "",
   "license": "MIT",
   "optionalDependencies": {
-    "@rollup/rollup-darwin-arm64": "4"
+    "@rollup/rollup-darwin-arm64": "^4.50.2"
   }
 }
