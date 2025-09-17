@@ -253,14 +253,12 @@ fi
 
 if [ "$SILENT" = false ]; then
     echo -e "\n可用命令："
-    echo -e "  ${CYAN}npm run dev${NC}         - 启动开发服务器"
-    echo -e "  ${CYAN}npm run build${NC}       - 构建文档"
-    echo -e "  ${CYAN}npm run commit${NC}      - 同步文档到远程"
-    echo -e "  ${CYAN}npm run actions${NC}     - 检查 Actions 状态"
-    echo -e "  ${CYAN}npm run actions:watch${NC} - 监控 Actions 状态"
-    echo -e "  ${CYAN}npm run clean${NC}       - 清理缓存"
-    echo -e "  ${CYAN}npm run init${NC}        - 环境检查和修复"
-    echo -e "\n详细说明请查看 ${CYAN}SCRIPTS.md${NC}"
+    echo -e "  ${CYAN}npm run dev${NC}    - 启动开发服务器"
+    echo -e "  ${CYAN}npm run build${NC}  - 构建文档"
+    echo -e "  ${CYAN}npm run sync${NC}   - 同步文档到远程"
+    echo -e "  ${CYAN}npm run status${NC} - 显示仓库状态"
+    echo -e "  ${CYAN}npm run init${NC}   - 环境检查和修复"
+    echo -e "\n详细说明请查看 ${CYAN}README.md${NC}"
 fi
 
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
