@@ -171,21 +171,100 @@ fi
 # 9. 清理临时文件
 rm -f /tmp/sync-build.log
 
-echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN}✅ 文档同步完成！${NC}"
-echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-
-# 10. 等待并检查 GitHub Actions 状态（如果有 gh CLI）
+# 10. 监控 GitHub Actions 部署状态
 if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
-    echo -e "${CYAN}等待 GitHub Actions 启动...${NC}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${CYAN}⏳ 等待 GitHub Actions 部署...${NC}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    
+    # 设置 jq 命令
+    if command -v jq &> /dev/null; then
+        JQ_CMD="jq"
+    else
+        JQ_CMD="npx jq"
+    fi
+    
+    # 等待 Actions 启动
     sleep 5
     
-    # 检查 Actions 状态
-    if [ -f ".vitepress/scripts/check-actions.sh" ]; then
-        bash .vitepress/scripts/check-actions.sh || true
+    # 获取仓库信息
+    REPO_INFO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
+    
+    # 获取当前提交的 SHA
+    COMMIT_SHA=$(git rev-parse HEAD)
+    
+    # 最多等待 5 分钟（30次检查，每次10秒）
+    MAX_CHECKS=30
+    CHECK_COUNT=0
+    DEPLOYMENT_STATUS="pending"
+    
+    while [ $CHECK_COUNT -lt $MAX_CHECKS ] && [ "$DEPLOYMENT_STATUS" != "success" ]; do
+        CHECK_COUNT=$((CHECK_COUNT + 1))
+        
+        # 获取最新的 Actions 运行
+        LATEST_RUN=$(gh run list --limit 1 --json databaseId,status,conclusion,name,headSha 2>/dev/null)
+        
+        if [ -n "$LATEST_RUN" ] && [ "$LATEST_RUN" != "[]" ]; then
+            RUN_SHA=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].headSha // ""')
+            STATUS=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].status // ""')
+            CONCLUSION=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].conclusion // ""')
+            NAME=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].name // ""')
+            RUN_ID=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].databaseId // ""')
+            
+            # 检查是否是当前提交的 Actions
+            if [ "$RUN_SHA" = "$COMMIT_SHA" ]; then
+                if [ "$STATUS" = "queued" ]; then
+                    echo -ne "\r${YELLOW}⏳ Actions 排队中... (检查 $CHECK_COUNT/$MAX_CHECKS)${NC}"
+                elif [ "$STATUS" = "in_progress" ]; then
+                    echo -ne "\r${CYAN}🔄 Actions 运行中... (检查 $CHECK_COUNT/$MAX_CHECKS)${NC}"
+                elif [ "$STATUS" = "completed" ]; then
+                    if [ "$CONCLUSION" = "success" ]; then
+                        DEPLOYMENT_STATUS="success"
+                        echo -e "\n${GREEN}✅ Actions 部署成功！${NC}"
+                        echo -e "${GREEN}查看: https://github.com/$REPO_INFO/actions/runs/$RUN_ID${NC}"
+                        break
+                    elif [ "$CONCLUSION" = "failure" ]; then
+                        echo -e "\n${RED}❌ Actions 部署失败！${NC}"
+                        echo -e "${RED}查看: https://github.com/$REPO_INFO/actions/runs/$RUN_ID${NC}"
+                        
+                        # 检查失败详情
+                        FAILED_JOBS=$(gh run view "$RUN_ID" --json jobs -q '.jobs[] | select(.conclusion == "failure") | .name' 2>/dev/null)
+                        if [ -n "$FAILED_JOBS" ]; then
+                            echo -e "${YELLOW}失败的任务：${NC}"
+                            echo "$FAILED_JOBS" | while read -r job; do
+                                echo -e "  • $job"
+                            done
+                        fi
+                        exit 1
+                    fi
+                fi
+            else
+                echo -ne "\r${CYAN}⏳ 等待 Actions 启动... (检查 $CHECK_COUNT/$MAX_CHECKS)${NC}"
+            fi
+        fi
+        
+        # 等待10秒后再检查
+        sleep 10
+    done
+    
+    if [ "$DEPLOYMENT_STATUS" = "success" ]; then
+        echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${GREEN}✅ 同步操作完成${NC}"
+        echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        
+        # 发送成功通知
+        if [ "$(uname)" = "Darwin" ]; then
+            osascript -e "display notification \"文档已成功部署到 GitHub Pages\" with title \"同步完成\" subtitle \"$NAME\" sound name \"Glass\""
+        fi
+    else
+        echo -e "\n${YELLOW}⚠️  超时：未能确认部署状态${NC}"
+        echo -e "${YELLOW}请手动检查: https://github.com/$REPO_INFO/actions${NC}"
     fi
 else
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${GREEN}✅ 文档已推送${NC}"
     echo -e "${YELLOW}提示：运行 'npm run init' 配置 GitHub Actions 监控${NC}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 fi
 
 exit 0
