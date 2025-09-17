@@ -7,7 +7,11 @@
     "dev": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview",
-    "serve": "vitepress serve"
+    "serve": "vitepress serve",
+    "postinstall": "bash .vitepress/scripts/fix-rollup.sh 2>/dev/null || true",
+    "fix-rollup": "bash .vitepress/scripts/fix-rollup.sh",
+    "test-build": "bash .vitepress/scripts/test-build.sh",
+    "pre-commit": "bash .vitepress/scripts/pre-commit-check.sh"
   },
   "devDependencies": {
     "vitepress": "^1.6.4"
