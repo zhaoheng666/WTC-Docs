@@ -35,22 +35,12 @@ jobs:
           cache: npm
       
       - name: Install dependencies
-        run: |
-          # 使用 npm install 而不是 npm ci 以确保 postinstall 脚本运行
-          npm install
-      
-      - name: Collect images
-        run: |
-          chmod +x .vitepress/scripts/collect-images.sh
-          bash .vitepress/scripts/collect-images.sh
-      
-      - name: Generate statistics
-        run: |
-          chmod +x .vitepress/scripts/generate-stats.sh
-          bash .vitepress/scripts/generate-stats.sh
+        run: npm ci
       
       - name: Build with VitePress
-        run: npm run build
+        run: |
+          # 直接构建，不需要收集图片和生成统计（已在本地完成）
+          npx vitepress build
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
