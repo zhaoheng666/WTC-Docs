@@ -11,15 +11,15 @@
     { "name": "故障排查", "count": 1, "color": "#ef4444" }
   ],
   "recentUpdates": [
+    { "date": "09-17", "file": "index", "path": "/活动/index.md", "message": "docs: 更新 index" },
     { "date": "09-17", "file": "README", "path": "/README.md", "message": "docs: 更新 README,统计仪表板 (含配置文件)" },
-    { "date": "09-17", "file": "SCRIPTS", "path": "/SCRIPTS.md", "message": "docs: 更新文档 (新增        6, 修改   " },
     { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新 index,统计仪表板 (含配置文件)" },
-    { "date": "09-17", "file": "index", "path": "/native/index.md", "message": "feat: 实现图片自动收集和整理机制" },
-    { "date": "09-16", "file": "SlotAction", "path": "/关卡/SlotAction.md", "message": "revert: 回退到使用 choose from list" },
-    { "date": "09-16", "file": "WTC-DOCS-MIGRATION", "path": "/其他/WTC-DOCS-MIGRATION.md", "message": "docs: 新增 "\345\205\266\344\273" },
-    { "date": "09-17", "file": "快速开始", "path": "/其他/隐藏/快速开始.md", "message": "docs: 更新文档 (新增        3, 修改   " },
-    { "date": "09-17", "file": "index", "path": "/协议/index.md", "message": "feat: 新增可视化文档统计仪表板" },
-    { "date": "09-16", "file": "google-drive-upload", "path": "/工具/vscode/google-drive-upload.md", "message": "docs: 更新 index.md," },
-    { "date": "09-16", "file": "vscode环境工具开发规范", "path": "/工具/vscode/vscode环境工具开发规范.md", "message": "docs: 更新 index.md," }
+    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新 index" },
+    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新文档 (新增        4, 修改   " },
+    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新文档 (新增        1, 修改   " },
+    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新文档 (新增        1, 修改   " },
+    { "date": "09-17", "file": "index", "path": "/index.md", "message": "fix: 修复图片路径并改进同步脚本显示" },
+    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新文档 (新增        3, 修改   " },
+    { "date": "09-17", "file": "快速开始", "path": "/其他/隐藏/快速开始.md", "message": "docs: 更新文档 (新增        3, 修改   " }
   ]
 }

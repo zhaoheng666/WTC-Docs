@@ -60,49 +60,58 @@ RECENT_UPDATES=""
 JSON_RECENT="["
 first=true
 
-# 获取最近修改的 md 文件
+# 获取最近修改的 md 文件（按时间顺序）
 if git rev-parse --git-dir > /dev/null 2>&1; then
-    # 获取最近10个不同的文档更新
-    count=0
+    # 保存已处理的文件，避免重复
     processed_files=""
     
-    # 获取每个md文件的最后提交信息
-    for file in $(git ls-files "*.md" | grep -v "统计仪表板.md" | head -20); do
-        if [ -f "$file" ]; then
-            # 获取该文件的最后提交
-            last_info=$(git log -1 --format="%cd|%s" --date=format:"%m-%d" -- "$file" 2>/dev/null)
-            if [ -n "$last_info" ]; then
-                commit_date=$(echo "$last_info" | cut -d'|' -f1)
-                commit_msg=$(echo "$last_info" | cut -d'|' -f2 | cut -c1-30)
-                filename=$(basename "$file" .md)
+    # 获取最近50个提交中的 md 文件修改
+    while IFS= read -r line; do
+        if [[ "$line" =~ ^[0-9]{2}-[0-9]{2} ]]; then
+            # 这是日期和提交信息行
+            commit_date=$(echo "$line" | cut -d' ' -f1)
+            commit_msg=$(echo "$line" | cut -d' ' -f2- | cut -c1-30)
+        elif [[ "$line" =~ \.md$ ]] && [[ "$line" != "统计仪表板.md" ]]; then
+            # 这是文件名
+            file="$line"
+            
+            # 检查是否已处理过这个文件
+            if ! echo "$processed_files" | grep -q "^$file$"; then
+                processed_files="${processed_files}${file}\n"
                 
-                # 根据目录添加图标
-                icon=""
-                if [[ "$file" == "活动/"* ]]; then icon="📋 "
-                elif [[ "$file" == "关卡/"* ]]; then icon="🎮 "
-                elif [[ "$file" == "工具/"* ]]; then icon="🛠️ "
-                elif [[ "$file" == "协议/"* ]]; then icon="🔌 "
-                elif [[ "$file" == "native/"* ]]; then icon="🏙️ "
-                fi
-                
-                RECENT_UPDATES="${RECENT_UPDATES}| $commit_date | ${icon}[$filename](/$file) | $commit_msg |\n"
-                
-                if [ "$first" = true ]; then
-                    first=false
-                else
-                    JSON_RECENT="$JSON_RECENT,"
-                fi
-                
-                JSON_RECENT="$JSON_RECENT
+                if [ -f "$file" ]; then
+                    filename=$(basename "$file" .md)
+                    
+                    # 根据目录添加图标
+                    icon=""
+                    if [[ "$file" == "活动/"* ]]; then icon="📋 "
+                    elif [[ "$file" == "关卡/"* ]]; then icon="🎮 "
+                    elif [[ "$file" == "工具/"* ]]; then icon="🛠️ "
+                    elif [[ "$file" == "协议/"* ]]; then icon="🔌 "
+                    elif [[ "$file" == "native/"* ]]; then icon="🏙️ "
+                    elif [[ "$file" == "故障排查/"* ]]; then icon="🔧 "
+                    fi
+                    
+                    RECENT_UPDATES="${RECENT_UPDATES}| $commit_date | ${icon}[$filename](/$file) | $commit_msg |\n"
+                    
+                    if [ "$first" = true ]; then
+                        first=false
+                    else
+                        JSON_RECENT="$JSON_RECENT,"
+                    fi
+                    
+                    JSON_RECENT="$JSON_RECENT
     { \"date\": \"$commit_date\", \"file\": \"$filename\", \"path\": \"/$file\", \"message\": \"$commit_msg\" }"
-                
-                count=$((count + 1))
-                if [ $count -ge 10 ]; then
-                    break
+                    
+                    # 只显示前10个不同的文件
+                    file_count=$(echo -e "$processed_files" | grep -v "^$" | wc -l)
+                    if [ $file_count -ge 10 ]; then
+                        break
+                    fi
                 fi
             fi
         fi
-    done
+    done < <(git log --name-only --format="%cd %s" --date=format:"%m-%d" -50)
 fi
 
 JSON_RECENT="$JSON_RECENT
