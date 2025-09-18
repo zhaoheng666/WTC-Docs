@@ -22,8 +22,13 @@ echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━�
 
 # 0. 处理图片引用和下载（仅当有 md 文件更改或包含图片时）
 if [ -f ".vitepress/scripts/image-processor.js" ]; then
-    # 检查是否有包含图片的 MD 文件更改
-    HAS_IMAGE_CHANGES=$(git diff --cached --name-only | grep "\.md$" | xargs grep -l "!\[.*\](" 2>/dev/null | head -1)
+    # 检查是否有包含图片的 MD 文件更改（包括暂存、未暂存和未跟踪的文件）
+    HAS_IMAGE_CHANGES=$(
+        (git diff --cached --name-only; git diff --name-only; git ls-files --others --exclude-standard) | 
+        grep "\.md$" | 
+        xargs grep -l "!\[.*\](" 2>/dev/null | 
+        head -1
+    )
     
     if [ -n "$HAS_IMAGE_CHANGES" ]; then
         echo -e "${CYAN}🖼️  处理图片引用...${NC}"

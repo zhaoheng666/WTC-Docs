@@ -1,0 +1,440 @@
+# Q2`25-Slots-图片资源压缩-程序
+
+## 现状：
+
+---
+
+1. 发布阶段， web 端资源做 webp 压缩；【生效中】
+
+2. 研发阶段，美术在提交资源时视情况自行操作图片压缩；【已废弃】
+
+    该流程已于多年前废弃，目前 native 端图片资源未做任何压缩处理；
+3. 资源数量日趋庞大，下载、运行负担日重；
+
+## 需求：
+
+---
+
+1. 支持一键、选择性压缩；
+
+2. 不改变原始资源，避免增加美术修改负担；
+3. 避免增加发版过程，目前发版时长已经很长了；
+4. 避免每次发布资源都要等待压缩，压缩过程较为耗时；
+5. 多端同步；
+
+## 实现方案：
+
+---
+
+1. ##### “发布资源到工程”脚本，增加图片压缩过程：（`PlugIns/resourcePublish.py`）
+
+    1. 仍采用 tinyPNG（熊猫） 压缩；
+    2. 默认对所有发布的图片资源做压缩处理；
+    3. 排除默认、指定的忽略文件；
+
+    ```python
+    def publishImageFile(srcPathFileName, dstPathFileName, hdDstPathFileName):
+     
+        _, fileName  = os.path.splitext(srcPathFileName)
+        
+        if fileName == "ipad.png" or fileName == "iphone.png":
+            return;
+
+        if srcPathFileName.endswith(".png") or srcPathFileName.endswith(".jpg"):
+            dstPathFileName = dstPathFileName.replace("_hd.", ".")
+            if not os.path.exists(os.path.dirname(dstPathFileName)):
+                os.makedirs(os.path.dirname(dstPathFileName))
+
+            shutil.copyfile(srcPathFileName, dstPathFileName);
+
+            if(srcPathFileName.endswith("_hd.png") or srcPathFileName.endswith("_hd.jpg")):
+
+                if hdDstPathFileName:
+                    if not os.path.exists(os.path.dirname(hdDstPathFileName)):
+                        os.makedirs(os.path.dirname(hdDstPathFileName))
+                    shutil.copyfile(srcPathFileName, hdDstPathFileName);
+                
+                if not pkgutil.find_loader("PIL"):
+                    print "请输入登录密码安装插件需要的依赖库:"
+                    os.system("sudo pip install Pillow")
+
+                from PIL import Image
+
+                hdImage = Image.open(dstPathFileName)
+                (w, h) = hdImage.size
+                sdImage = hdImage.resize((int(w*0.5), int(h*0.5)),Image.ANTIALIAS)
+                hdImage.close()
+                sdImage.save(dstPathFileName)
+                sdImage.close()
+            # 压缩文件
+            if not ignore_util.in_png_compress_ignore(srcPathFileName):
+                if not md5_util.isMD5Equal(srcPathFileName):
+                    if not (dstPathFileName.endswith("_hd.png") or dstPathFileName.endswith("_hd.jpg")):
+                        print "Compress Image File:%s"%(dstPathFileName)
+                        os.system("python ./compressImage.py %s"%(dstPathFileName))
+        else:
+            print "File(%s)is Not Image File"%(srcPathFileName)
+    ```
+
+2. ##### 增加发布文件 md5 值记录，防止重复发布、压缩：（`PlugIns/md5_util.py`）
+
+    已发布记录文件： `__check__/published.md5`【及时提交、同步】
+
+    1. 记录发布过的文件的 md5 值；
+    2. 文件无变更（记录中的 md5 值与本地文件 md5 值一致）时跳过发布；
+    3. 遇到特殊情况，可以删掉`published.md5`文件，重新发布；
+
+    ```python
+    #!/usr/bin/env python
+    # coding: utf-8
+
+    import os
+    import sys
+
+    # 获取 srcPathFileName 在 Resources 路径下的相对路径
+    def get_src_relative_path(srcPathFileName):
+        relativePath = srcPathFileName.split("Resources")[1]
+        return relativePath.lstrip("/")
+
+    # 获取 md5 记录文件路径
+    def get_md5_record_path(srcPathFileName):
+        resourcesPath = srcPathFileName.split("Resources")[0] + "Resources"
+        md5TxtPath = resourcesPath + "/../__check__/published.md5"
+        return md5TxtPath
+
+    # 获取文件 md5 值
+    def get_file_md5(srcPathFileName):
+        md5Value = os.popen('md5sum "%s"'%(srcPathFileName)).read().strip()
+        md5Value = md5Value.split("  ")[0]
+        return md5Value
+
+    # 记录 md5 值
+    def recordMd5(srcPathFileName):
+        md5TxtPath = get_md5_record_path(srcPathFileName)
+        # 如果 md5.txt 路径下不存在，就创建一个
+        if not os.path.exists(os.path.dirname(md5TxtPath)):
+            os.makedirs(os.path.dirname(md5TxtPath))
+        if not os.path.exists(md5TxtPath):
+            os.system('touch "%s"'%(md5TxtPath))
+
+        relativePath = get_src_relative_path(srcPathFileName)
+        md5Value = get_file_md5(srcPathFileName)
+        # 读取 md5 记录
+        md5TxtContent = ""
+        md5TxtContent = os.popen('cat "%s"'%(md5TxtPath)).read().strip()
+        # 判断 md5.txt 路径下是否已经存在 srcPathFileName 的 md5 值
+        if md5TxtContent.find(relativePath) == -1:
+            # 如果不存在，就将 srcPathFileName 的 md5 值写入 md5.txt 路径下
+            with open(md5TxtPath, 'a') as f:
+                f.write(md5Value + "  " + relativePath + "\n")
+                f.close()
+        else:
+            # 如果存在，就将 srcPathFileName 的 md5 值替换掉 md5.txt 路径下的旧值，并保存
+            with open(md5TxtPath, 'r') as f:
+                content = f.read()
+                content = content.replace(md5Value + "  " + relativePath + "\n", md5Value + "  " + relativePath + "\n")
+                f.close()
+            with open(md5TxtPath, 'w') as f:
+                f.write(content)
+                f.close()
+
+    def isMD5Equal(srcPathFileName):
+        md5TxtPath = get_md5_record_path(srcPathFileName)
+        # md5TxtPath 不存在直接返回 True
+        if not os.path.exists(md5TxtPath):
+            return False
+        relativePath = get_src_relative_path(srcPathFileName)
+        md5TxtContent = os.popen('cat "%s"'%(md5TxtPath)).read().strip()
+        if md5TxtContent.find(relativePath) == -1:
+            return False
+        else:
+            # 如果存在，就将 srcPathFileName 对应的 md5 值读取出来
+            with open(md5TxtPath, 'r') as f:
+                content = f.read()
+                md5Value = content.split(relativePath)[0].split("\n")[-1].strip()
+                f.close()
+        # 获取 srcPathFileName 的 md5 值
+        new_md5Value = get_file_md5(srcPathFileName)
+        # 判断 md5.txt 路径下的 md5 值是否与 srcPathFileName 的 md5 值一致
+        if new_md5Value == md5Value:
+            return True
+        else:
+            return False
+
+
+    def remove_from_published_md5(srcPathFileName):
+        record_file_path = get_md5_record_path(srcPathFileName)
+        if not os.path.exists(record_file_path):
+            return
+        relativePath = get_src_relative_path(srcPathFileName)
+        print("remove_from_published_md5:%s"%(relativePath))
+        with open(record_file_path, 'r') as f:
+            record = f.read().splitlines()
+            print("record:%s"%(record))
+            f.close()
+        # 遍历 record，移除 relativePath 对应的记录，并保存到文件中
+        for i in range(len(record)):
+            if record[i].find(relativePath) != -1:
+                record.pop(i)
+                break
+        with open(record_file_path, 'w') as f:
+            for i in record:
+                f.write(i + '\n')   
+            f.close()
+
+    if __name__ == "__main__":
+        if len(sys.argv) < 3:
+            print('Usage: python md5_util.py opration srcPathFileName [param1 param2 ...]')
+            print('opration: [record,remove_from_published_md5]')
+            exit(1)
+
+        # 打印参数
+        print('opration:', sys.argv[1])
+        print('srcPathFileName:', sys.argv[2])
+        print('param:', sys.argv[3:])
+        # 根据 opration 执行不同的操作
+        opration = sys.argv[1]
+        if opration == 'record':
+            recordMd5(sys.argv[2])
+        elif opration == 'remove_from_published_md5':
+            remove_from_published_md5(sys.argv[2])
+
+        exit(0)
+    ```
+
+3. ##### 增加忽略压缩功能：（`PlugIns/ignore_util.py`）
+
+    忽略记录文件： `__check__/png_compress_ignore.txt`【及时提交、同步】
+
+    1. 默认忽略列表：["/symbol/","common/","slot/"]；
+    2. 从`png_compress_ignore.txt`中获取忽略列表；
+    3. 忽略列表做 === 、包含匹配；
+
+    ```python
+     #!/usr/bin/env python
+    # coding: utf-8
+
+    import os
+    import sys
+
+    png_compress_common_ignore_list = ["/symbol/","common/","slot/"]
+
+    # 获取 srcPathFileName 在 Resources 路径下的相对路径
+    def get_src_relative_path(srcPathFileName):
+        relativePath = srcPathFileName.split("Resources")[1]
+        return relativePath.lstrip("/")
+
+    # 获取图片压缩忽略文件路径
+    def get_png_compress_ignore_path(srcPathFileName):
+        resourcesPath = srcPathFileName.split("Resources")[0] + "Resources"
+        md5TxtPath = resourcesPath + "/../__check__/png_compress_ignore.txt"
+        return md5TxtPath
+
+    def get_png_compress_ignore(srcPathFileName):
+        ignore_file_path = get_png_compress_ignore_path(srcPathFileName)
+        if os.path.exists(ignore_file_path):
+            with open(ignore_file_path, 'r') as f:
+                ignore = f.read().splitlines()
+                f.close()
+                return ignore
+        else:
+            return []
+
+    def in_png_compress_ignore(srcPathFileName):
+        ignores = get_png_compress_ignore(srcPathFileName)
+        srcPathFileName = srcPathFileName[srcPathFileName.find('Resources/')+10:]
+        if srcPathFileName in ignores:
+            return True
+        for ignore in png_compress_common_ignore_list:
+            if ignore in srcPathFileName:
+                return True
+        for ignore in ignores:
+            if ignore in srcPathFileName:
+                return True
+        return False
+
+    def add_to_png_compress_ignore(srcPathFileName):
+        ignore_file_path = get_png_compress_ignore_path(srcPathFileName)
+        # 如果 ignore_file_path 路径下不存在，就创建一个
+        if not os.path.exists(os.path.dirname(ignore_file_path)):
+            os.makedirs(os.path.dirname(ignore_file_path))
+        if not os.path.exists(ignore_file_path):
+            os.system('touch "%s"'%(ignore_file_path))
+
+        relativePath = get_src_relative_path(srcPathFileName)
+        # 添加新的条目前，先检查是否已经存在
+        with open(ignore_file_path, 'r') as f:
+            ignore = f.read().splitlines()
+            if relativePath in ignore:
+                f.close()
+                return
+        with open(ignore_file_path, 'a') as f:
+            f.write(relativePath + '\n')
+            f.close()
+            
+
+    def remove_from_png_compress_ignore(srcPathFileName):
+        ignore_file_path = get_png_compress_ignore_path(srcPathFileName)
+        if not os.path.exists(ignore_file_path):
+            return
+
+        relativePath = get_src_relative_path(srcPathFileName)
+        with open(ignore_file_path, 'r') as f:
+            ignore = f.read().splitlines()
+            if relativePath in ignore:
+                ignore.remove(relativePath)
+            f.close()
+        with open(ignore_file_path, 'w') as f:
+            for i in ignore:
+                f.write(i + '\n')
+            f.close()
+
+    if __name__ == "__main__":
+        if len(sys.argv) < 3:
+            print('Usage: python ignore_util.py opration srcPathFileName [param1 param2 ...]')
+            print('opration: [add_to_png_compress_ignore,remove_from_png_compress_ignore]')
+            exit(1)
+
+        # 打印参数
+            # print('opration:', sys.argv[1])
+            # print('srcPathFileName:', sys.argv[2])
+            # print('param:', sys.argv[3:])
+        # 根据 opration 执行不同的操作
+        opration = sys.argv[1]
+        if opration == 'add_to_png_compress_ignore':
+            add_to_png_compress_ignore(sys.argv[2])
+        elif opration == 'remove_from_png_compress_ignore':
+            remove_from_png_compress_ignore(sys.argv[2])
+
+        exit(0)
+    ```
+
+4. ##### 标记颜色功能，绑定压缩忽略功能：（`Plugin/setTag.sh`）
+
+    忽略记录文件： `__check__/tag.txt`【及时提交、同步】
+
+    1. 添加绿色标记时，记录到`png_compress_ignore.txt、tag.txt`；
+    2. 移除绿色标记时，移除`png_compress_ignore.txt、tag.txt`中的记录；
+    3. 刷新标记时，从`tag.txt`获取标记记录，逐条应用“添加标记”操作；
+
+    ```python
+    #!/bin/sh
+    # title: 标记颜色
+    # filters: subfolder file
+    # options: global wait
+    # icon: none
+    # order: 190
+    # submenu: 2 红色 red
+    # submenu: 1 橙色 orange
+    # submenu: 3 黄色 yellow
+    # submenu: 6 绿色 green
+    # submenu: 4 蓝色 blue
+    # submenu: 5 紫色 purple
+    # submenu: 7 灰色 gray
+    # submenu: 0 清除 none
+    # submenu: 8 刷新标记
+
+    col="0"
+    if [ $4 ]; then
+        col=$4
+    fi
+
+    process_color_tag() {
+        local col=$1
+        local file_path=$2
+        
+        script_dir=$(dirname "$0")
+        pushd "$script_dir"
+        if [ "$col" == "6" ]; then
+            python ignore_util.py add_to_png_compress_ignore "$file_path"
+        elif [ "$col" == "0" ]; then
+            python ignore_util.py remove_from_png_compress_ignore "$file_path"
+            python md5_util.py remove_from_published_md5 "$file_path"
+        fi
+        popd
+    }
+
+    # 将$col存储在本地文件中，存储文件路径为：$1 中与/Resources/同级的目录，__check__/下的tag.txt
+    # 存储格式为：$1 在 Resources/下的相对路: $col
+    # 获取$1在Resources/下的相对路径
+    relative_path=$(echo $1 | sed 's/.*\/Resources\///')
+    # 获取 Resources/的父目录
+    root_path=$(echo $1 | sed 's/\/Resources\/.*//')
+    # 获取 Resources/的父目录下的__check__/tag.txt
+    tag_path=$root_path/__check__/tag.txt
+    # 如果tag.txt不存在，则创建
+    if [ ! -f $tag_path ]; then
+        mkdir -p $root_path/__check__
+        touch $tag_path
+    fi
+
+    if [ $col == "8" ]; then
+        echo 正在刷新标记
+        # 读取tag.txt中的内容
+        while read line; do
+            # 获取$1在Resources/下的相对路径
+            relative_path=$(echo $line | awk -F ':' '{print $1}')
+            # 获取$1在Resources/下的相对路径
+            col=$(echo $line | awk -F ':' '{print $2}')
+            target_path=$root_path/Resources/$relative_path
+            # 如果$1不存在，则跳过
+            if [! -f $target_path ]; then
+                continue
+            fi
+            echo 正在标记颜色 $col
+            process_color_tag $col $target_path
+            osascript -e "tell application \"Finder\" to set label index of alias POSIX file \"$target_path\" to $col"
+        done < $tag_path
+        exit 0
+    fi
+
+    if [ $col == "0" ]; then
+        sed -i '' "\|$relative_path:|d" "$tag_path"
+    else
+        if grep -q "$relative_path:" $tag_path; then
+            sed -i '' "\|$relative_path:|d" "$tag_path"
+        fi
+        echo $relative_path:$col >> $tag_path
+    fi
+    process_color_tag $col $1
+    osascript -e "tell application \"Finder\" to set label index of alias POSIX file \"$1\" to $col"
+    ```
+
+## 操作说明：
+
+---
+
+1. ##### 刷新标记：
+
+    1. 拉取 git 以同步记录文件；
+    2. 选择工程中任意目录、文件，右键 -> 标记颜色 -> 刷新标记；
+    3. 聚焦回 cocosbuilder （点击工程中任意文件、文件夹），查看标记状态；
+
+    ![image](http://localhost:5173/WTC-Docs/assets/1758174593060_427ef044.png)​
+2. ##### 增加标记：绿色标记代表“不压缩”
+
+    1. 可针对目录、或文件;
+    2. 聚焦回 cocosbuilder（点击 cocosbuilder 任意区域），查看标记状态；
+
+    ![image](http://localhost:5173/WTC-Docs/assets/1758174593062_cdf7b090.png)![image](http://localhost:5173/WTC-Docs/assets/1758174593064_3d2f9389.png)​
+
+3. ##### 移除标记：
+
+    1. 选中已有颜色的文件、目录，右键 -> 标记颜色 -> 清除；
+    2. 移除绿色标记后，表示该资源发布时会被压缩；
+
+    ![image](http://localhost:5173/WTC-Docs/assets/1758174593064_1aadaa6c.png)![image](http://localhost:5173/WTC-Docs/assets/1758174593066_ccb22885.png)​
+
+##### ⚠️注意：
+
+1. 提交`__check__`目录及其下所有文件：  
+    所有需要同步的记录、标记都在这个目录下，有变更必须及时提交；
+2. 需要新增、移除标记前：拉取 git -> 刷新标记；  
+    不操作刷新标记无法同步颜色显示状态，但不影响已经有过的标记记录生效（只是看不到颜色而已）；
+3. （程序）首次大面积资源发布，会多耗费 1-2 分钟时间逐个处理压缩；
+4. （程序）首次发布后，请及时提交发布后的资源和`__check__`目录；
+5. （程序）如果出现原因导致的发布后资源不符合预期的情况，可以手动删除`__check__/published.md5`文件，重新发布；
+
+‍
+
+‍
