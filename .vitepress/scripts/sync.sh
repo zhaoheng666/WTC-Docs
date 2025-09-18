@@ -30,28 +30,43 @@ fi
 CURRENT_BRANCH=$(git branch --show-current)
 echo -e "${CYAN}📍 当前分支: ${YELLOW}$CURRENT_BRANCH${NC}"
 
-# 2. 清理已处理的图片文件（在 assets 目录中）
+# 2. 清理已处理的图片文件
 echo -e "${CYAN}🧹 清理已处理的图片...${NC}"
-# 查找所有已被处理并替换为 HTTP 链接的图片
-PROCESSED_IMAGES=$(find . -name "*.md" -type f -exec grep -h "http://localhost:5173/WTC-Docs/assets/" {} \; 2>/dev/null | \
-    grep -oE "assets/[0-9]+_[a-f0-9]+\.(png|jpg|jpeg|gif|webp|svg)" | sort -u)
 
-if [ -n "$PROCESSED_IMAGES" ]; then
-    IMAGE_COUNT=$(echo "$PROCESSED_IMAGES" | wc -l)
-    echo -e "${CYAN}  找到 $IMAGE_COUNT 个已处理的图片${NC}"
+# 查找所有 Markdown 文件中已被替换为 HTTP 链接的原始图片
+ORIGINAL_IMAGES=$(find . -name "*.md" -type f -exec grep -l "http://localhost:5173/WTC-Docs/assets/" {} \; 2>/dev/null)
+
+if [ -n "$ORIGINAL_IMAGES" ]; then
+    TOTAL_DELETED=0
     
-    # 删除这些已处理的图片文件
-    echo "$PROCESSED_IMAGES" | while read -r img; do
-        if [ -f "$img" ]; then
-            rm -f "$img"
-            echo -e "${GREEN}  ✓ 删除: $img${NC}"
+    # 对每个包含处理后图片的 MD 文件，找到并删除其原始图片目录
+    echo "$ORIGINAL_IMAGES" | while read -r md_file; do
+        # 获取 MD 文件的目录
+        MD_DIR=$(dirname "$md_file")
+        ASSETS_DIR="$MD_DIR/assets"
+        
+        # 如果该目录下有 assets 目录
+        if [ -d "$ASSETS_DIR" ]; then
+            # 检查 MD 文件中是否所有图片都已被处理（替换为 HTTP 链接）
+            LOCAL_REFS=$(grep -E "!\[.*\]\((assets/|\.\.?/.*assets/)" "$md_file" 2>/dev/null | grep -v "http://localhost:5173")
+            
+            if [ -z "$LOCAL_REFS" ]; then
+                # 所有图片都已处理，可以删除原始图片
+                IMAGE_COUNT=$(find "$ASSETS_DIR" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" \) 2>/dev/null | wc -l)
+                
+                if [ "$IMAGE_COUNT" -gt 0 ]; then
+                    echo -e "${CYAN}  清理 $MD_DIR 中的 $IMAGE_COUNT 个原始图片${NC}"
+                    rm -rf "$ASSETS_DIR"
+                    TOTAL_DELETED=$((TOTAL_DELETED + IMAGE_COUNT))
+                fi
+            fi
         fi
     done
     
-    # 如果 assets 目录为空，删除它
-    if [ -d "assets" ] && [ -z "$(ls -A assets)" ]; then
-        rmdir assets
-        echo -e "${GREEN}  ✓ 删除空的 assets 目录${NC}"
+    if [ $TOTAL_DELETED -gt 0 ]; then
+        echo -e "${GREEN}  ✓ 共删除 $TOTAL_DELETED 个原始图片${NC}"
+    else
+        echo -e "${GREEN}  ✓ 没有需要清理的图片${NC}"
     fi
 else
     echo -e "${GREEN}  ✓ 没有需要清理的图片${NC}"
