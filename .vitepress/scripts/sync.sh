@@ -274,6 +274,11 @@ if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
             NAME=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].name // ""')
             RUN_ID=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].databaseId // ""')
             
+            # 调试：显示 NAME 变量内容（如果包含特殊字符）
+            if [[ "$NAME" =~ [\`\"\'\$\|\\] ]]; then
+                echo -e "${YELLOW}  ⚠️ Actions 名称包含特殊字符: $NAME${NC}"
+            fi
+            
             # 检查是否是当前提交的 Actions
             if [ "$RUN_SHA" = "$COMMIT_SHA" ]; then
                 if [ "$STATUS" = "queued" ]; then
@@ -320,16 +325,22 @@ if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
         if [ "$(uname)" = "Darwin" ]; then
             echo -e "${CYAN}🔔 发送系统通知...${NC}"
             
+            # 对 NAME 变量进行转义，移除可能导致问题的特殊字符
+            SAFE_NAME=$(echo "$NAME" | sed 's/[`"\\$]/\\&/g' | tr -d '\n\r')
+            
             # 方法1：使用 osascript 通过系统事件发送通知
-            NOTIFY_RESULT=$(osascript -e 'display notification "文档已成功部署到 GitHub Pages" with title "同步完成" sound name "Glass"' 2>&1)
+            NOTIFY_RESULT=$(osascript -e "display notification \"文档已成功部署到 GitHub Pages\" with title \"同步完成\" subtitle \"${SAFE_NAME:-GitHub Actions}\" sound name \"Glass\"" 2>&1)
             if [ $? -eq 0 ]; then
                 echo -e "${GREEN}  ✓ 通知已发送 (osascript)${NC}"
             else
                 echo -e "${YELLOW}  ⚠️ osascript 失败: $NOTIFY_RESULT${NC}"
+                # 如果失败，尝试不带 subtitle 的简单版本
+                osascript -e 'display notification "文档已成功部署到 GitHub Pages" with title "同步完成" sound name "Glass"' 2>/dev/null
             fi
             
             # 方法2：使用 terminal-notifier（更可靠）
             if command -v terminal-notifier &> /dev/null; then
+                # 使用简单的消息，避免特殊字符问题
                 terminal-notifier -title "🎉 同步完成" -message "文档已成功部署到 GitHub Pages" -sound default -ignoreDnD
                 echo -e "${GREEN}  ✓ 通知已发送 (terminal-notifier)${NC}"
             fi
