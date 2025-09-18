@@ -1,13 +1,15 @@
 {
-  "recentUpdates": [
-    { "date": "09-17", "file": "最近更新", "path": "/其他/隐藏/最近更新.md", "message": "docs: 更新 最近更新 (含配置文件)" },
-    { "date": "09-17", "file": "IMAGE_HANDLING", "path": "/IMAGE_HANDLING.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
-    { "date": "09-17", "file": "README", "path": "/README.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
-    { "date": "09-17", "file": "SCRIPTS", "path": "/SCRIPTS.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
-    { "date": "09-17", "file": "index", "path": "/index.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
-    { "date": "09-17", "file": "VSCode 编辑器前端开发环境", "path": "/其他/VSCode 编辑器前端开发环境.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
-    { "date": "09-17", "file": "9 月程序会", "path": "/其他/工作记录/9 月程序会.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
-    { "date": "09-17", "file": "快速开始", "path": "/其他/隐藏/快速开始.md", "message": "docs: 更新 IMAGE_HANDLING,README" },
-    { "date": "09-17", "file": "最近更新", "path": "/其他/隐藏/最近更新.md", "message": "docs: 更新 最近更新,Q2`25-Slots-Slot" }
-  ]
+  "updateTime": "2025-09-17T17:27:32.976Z",
+  "totalDocs": 15,
+  "totalDirs": 12,
+  "categoryStats": {
+    "native": 1,
+    "关卡": 1,
+    "其他": 4,
+    "协议": 1,
+    "工具": 2,
+    "故障排查": 1,
+    "活动": 1
+  },
+  "commits": []
 }

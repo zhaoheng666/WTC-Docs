@@ -10,6 +10,7 @@ const isForce = process.argv[2] === '--force';
 
 const docsDir = path.join(__dirname, '../..');
 const outputFile = path.join(docsDir, '其他/隐藏/最近更新.md');
+const jsonOutputFile = path.join(docsDir, 'public/stats.json');
 
 // 确保目录存在
 const outputDir = path.dirname(outputFile);
@@ -175,6 +176,26 @@ function generateMarkdown() {
   return content;
 }
 
+// 生成 JSON 数据
+function generateJSON() {
+  const stats = getDocStats();
+  const commits = isCI ? getRecentCommits(100) : []; // CI 环境获取更多提交
+  
+  return {
+    updateTime: new Date().toISOString(),
+    totalDocs: stats.totalDocs,
+    totalDirs: stats.totalDirs,
+    categoryStats: stats.categoryStats,
+    commits: commits.map(commit => ({
+      hash: commit.hash,
+      date: commit.date,
+      author: commit.author,
+      message: commit.message,
+      files: commit.files
+    }))
+  };
+}
+
 // 主函数
 function main() {
   if (isCI) {
@@ -184,9 +205,15 @@ function main() {
   }
   
   try {
+    // 生成 Markdown 页面
     const content = generateMarkdown();
     fs.writeFileSync(outputFile, content, 'utf8');
-    console.log(`✅ 统计页面已生成: ${outputFile}`);
+    console.log(`✅ Markdown 页面已生成: ${outputFile}`);
+    
+    // 生成 JSON 数据
+    const jsonData = generateJSON();
+    fs.writeFileSync(jsonOutputFile, JSON.stringify(jsonData, null, 2), 'utf8');
+    console.log(`✅ JSON 数据已生成: ${jsonOutputFile}`);
     
     if (!isCI) {
       console.log('💡 提示：本地版本不含提交历史，避免循环提交');

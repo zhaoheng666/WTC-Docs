@@ -10,9 +10,9 @@ const manualSection = [
     text: '文档中心',
     collapsed: false,
     items: [
-      // 统一使用内部链接，本地和线上都可访问
+      // 最近更新页面
       { text: '🕐 最近更新', link: '/其他/隐藏/最近更新' },
-      { text: '📖 技术实现', link: '/README' }
+      { text: '📖 README', link: '/README' }
     ]
   },
   {
