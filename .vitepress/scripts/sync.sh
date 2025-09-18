@@ -261,9 +261,32 @@ if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
                     
                     if [ "$CONCLUSION" = "success" ]; then
                         echo -e "\n${GREEN}✅ GitHub Actions 部署成功！${NC}"
+                        
+                        # 获取运行 ID 和链接
+                        RUN_ID=$(gh run list --limit 1 --json databaseId,headSha | \
+                            jq -r --arg sha "$COMMIT_SHA" '.[] | select(.headSha == $sha) | .databaseId' 2>/dev/null)
+                        
+                        if [ -n "$RUN_ID" ]; then
+                            # 获取仓库信息
+                            REPO_INFO=$(git config --get remote.origin.url | sed 's/.*github.com[:/]\(.*\)\.git/\1/')
+                            ACTION_URL="https://github.com/$REPO_INFO/actions/runs/$RUN_ID"
+                            echo -e "${CYAN}📎 GitHub Actions: ${ACTION_URL}${NC}"
+                        fi
+                        
                         show_success "部署成功" "文档已成功部署到 GitHub Pages"
                     else
                         echo -e "\n${RED}❌ GitHub Actions 部署失败！${NC}"
+                        
+                        # 获取运行 ID 和链接
+                        RUN_ID=$(gh run list --limit 1 --json databaseId,headSha | \
+                            jq -r --arg sha "$COMMIT_SHA" '.[] | select(.headSha == $sha) | .databaseId' 2>/dev/null)
+                        
+                        if [ -n "$RUN_ID" ]; then
+                            REPO_INFO=$(git config --get remote.origin.url | sed 's/.*github.com[:/]\(.*\)\.git/\1/')
+                            ACTION_URL="https://github.com/$REPO_INFO/actions/runs/$RUN_ID"
+                            echo -e "${CYAN}📎 查看详情: ${ACTION_URL}${NC}"
+                        fi
+                        
                         show_error "部署失败" "请检查 GitHub Actions 日志"
                     fi
                     break
@@ -293,5 +316,4 @@ fi
 rm -f /tmp/sync-build.log
 
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN}✅ 文档同步完成！${NC}"
-show_success "同步完成" "文档已成功同步并推送"
+echo -e "${GREEN}✅ 文档同步完成${NC}"
