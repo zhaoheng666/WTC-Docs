@@ -103,14 +103,23 @@ function generateJSON() {
   const stats = getDocStats();
   const commits = isCI ? getRecentCommits(100) : []; // CI 环境获取更多提交
   
-  // 计算贡献者数量
-  const contributors = new Set(commits.map(c => c.author)).size;
+  // 计算贡献者数量和列表
+  const contributorsSet = new Set(commits.map(c => c.author));
+  const contributorsList = Array.from(contributorsSet).map(author => {
+    const authorCommits = commits.filter(c => c.author === author);
+    return {
+      name: author,
+      commits: authorCommits.length,
+      lastCommit: authorCommits[0]?.date || new Date().toISOString()
+    };
+  }).sort((a, b) => b.commits - a.commits);
   
   return {
     updateTime: new Date().toISOString(),
     totalDocs: stats.totalDocs,
     categoryStats: stats.categoryStats,
-    contributors: contributors,
+    contributors: contributorsSet.size,
+    contributorsList: contributorsList,
     commits: commits.map(commit => ({
       hash: commit.hash,
       date: commit.date,
@@ -123,21 +132,28 @@ function generateJSON() {
 
 // 主函数
 function main() {
-  if (isCI) {
-    console.log('📊 生成完整统计数据（CI 环境）...');
-  } else {
-    console.log('📊 生成本地统计数据（不含提交历史）...');
+  // 仅在 CI 环境生成统计
+  if (!isCI) {
+    console.log('⏭️  跳过统计生成（仅在 CI 环境生成）');
+    return;
   }
   
+  console.log('📊 生成完整统计数据（CI 环境）...');
+  
   try {
-    // 只生成 JSON 数据，不生成 Markdown 文件
+    // 检查是否存在 stats.json，如果不存在，从模板复制
+    if (!fs.existsSync(jsonOutputFile)) {
+      const templateFile = path.join(docsDir, 'public/stats.template.json');
+      if (fs.existsSync(templateFile)) {
+        console.log('📋 使用模板文件初始化 stats.json');
+        fs.copyFileSync(templateFile, jsonOutputFile);
+      }
+    }
+    
+    // 生成完整的统计数据
     const jsonData = generateJSON();
     fs.writeFileSync(jsonOutputFile, JSON.stringify(jsonData, null, 2), 'utf8');
     console.log(`✅ JSON 数据已生成: ${jsonOutputFile}`);
-    
-    if (!isCI) {
-      console.log('💡 提示：本地版本不含提交历史，避免循环提交');
-    }
   } catch (error) {
     console.error('❌ 生成失败:', error.message);
     process.exit(1);

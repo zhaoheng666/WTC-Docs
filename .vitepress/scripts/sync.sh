@@ -30,74 +30,14 @@ fi
 CURRENT_BRANCH=$(git branch --show-current)
 echo -e "${CYAN}📍 当前分支: ${YELLOW}$CURRENT_BRANCH${NC}"
 
-# 2. 清理已处理的图片文件
-echo -e "${CYAN}🧹 清理已处理的图片...${NC}"
-
-# 查找所有 Markdown 文件中已被替换为 HTTP 链接的原始图片
-PROCESSED_MDS=$(find . -name "*.md" -type f -exec grep -l "http://localhost:5173/WTC-Docs/assets/" {} \; 2>/dev/null)
-
-if [ -n "$PROCESSED_MDS" ]; then
-    TOTAL_DELETED=0
-    
-    # 对每个包含处理后图片的 MD 文件，找到并删除其原始图片
-    echo "$PROCESSED_MDS" | while read -r md_file; do
-        # 获取 MD 文件的目录
-        MD_DIR=$(dirname "$md_file")
-        
-        # 从 MD 文件中提取所有本地图片引用（未被处理的）
-        # 包括: ![](assets/...) ![](images/...) ![](image/...) ![](xxx.png) 等各种格式
-        LOCAL_IMAGES=$(grep -oE '!\[([^\]]*)\]\(([^)]+)\)' "$md_file" 2>/dev/null | \
-            grep -oE '\]\([^)]+\)' | \
-            sed 's/](\(.*\))/\1/' | \
-            grep -v "^http" | \
-            grep -E '\.(png|jpg|jpeg|gif|webp|svg)' 2>/dev/null)
-        
-        # 从 MD 文件中提取所有已处理的图片（HTTP 链接）
-        PROCESSED_COUNT=$(grep -c "http://localhost:5173/WTC-Docs/assets/" "$md_file" 2>/dev/null || echo "0")
-        
-        # 如果有已处理的图片，且没有本地图片引用了
-        if [ "$PROCESSED_COUNT" -gt 0 ] && [ -z "$LOCAL_IMAGES" ]; then
-            # 查找并删除该目录下所有的原始图片文件
-            # 1. 删除常见的图片目录（assets, images, image, img, pics 等）
-            for img_dir in assets images image img pics pictures; do
-                if [ -d "$MD_DIR/$img_dir" ]; then
-                    IMAGE_COUNT=$(find "$MD_DIR/$img_dir" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" \) 2>/dev/null | wc -l)
-                    if [ "$IMAGE_COUNT" -gt 0 ]; then
-                        echo -e "${CYAN}  删除 $MD_DIR/$img_dir 目录（含 $IMAGE_COUNT 个图片）${NC}"
-                        rm -rf "$MD_DIR/$img_dir"
-                        TOTAL_DELETED=$((TOTAL_DELETED + IMAGE_COUNT))
-                    fi
-                fi
-            done
-            
-            # 2. 删除与 MD 文件同级目录的图片文件
-            SAME_DIR_IMAGES=$(find "$MD_DIR" -maxdepth 1 -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" \) 2>/dev/null)
-            if [ -n "$SAME_DIR_IMAGES" ]; then
-                SAME_DIR_COUNT=$(echo "$SAME_DIR_IMAGES" | wc -l)
-                echo -e "${CYAN}  删除 $MD_DIR 中的 $SAME_DIR_COUNT 个图片文件${NC}"
-                echo "$SAME_DIR_IMAGES" | xargs rm -f
-                TOTAL_DELETED=$((TOTAL_DELETED + SAME_DIR_COUNT))
-            fi
-        fi
-    done
-    
-    if [ $TOTAL_DELETED -gt 0 ]; then
-        echo -e "${GREEN}  ✓ 共删除 $TOTAL_DELETED 个原始图片${NC}"
-    else
-        echo -e "${GREEN}  ✓ 没有需要清理的图片${NC}"
-    fi
-else
-    echo -e "${GREEN}  ✓ 没有需要清理的图片${NC}"
-fi
-
-# 3. 暂存所有更改（包括删除的文件）
+# 2. 暂存所有更改
 echo -e "${CYAN}📦 暂存本地更改...${NC}"
 git add -A
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}  ✓ 文件已暂存${NC}"
 fi
 
-# 4. 检查是否有需要提交的内容
+# 3. 检查是否有需要提交的内容
 if git diff --cached --quiet; then
     echo -e "${YELLOW}⚠️  没有需要提交的更改${NC}"
     
@@ -132,7 +72,7 @@ if git diff --cached --quiet; then
     exit 0
 fi
 
-# 5. 执行构建测试（可选）
+# 4. 执行构建测试（可选）
 if [ "$1" != "--skip-build" ]; then
     echo -e "${CYAN}🔨 执行构建测试...${NC}"
     if bash .vitepress/scripts/build.sh > /tmp/sync-build.log 2>&1; then
@@ -153,7 +93,7 @@ else
     echo -e "${YELLOW}  ⏭ 跳过构建测试（使用 --skip-build 参数）${NC}"
 fi
 
-# 6. 生成提交信息
+# 5. 生成提交信息
 echo -e "${CYAN}📝 准备提交...${NC}"
 
 # 获取更改的文件列表（只显示 .md 文件，不包含路径）
@@ -190,7 +130,7 @@ else
     fi
 fi
 
-# 7. 创建提交
+# 6. 创建提交
 if git commit -m "$COMMIT_MSG" > /dev/null 2>&1; then
     echo -e "${GREEN}  ✓ 提交成功: $COMMIT_MSG${NC}"
 else
@@ -198,7 +138,7 @@ else
     exit 1
 fi
 
-# 8. 拉取并合并远程更改
+# 7. 拉取并合并远程更改
 echo -e "${CYAN}📥 同步远程仓库...${NC}"
 git fetch origin "$CURRENT_BRANCH" --quiet 2>/dev/null
 
@@ -222,7 +162,7 @@ if [ "$LOCAL" != "$REMOTE" ]; then
     fi
 fi
 
-# 9. 推送到远程
+# 8. 推送到远程
 echo -e "${CYAN}📤 推送到远程仓库...${NC}"
 if git push origin "$CURRENT_BRANCH"; then
     echo -e "${GREEN}  ✓ 推送成功${NC}"
@@ -232,10 +172,10 @@ else
     exit 1
 fi
 
-# 10. 清理临时文件
+# 9. 清理临时文件
 rm -f /tmp/sync-build.log
 
-# 11. 监控 GitHub Actions 部署状态
+# 10. 监控 GitHub Actions 部署状态
 if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${CYAN}⏳ 等待 GitHub Actions 部署...${NC}"

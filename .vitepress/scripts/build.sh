@@ -36,6 +36,63 @@ if [ -f ".vitepress/scripts/image-processor.js" ]; then
             MODIFIED=$(grep "Files modified:" /tmp/image-processor.log | grep -o "[0-9]*" | tail -1)
             if [ -n "$MODIFIED" ] && [ "$MODIFIED" -gt 0 ]; then
                 echo -e "${GREEN}  ✓ 处理了 $MODIFIED 个文件的图片引用${NC}"
+                
+                # 清理已处理的原始图片文件
+                echo -e "${CYAN}🧹 清理已处理的原始图片...${NC}"
+                
+                # 查找所有包含已处理图片的 MD 文件
+                PROCESSED_MDS=$(find . -name "*.md" -type f -exec grep -l "http://localhost:5173/WTC-Docs/assets/" {} \; 2>/dev/null)
+                
+                if [ -n "$PROCESSED_MDS" ]; then
+                    TOTAL_DELETED=0
+                    
+                    # 对每个包含处理后图片的 MD 文件，找到并删除其原始图片
+                    echo "$PROCESSED_MDS" | while read -r md_file; do
+                        MD_DIR=$(dirname "$md_file")
+                        
+                        # 从 MD 文件中提取所有本地图片引用
+                        LOCAL_IMAGES=$(grep -oE '!\[([^\]]*)\]\(([^)]+)\)' "$md_file" 2>/dev/null | \
+                            grep -oE '\]\([^)]+\)' | \
+                            sed 's/](\(.*\))/\1/' | \
+                            grep -v "^http" | \
+                            grep -E '\.(png|jpg|jpeg|gif|webp|svg)' 2>/dev/null)
+                        
+                        # 从 MD 文件中提取所有已处理的图片
+                        PROCESSED_COUNT=$(grep -c "http://localhost:5173/WTC-Docs/assets/" "$md_file" 2>/dev/null || echo "0")
+                        
+                        # 如果有已处理的图片，且没有本地图片引用了
+                        if [ "$PROCESSED_COUNT" -gt 0 ] && [ -z "$LOCAL_IMAGES" ]; then
+                            # 删除常见的图片目录
+                            for img_dir in assets images image img pics pictures; do
+                                if [ -d "$MD_DIR/$img_dir" ]; then
+                                    IMAGE_COUNT=$(find "$MD_DIR/$img_dir" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" \) 2>/dev/null | wc -l)
+                                    if [ "$IMAGE_COUNT" -gt 0 ]; then
+                                        echo -e "${CYAN}    删除 $MD_DIR/$img_dir 目录（含 $IMAGE_COUNT 个图片）${NC}"
+                                        rm -rf "$MD_DIR/$img_dir"
+                                        TOTAL_DELETED=$((TOTAL_DELETED + IMAGE_COUNT))
+                                    fi
+                                fi
+                            done
+                            
+                            # 删除与 MD 文件同级目录的图片文件
+                            SAME_DIR_IMAGES=$(find "$MD_DIR" -maxdepth 1 -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" \) 2>/dev/null)
+                            if [ -n "$SAME_DIR_IMAGES" ]; then
+                                SAME_DIR_COUNT=$(echo "$SAME_DIR_IMAGES" | wc -l)
+                                echo -e "${CYAN}    删除 $MD_DIR 中的 $SAME_DIR_COUNT 个图片文件${NC}"
+                                echo "$SAME_DIR_IMAGES" | xargs rm -f
+                                TOTAL_DELETED=$((TOTAL_DELETED + SAME_DIR_COUNT))
+                            fi
+                        fi
+                    done
+                    
+                    if [ $TOTAL_DELETED -gt 0 ]; then
+                        echo -e "${GREEN}  ✓ 共删除 $TOTAL_DELETED 个原始图片${NC}"
+                    else
+                        echo -e "${GREEN}  ✓ 没有需要清理的图片${NC}"
+                    fi
+                else
+                    echo -e "${GREEN}  ✓ 没有需要清理的图片${NC}"
+                fi
             else
                 echo -e "${GREEN}  ✓ 图片引用已是最新${NC}"
             fi
@@ -56,16 +113,8 @@ if [ ! -L "images" ] && [ -d "public/images" ]; then
     fi
 fi
 
-# 2. 生成统计页面（本地版本，不含提交历史）
-if [ -f ".vitepress/scripts/generate-stats.js" ]; then
-    echo -e "${CYAN}📊 生成统计页面...${NC}"
-    if node .vitepress/scripts/generate-stats.js > /tmp/stats-gen.log 2>&1; then
-        echo -e "${GREEN}  ✓ 统计页面已生成${NC}"
-    else
-        echo -e "${YELLOW}  ⚠️  统计生成失败（继续构建）${NC}"
-    fi
-    rm -f /tmp/stats-gen.log
-fi
+# 2. 跳过统计生成（本地不生成，仅 CI 生成）
+echo -e "${GREEN}  ✓ 跳过统计生成（仅在 CI 环境生成）${NC}"
 
 # 3. 执行构建
 echo -e "${CYAN}🔨 执行 VitePress 构建...${NC}"

@@ -7,6 +7,12 @@ set -e
 
 echo "🚀 Starting CI Build..."
 
+# 确保 stats.json 存在（从模板复制）
+if [ ! -f "public/stats.json" ] && [ -f "public/stats.template.json" ]; then
+    echo "📋 Copying stats template..."
+    cp public/stats.template.json public/stats.json
+fi
+
 # 生成统计页面（CI 环境，包含完整提交历史）
 if [ -f ".vitepress/scripts/generate-stats.js" ]; then
     echo "📊 Generating stats page..."
