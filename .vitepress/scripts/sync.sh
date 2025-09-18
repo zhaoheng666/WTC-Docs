@@ -320,23 +320,34 @@ if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
         if [ "$(uname)" = "Darwin" ]; then
             echo -e "${CYAN}🔔 发送系统通知...${NC}"
             
-            # 尝试使用 osascript 发送通知
-            if osascript -e "display notification \"文档已成功部署到 GitHub Pages\" with title \"同步完成\" subtitle \"$NAME\" sound name \"Glass\"" 2>/dev/null; then
-                echo -e "${GREEN}  ✓ 通知已发送${NC}"
+            # 方法1：使用 osascript 通过系统事件发送通知
+            NOTIFY_RESULT=$(osascript -e 'display notification "文档已成功部署到 GitHub Pages" with title "同步完成" sound name "Glass"' 2>&1)
+            if [ $? -eq 0 ]; then
+                echo -e "${GREEN}  ✓ 通知已发送 (osascript)${NC}"
             else
-                # 如果 osascript 失败，尝试使用 terminal-notifier（如果安装了）
-                if command -v terminal-notifier &> /dev/null; then
-                    terminal-notifier -title "同步完成" -subtitle "$NAME" -message "文档已成功部署到 GitHub Pages" -sound Glass
-                    echo -e "${GREEN}  ✓ 通知已发送 (terminal-notifier)${NC}"
-                else
-                    echo -e "${YELLOW}  ⚠️ 无法发送系统通知${NC}"
-                    echo -e "${YELLOW}    提示：检查系统偏好设置中终端的通知权限${NC}"
-                    echo -e "${YELLOW}    或安装 terminal-notifier: brew install terminal-notifier${NC}"
-                fi
+                echo -e "${YELLOW}  ⚠️ osascript 失败: $NOTIFY_RESULT${NC}"
             fi
             
-            # 播放系统提示音作为备用提醒
+            # 方法2：使用 terminal-notifier（更可靠）
+            if command -v terminal-notifier &> /dev/null; then
+                terminal-notifier -title "🎉 同步完成" -message "文档已成功部署到 GitHub Pages" -sound default -ignoreDnD
+                echo -e "${GREEN}  ✓ 通知已发送 (terminal-notifier)${NC}"
+            fi
+            
+            # 方法3：使用 AppleScript 显示对话框（确保能看到）
+            osascript <<EOF 2>/dev/null &
+tell application "System Events"
+    display dialog "✅ 文档已成功部署到 GitHub Pages" with title "同步完成" buttons {"OK"} default button 1 giving up after 5
+end tell
+EOF
+            
+            # 方法4：播放系统提示音
             afplay /System/Library/Sounds/Glass.aiff 2>/dev/null &
+            
+            # 方法5：在终端显示大字提醒
+            echo -e "\n${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+            echo -e "${GREEN}     🎉 部署成功！文档已发布到 GitHub Pages     ${NC}"
+            echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
         fi
     else
         echo -e "\n${YELLOW}⚠️  超时：未能确认部署状态${NC}"

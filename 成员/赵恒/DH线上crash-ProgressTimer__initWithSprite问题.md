@@ -1,6 +1,6 @@
 # Q1`25-Slots-DH线上crash-ProgressTimer::initWithSprite问题-程序
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593042_8f4d94b1.png)​
+![image](http://localhost:5173/WTC-Docs/assets/1758174593042_8f4d94b1.png)
 
 ### 目前掌握的一手信息：
 
@@ -24,13 +24,13 @@
 
 > removeFromParent 改为 false，问题未解决；
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593043_001fc221.png)​
+![image](http://localhost:5173/WTC-Docs/assets/1758174593043_001fc221.png)
 
 ##### b、HighRoller 大厅入口
 
 > 增加 native object 检查
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593044_aaadc11d.png)​
+![image](http://localhost:5173/WTC-Docs/assets/1758174593044_aaadc11d.png)
 
 ### 解决方案：
 
@@ -38,11 +38,11 @@
 
 1、无效的 native 节点：
 
-​`节点数组循环中 remove 节点，原始节点树已经发生改变，导致 js 数组存的对象和 native object 不匹配，或节点树与渲染树不同步`​
+`节点数组循环中 remove 节点，原始节点树已经发生改变，导致 js 数组存的对象和 native object 不匹配，或节点树与渲染树不同步`
 
 2、js & native 内存管理机制细节变更：
 
-​`node 环境变更等因素，影响到 js & native 内存管理细节、触发 gc 的时机、代码执行效率等；`​
+`node 环境变更等因素，影响到 js & native 内存管理细节、触发 gc 的时机、代码执行效率等；`
 
 #### 措施：
 
@@ -52,9 +52,9 @@
 
 3、延后 remove；
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593045_c413730f.png)​
+![image](http://localhost:5173/WTC-Docs/assets/1758174593045_c413730f.png)
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593046_c6e9d271.png)​
+![image](http://localhost:5173/WTC-Docs/assets/1758174593046_c6e9d271.png)
 
 ‍
 
@@ -70,7 +70,7 @@
 
 #### 2、android 堆栈有明显的 null 指针，所以仍旧定位是 removeFromParent 问题；
 
-	但仍让无法解释“为何突然出现问题”
+    但仍让无法解释“为何突然出现问题”
 
 #### 3、检查 browserify 导出的 js 文件：
 
@@ -83,12 +83,12 @@
  版本二 (打包机坏之前的版本)：
 
 ```js
-(function() { function e(t,n,r){ ... 内部代码 } return e })()({ ... 内部代码 }, {}, [ 377 ]);  
+(function() { function e(t,n,r){ ... 内部代码 } return e })()({ ... 内部代码 }, {}, [ 377 ]);
 ```
 
 #### 对比：
 
-版本一：IIFE 立即执行函数，browserify@`11.2.0`​
+版本一：IIFE 立即执行函数，browserify@`11.2.0`
 
 版本二：包裹了一层匿名函数，涉及作用域、闭包问题，可能更合理一点；不清楚从哪个版本开始，本地用的版本 browserify@12
 
