@@ -30,14 +30,41 @@ fi
 CURRENT_BRANCH=$(git branch --show-current)
 echo -e "${CYAN}📍 当前分支: ${YELLOW}$CURRENT_BRANCH${NC}"
 
-# 2. 暂存所有更改
+# 2. 清理已处理的图片文件（在 assets 目录中）
+echo -e "${CYAN}🧹 清理已处理的图片...${NC}"
+# 查找所有已被处理并替换为 HTTP 链接的图片
+PROCESSED_IMAGES=$(find . -name "*.md" -type f -exec grep -h "http://localhost:5173/WTC-Docs/assets/" {} \; 2>/dev/null | \
+    grep -oE "assets/[0-9]+_[a-f0-9]+\.(png|jpg|jpeg|gif|webp|svg)" | sort -u)
+
+if [ -n "$PROCESSED_IMAGES" ]; then
+    IMAGE_COUNT=$(echo "$PROCESSED_IMAGES" | wc -l)
+    echo -e "${CYAN}  找到 $IMAGE_COUNT 个已处理的图片${NC}"
+    
+    # 删除这些已处理的图片文件
+    echo "$PROCESSED_IMAGES" | while read -r img; do
+        if [ -f "$img" ]; then
+            rm -f "$img"
+            echo -e "${GREEN}  ✓ 删除: $img${NC}"
+        fi
+    done
+    
+    # 如果 assets 目录为空，删除它
+    if [ -d "assets" ] && [ -z "$(ls -A assets)" ]; then
+        rmdir assets
+        echo -e "${GREEN}  ✓ 删除空的 assets 目录${NC}"
+    fi
+else
+    echo -e "${GREEN}  ✓ 没有需要清理的图片${NC}"
+fi
+
+# 3. 暂存所有更改（包括删除的文件）
 echo -e "${CYAN}📦 暂存本地更改...${NC}"
 git add -A
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}  ✓ 文件已暂存${NC}"
 fi
 
-# 3. 检查是否有需要提交的内容
+# 4. 检查是否有需要提交的内容
 if git diff --cached --quiet; then
     echo -e "${YELLOW}⚠️  没有需要提交的更改${NC}"
     
@@ -72,7 +99,7 @@ if git diff --cached --quiet; then
     exit 0
 fi
 
-# 4. 执行构建测试（可选）
+# 5. 执行构建测试（可选）
 if [ "$1" != "--skip-build" ]; then
     echo -e "${CYAN}🔨 执行构建测试...${NC}"
     if bash .vitepress/scripts/build.sh > /tmp/sync-build.log 2>&1; then
@@ -93,7 +120,7 @@ else
     echo -e "${YELLOW}  ⏭ 跳过构建测试（使用 --skip-build 参数）${NC}"
 fi
 
-# 5. 生成提交信息
+# 6. 生成提交信息
 echo -e "${CYAN}📝 准备提交...${NC}"
 
 # 获取更改的文件列表（只显示 .md 文件，不包含路径）
@@ -130,7 +157,7 @@ else
     fi
 fi
 
-# 6. 创建提交
+# 7. 创建提交
 if git commit -m "$COMMIT_MSG" > /dev/null 2>&1; then
     echo -e "${GREEN}  ✓ 提交成功: $COMMIT_MSG${NC}"
 else
@@ -138,7 +165,7 @@ else
     exit 1
 fi
 
-# 7. 拉取并合并远程更改
+# 8. 拉取并合并远程更改
 echo -e "${CYAN}📥 同步远程仓库...${NC}"
 git fetch origin "$CURRENT_BRANCH" --quiet 2>/dev/null
 
@@ -162,7 +189,7 @@ if [ "$LOCAL" != "$REMOTE" ]; then
     fi
 fi
 
-# 8. 推送到远程
+# 9. 推送到远程
 echo -e "${CYAN}📤 推送到远程仓库...${NC}"
 if git push origin "$CURRENT_BRANCH"; then
     echo -e "${GREEN}  ✓ 推送成功${NC}"
@@ -172,10 +199,10 @@ else
     exit 1
 fi
 
-# 9. 清理临时文件
+# 10. 清理临时文件
 rm -f /tmp/sync-build.log
 
-# 10. 监控 GitHub Actions 部署状态
+# 11. 监控 GitHub Actions 部署状态
 if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${CYAN}⏳ 等待 GitHub Actions 部署...${NC}"
