@@ -7,12 +7,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // 手动配置的部分 - 自定义链接和特殊文档
 const manualSection = [
   {
-    text: '文档中心',
+    text: '简介',
     collapsed: false,
     items: [
-      // 最近更新页面
+      { text: '📚 概览', link: '/README' },
+      { text: '🚀 快速开始', link: '/快速开始' },
       { text: '🕐 最近更新', link: '/其他/隐藏/最近更新' },
-      { text: '📖 README', link: '/README' }
     ]
   },
   {
@@ -20,29 +20,24 @@ const manualSection = [
     collapsed: false,
     items: [
       { text: '程序总表', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=0#gid=0' },
+      { text: 'Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
+      { text: '程序排期', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=130371487#gid=130371487' },
       { text: '发版记录', link: 'https://docs.google.com/document/d/1KmLcqFHg5FKiYZ0K7poLMHUl7054ZoXx7YEg3SRGtx0/edit?tab=t.0' },
       {
-        text: '排期表',
-        collapsed: false,
+        text: 'A版反馈',
+        collapsed: true,
         items: [
-          { text: 'Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
-          { text: '程序排期', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=130371487#gid=130371487' },
+          { text: '关卡', link: 'https://docs.google.com/spreadsheets/d/1mvgxECitMFnweyG6ZM5ibTDUpfzVWERw8SglejeZ61I/edit?gid=1594819754#gid=1594819754' },
+          { text: '活动', link: 'https://docs.google.com/spreadsheets/d/1AsWdr5hPoVqk9FFArIaqWUrsnSoDlCRqhMiq-TPk-gQ/edit?gid=548726162#gid=548726162' },
         ]
       },
       {
-        text: '协作文档',
-        collapsed: false,
+        text: 'A版自测',
+        collapsed: true,
         items: [
-          { text: 'Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
-          { text: '程序排期', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=130371487#gid=130371487' },
-        ]
-      },
-      {
-        text: '外部链接',
-        collapsed: false,
-        items: [
-          { text: 'Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
-          { text: '程序排期', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=130371487#gid=130371487' },
+          { text: '关卡', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=846946624#gid=846946624' },
+          { text: '活动', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=933143491#gid=933143491' },
+          { text: '赛季', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=1921777137#gid=1921777137' },
         ]
       }
     ]
@@ -82,8 +77,14 @@ const ignoreList = [
   // === 实际配置 ===
   // 在下面添加需要忽略的文件或目录：
   '/其他/测试文档.md',
-  'README.md',
-  '/隐藏/'
+  'README.md',  // 已在文档中心显示
+  '/隐藏/',
+  // 已删除的文档
+  'IMAGE_HANDLING.md',
+  'SCRIPTS.md',
+  '开发指南.md',
+  // 已在文档中心显示
+  '快速开始.md'
 ]
 
 // 检查文件或目录是否应该被忽略

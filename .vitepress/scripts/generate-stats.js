@@ -9,11 +9,11 @@ const isCI = process.env.GITHUB_ACTIONS === 'true';
 const isForce = process.argv[2] === '--force';
 
 const docsDir = path.join(__dirname, '../..');
-const outputFile = path.join(docsDir, '其他/隐藏/最近更新.md');
+// 不再生成 markdown 文件，只生成 JSON 数据
 const jsonOutputFile = path.join(docsDir, 'public/stats.json');
 
 // 确保目录存在
-const outputDir = path.dirname(outputFile);
+const outputDir = path.dirname(jsonOutputFile);
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
@@ -37,7 +37,7 @@ function getRecentCommits(limit = 30) {
         const [hash, date, author, message] = line.split('|');
         currentCommit = {
           hash: hash.substring(0, 7),
-          date: new Date(date).toLocaleDateString('zh-CN'),
+          date: new Date(date).toISOString(),
           author,
           message,
           files: []
@@ -61,7 +61,6 @@ function getRecentCommits(limit = 30) {
 // 获取文档统计
 function getDocStats() {
   let totalDocs = 0;
-  let totalDirs = 0;
   const categoryStats = {};
   
   function scanDir(dir, category = null) {
@@ -78,7 +77,6 @@ function getDocStats() {
       const stat = fs.statSync(itemPath);
       
       if (stat.isDirectory()) {
-        totalDirs++;
         const cat = category || item;
         scanDir(itemPath, cat);
       } else if (item.endsWith('.md') && item !== '最近更新.md') { // 排除统计页面本身
@@ -94,98 +92,25 @@ function getDocStats() {
   
   return {
     totalDocs,
-    totalDirs,
     categoryStats,
     updateTime: new Date().toLocaleString('zh-CN')
   };
 }
 
-// 生成 Markdown 内容
-function generateMarkdown() {
-  const stats = getDocStats();
-  
-  let content = `# 📊 文档统计与最近更新
-
-> 最后更新：${stats.updateTime}
-
-## 📈 文档概况
-
-- **文档总数**：${stats.totalDocs} 篇
-- **目录总数**：${stats.totalDirs} 个
-`;
-
-  // CI 环境下添加提交统计
-  if (isCI) {
-    const commits = getRecentCommits(30);
-    content += `- **最近提交**：${commits.length} 次\n`;
-  }
-
-  content += `
-### 📁 分类统计
-
-| 分类 | 文档数 |
-|------|--------|
-`;
-
-  for (const [category, count] of Object.entries(stats.categoryStats).sort((a, b) => b[1] - a[1])) {
-    content += `| ${category} | ${count} |\n`;
-  }
-
-  // 只在 CI 环境下生成提交历史
-  if (isCI) {
-    const commits = getRecentCommits(30);
-    content += `
-## 🕐 最近更新
-
-| 日期 | 文件 | 提交者 | 说明 |
-|------|------|--------|------|
-`;
-
-    for (const commit of commits) {
-      if (commit.files.length > 0) {
-        const fileName = path.basename(commit.files[0], '.md');
-        const filePath = commit.files[0];
-        content += `| ${commit.date} | [${fileName}](/${filePath}) | ${commit.author} | ${commit.message} |\n`;
-      }
-    }
-  } else {
-    // 本地环境显示提示
-    content += `
-## 🕐 最近更新
-
-:::tip 本地预览提示
-最近更新记录仅在部署版本中显示。本地开发时不显示提交历史以避免循环提交问题。
-
-查看完整更新历史：[GitHub Commits](https://github.com/zhaoheng666/WTC-Docs/commits/main)
-:::
-`;
-  }
-
-  content += `
-## 🔗 相关链接
-
-- [在线文档](https://zhaoheng666.github.io/WTC-Docs/)
-- [GitHub 仓库](https://github.com/zhaoheng666/WTC-Docs)
-- [查看所有提交](https://github.com/zhaoheng666/WTC-Docs/commits/main)
-
----
-
-*此页面${isCI ? '由 GitHub Actions 自动生成' : '在本地生成（不含提交历史）'}，最后更新：${stats.updateTime}*
-`;
-
-  return content;
-}
 
 // 生成 JSON 数据
 function generateJSON() {
   const stats = getDocStats();
   const commits = isCI ? getRecentCommits(100) : []; // CI 环境获取更多提交
   
+  // 计算贡献者数量
+  const contributors = new Set(commits.map(c => c.author)).size;
+  
   return {
     updateTime: new Date().toISOString(),
     totalDocs: stats.totalDocs,
-    totalDirs: stats.totalDirs,
     categoryStats: stats.categoryStats,
+    contributors: contributors,
     commits: commits.map(commit => ({
       hash: commit.hash,
       date: commit.date,
@@ -199,18 +124,13 @@ function generateJSON() {
 // 主函数
 function main() {
   if (isCI) {
-    console.log('📊 生成完整统计页面（CI 环境）...');
+    console.log('📊 生成完整统计数据（CI 环境）...');
   } else {
-    console.log('📊 生成本地统计页面（不含提交历史）...');
+    console.log('📊 生成本地统计数据（不含提交历史）...');
   }
   
   try {
-    // 生成 Markdown 页面
-    const content = generateMarkdown();
-    fs.writeFileSync(outputFile, content, 'utf8');
-    console.log(`✅ Markdown 页面已生成: ${outputFile}`);
-    
-    // 生成 JSON 数据
+    // 只生成 JSON 数据，不生成 Markdown 文件
     const jsonData = generateJSON();
     fs.writeFileSync(jsonOutputFile, JSON.stringify(jsonData, null, 2), 'utf8');
     console.log(`✅ JSON 数据已生成: ${jsonOutputFile}`);

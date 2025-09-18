@@ -2,7 +2,10 @@
   <div class="stats-container">
     <!-- 最近更新时间线 -->
     <div class="timeline-section">
-      <h2 class="timeline-title">🕐 最近更新</h2>
+      <h2 class="timeline-title">
+        🕐 最近更新
+        <span class="update-time">{{ updateTimeText }}</span>
+      </h2>
       
       <div v-if="!stats.commits || stats.commits.length === 0" class="no-data">
         暂无更新记录
@@ -23,7 +26,7 @@
         </div>
       </div>
       
-      <div class="update-time">{{ updateTimeText }}</div>
+      <div class="section-divider"></div>
     </div>
 
     <!-- 统计卡片 -->
@@ -35,28 +38,30 @@
       </div>
       
       <div class="stat-card">
-        <div class="stat-icon">🔄</div>
-        <div class="stat-value">{{ todayUpdates }}</div>
-        <div class="stat-label">今日更新</div>
+        <div class="stat-icon">👥</div>
+        <div class="stat-value">{{ stats.contributors || 0 }}</div>
+        <div class="stat-label">贡献者</div>
       </div>
       
       <div class="stat-card">
-        <div class="stat-icon">👥</div>
-        <div class="stat-value">{{ contributors }}</div>
-        <div class="stat-label">贡献者</div>
+        <div class="stat-icon">🔄</div>
+        <div class="stat-value">{{ todayUpdates }}</div>
+        <div class="stat-label">今日更新</div>
       </div>
     </div>
 
     <!-- 分类分布 -->
     <div class="category-section">
       <h2>📊 分类分布</h2>
-      <div class="category-grid">
-        <div v-for="[category, count] in sortedCategories" :key="category" class="category-item">
-          <div class="category-name">{{ category }}</div>
+      <div class="category-container">
+        <div v-for="[category, count] in sortedCategories" :key="category" class="category-card">
+          <div class="category-header">
+            <span class="category-name">{{ category }}</span>
+            <span class="category-count">{{ count }}</span>
+          </div>
           <div class="category-bar">
             <div class="category-fill" :style="{width: `${(count / stats.totalDocs) * 100}%`}"></div>
           </div>
-          <div class="category-count">{{ count }} 篇</div>
         </div>
       </div>
     </div>
@@ -69,6 +74,7 @@ import { ref, computed, onMounted } from 'vue'
 const stats = ref({
   totalDocs: 0,
   categoryStats: {},
+  contributors: 0,
   updateTime: null,
   commits: []
 })
@@ -93,11 +99,6 @@ const todayUpdates = computed(() => {
   return stats.value.commits.filter(c => 
     new Date(c.date).toDateString() === today
   ).length
-})
-
-const contributors = computed(() => {
-  if (!stats.value.commits) return 0
-  return new Set(stats.value.commits.map(c => c.author)).size
 })
 
 // 方法
@@ -141,15 +142,7 @@ onMounted(() => {
 .stats-container {
   max-width: 100%;
   padding: 0;
-}
-
-.update-time {
-  color: var(--vp-c-text-3);
-  font-size: 0.85rem;
-  text-align: center;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 1.5rem;
 }
 
 /* 统计卡片 */
@@ -200,27 +193,32 @@ onMounted(() => {
 .category-section h2 {
   font-size: 1.2rem;
   font-weight: 600;
-  margin: 0 0 0.8rem 0;
+  margin: 0 0 1rem 0;
 }
 
-.category-grid {
+.category-container {
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
 }
 
-.category-item {
-  display: grid;
-  grid-template-columns: 100px 1fr 60px;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 0.6rem 0.8rem;
+.category-card {
   background: var(--vp-c-bg-soft);
-  border-radius: 6px;
-  transition: background 0.3s ease;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.3s ease;
 }
 
-.category-item:hover {
-  background: var(--vp-c-bg-soft-up);
+.category-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
 }
 
 .category-name {
@@ -228,24 +226,27 @@ onMounted(() => {
   color: var(--vp-c-text-1);
 }
 
+.category-count {
+  font-weight: 600;
+  color: var(--vp-c-brand);
+  background: var(--vp-c-brand-soft);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
 .category-bar {
-  height: 16px;
+  height: 8px;
   background: var(--vp-c-divider);
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
 }
 
 .category-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--vp-c-brand), var(--vp-c-brand-light));
-  border-radius: 8px;
+  border-radius: 4px;
   transition: width 0.5s ease;
-}
-
-.category-count {
-  text-align: right;
-  color: var(--vp-c-text-2);
-  font-size: 0.9rem;
 }
 
 /* 时间线 */
@@ -253,11 +254,6 @@ onMounted(() => {
   margin-bottom: 1.5rem;
 }
 
-.timeline-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 0 0 0.8rem 0;
-}
 
 .timeline {
   position: relative;
@@ -331,24 +327,35 @@ onMounted(() => {
   color: var(--vp-c-text-3);
 }
 
+.timeline-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.update-time {
+  color: var(--vp-c-text-3);
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin-left: auto;
+}
+
+.section-divider {
+  margin: 1.5rem 0;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
 /* 响应式 */
 @media (max-width: 768px) {
   .stats-grid {
     grid-template-columns: repeat(1, 1fr);
   }
   
-  
-  .category-item {
+  .category-container {
     grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
-  
-  .category-name {
-    font-size: 0.9rem;
-  }
-  
-  .category-count {
-    text-align: left;
   }
 }
 

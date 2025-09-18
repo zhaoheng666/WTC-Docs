@@ -1,7 +1,6 @@
 {
-  "updateTime": "2025-09-18T02:48:59.274Z",
+  "updateTime": "2025-09-18T03:11:45.097Z",
   "totalDocs": 15,
-  "totalDirs": 12,
   "categoryStats": {
     "native": 1,
     "关卡": 1,
@@ -11,5 +10,6 @@
     "故障排查": 1,
     "活动": 1
   },
+  "contributors": 0,
   "commits": []
 }
