@@ -34,31 +34,49 @@ echo -e "${CYAN}📍 当前分支: ${YELLOW}$CURRENT_BRANCH${NC}"
 echo -e "${CYAN}🧹 清理已处理的图片...${NC}"
 
 # 查找所有 Markdown 文件中已被替换为 HTTP 链接的原始图片
-ORIGINAL_IMAGES=$(find . -name "*.md" -type f -exec grep -l "http://localhost:5173/WTC-Docs/assets/" {} \; 2>/dev/null)
+PROCESSED_MDS=$(find . -name "*.md" -type f -exec grep -l "http://localhost:5173/WTC-Docs/assets/" {} \; 2>/dev/null)
 
-if [ -n "$ORIGINAL_IMAGES" ]; then
+if [ -n "$PROCESSED_MDS" ]; then
     TOTAL_DELETED=0
     
-    # 对每个包含处理后图片的 MD 文件，找到并删除其原始图片目录
-    echo "$ORIGINAL_IMAGES" | while read -r md_file; do
+    # 对每个包含处理后图片的 MD 文件，找到并删除其原始图片
+    echo "$PROCESSED_MDS" | while read -r md_file; do
         # 获取 MD 文件的目录
         MD_DIR=$(dirname "$md_file")
-        ASSETS_DIR="$MD_DIR/assets"
         
-        # 如果该目录下有 assets 目录
-        if [ -d "$ASSETS_DIR" ]; then
-            # 检查 MD 文件中是否所有图片都已被处理（替换为 HTTP 链接）
-            LOCAL_REFS=$(grep -E "!\[.*\]\((assets/|\.\.?/.*assets/)" "$md_file" 2>/dev/null | grep -v "http://localhost:5173")
-            
-            if [ -z "$LOCAL_REFS" ]; then
-                # 所有图片都已处理，可以删除原始图片
-                IMAGE_COUNT=$(find "$ASSETS_DIR" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" \) 2>/dev/null | wc -l)
-                
-                if [ "$IMAGE_COUNT" -gt 0 ]; then
-                    echo -e "${CYAN}  清理 $MD_DIR 中的 $IMAGE_COUNT 个原始图片${NC}"
-                    rm -rf "$ASSETS_DIR"
-                    TOTAL_DELETED=$((TOTAL_DELETED + IMAGE_COUNT))
+        # 从 MD 文件中提取所有本地图片引用（未被处理的）
+        # 包括: ![](assets/...) ![](images/...) ![](image/...) ![](xxx.png) 等各种格式
+        LOCAL_IMAGES=$(grep -oE '!\[([^\]]*)\]\(([^)]+)\)' "$md_file" 2>/dev/null | \
+            grep -oE '\]\([^)]+\)' | \
+            sed 's/](\(.*\))/\1/' | \
+            grep -v "^http" | \
+            grep -E '\.(png|jpg|jpeg|gif|webp|svg)' 2>/dev/null)
+        
+        # 从 MD 文件中提取所有已处理的图片（HTTP 链接）
+        PROCESSED_COUNT=$(grep -c "http://localhost:5173/WTC-Docs/assets/" "$md_file" 2>/dev/null || echo "0")
+        
+        # 如果有已处理的图片，且没有本地图片引用了
+        if [ "$PROCESSED_COUNT" -gt 0 ] && [ -z "$LOCAL_IMAGES" ]; then
+            # 查找并删除该目录下所有的原始图片文件
+            # 1. 删除常见的图片目录（assets, images, image, img, pics 等）
+            for img_dir in assets images image img pics pictures; do
+                if [ -d "$MD_DIR/$img_dir" ]; then
+                    IMAGE_COUNT=$(find "$MD_DIR/$img_dir" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" \) 2>/dev/null | wc -l)
+                    if [ "$IMAGE_COUNT" -gt 0 ]; then
+                        echo -e "${CYAN}  删除 $MD_DIR/$img_dir 目录（含 $IMAGE_COUNT 个图片）${NC}"
+                        rm -rf "$MD_DIR/$img_dir"
+                        TOTAL_DELETED=$((TOTAL_DELETED + IMAGE_COUNT))
+                    fi
                 fi
+            done
+            
+            # 2. 删除与 MD 文件同级目录的图片文件
+            SAME_DIR_IMAGES=$(find "$MD_DIR" -maxdepth 1 -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.webp" -o -name "*.svg" \) 2>/dev/null)
+            if [ -n "$SAME_DIR_IMAGES" ]; then
+                SAME_DIR_COUNT=$(echo "$SAME_DIR_IMAGES" | wc -l)
+                echo -e "${CYAN}  删除 $MD_DIR 中的 $SAME_DIR_COUNT 个图片文件${NC}"
+                echo "$SAME_DIR_IMAGES" | xargs rm -f
+                TOTAL_DELETED=$((TOTAL_DELETED + SAME_DIR_COUNT))
             fi
         fi
     done
