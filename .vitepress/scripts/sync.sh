@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# 文档同步脚本
-# 包含：拉取最新、构建测试、自动提交推送
+# 文档同步脚本 - 优化版
+# 流程：检查状态 → 构建测试 → 合并远程 → 确认提交 → 推送监控
 
 # 颜色定义
 RED='\033[0;31m'
@@ -16,13 +16,54 @@ DOCS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 cd "$DOCS_DIR" || exit 1
 
+# 弹窗通知函数（macOS）
+show_dialog() {
+    local title="$1"
+    local message="$2"
+    local buttons="${3:-OK}"
+    
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        osascript -e "display dialog \"$message\" with title \"$title\" buttons {$buttons} default button 1" 2>/dev/null
+        return $?
+    else
+        echo -e "${CYAN}$title: $message${NC}"
+        if [[ "$buttons" == *","* ]]; then
+            read -p "请选择 (y/n): " -n 1 -r
+            echo
+            [[ $REPLY =~ ^[Yy]$ ]]
+            return $?
+        fi
+        return 0
+    fi
+}
+
+# 显示成功通知
+show_success() {
+    local title="$1"
+    local message="$2"
+    
+    # 调用 notify.sh 发送系统通知
+    bash "$SCRIPT_DIR/notify.sh" --title "$title" --message "$message" --type system --sound Glass > /dev/null 2>&1
+    echo -e "${GREEN}✅ $title: $message${NC}"
+}
+
+# 显示错误通知
+show_error() {
+    local title="$1"
+    local message="$2"
+    
+    # 调用 notify.sh 发送系统通知
+    bash "$SCRIPT_DIR/notify.sh" --title "$title" --message "$message" --type system --sound Basso > /dev/null 2>&1
+    echo -e "${RED}❌ $title: $message${NC}"
+}
+
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${CYAN}🔄 开始文档同步...${NC}"
+echo -e "${CYAN}🔄 开始文档同步（优化版）...${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
 # 1. 检查 Git 仓库状态
 if ! git rev-parse --git-dir > /dev/null 2>&1; then
-    echo -e "${RED}❌ 当前目录不是 Git 仓库${NC}"
+    show_error "同步失败" "当前目录不是 Git 仓库"
     exit 1
 fi
 
@@ -30,115 +71,71 @@ fi
 CURRENT_BRANCH=$(git branch --show-current)
 echo -e "${CYAN}📍 当前分支: ${YELLOW}$CURRENT_BRANCH${NC}"
 
-# 2. 暂存所有更改
-echo -e "${CYAN}📦 暂存本地更改...${NC}"
-git add -A
-if [ $? -eq 0 ]; then
-    echo -e "${GREEN}  ✓ 文件已暂存${NC}"
-fi
+# 2. 检查本地是否有更改（包括未跟踪文件）
+echo -e "${CYAN}🔍 检查本地更改...${NC}"
 
-# 3. 检查是否有需要提交的内容
+# 暂存所有更改以便检查
+git add -A
+
+# 检查是否有需要提交的内容
 if git diff --cached --quiet; then
-    echo -e "${YELLOW}⚠️  没有需要提交的更改${NC}"
+    # ========== 场景1：本地无变更 ==========
+    echo -e "${GREEN}  ✓ 本地没有更改${NC}"
     
-    # 仍然尝试拉取远程更新
-    echo -e "${CYAN}📥 检查远程更新...${NC}"
+    # 直接拉取远程最新版本
+    echo -e "${CYAN}📥 拉取远程最新版本...${NC}"
     git fetch origin "$CURRENT_BRANCH" --quiet 2>/dev/null
     
     LOCAL=$(git rev-parse HEAD)
     REMOTE=$(git rev-parse origin/"$CURRENT_BRANCH" 2>/dev/null)
     
     if [ "$LOCAL" != "$REMOTE" ]; then
-        echo -e "${CYAN}正在合并远程更改...${NC}"
-        # 使用 rebase 保持线性历史
+        echo -e "${CYAN}发现远程更新，正在同步...${NC}"
         if git pull --rebase origin "$CURRENT_BRANCH" > /dev/null 2>&1; then
-            echo -e "${GREEN}  ✓ 已同步最新代码（rebase）${NC}"
+            echo -e "${GREEN}  ✓ 已同步最新代码${NC}"
+            show_success "同步完成" "已拉取远程最新版本"
         else
-            # 如果失败，回退到普通 pull
             git rebase --abort > /dev/null 2>&1
             if git pull origin "$CURRENT_BRANCH" --no-edit; then
                 echo -e "${GREEN}  ✓ 已同步最新代码（merge）${NC}"
+                show_success "同步完成" "已拉取远程最新版本"
             else
-                echo -e "${RED}  ✗ 合并失败，请手动处理冲突${NC}"
+                show_error "同步失败" "合并远程代码失败"
                 exit 1
             fi
         fi
     else
         echo -e "${GREEN}  ✓ 已是最新版本${NC}"
+        show_success "同步完成" "本地已是最新版本"
     fi
     
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${GREEN}✅ 文档已是最新状态${NC}"
+    echo -e "${GREEN}✅ 文档同步完成（仅拉取）${NC}"
     exit 0
 fi
 
-# 4. 执行构建测试（可选）
-if [ "$1" != "--skip-build" ]; then
-    echo -e "${CYAN}🔨 执行构建测试...${NC}"
-    if bash .vitepress/scripts/build.sh > /tmp/sync-build.log 2>&1; then
-        echo -e "${GREEN}  ✓ 构建成功${NC}"
-    else
-        echo -e "${RED}  ✗ 构建失败${NC}"
-        echo -e "${YELLOW}查看详细日志：cat /tmp/sync-build.log${NC}"
-        
-        # 询问是否继续
-        read -p "构建失败，是否仍要继续提交？(y/n) " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            echo -e "${YELLOW}已取消同步${NC}"
-            exit 1
-        fi
-    fi
+# ========== 场景2：本地有变更 ==========
+echo -e "${GREEN}  ✓ 检测到本地更改${NC}"
+
+# 3. 执行构建测试
+echo -e "${CYAN}🔨 执行构建测试...${NC}"
+if bash .vitepress/scripts/build.sh > /tmp/sync-build.log 2>&1; then
+    echo -e "${GREEN}  ✓ 构建成功${NC}"
 else
-    echo -e "${YELLOW}  ⏭ 跳过构建测试（使用 --skip-build 参数）${NC}"
-fi
-
-# 5. 生成提交信息
-echo -e "${CYAN}📝 准备提交...${NC}"
-
-# 获取更改的文件列表（只显示 .md 文件，不包含路径）
-CHANGED_MD_FILES=$(git diff --cached --name-only | grep "\.md$" | head -5 | xargs -I {} basename {} .md 2>/dev/null)
-CHANGED_MD_COUNT=$(git diff --cached --name-only | grep "\.md$" | wc -l)
-
-# 获取其他类型更改
-OTHER_CHANGES=$(git diff --cached --name-only | grep -v "\.md$" | wc -l)
-
-# 生成提交信息
-if [ "$CHANGED_MD_COUNT" -gt 0 ]; then
-    # 将文件名转换为逗号分隔的列表
-    FILE_LIST=$(echo "$CHANGED_MD_FILES" | paste -sd ", " -)
+    echo -e "${RED}  ✗ 构建失败${NC}"
+    ERROR_MSG=$(tail -20 /tmp/sync-build.log | head -10)
+    show_error "构建失败" "请查看日志: /tmp/sync-build.log"
     
-    if [ "$CHANGED_MD_COUNT" -gt 5 ]; then
-        # 如果文件太多，显示前5个和总数
-        COMMIT_MSG="docs: 更新 ${FILE_LIST} 等 ${CHANGED_MD_COUNT} 个文档"
-    elif [ "$CHANGED_MD_COUNT" -eq 1 ]; then
-        COMMIT_MSG="docs: 更新 ${FILE_LIST}"
-    else
-        COMMIT_MSG="docs: 更新 ${FILE_LIST}"
-    fi
+    # 显示错误详情
+    echo -e "${RED}错误详情：${NC}"
+    echo "$ERROR_MSG"
     
-    # 如果有其他文件更改，添加说明
-    if [ "$OTHER_CHANGES" -gt 0 ]; then
-        COMMIT_MSG="${COMMIT_MSG} (含配置文件)"
-    fi
-else
-    # 没有 md 文件更改，可能只是配置文件
-    if [ "$OTHER_CHANGES" -gt 0 ]; then
-        COMMIT_MSG="chore: 更新配置文件"
-    else
-        COMMIT_MSG="docs: 更新文档"
-    fi
-fi
-
-# 6. 创建提交
-if git commit -m "$COMMIT_MSG" > /dev/null 2>&1; then
-    echo -e "${GREEN}  ✓ 提交成功: $COMMIT_MSG${NC}"
-else
-    echo -e "${RED}  ✗ 提交失败${NC}"
+    # 重置暂存区
+    git reset HEAD > /dev/null 2>&1
     exit 1
 fi
 
-# 7. 拉取并合并远程更改
+# 4. 拉取远程最新版本并合并
 echo -e "${CYAN}📥 同步远程仓库...${NC}"
 git fetch origin "$CURRENT_BRANCH" --quiet 2>/dev/null
 
@@ -147,157 +144,154 @@ REMOTE=$(git rev-parse origin/"$CURRENT_BRANCH" 2>/dev/null)
 
 if [ "$LOCAL" != "$REMOTE" ]; then
     echo -e "${CYAN}发现远程更改，正在合并...${NC}"
-    # 优先使用 rebase 保持线性历史
+    
+    # 先创建临时提交
+    git commit -m "temp: local changes" > /dev/null 2>&1
+    
+    # 尝试 rebase
     if git pull --rebase origin "$CURRENT_BRANCH" > /dev/null 2>&1; then
         echo -e "${GREEN}  ✓ 合并成功（rebase）${NC}"
+        # 撤销临时提交，恢复暂存状态
+        git reset --soft HEAD~1 > /dev/null 2>&1
     else
-        # 如果 rebase 有冲突，中止并使用普通 merge
+        # rebase 失败，尝试 merge
         git rebase --abort > /dev/null 2>&1
-        if git pull origin "$CURRENT_BRANCH" --no-edit; then
+        
+        if git pull origin "$CURRENT_BRANCH" --no-edit > /dev/null 2>&1; then
             echo -e "${GREEN}  ✓ 合并成功（merge）${NC}"
+            # 撤销临时提交
+            git reset --soft HEAD~1 > /dev/null 2>&1
         else
-            echo -e "${RED}  ✗ 合并失败，请手动处理冲突${NC}"
+            echo -e "${RED}  ✗ 合并失败，存在冲突${NC}"
+            show_error "同步失败" "无法自动合并，请手动处理冲突"
+            
+            # 显示冲突文件
+            echo -e "${RED}冲突文件：${NC}"
+            git diff --name-only --diff-filter=U
             exit 1
         fi
     fi
+else
+    echo -e "${GREEN}  ✓ 本地已包含远程最新内容${NC}"
 fi
 
-# 8. 推送到远程
+# 5. 生成提交信息并显示变更内容
+echo -e "${CYAN}📝 准备提交...${NC}"
+
+# 获取变更统计
+CHANGED_FILES=$(git diff --cached --name-only | wc -l)
+CHANGED_MD=$(git diff --cached --name-only | grep "\.md$" | wc -l)
+CHANGED_OTHER=$((CHANGED_FILES - CHANGED_MD))
+
+# 获取具体变更文件列表
+CHANGED_LIST=$(git diff --cached --name-status | head -10)
+
+# 生成提交信息
+if [ "$CHANGED_MD" -gt 0 ]; then
+    MD_FILES=$(git diff --cached --name-only | grep "\.md$" | head -3 | xargs -I {} basename {} .md | paste -sd ", " -)
+    if [ "$CHANGED_MD" -gt 3 ]; then
+        COMMIT_MSG="docs: 更新 ${MD_FILES} 等 ${CHANGED_MD} 个文档"
+    else
+        COMMIT_MSG="docs: 更新 ${MD_FILES}"
+    fi
+else
+    COMMIT_MSG="chore: 更新配置文件"
+fi
+
+# 弹窗确认提交
+CHANGE_SUMMARY="变更文件: ${CHANGED_FILES} 个\n"
+CHANGE_SUMMARY="${CHANGE_SUMMARY}├─ 文档: ${CHANGED_MD} 个\n"
+CHANGE_SUMMARY="${CHANGE_SUMMARY}└─ 其他: ${CHANGED_OTHER} 个\n\n"
+CHANGE_SUMMARY="${CHANGE_SUMMARY}提交信息: ${COMMIT_MSG}\n\n"
+CHANGE_SUMMARY="${CHANGE_SUMMARY}是否确认提交？"
+
+if ! show_dialog "确认提交" "$CHANGE_SUMMARY" "\"取消\", \"确认\""; then
+    echo -e "${YELLOW}⚠️  用户取消提交${NC}"
+    # 重置暂存区
+    git reset HEAD > /dev/null 2>&1
+    show_success "操作取消" "已取消提交，本地更改保留"
+    exit 0
+fi
+
+# 6. 创建提交
+if git commit -m "$COMMIT_MSG" > /dev/null 2>&1; then
+    echo -e "${GREEN}  ✓ 提交成功: $COMMIT_MSG${NC}"
+else
+    show_error "提交失败" "创建提交失败"
+    exit 1
+fi
+
+# 7. 推送到远程
 echo -e "${CYAN}📤 推送到远程仓库...${NC}"
 if git push origin "$CURRENT_BRANCH"; then
     echo -e "${GREEN}  ✓ 推送成功${NC}"
 else
-    echo -e "${RED}  ✗ 推送失败${NC}"
-    echo -e "${YELLOW}请检查网络连接或仓库权限${NC}"
+    show_error "推送失败" "请检查网络连接或仓库权限"
     exit 1
 fi
 
-# 9. 清理临时文件
-rm -f /tmp/sync-build.log
-
-# 10. 监控 GitHub Actions 部署状态
+# 8. 监控 GitHub Actions 部署状态
 if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${CYAN}⏳ 等待 GitHub Actions 部署...${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     
-    # 设置 jq 命令
-    JQ_CMD="jq"  # 假设系统已安装 jq 或 npx jq 可用
-    if ! command -v jq &> /dev/null; then
-        JQ_CMD="npx jq"
-    fi
-    
     # 等待 Actions 启动
     sleep 5
-    
-    # 获取仓库信息
-    REPO_INFO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
     
     # 获取当前提交的 SHA
     COMMIT_SHA=$(git rev-parse HEAD)
     
-    # 最多等待 5 分钟（30次检查，每次10秒）
+    # 监控部署（最多等待 5 分钟）
     MAX_CHECKS=30
     CHECK_COUNT=0
-    DEPLOYMENT_STATUS="pending"
     
-    while [ $CHECK_COUNT -lt $MAX_CHECKS ] && [ "$DEPLOYMENT_STATUS" != "success" ]; do
+    while [ $CHECK_COUNT -lt $MAX_CHECKS ]; do
         CHECK_COUNT=$((CHECK_COUNT + 1))
         
-        # 获取最新的 Actions 运行
-        LATEST_RUN=$(gh run list --limit 1 --json databaseId,status,conclusion,name,headSha 2>/dev/null)
+        # 获取最新的 Actions 运行状态
+        RUN_STATUS=$(gh run list --limit 1 --json status,conclusion,headSha | \
+            jq -r --arg sha "$COMMIT_SHA" '.[] | select(.headSha == $sha) | .status' 2>/dev/null)
         
-        if [ -n "$LATEST_RUN" ] && [ "$LATEST_RUN" != "[]" ]; then
-            RUN_SHA=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].headSha // ""')
-            STATUS=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].status // ""')
-            CONCLUSION=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].conclusion // ""')
-            NAME=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].name // ""')
-            RUN_ID=$(echo "$LATEST_RUN" | $JQ_CMD -r '.[0].databaseId // ""')
-            
-            # 调试：显示 NAME 变量内容（如果包含特殊字符）
-            if [[ "$NAME" =~ [\`\"\'\$\|\\] ]]; then
-                echo -e "${YELLOW}  ⚠️ Actions 名称包含特殊字符: $NAME${NC}"
-            fi
-            
-            # 检查是否是当前提交的 Actions
-            if [ "$RUN_SHA" = "$COMMIT_SHA" ]; then
-                if [ "$STATUS" = "queued" ]; then
-                    echo -ne "\r${YELLOW}⏳ Actions 排队中... (检查 $CHECK_COUNT/$MAX_CHECKS)${NC}"
-                elif [ "$STATUS" = "in_progress" ]; then
-                    echo -ne "\r${CYAN}🔄 Actions 运行中... (检查 $CHECK_COUNT/$MAX_CHECKS)${NC}"
-                elif [ "$STATUS" = "completed" ]; then
+        if [ -n "$RUN_STATUS" ]; then
+            case "$RUN_STATUS" in
+                "completed")
+                    CONCLUSION=$(gh run list --limit 1 --json conclusion,headSha | \
+                        jq -r --arg sha "$COMMIT_SHA" '.[] | select(.headSha == $sha) | .conclusion' 2>/dev/null)
+                    
                     if [ "$CONCLUSION" = "success" ]; then
-                        DEPLOYMENT_STATUS="success"
-                        echo -e "\n${GREEN}✅ Actions 部署成功！${NC}"
-                        echo -e "${GREEN}查看: https://github.com/$REPO_INFO/actions/runs/$RUN_ID${NC}"
-                        echo -e "${CYAN}部署状态已确认为: ${GREEN}$DEPLOYMENT_STATUS${NC}"
-                        break
-                    elif [ "$CONCLUSION" = "failure" ]; then
-                        echo -e "\n${RED}❌ Actions 部署失败！${NC}"
-                        echo -e "${RED}查看: https://github.com/$REPO_INFO/actions/runs/$RUN_ID${NC}"
-                        
-                        # 检查失败详情
-                        FAILED_JOBS=$(gh run view "$RUN_ID" --json jobs -q '.jobs[] | select(.conclusion == "failure") | .name' 2>/dev/null)
-                        if [ -n "$FAILED_JOBS" ]; then
-                            echo -e "${YELLOW}失败的任务：${NC}"
-                            echo "$FAILED_JOBS" | while read -r job; do
-                                echo -e "  • $job"
-                            done
-                        fi
-                        
-                        # 发送失败通知（使用弹窗，确保引起注意）
-                        SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-                        if [ -f "$SCRIPT_DIR/notify.sh" ]; then
-                            bash "$SCRIPT_DIR/notify.sh" \
-                                --title "❌ 部署失败" \
-                                --message "GitHub Actions 部署失败，请检查错误日志" \
-                                --type dialog \
-                                --sound Basso
-                        fi
-                        
-                        exit 1
+                        echo -e "\n${GREEN}✅ GitHub Actions 部署成功！${NC}"
+                        show_success "部署成功" "文档已成功部署到 GitHub Pages"
+                    else
+                        echo -e "\n${RED}❌ GitHub Actions 部署失败！${NC}"
+                        show_error "部署失败" "请检查 GitHub Actions 日志"
                     fi
-                fi
-            else
-                echo -ne "\r${CYAN}⏳ 等待 Actions 启动... (检查 $CHECK_COUNT/$MAX_CHECKS)${NC}"
-            fi
+                    break
+                    ;;
+                "in_progress"|"queued")
+                    echo -ne "\r${CYAN}⏳ Actions 运行中... (${CHECK_COUNT}/${MAX_CHECKS})${NC}"
+                    sleep 10
+                    ;;
+                *)
+                    sleep 10
+                    ;;
+            esac
+        else
+            echo -ne "\r${YELLOW}⏳ 等待 Actions 启动... (${CHECK_COUNT}/${MAX_CHECKS})${NC}"
+            sleep 10
         fi
-        
-        # 等待10秒后再检查
-        sleep 10
     done
     
-    if [ "$DEPLOYMENT_STATUS" = "success" ]; then
-        echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo -e "${GREEN}✅ 同步操作完成${NC}"
-        echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        
-        # 发送成功通知（使用通用通知工具）
-        SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-        if [ -f "$SCRIPT_DIR/notify.sh" ]; then
-            echo -e "${CYAN}🔔 发送部署成功通知...${NC}"
-            # Actions 构建成功使用系统通知
-            bash "$SCRIPT_DIR/notify.sh" \
-                --title "🎉 同步完成" \
-                --message "文档已成功部署到 GitHub Pages" \
-                --subtitle "${NAME:-GitHub Actions}" \
-                --type system \
-                --sound Glass
-        fi
-        
-        # 在终端显示醒目提示
-        echo -e "\n${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo -e "${GREEN}     🎉 部署成功！文档已发布到 GitHub Pages     ${NC}"
-        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
-    else
-        echo -e "\n${YELLOW}⚠️  超时：未能确认部署状态${NC}"
-        echo -e "${YELLOW}请手动检查: https://github.com/$REPO_INFO/actions${NC}"
+    if [ $CHECK_COUNT -ge $MAX_CHECKS ]; then
+        echo -e "\n${YELLOW}⚠️ 超时：请手动检查 GitHub Actions 状态${NC}"
     fi
 else
-    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${GREEN}✅ 文档已推送${NC}"
-    echo -e "${YELLOW}提示：运行 'npm run init' 配置 GitHub Actions 监控${NC}"
-    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${YELLOW}⚠️ 未安装 gh 命令行工具，跳过部署监控${NC}"
 fi
 
-exit 0
+# 9. 清理临时文件
+rm -f /tmp/sync-build.log
+
+echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}✅ 文档同步完成！${NC}"
+show_success "同步完成" "文档已成功同步并推送"

@@ -7,7 +7,7 @@
     "init": "bash .vitepress/scripts/init.sh",
     "dev": "vitepress dev",
     "build": "bash .vitepress/scripts/build.sh",
-    "sync": "bash .vitepress/scripts/sync-new.sh",
+    "sync": "bash .vitepress/scripts/sync.sh",
     "status": "bash .vitepress/scripts/status.sh"
   },
   "devDependencies": {
