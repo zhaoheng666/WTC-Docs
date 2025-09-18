@@ -304,6 +304,17 @@ if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
                                 echo -e "  • $job"
                             done
                         fi
+                        
+                        # 发送失败通知（使用弹窗，确保引起注意）
+                        SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+                        if [ -f "$SCRIPT_DIR/notify.sh" ]; then
+                            bash "$SCRIPT_DIR/notify.sh" \
+                                --title "❌ 部署失败" \
+                                --message "GitHub Actions 部署失败，请检查错误日志" \
+                                --type dialog \
+                                --sound Basso
+                        fi
+                        
                         exit 1
                     fi
                 fi
@@ -321,45 +332,23 @@ if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
         echo -e "${GREEN}✅ 同步操作完成${NC}"
         echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
         
-        # 发送成功通知
-        if [ "$(uname)" = "Darwin" ]; then
-            echo -e "${CYAN}🔔 发送系统通知...${NC}"
-            
-            # 对 NAME 变量进行转义，移除可能导致问题的特殊字符
-            SAFE_NAME=$(echo "$NAME" | sed 's/[`"\\$]/\\&/g' | tr -d '\n\r')
-            
-            # 方法1：使用 osascript 通过系统事件发送通知
-            NOTIFY_RESULT=$(osascript -e "display notification \"文档已成功部署到 GitHub Pages\" with title \"同步完成\" subtitle \"${SAFE_NAME:-GitHub Actions}\" sound name \"Glass\"" 2>&1)
-            if [ $? -eq 0 ]; then
-                echo -e "${GREEN}  ✓ 通知已发送 (osascript)${NC}"
-            else
-                echo -e "${YELLOW}  ⚠️ osascript 失败: $NOTIFY_RESULT${NC}"
-                # 如果失败，尝试不带 subtitle 的简单版本
-                osascript -e 'display notification "文档已成功部署到 GitHub Pages" with title "同步完成" sound name "Glass"' 2>/dev/null
-            fi
-            
-            # 方法2：使用 terminal-notifier（更可靠）
-            if command -v terminal-notifier &> /dev/null; then
-                # 使用简单的消息，避免特殊字符问题
-                terminal-notifier -title "🎉 同步完成" -message "文档已成功部署到 GitHub Pages" -sound default -ignoreDnD
-                echo -e "${GREEN}  ✓ 通知已发送 (terminal-notifier)${NC}"
-            fi
-            
-            # 方法3：使用 AppleScript 显示对话框（确保能看到）
-            osascript <<EOF 2>/dev/null &
-tell application "System Events"
-    display dialog "✅ 文档已成功部署到 GitHub Pages" with title "同步完成" buttons {"OK"} default button 1 giving up after 5
-end tell
-EOF
-            
-            # 方法4：播放系统提示音
-            afplay /System/Library/Sounds/Glass.aiff 2>/dev/null &
-            
-            # 方法5：在终端显示大字提醒
-            echo -e "\n${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-            echo -e "${GREEN}     🎉 部署成功！文档已发布到 GitHub Pages     ${NC}"
-            echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+        # 发送成功通知（使用通用通知工具）
+        SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+        if [ -f "$SCRIPT_DIR/notify.sh" ]; then
+            echo -e "${CYAN}🔔 发送部署成功通知...${NC}"
+            # Actions 构建成功使用系统通知
+            bash "$SCRIPT_DIR/notify.sh" \
+                --title "🎉 同步完成" \
+                --message "文档已成功部署到 GitHub Pages" \
+                --subtitle "${NAME:-GitHub Actions}" \
+                --type system \
+                --sound Glass
         fi
+        
+        # 在终端显示醒目提示
+        echo -e "\n${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${GREEN}     🎉 部署成功！文档已发布到 GitHub Pages     ${NC}"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
     else
         echo -e "\n${YELLOW}⚠️  超时：未能确认部署状态${NC}"
         echo -e "${YELLOW}请手动检查: https://github.com/$REPO_INFO/actions${NC}"
