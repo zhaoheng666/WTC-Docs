@@ -19,10 +19,8 @@ const manualSection = [
     text: '快速链接',
     collapsed: false,
     items: [
-      { text: '程序总表', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=0#gid=0' },
       { text: 'Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
       { text: '程序排期', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=130371487#gid=130371487' },
-      { text: '发版记录', link: 'https://docs.google.com/document/d/1KmLcqFHg5FKiYZ0K7poLMHUl7054ZoXx7YEg3SRGtx0/edit?tab=t.0' },
       {
         text: 'A版反馈',
         collapsed: true,
@@ -259,7 +257,7 @@ export function generateSidebar() {
 
   // 准备成员部分（作为独立的 section）
   const memberSection = memberDirectory ? [{
-    text: '团队成员',
+    text: '成员文档',
     collapsed: false,
     items: memberDirectory.items || []
   }] : []
