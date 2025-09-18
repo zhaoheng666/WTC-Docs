@@ -285,6 +285,7 @@ if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
                         DEPLOYMENT_STATUS="success"
                         echo -e "\n${GREEN}✅ Actions 部署成功！${NC}"
                         echo -e "${GREEN}查看: https://github.com/$REPO_INFO/actions/runs/$RUN_ID${NC}"
+                        echo -e "${CYAN}部署状态已确认为: ${GREEN}$DEPLOYMENT_STATUS${NC}"
                         break
                     elif [ "$CONCLUSION" = "failure" ]; then
                         echo -e "\n${RED}❌ Actions 部署失败！${NC}"
@@ -317,7 +318,25 @@ if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
         
         # 发送成功通知
         if [ "$(uname)" = "Darwin" ]; then
-            osascript -e "display notification \"文档已成功部署到 GitHub Pages\" with title \"同步完成\" subtitle \"$NAME\" sound name \"Glass\""
+            echo -e "${CYAN}🔔 发送系统通知...${NC}"
+            
+            # 尝试使用 osascript 发送通知
+            if osascript -e "display notification \"文档已成功部署到 GitHub Pages\" with title \"同步完成\" subtitle \"$NAME\" sound name \"Glass\"" 2>/dev/null; then
+                echo -e "${GREEN}  ✓ 通知已发送${NC}"
+            else
+                # 如果 osascript 失败，尝试使用 terminal-notifier（如果安装了）
+                if command -v terminal-notifier &> /dev/null; then
+                    terminal-notifier -title "同步完成" -subtitle "$NAME" -message "文档已成功部署到 GitHub Pages" -sound Glass
+                    echo -e "${GREEN}  ✓ 通知已发送 (terminal-notifier)${NC}"
+                else
+                    echo -e "${YELLOW}  ⚠️ 无法发送系统通知${NC}"
+                    echo -e "${YELLOW}    提示：检查系统偏好设置中终端的通知权限${NC}"
+                    echo -e "${YELLOW}    或安装 terminal-notifier: brew install terminal-notifier${NC}"
+                fi
+            fi
+            
+            # 播放系统提示音作为备用提醒
+            afplay /System/Library/Sounds/Glass.aiff 2>/dev/null &
         fi
     else
         echo -e "\n${YELLOW}⚠️  超时：未能确认部署状态${NC}"
