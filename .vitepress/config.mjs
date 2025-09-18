@@ -41,6 +41,8 @@ export default defineConfig({
 
   // 配置 head 标签，添加 CSP 以允许远程图片
   head: [
+    // Favicon 配置 - 使用骰子图标
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/WTC-Docs/dice-favicon.svg' }],
     // 允许加载远程图片
     [
       'meta',
