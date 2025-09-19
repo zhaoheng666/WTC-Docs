@@ -146,13 +146,26 @@ else
     
     # 显示错误信息
     echo -e "${YELLOW}错误详情：${NC}"
-    grep -E "(Error:|ERROR|Failed|found dead link|missing|not found)" "$BUILD_LOG" | while read -r line; do
-        echo -e "${RED}  • $line${NC}"
-    done
+    
+    # 先尝试提取特定的错误行
+    ERROR_LINES=$(grep -E "(Error:|ERROR|Failed|found dead link|missing|not found|✖|×)" "$BUILD_LOG" 2>/dev/null)
+    
+    if [ -n "$ERROR_LINES" ]; then
+        echo "$ERROR_LINES" | while read -r line; do
+            echo -e "${RED}  • $line${NC}"
+        done
+    else
+        # 如果没有特定错误关键词，显示最后20行日志
+        echo -e "${YELLOW}构建日志（最后20行）：${NC}"
+        tail -20 "$BUILD_LOG" | while read -r line; do
+            echo -e "${RED}  $line${NC}"
+        done
+    fi
     
     echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${YELLOW}💡 提示：完整日志已保存到 $BUILD_LOG${NC}"
     echo -e "${YELLOW}💡 提示：使用 'npm run dev' 在开发模式下调试${NC}"
     
-    rm -f "$BUILD_LOG"
+    # 保留日志文件用于调试，不删除
     exit 1
 fi
