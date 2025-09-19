@@ -24,12 +24,10 @@ export default defineConfig({
   markdown: {
     // 配置语法高亮
     languages: [
-      // 添加对 Objective-C, plist, shell 的支持
-      // VitePress 默认支持的语言已经很多，这些警告通常可以忽略
-      // 如果确实需要，可以安装额外的语言包
+      // VitePress 默认支持的语言已经很多，如果确实需要，可以安装额外的语言包
     ],
     // 代码块的默认语言
-    defaultHighlightLang: 'txt',
+    defaultHighlightLang: 'bash',
     // 允许在 markdown 中使用 HTML
     html: true,
     // 配置图片处理
@@ -42,7 +40,7 @@ export default defineConfig({
   // 配置 head 标签，添加 CSP 以允许远程图片
   head: [
     // Favicon 配置 - 使用骰子图标
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/WTC-Docs/dice-favicon.svg' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/WTC-Docs/favicon.svg' }],
     // 允许加载远程图片
     [
       'meta',
@@ -60,11 +58,21 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '团队', link: '/团队' },
       { text: '程序总表', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=0#gid=0' },
-      { text: '发版记录', link: 'https://docs.google.com/document/d/1KmLcqFHg5FKiYZ0K7poLMHUl7054ZoXx7YEg3SRGtx0/edit?tab=t.0' },
+
+      {
+        text: '发版',
+        items: [
+          { text: '发版记录', link: 'https://docs.google.com/document/d/1KmLcqFHg5FKiYZ0K7poLMHUl7054ZoXx7YEg3SRGtx0/edit?tab=t.0' },
+          { text: 'Jenkins', link: 'http://39.106.57.54:42453/view/debug/job/Classic_Debug_deploy/' },
+          { text: 'JIRA', link: 'http://39.106.57.54:42456/browse' },
+          { text: '测试平台', link: 'http://39.106.57.54:42457/' },
+          { text: 'QA 工具', link: 'https://slots-team-test-server-v0.me2zengame.com/qa.html' },
+        ]
+      },
       {
         text: '更多',
         items: [
-          { text: 'Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
+          { text: 'VitePress 文档', link: 'https://vitepress.qzxdp.cn/reference/frontmatter-config.html' },
         ]
       }
     ],
