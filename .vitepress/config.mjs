@@ -84,6 +84,8 @@ export default defineConfig({
     search: {
       provider: 'local',
       options: {
+        // 显示详细搜索结果（包含内容摘要）
+        detailedView: true,
         // 搜索选项
         _render(src, env, md) {
           const html = md.render(src, env)

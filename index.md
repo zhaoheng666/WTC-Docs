@@ -30,7 +30,7 @@ features:
   - icon: 🎰
     title: 关卡
     details: 各种游戏关卡的详细文档
-    link: /关卡/SlotAction
+    link: /关卡/
 
   - icon: 🎯
     title: 活动
