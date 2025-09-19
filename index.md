@@ -15,7 +15,7 @@ hero:
       link: /README
     - theme: alt
       text: 最近更新
-      link: /其他/隐藏/最近更新
+      link: /最近更新
   image:                   # 图片配置（可选）
       src: /icon1.png        # 图片路径
       alt: "图片说明"        # 替代文本
@@ -40,7 +40,7 @@ features:
   - icon: 🔧
     title: 工具
     details: VSCode 环境和工具使用
-    link: /工具/vscode/vscode环境工具开发规范
+    link: /工具/
 
   - icon: 📡
     title: 协议
@@ -50,7 +50,7 @@ features:
   - icon: 🐛
     title: 故障排查
     details: 常见问题解决方案
-    link: /故障排查/vscode-rollup-arm64-issue
+    link: /故障排查/
 
   - icon: 🚀
     title: 构建进度
@@ -60,7 +60,7 @@ features:
   - icon: 🕐
     title: 最近更新
     details: 查看文档更新历史和统计
-    link: /其他/隐藏/最近更新
+    link: /最近更新
 
   - icon: 🌐
     title: 在线文档
