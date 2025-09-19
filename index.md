@@ -52,7 +52,7 @@ features:
     details: 常见问题解决方案
     link: /故障排查/vscode-rollup-arm64-issue
 
-  - icon: 📚
+  - icon: 🚀
     title: 构建进度
     details: Github Actions 构建状态
     link: https://github.com/zhaoheng666/WTC-Docs/actions/workflows/deploy.yml
@@ -61,6 +61,11 @@ features:
     title: 最近更新
     details: 查看文档更新历史和统计
     link: /其他/隐藏/最近更新
+
+  - icon: 🌐
+    title: 在线文档
+    details: 访问在线文档查看详细内容
+    link: https://zhaoheng666.github.io/WTC-Docs/
 ---
 ## 🔍 快捷操作
 
@@ -69,10 +74,3 @@ features:
 使用 `Cmd/Ctrl + K` 快速搜索文档
 
 </div>
-
-## 🔗 外部链接
-
-- [🌐 在线文档](https://zhaoheng666.github.io/WTC-Docs/)
-- [💻 GitHub 仓库](https://github.com/zhaoheng666/WTC-Docs)
-- [🚀 部署状态](https://github.com/zhaoheng666/WTC-Docs/actions/workflows/deploy.yml) - 查看 GitHub Actions 构建状态
-- [VitePress 中文网](https://vitepress.qzxdp.cn/reference/frontmatter-config.html)
