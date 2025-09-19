@@ -22,6 +22,9 @@ hero:
       # 或支持主题切换：
       # light: /logo-light.png
       # dark: /logo-dark.png
+  # navbar:false    # 禁用导航栏
+  # sidebar: auto   # 自动侧边栏
+  # editLink: true  # 启用编辑链接
 
 features:
   - icon: 🎰
@@ -59,7 +62,6 @@ features:
     details: 查看文档更新历史和统计
     link: /其他/隐藏/最近更新
 ---
-
 ## 🔍 快捷操作
 
 <div class="tip custom-block" style="padding-top: 8px">
@@ -73,3 +75,4 @@ features:
 - [🌐 在线文档](https://zhaoheng666.github.io/WTC-Docs/)
 - [💻 GitHub 仓库](https://github.com/zhaoheng666/WTC-Docs)
 - [🚀 部署状态](https://github.com/zhaoheng666/WTC-Docs/actions/workflows/deploy.yml) - 查看 GitHub Actions 构建状态
+- [VitePress 中文网](https://vitepress.qzxdp.cn/reference/frontmatter-config.html)

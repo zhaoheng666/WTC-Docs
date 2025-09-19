@@ -1,34 +1,7 @@
 <template>
   <div class="stats-container">
-    <!-- 最近更新时间线 -->
-    <div class="timeline-section">
-      <h2 class="timeline-title">
-        🕐 最近更新
-        <span class="update-time">{{ updateTimeText }}</span>
-      </h2>
-      
-      <div v-if="!stats.commits || stats.commits.length === 0" class="no-data">
-        暂无更新记录
-      </div>
-      
-      <div v-else class="timeline">
-        <div v-for="commit in stats.commits.slice(0, 30)" :key="commit.hash" class="timeline-item">
-          <div class="timeline-date">{{ formatDate(commit.date) }}</div>
-          <div class="timeline-content">
-            <div class="timeline-file">
-              {{ getFileName(commit.files[0]) }}
-            </div>
-            <div class="timeline-meta">
-              <span class="timeline-author">👤 {{ commit.author }}</span>
-              <span class="timeline-message">{{ commit.message }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="section-divider"></div>
-    </div>
-
+    <div class="section-divider"></div>
+    
     <!-- 统计卡片 -->
     <div class="stats-grid">
       <div class="stat-card">
@@ -66,6 +39,33 @@
               <span class="contributor-commits">{{ contributor.commits }} 次提交</span>
               <span class="dot">·</span>
               <span class="contributor-date">{{ formatDate(contributor.lastCommit) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 最近更新时间线 -->
+    <div class="timeline-section">
+      <h2 class="timeline-title">
+        🕐 最近更新
+        <span class="update-time">{{ updateTimeText }}</span>
+      </h2>
+      
+      <div v-if="!stats.commits || stats.commits.length === 0" class="no-data">
+        暂无更新记录
+      </div>
+      
+      <div v-else class="timeline">
+        <div v-for="commit in stats.commits.slice(0, 10)" :key="commit.hash" class="timeline-item">
+          <div class="timeline-date">{{ formatDate(commit.date) }}</div>
+          <div class="timeline-content">
+            <div class="timeline-file">
+              {{ getFileName(commit.files[0]) }}
+            </div>
+            <div class="timeline-meta">
+              <span class="timeline-author">👤 {{ commit.author }}</span>
+              <span class="timeline-message">{{ commit.message }}</span>
             </div>
           </div>
         </div>
