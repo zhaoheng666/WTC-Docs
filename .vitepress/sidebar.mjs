@@ -13,6 +13,8 @@ const manualSection = [
       { text: '📚 概览', link: '/README' },
       { text: '🚀 快速开始', link: '/快速开始' },
       { text: '🕐 最近更新', link: '/最近更新' },
+      { text: '📖 WTC-docs 技术文档', link: '/技术文档' },
+      { text: '📋 工作规范', link: '/工作规范' },
     ]
   },
   {
@@ -85,6 +87,8 @@ const ignoreList = [
   '快速开始.md',
   '团队.md',
   '最近更新.md',
+  '技术文档.md',
+  '工作规范.md',
 ]
 
 // 检查文件或目录是否应该被忽略
