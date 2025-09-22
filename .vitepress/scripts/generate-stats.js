@@ -26,11 +26,11 @@ function getRecentCommits(limit = 30) {
       `git log --pretty=format:"${format}" --name-only --diff-filter=AM -- "*.md" | head -300`,
       { cwd: docsDir, encoding: 'utf8' }
     );
-    
+
     const commits = [];
     const lines = gitLog.split('\n');
     let currentCommit = null;
-    
+
     for (const line of lines) {
       if (line.includes('|')) {
         // 这是提交信息行
@@ -50,7 +50,44 @@ function getRecentCommits(limit = 30) {
         }
       }
     }
-    
+
+    // 在 CI 环境中，确保包含当前正在部署的提交
+    // GitHub Actions 的问题是：stats.json 在构建时生成，但此时最新提交还未完全部署
+    // 所以需要特殊处理以确保显示的是实时信息
+    if (process.env.GITHUB_ACTIONS === 'true' && process.env.CURRENT_COMMIT_HASH) {
+      // 检查第一个提交是否就是当前提交
+      if (commits.length === 0 || !commits[0].hash.startsWith(process.env.CURRENT_COMMIT_HASH)) {
+        // 获取当前提交的文件变更
+        let changedFiles = [];
+        try {
+          const filesOutput = execSync(
+            `git diff-tree --no-commit-id --name-only -r HEAD -- "*.md"`,
+            { cwd: docsDir, encoding: 'utf8' }
+          ).trim();
+          if (filesOutput) {
+            changedFiles = filesOutput.split('\n').filter(f => f.endsWith('.md'));
+          }
+        } catch (e) {
+          // 如果获取失败，至少记录这是一次提交
+          changedFiles = ['文档更新'];
+        }
+
+        // 添加当前提交到列表开头
+        const currentCommitInfo = {
+          hash: process.env.CURRENT_COMMIT_HASH || 'unknown',
+          date: new Date().toISOString(),
+          author: process.env.CURRENT_COMMIT_AUTHOR || 'unknown',
+          message: process.env.CURRENT_COMMIT_MSG || '文档更新',
+          files: changedFiles
+        };
+
+        // 确保不重复添加
+        if (!commits[0] || commits[0].hash !== currentCommitInfo.hash) {
+          commits.unshift(currentCommitInfo);
+        }
+      }
+    }
+
     return commits.slice(0, limit);
   } catch (error) {
     console.error('获取提交记录失败:', error.message);
