@@ -105,18 +105,10 @@ if [ -f ".vitepress/scripts/image-processor.js" ]; then
     fi
 fi
 
-# 1. 确保符号链接存在（用于编辑器预览）
-if [ ! -L "images" ] && [ -d "public/images" ]; then
-    ln -s public/images images 2>/dev/null
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}  ✓ 创建图片符号链接${NC}"
-    fi
-fi
-
-# 2. 跳过统计生成（本地不生成，仅 CI 生成）
+# 1. 跳过统计生成（本地不生成，仅 CI 生成）
 echo -e "${GREEN}  ✓ 跳过统计生成（仅在 CI 环境生成）${NC}"
 
-# 3. 执行构建
+# 2. 执行构建
 echo -e "${CYAN}🔨 执行 VitePress 构建...${NC}"
 BUILD_LOG="/tmp/vitepress-build.log"
 
