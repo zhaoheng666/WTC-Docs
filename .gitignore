@@ -63,7 +63,3 @@ lerna-debug.log*
 # stats.template.json 是模板文件，需要提交
 public/stats.json
 !public/stats.template.json
-
-# 图片符号链接（编辑器预览用）
-# 注释掉，我们要提交这个符号链接
-# images
