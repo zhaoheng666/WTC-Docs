@@ -11,7 +11,7 @@
 - **框架**: Wails v2.10.2
 - **依赖**:
 
-  - ​`howett.net/plist` - Plist 文件解析
+  - `howett.net/plist` - Plist 文件解析
   - Wails runtime - 文件对话框、系统集成
 
 ### 前端 (Vue 3 + TypeScript)
@@ -25,24 +25,24 @@
 
 ### 核心功能
 
-✅ **Plist 文件解析**: 支持 TexturePacker 格式的 plist 文件  
-✅ **Frame 提取**: 从图集中正确提取 frame（支持旋转和裁剪）  
-✅ **CCB 文件生成**: 智能模板替换，支持多种 CCB 类型  
+✅ **Plist 文件解析**: 支持 TexturePacker 格式的 plist 文件
+✅ **Frame 提取**: 从图集中正确提取 frame（支持旋转和裁剪）
+✅ **CCB 文件生成**: 智能模板替换，支持多种 CCB 类型
 ✅ **模板目录选择**: 动态扫描和选择 CCB 模板
 
 ### 用户界面
 
-✅ **中文界面**: 保持与原版一致的中文用户体验  
-✅ **文件选择**: 图形化文件和目录选择对话框  
-✅ **实时预览**: Frame 预览图显示  
-✅ **进度显示**: 批量生成时的进度条和状态提示  
+✅ **中文界面**: 保持与原版一致的中文用户体验
+✅ **文件选择**: 图形化文件和目录选择对话框
+✅ **实时预览**: Frame 预览图显示
+✅ **进度显示**: 批量生成时的进度条和状态提示
 ✅ **错误处理**: 完善的错误提示和用户反馈
 
 ### 高级功能
 
-✅ **命令行支持**: 支持 `--template` 参数指定模板目录  
-✅ **智能推断**: 自动从文件路径推断资源名称  
-✅ **模板扫描**: 动态扫描可用的 CCB 模板类型  
+✅ **命令行支持**: 支持 `--template` 参数指定模板目录
+✅ **智能推断**: 自动从文件路径推断资源名称
+✅ **模板扫描**: 动态扫描可用的 CCB 模板类型
 ✅ **批量处理**: 支持同时生成多个 CCB 文件
 
 ## 项目结构
@@ -84,9 +84,9 @@ wails build
 1. **GUI 模式**: 双击 `createSymbols.app` 启动
 2. **命令行模式**:
 
-    ```bash
-    ./createSymbols.app --template /path/to/templates
-    ```
+   ```bash
+   ./createSymbols.app --template /path/to/templates
+   ```
 
 ## 优势对比
 
@@ -165,13 +165,13 @@ open -a createSymbols.app --args --template "/path/to/templates" "/path/to/file.
 
 ## 参数说明
 
-### `--template` 或 `-t`​
+### `--template` 或 `-t`
 
 指定 CCB 模板目录路径，该目录应包含以下格式的文件：
 
-- ​`template_res_name_symbol_batch_normal.ccb`​
-- ​`template_res_name_symbol_batch_link.ccb`​
-- ​`template_res_name_symbol_batch_jackpot.ccb`​
+- `template_res_name_symbol_batch_normal.ccb`
+- `template_res_name_symbol_batch_link.ccb`
+- `template_res_name_symbol_batch_jackpot.ccb`
 - 等等
 
 默认模板目录：
@@ -180,4 +180,6 @@ open -a createSymbols.app --args --template "/path/to/templates" "/path/to/file.
 /Users/ghost/work/WorldTourCasinoResource/PlugIns/tools/themeA-B/Resources/template_res_name/reels/symbol
 ```
 
-‍
+## 问题排查
+
+[Wails 重构 CCB 生成工具-问题排查记录](/故障排查/Wails%20重构%20CCB%20生成工具-问题排查记录)

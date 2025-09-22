@@ -9,13 +9,17 @@ const { URL } = require('url');
 
 const BASE_URL = process.env.GITHUB_ACTIONS ? 'https://zhaoheng666.github.io/WTC-Docs' : 'http://localhost:5173/WTC-Docs';
 const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../public/assets');
-const IMAGE_MANIFEST = path.join(__dirname, '../../public/image-manifest.json');
 
-class ImageProcessor {
+class ImageProcessorV2 {
   constructor() {
-    this.imageMap = this.loadImageManifest();
     this.processedImages = new Set();
     this.ensureAssetsDirectory();
+    this.stats = {
+      filesModified: 0,
+      imagesDownloaded: 0,
+      imagesProcessed: 0,
+      imagesCleaned: 0
+    };
   }
 
   ensureAssetsDirectory() {
@@ -25,46 +29,35 @@ class ImageProcessor {
     }
   }
 
-  loadImageManifest() {
-    if (fs.existsSync(IMAGE_MANIFEST)) {
-      try {
-        return JSON.parse(fs.readFileSync(IMAGE_MANIFEST, 'utf8'));
-      } catch (e) {
-        console.warn('⚠ Failed to load image manifest, creating new one');
+  // 生成基于文件路径和内容的唯一图片名
+  generateUniqueImageName(mdFilePath, originalUrl) {
+    const relativePath = path.relative(process.cwd(), mdFilePath);
+    // 将路径转换为安全的文件名格式
+    const safePath = relativePath
+      .replace(/\//g, '_')
+      .replace(/\\/g, '_')
+      .replace(/\.md$/, '');
+
+    // 从 URL 或路径中提取原始扩展名
+    let ext = '.png';
+    try {
+      const urlPath = originalUrl.startsWith('http') ? new URL(originalUrl).pathname : originalUrl;
+      const originalExt = path.extname(urlPath).toLowerCase();
+      if (originalExt && ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'].includes(originalExt)) {
+        ext = originalExt;
       }
-    }
-    return {};
-  }
+    } catch (e) {}
 
-  saveImageManifest() {
-    fs.writeFileSync(IMAGE_MANIFEST, JSON.stringify(this.imageMap, null, 2));
-  }
+    // 生成基于原始URL的唯一哈希
+    const hash = crypto.createHash('md5').update(originalUrl).digest('hex').substring(0, 12);
 
-  generateImageId(imagePath, content = null) {
-    const timestamp = Date.now();
-    const hash = crypto.createHash('md5');
-    
-    if (content) {
-      hash.update(content);
-    } else {
-      hash.update(imagePath);
-    }
-    
-    const shortHash = hash.digest('hex').substring(0, 8);
-    return `${timestamp}_${shortHash}`;
-  }
-
-  getImageExtension(url) {
-    const parsedUrl = new URL(url, 'http://example.com');
-    const pathname = parsedUrl.pathname;
-    const ext = path.extname(pathname).toLowerCase();
-    return ext || '.png';
+    return `${safePath}_${hash}${ext}`;
   }
 
   async downloadImage(url, destPath) {
     return new Promise((resolve, reject) => {
       const protocol = url.startsWith('https') ? https : http;
-      
+
       const options = {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
@@ -78,32 +71,27 @@ class ImageProcessor {
           response.pipe(file);
           file.on('finish', () => {
             file.close();
-            resolve(true);
+            resolve();
           });
-        } else if (response.statusCode === 302 || response.statusCode === 301) {
-          const redirectUrl = response.headers.location;
-          this.downloadImage(redirectUrl, destPath).then(resolve).catch(reject);
         } else {
-          reject(new Error(`Failed to download: ${response.statusCode}`));
+          reject(new Error(`HTTP ${response.statusCode}`));
         }
       }).on('error', reject);
     });
   }
 
-  async processGiteeImage(url) {
+  async processGiteeImage(url, mdFilePath) {
     try {
-      const imageId = this.generateImageId(url);
-      const ext = this.getImageExtension(url);
-      const filename = `${imageId}${ext}`;
+      const filename = this.generateUniqueImageName(mdFilePath, url);
       const destPath = path.join(PUBLIC_ASSETS_DIR, filename);
-      
+
       if (!fs.existsSync(destPath)) {
         console.log(`  ↓ Downloading Gitee image: ${url}`);
         await this.downloadImage(url, destPath);
-        console.log(`  ✓ Downloaded to: ${filename}`);
+        console.log(`  ✓ Downloaded as: ${filename}`);
+        this.stats.imagesDownloaded++;
       }
-      
-      this.imageMap[url] = filename;
+
       return `${BASE_URL}/assets/${filename}`;
     } catch (error) {
       console.error(`  ✗ Failed to download Gitee image: ${error.message}`);
@@ -114,207 +102,172 @@ class ImageProcessor {
   processLocalImage(imagePath, mdFilePath) {
     const mdDir = path.dirname(mdFilePath);
     const absoluteImagePath = path.resolve(mdDir, imagePath);
-    
+
     if (!fs.existsSync(absoluteImagePath)) {
       console.warn(`  ⚠ Image not found: ${imagePath}`);
       return imagePath;
     }
 
-    const imageContent = fs.readFileSync(absoluteImagePath);
-    const imageId = this.generateImageId(imagePath, imageContent);
-    const ext = path.extname(imagePath);
-    const filename = `${imageId}${ext}`;
+    const filename = this.generateUniqueImageName(mdFilePath, imagePath);
     const destPath = path.join(PUBLIC_ASSETS_DIR, filename);
-    
+
     if (!fs.existsSync(destPath)) {
       fs.copyFileSync(absoluteImagePath, destPath);
-      console.log(`  ✓ Copied local image to: ${filename}`);
+      console.log(`  ✓ Copied local image as: ${filename}`);
+      this.stats.imagesProcessed++;
     }
-    
-    this.imageMap[imagePath] = filename;
+
     return `${BASE_URL}/assets/${filename}`;
+  }
+
+  // 从图片文件名解析出对应的 MD 文件
+  parseImageFileName(imageName) {
+    // 格式: 成员_赵恒_CardSystem加载优化_abc123def456.png
+    const match = imageName.match(/(.+)_[a-f0-9]{12}\.\w+$/);
+    if (match) {
+      const [, filePathPart] = match;
+      // 将下划线转回路径分隔符，并添加 .md 扩展名
+      const mdFile = filePathPart.replace(/_/g, '/') + '.md';
+      return { mdFile };
+    }
+    return null;
   }
 
   async processMarkdownFile(filePath) {
     const relativePath = path.relative(process.cwd(), filePath);
-    
+
     let content = fs.readFileSync(filePath, 'utf8');
+    const lines = content.split('\n');
     let modified = false;
-    
+
     const imageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
-    const replacements = [];
-    
-    let match;
-    while ((match = imageRegex.exec(content)) !== null) {
-      const [fullMatch, altText, imageSrc] = match;
-      let newImageSrc = imageSrc;
-      
-      // Skip already processed images
-      if (imageSrc.includes('/assets/') || imageSrc.includes('localhost:5173') || imageSrc.includes('github.io')) {
-        continue;
-      }
-      
-      if (imageSrc.includes('gitee.com')) {
-        newImageSrc = await this.processGiteeImage(imageSrc);
-        modified = true;
-      } else if (!imageSrc.startsWith('http') && !imageSrc.startsWith('//')) {
-        newImageSrc = this.processLocalImage(imageSrc, filePath);
-        modified = true;
-      }
-      
-      if (newImageSrc !== imageSrc) {
-        replacements.push({
-          original: fullMatch,
-          replacement: `![${altText}](${newImageSrc})`
-        });
-      }
-    }
-    
-    if (modified) {
-      console.log(`📄 Processing: ${relativePath}`);
-      for (const { original, replacement } of replacements) {
-        content = content.replace(original, replacement);
-      }
-      
-      fs.writeFileSync(filePath, content, 'utf8');
-      console.log(`  ✓ Updated ${replacements.length} image references`);
-    }
-    
-    return modified;
-  }
+    const processedInThisFile = new Set(); // 记录本文件中处理的图片
 
-  async processAllMarkdownFiles(directory = null) {
-    const docsDir = directory || path.join(__dirname, '../..');
-    let processedCount = 0;
-    let modifiedCount = 0;
-    
-    const processDir = async (dir) => {
-      const items = fs.readdirSync(dir);
-      
-      for (const item of items) {
-        const itemPath = path.join(dir, item);
-        
-        // 跳过符号链接
-        if (fs.lstatSync(itemPath).isSymbolicLink()) {
+    // 处理每一行
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      let lineModified = false;
+      let newLine = line;
+
+      let match;
+      imageRegex.lastIndex = 0;
+
+      while ((match = imageRegex.exec(line)) !== null) {
+        const [fullMatch, altText, imageSrc] = match;
+
+        // 跳过已处理的图片，但记录它们
+        if (imageSrc.includes('/WTC-Docs/assets/')) {
+          const imageName = imageSrc.split('/assets/')[1];
+          if (imageName) {
+            processedInThisFile.add(imageName);
+          }
           continue;
         }
-        
-        const stat = fs.statSync(itemPath);
-        
-        if (stat.isDirectory() && !item.startsWith('.') && item !== 'node_modules') {
-          await processDir(itemPath);
-        } else if (stat.isFile() && item.endsWith('.md')) {
-          processedCount++;
-          const modified = await this.processMarkdownFile(itemPath);
-          if (modified) modifiedCount++;
-        }
-      }
-    };
-    
-    console.log('🚀 Starting image processing...\n');
-    await processDir(docsDir);
-    
-    this.saveImageManifest();
-    
-    console.log('\n' + '='.repeat(50));
-    console.log(`✅ Processing complete!`);
-    console.log(`   Files scanned: ${processedCount}`);
-    console.log(`   Files modified: ${modifiedCount}`);
-    console.log(`   Images processed: ${Object.keys(this.imageMap).length}`);
-    console.log('='.repeat(50));
-    
-    // 删除临时 manifest 文件
-    if (fs.existsSync(IMAGE_MANIFEST)) {
-      fs.unlinkSync(IMAGE_MANIFEST);
-      console.log('   Cleaned up temporary manifest file');
-    }
-  }
 
-  async cleanUnusedImages() {
-    console.log('\n🧹 Cleaning unused images...');
-    
-    const usedImages = new Set();
-    const docsDir = path.join(__dirname, '../..');
-    
-    const scanDir = (dir) => {
-      const items = fs.readdirSync(dir);
-      
-      for (const item of items) {
-        const itemPath = path.join(dir, item);
-        
-        // 跳过符号链接
-        if (fs.lstatSync(itemPath).isSymbolicLink()) {
-          continue;
+        let newSrc = imageSrc;
+
+        // 处理 Gitee 图片
+        if (imageSrc.includes('gitee.com')) {
+          newSrc = await this.processGiteeImage(imageSrc, filePath);
+          lineModified = true;
         }
-        
-        const stat = fs.statSync(itemPath);
-        
-        if (stat.isDirectory() && !item.startsWith('.') && item !== 'node_modules') {
-          scanDir(itemPath);
-        } else if (stat.isFile() && item.endsWith('.md')) {
-          const content = fs.readFileSync(itemPath, 'utf8');
-          const imageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
-          
-          let match;
-          while ((match = imageRegex.exec(content)) !== null) {
-            const imageSrc = match[2];
-            if (imageSrc.includes('/assets/')) {
-              const filename = path.basename(imageSrc);
-              usedImages.add(filename);
-            }
+        // 处理本地图片
+        else if (!imageSrc.startsWith('http')) {
+          newSrc = this.processLocalImage(imageSrc, filePath);
+          lineModified = true;
+        }
+
+        if (newSrc !== imageSrc) {
+          newLine = newLine.replace(fullMatch, `![${altText}](${newSrc})`);
+          // 记录新处理的图片
+          const imageName = newSrc.split('/assets/')[1];
+          if (imageName) {
+            processedInThisFile.add(imageName);
           }
         }
       }
-    };
-    
-    scanDir(docsDir);
-    
-    const assetFiles = fs.readdirSync(PUBLIC_ASSETS_DIR);
-    let removedCount = 0;
-    
-    for (const file of assetFiles) {
-      if (!usedImages.has(file) && !file.startsWith('.')) {
-        const filePath = path.join(PUBLIC_ASSETS_DIR, file);
-        fs.unlinkSync(filePath);
-        removedCount++;
-        console.log(`  ✗ Removed unused: ${file}`);
+
+      if (lineModified) {
+        lines[i] = newLine;
+        modified = true;
       }
     }
-    
-    console.log(`  ✓ Cleaned ${removedCount} unused images`);
+
+    // 清理属于本文件但不再被引用的图片
+    const filePrefix = relativePath.replace(/\//g, '_').replace(/\.md$/, '_');
+    const assetsFiles = fs.existsSync(PUBLIC_ASSETS_DIR)
+      ? fs.readdirSync(PUBLIC_ASSETS_DIR)
+      : [];
+
+    for (const imageName of assetsFiles) {
+      // 只处理属于当前文件的图片
+      if (imageName.startsWith(filePrefix)) {
+        if (!processedInThisFile.has(imageName)) {
+          const imagePath = path.join(PUBLIC_ASSETS_DIR, imageName);
+          fs.unlinkSync(imagePath);
+          console.log(`  🗑️  Deleted unused image: ${imageName}`);
+          this.stats.imagesCleaned++;
+        }
+      }
+    }
+
+    if (modified) {
+      fs.writeFileSync(filePath, lines.join('\n'));
+      console.log(`✓ Processed: ${relativePath}`);
+      this.stats.filesModified++;
+    } else if (this.stats.imagesCleaned > 0) {
+      console.log(`✓ Cleaned unused images from: ${relativePath}`);
+    }
+
+    return modified || this.stats.imagesCleaned > 0;
+  }
+
+  async processChangedFiles() {
+    // 获取变更的 MD 文件
+    const { execSync } = require('child_process');
+
+    try {
+      // 获取所有变更的 MD 文件（包括暂存、未暂存和未跟踪）
+      // 同时检测相对于 HEAD 的变更（用于 sync.sh 场景）
+      const changedFiles = execSync(
+        `(git diff --cached --name-only; git diff --name-only; git diff HEAD --name-only; git ls-files --others --exclude-standard) | grep "\\.md$" | sort -u || true`,
+        { encoding: 'utf8' }
+      ).trim().split('\n').filter(f => f);
+
+      if (changedFiles.length === 0 || (changedFiles.length === 1 && !changedFiles[0])) {
+        console.log('No markdown files changed.');
+        return;
+      }
+
+      console.log(`Found ${changedFiles.length} changed markdown files.`);
+
+      for (const file of changedFiles) {
+        if (fs.existsSync(file)) {
+          await this.processMarkdownFile(file);
+        }
+      }
+
+      // 输出统计
+      console.log('\n📊 Statistics:');
+      console.log(`  Files modified: ${this.stats.filesModified}`);
+      console.log(`  Images downloaded: ${this.stats.imagesDownloaded}`);
+      console.log(`  Images processed: ${this.stats.imagesProcessed}`);
+      console.log(`  Images cleaned: ${this.stats.imagesCleaned}`);
+
+    } catch (error) {
+      console.error('Error processing files:', error.message);
+    }
   }
 }
 
+// 主函数
 async function main() {
-  const processor = new ImageProcessor();
-  const args = process.argv.slice(2);
-  
-  try {
-    if (args.includes('--clean')) {
-      await processor.cleanUnusedImages();
-    } else if (args.includes('--file')) {
-      const fileIndex = args.indexOf('--file');
-      const filePath = args[fileIndex + 1];
-      if (filePath) {
-        await processor.processMarkdownFile(path.resolve(filePath));
-        processor.saveImageManifest();
-      }
-    } else {
-      await processor.processAllMarkdownFiles();
-    }
-  } finally {
-    // 清理临时 manifest 文件（单文件处理和清理模式也要清理）
-    if (fs.existsSync(IMAGE_MANIFEST) && !args.includes('--keep-manifest')) {
-      fs.unlinkSync(IMAGE_MANIFEST);
-      if (args.includes('--file') || args.includes('--clean')) {
-        console.log('Cleaned up temporary manifest file');
-      }
-    }
-  }
+  const processor = new ImageProcessorV2();
+  await processor.processChangedFiles();
 }
 
 if (require.main === module) {
   main().catch(console.error);
 }
 
-module.exports = ImageProcessor;
+module.exports = ImageProcessorV2;

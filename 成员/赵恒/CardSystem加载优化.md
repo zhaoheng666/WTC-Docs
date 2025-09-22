@@ -1,0 +1,47 @@
+# CardSystem加载优化
+
+### 问题：
+
+- **玩家反馈无法打开wonder album**
+- **web 端、native 端都有**
+- **native 端集中在一代、二代 ipad，RAM 1G 左右，存储空间充足，用户尝试卸载重装、杀进程仍无法解决；**
+
+### 分析：
+
+#### 一、设备存储异常，或有损坏文件（暂不处理）
+
+查玩家日志发现玩家设备反复下载 card_system_lagload ,且都有 suc 记录；
+
+![1758539037715](http://localhost:5173/WTC-Docs/assets/1758540493399_2068cbdc.png)
+
+可进一步排查，若无其他发现，暂不做处理
+
+### 二、收集系统主界面元素过多，设备 RAM、CPU 承压
+
+![1758525317445](http://localhost:5173/WTC-Docs/assets/1758525842724_fae0fd4c.png)
+
+蓝屏定位：转场动画第 41 帧
+
+![1758525351338](http://localhost:5173/WTC-Docs/assets/1758525842727_bedaea92.png)
+
+![1758525365317](http://localhost:5173/WTC-Docs/assets/1758525842729_2654246b.png)
+
+### 现阶段优化方案：
+
+#### 1、主界面可以从动画的第一帧开始分阶段创建
+
+stage1：主界面 CCB 创建；
+
+stage2：数据处理；
+
+stage3：基础 UI 初始化逻辑；
+
+stage4：子功能入口挂载、初始化；
+
+stage5：tableView 加载、初始化；
+
+stage6：计时器、引导初始化；
+
+#### 2、内存优化：
+
+手动管理子功能资源、内存释放；

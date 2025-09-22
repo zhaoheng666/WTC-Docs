@@ -38,9 +38,9 @@ features:
     link: /活动/
 
   - icon: 🔧
-    title: 工具
+    title: 工程&工具
     details: VSCode 环境和工具使用
-    link: /工具/
+    link: /工程-工具/
 
   - icon: 📡
     title: 协议

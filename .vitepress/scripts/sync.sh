@@ -119,11 +119,31 @@ echo -e "${GREEN}  ✓ 检测到本地更改${NC}"
 
 # 3. 执行构建测试
 echo -e "${CYAN}🔨 执行构建测试...${NC}"
-if bash .vitepress/scripts/build.sh > /tmp/sync-build.log 2>&1; then
+
+# 执行构建并保存完整日志
+BUILD_OUTPUT=$(bash .vitepress/scripts/build.sh 2>&1)
+BUILD_RESULT=$?
+echo "$BUILD_OUTPUT" > /tmp/sync-build.log
+
+# 提取并显示图片处理相关信息（如果有）
+IMAGE_PROCESSING=$(echo "$BUILD_OUTPUT" | grep -E "(🔍|🖼️|✓.*图片|↓.*Download|🗑️|🧹|处理了|下载了|清理了|Processed:|Cleaned:|Statistics:)")
+if [ -n "$IMAGE_PROCESSING" ]; then
+    echo "$IMAGE_PROCESSING" | while IFS= read -r line; do
+        echo -e "  $line"
+    done
+fi
+
+# 检查构建结果
+if [ $BUILD_RESULT -eq 0 ] && echo "$BUILD_OUTPUT" | grep -q "✅ 文档构建完成"; then
     echo -e "${GREEN}  ✓ 构建成功${NC}"
+    # 如果有文件被修改（图片处理），重新添加到暂存区
+    if ! git diff --quiet; then
+        echo -e "${CYAN}  ↻ 更新暂存区...${NC}"
+        git add -A
+    fi
 else
     echo -e "${RED}  ✗ 构建失败${NC}"
-    ERROR_MSG=$(tail -20 /tmp/sync-build.log | head -10)
+    ERROR_MSG=$(echo "$BUILD_OUTPUT" | tail -20 | head -10)
     show_error "构建失败" "请查看日志: /tmp/sync-build.log"
     
     # 显示错误详情
@@ -205,7 +225,11 @@ CHANGE_SUMMARY="${CHANGE_SUMMARY}└─ 其他: ${CHANGED_OTHER} 个\n\n"
 CHANGE_SUMMARY="${CHANGE_SUMMARY}提交信息: ${COMMIT_MSG}\n\n"
 CHANGE_SUMMARY="${CHANGE_SUMMARY}是否确认提交？"
 
-if ! show_dialog "确认提交" "$CHANGE_SUMMARY" "\"取消\", \"确认\""; then
+if show_dialog "确认提交" "$CHANGE_SUMMARY" "\"确认\", \"取消\""; then
+    # 用户点击了确认（第一个按钮）
+    echo -e "${GREEN}✓ 用户确认提交${NC}"
+else
+    # 用户点击了取消（第二个按钮）
     echo -e "${YELLOW}⚠️  用户取消提交${NC}"
     # 重置暂存区
     git reset HEAD > /dev/null 2>&1
@@ -312,8 +336,8 @@ else
     echo -e "${YELLOW}⚠️ 未安装 gh 命令行工具，跳过部署监控${NC}"
 fi
 
-# 9. 清理临时文件
-rm -f /tmp/sync-build.log
+# 9. 日志文件保留用于调试（不删除）
+# 日志路径: /tmp/sync-build.log
 
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "${GREEN}✅ 文档同步完成${NC}"
