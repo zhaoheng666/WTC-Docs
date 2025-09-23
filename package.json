@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "init": "bash .vitepress/scripts/init.sh",
-    "dev": "vitepress dev",
+    "dev": "bash .vitepress/scripts/dev.sh",
     "build": "bash .vitepress/scripts/build.sh",
     "sync": "bash .vitepress/scripts/sync.sh",
     "status": "bash .vitepress/scripts/status.sh"
