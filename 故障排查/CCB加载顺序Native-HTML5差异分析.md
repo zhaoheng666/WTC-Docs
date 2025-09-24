@@ -11,13 +11,14 @@
 - **HTML5平台**: 子CCB的 `onDidLoadFromCCB` → 父CCB的 `onDidLoadFromCCB`（深度优先）
 - **Native平台**: 父CCB的 `onDidLoadFromCCB` → 子CCB的 `onDidLoadFromCCB`（广度优先）
 
-![1758698625269](image/CCB加载顺序Native-HTML5差异分析/1758698625269.png)![1758703526432](image/CCB加载顺序问题分析/1758703526432.png)
+![1758698625269](http://localhost:5173/WTC-Docs/assets/故障排查_CCB加载顺序Native-HTML5差异分析_f39e9a625349.png)![1758703526432](http://localhost:5173/WTC-Docs/assets/故障排查_CCB加载顺序Native-HTML5差异分析_9833ce5d17aa.png)
 
-## 根本原因
+## 原因分析
 
-**差异源于 nodesWithAnimationManagers 遍历顺序**
+**nodesWithAnimationManagers 遍历顺序不同**
 
 ### cc.BuilderReader.load 对比：
+
   html5 端：CCBReader.js
 
 ```javascript
@@ -125,9 +126,10 @@ cc.BuilderReader.load = function(file, owner, parentSize)
 };
 ```
 
-### nodesWithAnimationManagers 收集对比：
+### nodesWithAnimationManagers 插入对比：
 
 **Native端 - 直接遍历Map**：
+
 ```cpp
 // CCBReader.cpp:285-296
 for (auto iter = _animationManagers->begin(); iter != _animationManagers->end(); ++iter) {
@@ -142,6 +144,7 @@ for (auto iter = _animationManagers->begin(); iter != _animationManagers->end();
 ```
 
 **HTML5端 - 通过allKeys()收集**：
+
 ```javascript
 // CCBReader.js:292-297
 var locAnimationManagers = this._animationManagers;
@@ -153,6 +156,7 @@ for (var i = 0; i < getAllKeys.length; i++) {
 ```
 
 **allKeys()实现**：
+
 ```javascript
 // CCTypes.js:868-872
 allKeys: function () {
@@ -163,9 +167,15 @@ allKeys: function () {
 }
 ```
 
-### animationManagers 插入对比：
+### animationManagers 数据结构对比：
+
+- **Native**: `cocos2d::Map` → `std::unordered_map<Node*, CCBAnimationManager*>`
+- **HTML5**: `cc._Dictionary` → JavaScript对象 + `for...in`
+
+### animationManagers 插入方式对比：
 
 **Native端 - 共享引用插入**：
+
 ```cpp
 // parsePropTypeCCBFile (CCNodeLoader.cpp:990)
 Node * ccbFileNode = reader->readFileWithCleanUp(false, pCCBReader->getAnimationManagers());
@@ -178,6 +188,7 @@ _animationManagers->insert(pNode, _animationManager);   // 直接插入到共享
 ```
 
 **HTML5端 - 同样是共享引用插入**：
+
 ```javascript
 // parsePropTypeCCBFile (CCNodeLoader.js:742-746)
 myCCBReader.setAnimationManagers(ccbReader.getAnimationManagers()); // 设置为父的managers（引用）
@@ -190,6 +201,7 @@ this._animationManagers.setObject(this._animationManager, node);    // 插入到
 ```
 
 **setAnimationManagers实现**：
+
 ```javascript
 // CCBReader.js:511-513
 setAnimationManagers: function (animationManagers) {
@@ -197,28 +209,14 @@ setAnimationManagers: function (animationManagers) {
 }
 ```
 
-### 关键差异总结：
-
-**插入时机**：两端完全一致（子CCB先插入，父CCB后插入）
-
-**遍历顺序**：
-- **Native**: `std::unordered_map`迭代器顺序（不保证与插入顺序一致）
-- **HTML5**: JavaScript `for...in`遍历顺序（通常保持插入顺序）
-
-**数据结构**：
-- **Native**: `cocos2d::Map` → `std::unordered_map<Node*, CCBAnimationManager*>`
-- **HTML5**: `cc._Dictionary` → JavaScript对象 + `for...in`
-
-
-
 ## 解决方案
 
 1. **避免依赖执行顺序**: 不要假设 `onDidLoadFromCCB`的调用顺序
 2. **使用延迟初始化**: 重要的初始化逻辑放在 `onEnter`或首帧更新中
 3. **显式管理依赖**: 通过事件或回调链明确控制初始化顺序
 
-
 ## 相关代码位置
+
 - HTML5实现：
 
   - `frameworks/cocos2d-html5/extensions/ccb-reader/CCBReader.js`
