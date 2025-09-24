@@ -1,3 +1,5 @@
+## spin 节奏奇怪、spin 按钮恢复慢、spin 结束整体卡一下
+
 ## 两个问题：
 
 ### 1、流程插帧：
@@ -6,7 +8,7 @@
 
 #### 处理意见：
 
-可通过修改代码配置 this.machineConfig.enterOnNextFrame \= false关闭；  
+可通过修改代码配置 this.machineConfig.enterOnNextFrame \= false关闭；
 需要注意检查并自行处理过程流转的前后依赖；
 
 ### 2、不需要的流程进入：
