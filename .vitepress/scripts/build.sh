@@ -140,6 +140,38 @@ else
     echo -e "${YELLOW}  ⚠️  image-processor.js 不存在，跳过图片处理${NC}"
 fi
 
+# 0.5. 处理 PDF 文件
+if [ -f ".vitepress/scripts/pdf-processor.js" ]; then
+    echo -e "${CYAN}📄 处理 PDF 文件...${NC}"
+
+    # 覆盖式写入日志（不追加）
+    if node .vitepress/scripts/pdf-processor.js > /tmp/pdf-processor.log 2>&1; then
+        # 提取处理信息
+        PDF_FOUND=$(grep "发现 PDF 文件:" /tmp/pdf-processor.log | grep -o "[0-9]* 个" | grep -o "[0-9]*")
+        PDF_COPIED=$(grep "新复制文件:" /tmp/pdf-processor.log | grep -o "[0-9]* 个" | grep -o "[0-9]*")
+
+        if [ -n "$PDF_FOUND" ] && [ "$PDF_FOUND" -gt 0 ]; then
+            echo -e "${GREEN}  ✓ 发现 $PDF_FOUND 个 PDF 文件${NC}"
+            if [ -n "$PDF_COPIED" ] && [ "$PDF_COPIED" -gt 0 ]; then
+                echo -e "${GREEN}  ✓ 复制了 $PDF_COPIED 个新 PDF 文件${NC}"
+            fi
+            echo -e "${GREEN}  ✓ 更新了其他/index.md 链接${NC}"
+        else
+            echo -e "${GREEN}  ✓ 没有找到 PDF 文件${NC}"
+        fi
+    else
+        echo -e "${YELLOW}  ⚠️  PDF 处理失败（继续构建）${NC}"
+        # 显示错误信息
+        if [ -f "/tmp/pdf-processor.log" ]; then
+            ERROR_MSG=$(tail -3 /tmp/pdf-processor.log)
+            [ -n "$ERROR_MSG" ] && echo -e "${YELLOW}    错误: $ERROR_MSG${NC}"
+        fi
+    fi
+    # 保留日志文件用于调试，不删除
+else
+    echo -e "${YELLOW}  ⚠️  pdf-processor.js 不存在，跳过 PDF 处理${NC}"
+fi
+
 # 1. 跳过统计生成（本地不生成，仅 CI 生成）
 echo -e "${GREEN}  ✓ 跳过统计生成（仅在 CI 环境生成）${NC}"
 
