@@ -1,4 +1,4 @@
-# Q4\`24-Slots-FB-Canvas-沙盒支付-程序
+# Q4\`24-Slots-FB-Canvas-沙盒支付
 
 ## 操作人员：王建、李沂峰
 

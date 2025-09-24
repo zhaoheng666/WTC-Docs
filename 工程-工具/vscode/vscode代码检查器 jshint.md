@@ -1,4 +1,4 @@
-# Q3`25-Slots-vscode代码检查器 jshint-程序
+# vscode代码检查器 jshint
 
 ### 一、代码检查器的必要性
 

@@ -1,4 +1,4 @@
-# Q2`25-Slots-IOS OpenURL 接口废弃-程序
+# IOS OpenURL 接口废弃
 
 ### 部分用户游戏内跳转链接全部失效：
 

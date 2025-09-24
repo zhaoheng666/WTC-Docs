@@ -1,4 +1,4 @@
-# Q4\`24-Slots-FB违规申诉-10月-程序
+# Q4\`24-Slots-FB违规申诉-10月
 
 ## Developer Policy 6.1
 

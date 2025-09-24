@@ -1,4 +1,4 @@
-# Q3`25-Slots-Wails 重构 CCB 生成工具-程序
+# Wails 重构 CCB 生成工具
 
 ## 概述
 

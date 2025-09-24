@@ -1,4 +1,4 @@
-# Q4\`24-Slots-SOP-优化记录-SlotAction-程序
+# Q4\`24-Slots-SOP-优化记录-SlotAction
 
 # version 1.0：
 

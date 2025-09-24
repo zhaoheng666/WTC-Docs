@@ -1,4 +1,4 @@
-# Q2`25-Slots-native 增加切换 cdn 功能-程序
+# native 增加切换 cdn 功能
 
 ![image](http://localhost:5173/WTC-Docs/assets/1758174593056_a1517c63.png)
 

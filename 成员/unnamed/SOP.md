@@ -1,4 +1,4 @@
-# Q4\`24-Slots-SOP-元需求-FreeGame-spin间隔调整-程序
+# Q4\`24-Slots-SOP-元需求-FreeGame-spin间隔调整
 
 ###### *一些明确的、独立的、small 需求点*
 

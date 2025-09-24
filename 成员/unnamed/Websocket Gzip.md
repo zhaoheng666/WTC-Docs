@@ -1,4 +1,4 @@
-# Q4\`24-Slots- websocket 协议压缩 Gzip-程序
+# Q4\`24-Slots- websocket 协议压缩 Gzip
 
 #### 修订人：赵恒	 	修订时间： 2024年12月19日
 

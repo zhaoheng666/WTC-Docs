@@ -1,4 +1,4 @@
-# Q1\`25-Slots-load报错\[.textClipping\]-程序
+# Q1\`25-Slots-load报错\[.textClipping\]
 
 ###### *记录常见问题的处理过程*
 

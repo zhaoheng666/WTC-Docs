@@ -1,4 +1,4 @@
-## Q1\`25-slots-新增 Jenkins 管道-程序
+## Q1\`25-slots-新增 Jenkins 管道
 
 ### 1、鉴于并行研发需求数增加，版本发布管道不够用，新增发布管道 Classic\_Debug\_Res6\_deploy、Classic\_Debug\_Res7\_deploy，DoubleHit\_Debug\_Res3\_deploy， 已整理到 Jenkins debug 页签中，删除了不需要的页签；
 

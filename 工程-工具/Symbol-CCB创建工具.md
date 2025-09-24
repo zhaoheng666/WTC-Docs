@@ -1,4 +1,4 @@
-# Q3`25-Slots-Symbol-CCB创建工具-程序
+# Symbol-CCB创建工具
 
 ## 初始需求：
 

@@ -1,4 +1,4 @@
-# Q1`25-Slots-DH线上crash-ProgressTimer::initWithSprite问题-程序
+# DH线上crash-ProgressTimer::initWithSprite问题
 
 ![image](http://localhost:5173/WTC-Docs/assets/1758174593042_8f4d94b1.png)
 

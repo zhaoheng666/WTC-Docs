@@ -1,4 +1,4 @@
-# Q2`25-Slots-SlotScene onEnter 中 addChild crash-程序
+# SlotScene onEnter 中 addChild crash
 
 ### 堆栈：
 
