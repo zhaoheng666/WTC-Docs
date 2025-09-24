@@ -27,12 +27,12 @@ if [ -f ".vitepress/scripts/fix-problematic-filenames.js" ]; then
     # 预览模式检查是否需要修复
     FIX_OUTPUT=$(node .vitepress/scripts/fix-problematic-filenames.js --dry-run 2>&1)
 
-    if echo "$FIX_OUTPUT" | grep -E "📁|📄" >/dev/null; then
+    if echo "$FIX_OUTPUT" | grep -E "📄.*->" >/dev/null; then
         echo -e "${CYAN}  • 发现需要修复的文件名${NC}"
 
         # 实际执行修复
         if node .vitepress/scripts/fix-problematic-filenames.js > /tmp/fix-filenames.log 2>&1; then
-            FIXED_COUNT=$(grep -E "📁|📄" /tmp/fix-filenames.log | wc -l)
+            FIXED_COUNT=$(grep -E "📄.*->" /tmp/fix-filenames.log | wc -l)
             echo -e "${GREEN}  ✓ 修复了 $FIXED_COUNT 个文件/目录${NC}"
         else
             echo -e "${YELLOW}  ⚠️  文件名修复失败（继续构建）${NC}"
