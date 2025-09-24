@@ -1,41 +1,41 @@
-# 程序文档总览
+# 活动相关文档
 
-本目录包含了WorldTourCasino项目的核心程序文档，涵盖了操作手册、开发流程、架构设计等重要内容。
+本目录包含了WorldTourCasino项目的活动相关文档，涵盖了操作手册、开发流程、接口文档等重要内容。
 
 ## 📚 文档列表
 
 ### 🔧 操作手册
-- **[新版收集系统SOP操作手册](新版收集系统SOP操作手册.md)** - S19赛季收集系统完整操作指南，包含代码调整、资源处理、部署流程等
-- **[HR赛季资源替换](HR赛季资源替换.md)** - High Rollers赛季资源替换工作流程，包含FAQ处理、最终大奖配置等
+- **[新版收集系统SOP操作手册](操作手册/新版收集系统SOP操作手册.md)** - S19赛季收集系统完整操作指南，包含代码调整、资源处理、部署流程等
+- **[HR赛季资源替换](操作手册/HR赛季资源替换.md)** - High Rollers赛季资源替换工作流程，包含FAQ处理、最终大奖配置等
 
 ### 🚀 开发流程
-- **[新人活动开发流程](新人活动开发流程.md)** - 新人活动完整开发指南，从脚本生成到部署上线的全流程
+- **[新人活动开发流程](流程/新人活动开发流程.md)** - 新人活动完整开发指南，从脚本生成到部署上线的全流程
 
-### 🏗️ 架构文档
+### 📖 接口文档
 
 #### 核心架构
-- **[Slots-Activity](Slots-Activity.md)** - Activity核心类体系详细文档
+- **[Activity](接口/Activity.md)** - Activity核心类体系详细文档
   - `Activity.js` - 活动基类
-  - `BaseActivity.js` - 基础活动类  
-  - `RechargeBonanzaActivity.js` - 具体活动实现示例
+  - `BaseActivity.js` - 基础活动类
+  - 具体活动实现示例
 
 #### UI控制器体系
-- **[Slots-EntranceController](Slots-EntranceController.md)** - 活动入口控制器文档
+- **[EntranceController](接口/EntranceController.md)** - 活动入口控制器文档
   - `ActivityEntranceController.js` - 大厅入口控制器基类
-  - `RechargeBonanzaEntranceController.js` - 具体实现示例
+  - 具体实现示例
 
-- **[Slots-MainUIController](Slots-MainUIController.md)** - 主界面控制器文档
+- **[MainUIController](接口/MainUIController.md)** - 主界面控制器文档
   - `ActivityBaseController.js` - UI控制器基类
   - `ActivityMainUIController.js` - 主界面控制器基类
-  - `RechargeBonanzaMainUIController.js` - 具体实现示例
+  - 具体实现示例
 
-- **[Slots-SmartCCBController](Slots-SmartCCBController.md)** - 智能CCB控制器文档
+- **[SmartCCBController](接口/SmartCCBController.md)** - 智能CCB控制器文档
   - `ActivityWidgetController.js` - UI控制器基类，提供事件管理、定时任务等功能
 
-- **[Slots-WidgetController](Slots-WidgetController.md)** - 小部件控制器文档
+- **[WidgetController](接口/WidgetController.md)** - 小部件控制器文档
   - `ActivityWidgetController.js` - 关卡入口控制器基类
   - `ActivityBaseWidgetController.js` - 抽象基类
-  - `RechargeBonanzaWidgetController.js` - 具体实现示例
+  - 具体实现示例
 
 ## 🎯 技术架构概览
 
@@ -121,10 +121,10 @@
 
 ### 开发相关
 - **Q**: 如何创建新的活动？
-- **A**: 参考[新人活动开发流程](新人活动开发流程.md)文档
+- **A**: 参考[新人活动开发流程](流程/新人活动开发流程.md)文档
 
 - **Q**: 如何更新收集系统赛季？
-- **A**: 参考[新版收集系统SOP操作手册](新版收集系统SOP操作手册.md)文档
+- **A**: 参考[新版收集系统SOP操作手册](操作手册/新版收集系统SOP操作手册.md)文档
 
 - **Q**: 控制器继承关系如何选择？
 - **A**: 参考各控制器文档中的"使用指南"部分
@@ -147,14 +147,14 @@
 - [故障排查指南](../故障排查/)
 
 ### 开发工具
-- [构建脚本](../../scripts/)
-- [VSCode配置](.vscode/)
-- [代码规范](../../.eslintrc.js)
+- 构建脚本: 位于主项目的 `scripts/` 目录
+- VSCode配置: 位于主项目的 `.vscode/` 目录
+- 代码规范: 位于主项目的 `.eslintrc.js` 文件
 
 ### 核心代码
-- [Activity类](../../src/task/entity/)
-- [Controller类](../../src/activity/controller/)
-- [配置文件](../../src/config/)
+- Activity类: 位于主项目的 `src/task/entity/` 目录
+- Controller类: 位于主项目的 `src/activity/controller/` 目录
+- 配置文件: 位于主项目的 `src/config/` 目录
 
 ## 📝 更新记录
 
