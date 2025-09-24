@@ -36,6 +36,25 @@ function ensurePdfDirectory() {
 }
 
 /**
+ * 清理文件名，移除或替换特殊字符
+ */
+function sanitizeFileName(filename) {
+    const name = path.parse(filename).name;
+    const ext = path.parse(filename).ext;
+
+    // 替换特殊字符和空格
+    const cleanName = name
+        .replace(/[<>:"|?*]/g, '') // 移除 Windows 不支持的字符
+        .replace(/\s+/g, '_')      // 空格替换为下划线
+        .replace(/[()（）]/g, '')   // 移除括号
+        .replace(/[-]+/g, '-')     // 多个连字符替换为单个
+        .replace(/[_]+/g, '_')     // 多个下划线替换为单个
+        .replace(/^[-_]+|[-_]+$/g, ''); // 移除开头和结尾的连字符、下划线
+
+    return cleanName + ext;
+}
+
+/**
  * 获取所有 PDF 文件（包括新增的和已存在的）
  */
 function getAllPdfFiles() {
@@ -56,10 +75,12 @@ function getAllPdfFiles() {
                     }
                 } else if (item.isFile() && item.name.toLowerCase().endsWith('.pdf')) {
                     const relativePath = path.relative(docsDir, fullPath);
+                    const cleanName = sanitizeFileName(item.name);
                     pdfFiles.push({
                         fullPath,
                         relativePath,
-                        name: item.name,
+                        originalName: item.name,
+                        cleanName: cleanName,
                         basename: path.basename(item.name, '.pdf')
                     });
                 }
@@ -77,7 +98,7 @@ function getAllPdfFiles() {
  * 检查 PDF 是否需要处理（是否已存在于 public/pdf/ 中）
  */
 function needsProcessing(pdfFile) {
-    const targetPath = path.join(publicPdfDir, pdfFile.name);
+    const targetPath = path.join(publicPdfDir, pdfFile.cleanName);
 
     if (!fs.existsSync(targetPath)) {
         return true; // 目标文件不存在，需要复制
@@ -91,17 +112,23 @@ function needsProcessing(pdfFile) {
 }
 
 /**
- * 复制 PDF 文件到 public/pdf/ 目录
+ * 复制 PDF 文件到 public/pdf/ 目录并删除源文件
  */
 function copyPdfFile(pdfFile) {
-    const targetPath = path.join(publicPdfDir, pdfFile.name);
+    const targetPath = path.join(publicPdfDir, pdfFile.cleanName);
 
     try {
+        // 复制文件
         fs.copyFileSync(pdfFile.fullPath, targetPath);
-        console.log(`📄 复制 PDF: ${pdfFile.relativePath} → public/pdf/${pdfFile.name}`);
+        console.log(`📄 复制 PDF: ${pdfFile.relativePath} → public/pdf/${pdfFile.cleanName}`);
+
+        // 删除源文件
+        fs.unlinkSync(pdfFile.fullPath);
+        console.log(`🗑️  删除源文件: ${pdfFile.relativePath}`);
+
         return true;
     } catch (error) {
-        console.error(`❌ 复制失败: ${pdfFile.relativePath} - ${error.message}`);
+        console.error(`❌ 处理失败: ${pdfFile.relativePath} - ${error.message}`);
         return false;
     }
 }
@@ -123,21 +150,21 @@ function readOtherIndexMd() {
 function getPdfLinkBasePath() {
     // 检查是否在 GitHub Actions 环境
     if (process.env.GITHUB_ACTIONS) {
-        return '/WTC-Docs/pdf';
+        return 'https://zhaoheng666.github.io/WTC-Docs/pdf';
     }
 
     // 检查是否有 VITE_BASE_URL 环境变量
     if (process.env.VITE_BASE_URL) {
         const baseUrl = process.env.VITE_BASE_URL;
         if (baseUrl.includes('localhost')) {
-            return '/WTC-Docs/pdf';
+            return 'http://localhost:5173/WTC-Docs/pdf';
         } else {
-            return '/WTC-Docs/pdf';
+            return 'https://zhaoheng666.github.io/WTC-Docs/pdf';
         }
     }
 
-    // 默认使用相对路径（适合 dev 环境）
-    return '/WTC-Docs/pdf';
+    // 默认使用本地 HTTP 链接（适合 dev 环境和编辑器兼容性）
+    return 'http://localhost:5173/WTC-Docs/pdf';
 }
 
 /**
@@ -156,8 +183,11 @@ function updateOtherIndexMd(pdfFiles) {
     // 生成新的 PDF 链接列表
     const pdfLinks = pdfFiles
         .sort((a, b) => a.basename.localeCompare(b.basename))
-        .map(pdf => `- [${pdf.basename}](${basePath}/${pdf.name})`)
-        .join('\\n');
+        .map(pdf => {
+            // 使用清理后的文件名，无需再次编码（因为已经清理过特殊字符）
+            return `- [${pdf.basename}](${basePath}/${pdf.cleanName})`;
+        })
+        .join('\n');
 
     const newPdfSection = `## PDF 文档\n\n${pdfLinks}\n`;
 
@@ -167,7 +197,7 @@ function updateOtherIndexMd(pdfFiles) {
     } else {
         // 添加新的 PDF 部分
         if (!content.includes('## PDF 文档')) {
-            content = content.trim() + '\\n\\n' + newPdfSection;
+            content = content.trim() + '\n\n' + newPdfSection;
         }
     }
 
