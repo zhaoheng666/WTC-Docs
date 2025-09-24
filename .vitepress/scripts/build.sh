@@ -56,6 +56,7 @@ if [ -f ".vitepress/scripts/image-processor.js" ]; then
             MODIFIED=$(grep "Files modified:" /tmp/image-processor.log | grep -o "[0-9]*" | tail -1)
             DOWNLOADED=$(grep "Images downloaded:" /tmp/image-processor.log | grep -o "[0-9]*" | tail -1)
             PROCESSED=$(grep "Images processed:" /tmp/image-processor.log | grep -o "[0-9]*" | tail -1)
+            EMBEDDED=$(grep "Embedded images extracted:" /tmp/image-processor.log | grep -o "[0-9]*" | tail -1)
             CLEANED=$(grep "Images cleaned:" /tmp/image-processor.log | grep -o "[0-9]*" | tail -1)
 
             if [ -n "$MODIFIED" ] && [ "$MODIFIED" -gt 0 ]; then
@@ -63,6 +64,7 @@ if [ -f ".vitepress/scripts/image-processor.js" ]; then
             fi
             [ -n "$DOWNLOADED" ] && [ "$DOWNLOADED" -gt 0 ] && echo -e "${GREEN}  ✓ 下载了 $DOWNLOADED 个远程图片${NC}"
             [ -n "$PROCESSED" ] && [ "$PROCESSED" -gt 0 ] && echo -e "${GREEN}  ✓ 处理了 $PROCESSED 个本地图片${NC}"
+            [ -n "$EMBEDDED" ] && [ "$EMBEDDED" -gt 0 ] && echo -e "${GREEN}  ✓ 提取了 $EMBEDDED 个内置图片${NC}"
             [ -n "$CLEANED" ] && [ "$CLEANED" -gt 0 ] && echo -e "${GREEN}  ✓ 自动清理了 $CLEANED 个未使用的图片${NC}"
 
             # 清理已处理文件的原始图片目录

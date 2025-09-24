@@ -18,6 +18,7 @@ class ImageProcessorV2 {
       filesModified: 0,
       imagesDownloaded: 0,
       imagesProcessed: 0,
+      embeddedImagesExtracted: 0,
       imagesCleaned: 0
     };
   }
@@ -30,12 +31,14 @@ class ImageProcessorV2 {
   }
 
   // 生成基于文件路径和内容的唯一图片名
-  generateUniqueImageName(mdFilePath, originalUrl) {
+  generateUniqueImageName(mdFilePath, originalUrl, imageId = null) {
     const relativePath = path.relative(process.cwd(), mdFilePath);
-    // 将路径转换为安全的文件名格式
+    // 将路径转换为安全的文件名格式（移除空格和特殊字符）
     const safePath = relativePath
       .replace(/\//g, '_')
       .replace(/\\/g, '_')
+      .replace(/\s+/g, '_')  // 将空格替换为下划线
+      .replace(/[^\w\u4e00-\u9fff._-]/g, '_')  // 保留中文字符、字母、数字、下划线、点号和横线
       .replace(/\.md$/, '');
 
     // 从 URL 或路径中提取原始扩展名
@@ -49,9 +52,12 @@ class ImageProcessorV2 {
     } catch (e) {}
 
     // 生成基于原始URL的唯一哈希
-    const hash = crypto.createHash('md5').update(originalUrl).digest('hex').substring(0, 12);
+    const hash = crypto.createHash('md5').update(originalUrl).digest('hex').substring(0, 8);
 
-    return `${safePath}_${hash}${ext}`;
+    // 如果是内置图片引用，使用 imageId
+    const suffix = imageId ? `_${imageId}_${hash}` : `_${hash.substring(0, 12)}`;
+
+    return `${safePath}${suffix}${ext}`;
   }
 
   async downloadImage(url, destPath) {
@@ -120,6 +126,38 @@ class ImageProcessorV2 {
     return `${BASE_URL}/assets/${filename}`;
   }
 
+  // 处理内置图片（base64编码）
+  processEmbeddedImage(imageId, dataUrl, mdFilePath) {
+    try {
+      // 解析 data URL
+      const dataUrlMatch = dataUrl.match(/^data:image\/([^;]+);base64,(.+)$/);
+      if (!dataUrlMatch) {
+        console.warn(`  ⚠ Invalid data URL for ${imageId}`);
+        return dataUrl;
+      }
+
+      const mimeType = dataUrlMatch[1];
+      const base64Data = dataUrlMatch[2];
+
+      // 使用 data URL 作为原始 URL 来生成文件名
+      const filename = this.generateUniqueImageName(mdFilePath, dataUrl, imageId);
+      const destPath = path.join(PUBLIC_ASSETS_DIR, filename);
+
+      if (!fs.existsSync(destPath)) {
+        const imageBuffer = Buffer.from(base64Data, 'base64');
+        fs.writeFileSync(destPath, imageBuffer);
+        const sizeKB = Math.round(imageBuffer.length / 1024);
+        console.log(`  ✓ Extracted embedded image as: ${filename} (${sizeKB}KB)`);
+        this.stats.embeddedImagesExtracted++;
+      }
+
+      return `${BASE_URL}/assets/${filename}`;
+    } catch (error) {
+      console.error(`  ✗ Failed to process embedded image ${imageId}:`, error.message);
+      return dataUrl;
+    }
+  }
+
   // 从图片文件名解析出对应的 MD 文件
   parseImageFileName(imageName) {
     // 格式: 成员_赵恒_CardSystem加载优化_abc123def456.png
@@ -137,11 +175,53 @@ class ImageProcessorV2 {
     const relativePath = path.relative(process.cwd(), filePath);
 
     let content = fs.readFileSync(filePath, 'utf8');
-    const lines = content.split('\n');
     let modified = false;
 
-    const imageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
     const processedInThisFile = new Set(); // 记录本文件中处理的图片
+
+    // 首先处理内置图片引用 [imageX]: <data:image/...>
+    const embeddedImagePattern = /\[([^\]]+)\]:\s*<(data:image\/[^;]+;base64,[^>]+)>/g;
+    const imageReferences = new Map(); // 存储 imageId -> URL 的映射
+
+    // 先收集所有匹配项，避免在循环中修改content导致正则匹配问题
+    const embeddedMatches = [];
+    let embeddedMatch;
+    while ((embeddedMatch = embeddedImagePattern.exec(content)) !== null) {
+      embeddedMatches.push([...embeddedMatch]);
+    }
+
+    // 然后处理所有匹配项
+    for (const [fullMatch, imageId, dataUrl] of embeddedMatches) {
+      console.log(`  🔍 Found embedded image reference: ${imageId}`);
+      const newSrc = this.processEmbeddedImage(imageId, dataUrl, filePath);
+
+      if (newSrc !== dataUrl) {
+        // 存储映射关系，稍后处理引用
+        imageReferences.set(imageId, newSrc);
+
+        // 删除原有的引用定义行
+        content = content.replace(fullMatch, '');
+        modified = true;
+
+        // 记录处理的图片
+        const imageName = newSrc.split('/assets/')[1];
+        if (imageName) {
+          processedInThisFile.add(imageName);
+        }
+      }
+    }
+
+    // 处理引用式图片 ![][imageX] -> ![](URL)
+    for (const [imageId, newSrc] of imageReferences) {
+      const referencePattern = new RegExp(`!\\[\\]\\[${imageId}\\]`, 'g');
+      const inlineImage = `![${imageId}](${newSrc})`;
+      content = content.replace(referencePattern, inlineImage);
+      console.log(`  ✓ Converted reference-style image: ${imageId} -> inline`);
+    }
+
+    // 然后处理常规的图片引用 ![alt](src)
+    const lines = content.split('\n');
+    const imageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
 
     // 处理每一行
     for (let i = 0; i < lines.length; i++) {
@@ -193,6 +273,12 @@ class ImageProcessorV2 {
       }
     }
 
+    // 如果有行级修改，更新内容
+    if (lines.join('\n') !== content.split('\n').join('\n')) {
+      content = lines.join('\n');
+      modified = true;
+    }
+
     // 清理属于本文件但不再被引用的图片
     const filePrefix = relativePath.replace(/\//g, '_').replace(/\.md$/, '_');
     const assetsFiles = fs.existsSync(PUBLIC_ASSETS_DIR)
@@ -212,7 +298,7 @@ class ImageProcessorV2 {
     }
 
     if (modified) {
-      fs.writeFileSync(filePath, lines.join('\n'));
+      fs.writeFileSync(filePath, content);
       console.log(`✓ Processed: ${relativePath}`);
       this.stats.filesModified++;
     } else if (this.stats.imagesCleaned > 0) {
@@ -252,6 +338,7 @@ class ImageProcessorV2 {
       console.log(`  Files modified: ${this.stats.filesModified}`);
       console.log(`  Images downloaded: ${this.stats.imagesDownloaded}`);
       console.log(`  Images processed: ${this.stats.imagesProcessed}`);
+      console.log(`  Embedded images extracted: ${this.stats.embeddedImagesExtracted}`);
       console.log(`  Images cleaned: ${this.stats.imagesCleaned}`);
 
     } catch (error) {
