@@ -1,0 +1,260 @@
+## 1、申请git 账号，jira 账号：
+
+#### 飞书-工作台-审批-发起申请-软件及账号；
+
+## 2、环境搭好、工程跑起来；
+
+### 2.1 软件安装：
+
+Git 客户端: 推荐 Fork
+
+Git GUI客户端：[https://www.sourcetreeapp.com/](https://www.sourcetreeapp.com/)
+
+代码编辑器： Web Storm smb://10.10.31.14
+
+Xcode / Android studio 可以等需要的时候再装
+
+### 2.2 node 依赖安装：
+
+browserify： 将JS脚本打包成一个文件
+
+sudo npm install \-g browserify
+
+uglifyjs：混淆JS代码
+
+sudo npm install  uglify-js \-g
+
+jq：shell脚本中访问json配置数据
+
+brew install jq \-g
+
+### 2.3 Git 访问设置，按如下方式设置SSH访问git，便于命令行操作：
+
+#### i. 生成钥匙对，参考： [https://gist.github.com/yisibl/8019693](https://gist.github.com/yisibl/8019693)
+
+#### ii. 登录github点击头像--settings---SSH and GPG keys， 点New SSH Key，把公钥文本粘贴进去
+
+![image1](http://localhost:5173/WTC-Docs/assets/1758727509788_0cdc8b3a.png)
+
+### 2.4 webstorm 配置JavaScript Debug:
+
+![image2](http://localhost:5173/WTC-Docs/assets/1758727509797_41eeb376.png)  
+![image3](http://localhost:5173/WTC-Docs/assets/1758727509798_e9890fba.png)![image4](http://localhost:5173/WTC-Docs/assets/1758727509799_4fd3014f.png)  
+![image5](http://localhost:5173/WTC-Docs/assets/1758727509801_be52f46a.png)  
+![image6](http://localhost:5173/WTC-Docs/assets/1758727509802_4d25def9.png)
+
+#### run，debug 都可用，区别在于 debug 模式会在 webstorm 输出运行日志
+
+#### 可在 chrome 浏览器-调试-代码中打断点调试；
+
+### 2.5 webstorm 配置代码、资源热更新组件：
+
+由脚本build\_local\_hotfix.py实现，传入参数为js文件相对路径或文件夹的相对路径，如build\_local\_hotfix.py src/task/controller/ActivityBaseController.js，则只更新ActivityBaseController.js文件；
+
+如build\_local\_hotfix.py src/task/controller，则更新该文件夹下的所有js文件，适合一个模块的整体更新。
+
+为方便调用，建议在WebStorm配置external tools工具，一键热更：
+
+## ![image7](http://localhost:5173/WTC-Docs/assets/1758727509804_de2200f2.png)
+
+进入WebStorm设置界面
+
+## ![image8](http://localhost:5173/WTC-Docs/assets/1758727509805_82ee796e.png)
+
+找到External Tools设置，点击+号
+
+## ![image9](http://localhost:5173/WTC-Docs/assets/1758727509806_56af3f23.png)
+
+填入脚本的调用参数:
+
+Program：./build\_local\_hotfix.py
+
+Arguments：$FileRelativePath$
+
+WorkingDir：$ProjectFileDir$/scripts
+
+## ![image10](http://localhost:5173/WTC-Docs/assets/1758727509775_3b4ef856.png)
+
+找到Menus and Toolbars设置，展开到Run/Debug，在Debug项点击Add After增加一项快捷按钮
+
+## ![image11](http://localhost:5173/WTC-Docs/assets/1758727509776_99c51a87.png)
+
+选择刚才新建的External Tools配置
+
+## ![image12](http://localhost:5173/WTC-Docs/assets/1758727509778_d775fdf9.png)
+
+在工具栏的Debug按钮右侧就会出现一个热更快捷方式
+
+点击左侧项目的js文件或文件夹，再点击工具栏上的热更按钮，即可对该文件/文件夹调用热更脚本
+
+## ![image13](http://localhost:5173/WTC-Docs/assets/1758727509779_c7bb4399.png)
+
+游戏中Local模式每隔2s会检查热更，热更后会弹出热更成功的提示
+
+## ![image14](http://localhost:5173/WTC-Docs/assets/1758727509780_8fe5dbab.png)
+
+热更了js代码后，正在执行的代码不会生效，需要重新创建类的实例之后才会生效，如果是弹窗逻辑，¡生效，
+
+如果是关卡内逻辑，则需要退出关卡再进入才能生效。
+
+### **2.6 资源文件热更新**
+
+#### 2.6.1 资源文件通过CocosBuilder脚本来进行，在需要热更的资源文件/文件夹右键，选择发布到工程菜单项，即可自动部署并热更
+
+![image15](http://localhost:5173/WTC-Docs/assets/1758727509782_6e42e853.png)
+
+使用该脚本前需保证配有COCOS\_X\_ROOT环境变量，脚本通过该变量来索引工程代码的路径，可通过配置.bash\_profile来增加
+
+![image16](http://localhost:5173/WTC-Docs/assets/1758727509783_99940bb6.png)
+
+热更后会弹出热更成功的提示
+
+![image17](http://localhost:5173/WTC-Docs/assets/1758727509784_a99a4226.png)
+
+热更了资源之后，需要重新加载一遍资源才会生效，例如将弹窗关闭再打开，会立即生效。
+
+如果是活动入口，则需要进入关卡再退回大厅才能生效。
+
+#### 2.6.2 注意事项：
+
+	[https://drive.google.com/file/d/1z486VyUwzL\_C3aMJxTPYdDqzFybCWW8Z/view?usp=sharing](https://drive.google.com/file/d/1z486VyUwzL_C3aMJxTPYdDqzFybCWW8Z/view?usp=sharing)
+
+~~1）每个js文件只能导出一个类，不支持module.exports导出多个类的热更新，如~~  
+~~![image18](http://localhost:5173/WTC-Docs/assets/1758727509786_8b1990c5.png)~~
+
+~~是支持热更新的，![image19](http://localhost:5173/WTC-Docs/assets/1758727509787_63df6003.png)~~
+
+~~是不支持热更新的。~~
+
+~~2）如果导出的是一个function，则构造函数是不支持热更新的，如~~
+
+~~![image20](http://localhost:5173/WTC-Docs/assets/1758727509790_eaee7225.png)~~
+
+~~导出这个函数之后，里面的内容是不能热更新的，只能更新他的prototype，如~~
+
+~~![image21](http://localhost:5173/WTC-Docs/assets/1758727509791_fea0bfa0.png)~~
+
+~~这些函数是可以更新的。~~
+
+~~3）如果修改了基类的方法，则确保子类直接调用父类的方法，否则需要连同子类一起热更。如修改并热更了基类：~~
+
+~~![image22](http://localhost:5173/WTC-Docs/assets/1758727509792_264e8047.png)~~
+
+~~则以下调用会立即生效：~~
+
+~~![image23](http://localhost:5173/WTC-Docs/assets/1758727509794_f56ce2fb.png)~~
+
+~~但以下写法需要将子类也热更之后才能生效：~~
+
+~~![image24](http://localhost:5173/WTC-Docs/assets/1758727509795_d51a499d.png)~~
+
+### 2.7 图片压缩第三方库
+
+安装Python处理图片第三方库Pillow：[https://blog.csdn.net/yanjunmu/article/details/46967303](https://blog.csdn.net/yanjunmu/article/details/46967303)
+
+## 3、熟悉程序工作总表：
+
+#### 3.1 建个周报文档补上，文档放 google 网盘；周报格式仿照组内其他程序周报；命名格式看总表里的程序产出说明；
+
+#### 3.2 熟悉组内工作流程，产出规范；
+
+*工作流程：*  
+*接需求文档--\>开需求会--\>定排期--\>需求研发--\>提 A 版--\>修改 A 版反馈--\>提测--\>发版--\>总结&复盘*
+
+*产出规范：*  
+*程序工作总表-工作手册-程序产出说明*
+
+## 4、熟悉项目：
+
+	本地工程跑起来后，选择测试服，进入游戏体验；
+
+## 5、配置opnVpn，方便居家连接公司网络：
+
+[Q3’24-Slots-openVPN-程序](https://drive.google.com/drive/folders/1xN5FFhKuHVn1FXq8WTcrgVReNw5oXlMi?usp=drive_link)
+
+## 6、约定俗成的术语、概念：
+
+Classic、传统模式、oldvegas，都指的是同一个传统模式；产品简称 CV；
+
+其他模式都有唯一的叫法，例如DoubleHit。产品简称 DH
+
+## 7、项目目录结构：
+
+## WorldTourCasino.git仓库是很多项目的集合，包括Classic，DoubleHit等。具有以下目录结构。
+
+* ## res\_\*：各个项目的资源路径
+
+  * ## 例如res\_oldvegas是Classic项目的目录，res\_doublehit是DoubleHit项目的目录
+
+  * ## res\_\*/resources\_dirs.json：是一个包含了很多功能配置的配置文件。
+
+  * ## res\_\*/flavor/js\_src/：包含了此项目独有的js代码，最终都会同步到\<root\>/src目录下。
+
+* ## src：项目源码，由两部分组成
+
+  * ## 所有项目通用的源码存储在src目录下
+
+  * ## 每个项目单独的源码存储在res\_\*/flavor/js\_src/目录下，打包时由脚本拷贝到src目录。
+
+* ## scripts：包含了一些工具脚本，主要是打包脚本。
+
+## 8、研发分支：
+
+主分支：classic\_vegas  
+CV 分支：classic\_vegas\_cvs\_vXXX  
+DH 分支：classic\_vegas\_dbh\_vXXX
+
+分支流程：  
+1、每周会在飞书“Slots分支群”发布本周提测分支（发版分支）；  
+2、需求启动后，从本周分支切出自己的研发分支，命名：“classic\_vegas\_cvs\_vXXX\_需求名”，eg：“classic\_vegas\_cvs\_v733\_slots\_248\_firework\_strike”；  
+3、需求完成提测时，将研发分支合并到当周分支；  
+4、cv、dh 在各自分支上提交本周内容，通常周四发 cv，周五移植到 dh（活动、关卡移植教程）；  
+5、每周cv、dh发完版，会将本周的发版分支合并到主分支；（需要注意，如果当周 cv、dh 发版内容有差异，需要做兼容处理）  
+6、分支合并完后，切下周发版分支；
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,31 @@
+关卡内spinUI相关气泡存在图中偏移问题，统一进行修正  
+![image1](http://localhost:5173/WTC-Docs/assets/1758727509810_21f68ce4.png)
+
+## 1、收集bet气泡、highRoller宝箱气泡
+
+控制开关：this.machineConfig.needFixHRBetTipOffset \= true;  
+![image2](http://localhost:5173/WTC-Docs/assets/1758727509811_5ce9ef1e.png)  
+收集bet：  
+ccb：casino/card\_system/card\_pack/card\_pack\_bet\_tip.ccb  
+代码控制类：CardBetTipController
+
+highRoller宝箱：  
+ccb：casino/high\_rollers\_lounge/hr\_2/hr\_2\_box\_tip.ccb  
+代码控制类：HR2BetTipController
+
+cv与dh资源偏移一致，无需做不同项目区分。  
+由于两个气泡的ccb原点与气泡箭头的偏移量基本一致，所以使用同一个控制器处理两处逻辑。
+
+## 
+
+## 2、max bet气泡
+
+控制开关：this.machineConfig.needFixMaxBetTipOffset \= true;  
+cv与dh资源偏移不同，根据不同项目，SlotFunctionUIController.prototype.updateMaxBetTip方法中分别设置对齐锚点位置。  
+ccb: slot/slot\_spin\_max\_bet\_tip.ccb  
+![image3](http://localhost:5173/WTC-Docs/assets/1758727509812_38fe3fe3.png)
+
+
+
+
+

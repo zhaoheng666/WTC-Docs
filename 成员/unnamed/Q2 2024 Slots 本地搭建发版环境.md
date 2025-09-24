@@ -1,0 +1,47 @@
+# **本地搭建发版环境**
+
+## **Debug：**
+
+### **1、ssh 证书配置:**
+
+* (证书管我要，或去打包机找）  
+* 添加配置：
+
+cd \~/.ssh && open config  
+\#测试服  
+Host ali-slots-res  
+    HostName 39.106.57.54  
+    User ec2-user  
+    IdentityFile \~/.ssh/id\_ed2551919\_ghoststudio\_ali\_slots-res  
+    StrictHostKeyChecking no  
+    UserKnownHostsFile\=/dev/null
+
+### **2、 检查配置本地环境:**
+
+### **pyhon:		2.7**
+
+### **browserify:  	11.2.0 全局安装**
+
+### **uglify-js: 		2.4.24**
+
+### **3、执行 ./deploy\_fb\_alpha\_normal.sh res\_XXX;**
+
+图片增量压缩，否则过程会很长：  
+从打包机的normal\_builder/res\_XXX/.webpcache/目录拷贝相应的资源到本地.webpcache目录
+
+### **4、检查 cocoscomplie 环境，检查cocoscomplie命令执行结果，检查测试资源服game.mini.js,game.js中的commonVersin 是否最新：**
+
+ssh ali-slots-res  
+cd /usr/shared/nginx/html/res\_XXX  
+vim gameloader.js  
+/commonVersion
+
+### **5、检查测试资源服访问：**[ali-slots-res.me2zengame.com](http://ali-slots-res.me2zengame.com)
+
+* 这个 ali 域名，在北京办公室会被解析到内网打包机，ping 一下看看地址；  
+* 如果内网打包机无法访问，切到 4G 网络，或者让运维临时改一下 dns 解析；
+
+### **6、注意提交本地版本号，防止更换打包环境后版本号错乱**
+
+![image1](http://localhost:5173/WTC-Docs/assets/1758727509644_53b326d9.png)
+

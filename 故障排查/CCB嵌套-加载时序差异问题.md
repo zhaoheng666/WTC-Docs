@@ -2,9 +2,9 @@
 
 ## 案例现场
 
-![1758706517331](http://localhost:5173/WTC-Docs/assets/故障排查_CCB加载顺序Native-HTML5差异分析_60ba459caf3a.png)
+![1758706517331](http://localhost:5173/WTC-Docs/assets/1758727510009_93c0d313.png)
 
-![1758706529154](http://localhost:5173/WTC-Docs/assets/故障排查_CCB加载顺序Native-HTML5差异分析_df0bb10be159.png)
+![1758706529154](http://localhost:5173/WTC-Docs/assets/1758727510011_6078eba4.png)
 
 父 CCB controller. `onDidLoadFromCCB` 中调用子 CCB Controller方法，在 native 端报错，子 CCB controller undefined；
 
@@ -15,7 +15,7 @@
 - **HTML5平台**: 子CCB的 `onDidLoadFromCCB` → 父CCB的 `onDidLoadFromCCB`
 - **Native平台**: 父CCB的 `onDidLoadFromCCB` → 子CCB的 `onDidLoadFromCCB`
 
-![1758698625269](http://localhost:5173/WTC-Docs/assets/故障排查_CCB加载顺序Native-HTML5差异分析_f39e9a625349.png)![1758703526432](http://localhost:5173/WTC-Docs/assets/故障排查_CCB加载顺序Native-HTML5差异分析_9833ce5d17aa.png)
+![1758698625269](http://localhost:5173/WTC-Docs/assets/1758727510013_674df88a.png)![1758703526432](http://localhost:5173/WTC-Docs/assets/1758727510010_856b84fb.png)
 
 ## 原因分析
 

@@ -1,0 +1,70 @@
+# Q2\`25-Slots-模糊图标生成脚本说明-程序
+
+---
+
+#### **模糊图标实现原理：**使用 ImageMagick 的 mogrify 命令进行两次垂直方向运动模糊处理；
+
+#### **ImageMagic 核心功能：**
+
+1. ##### 格式转换：支持跨格式转换（如 JPG → PNG → GIF），并可调整质量、尺寸等参数。
+
+2. ##### 图像编辑：裁剪、缩放、旋转、模糊、锐化、颜色调整等。
+
+3. ##### 特效合成：添加文字、水印、渐变、阴影，或合并多个图像。
+
+4. ##### 批处理：批量处理大量图像（如调整尺寸、添加水印）。
+
+5. ##### 高级滤镜：支持卷积、扭曲、噪点、浮雕等复杂效果。
+
+6. ##### 动画处理：创建、编辑 GIF 动画或视频帧。
+
+---
+
+## 一、环境依赖：ImageMagic
+
+### 1、安装 brew：
+
+#### 打开终端，输入 brew，如果命令存在，跳过该步骤；
+
+/bin/bash \-c "$(curl \-fsSL [https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh](https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh))"  
+期间需要输入密码，回车确认；	  
+![image1](http://localhost:5173/WTC-Docs/assets/1758727509651_61b1c586.png)![image2](http://localhost:5173/WTC-Docs/assets/1758727509652_8008d541.png)  
+安装完成，执行 brew 确认命令存在；
+
+### 2、安装 imagemagick：
+
+#### brew install imagemagick
+
+#### 美术电脑通常未安装 xcode-command-line，期间需要 download、complie 各种依赖，耗时较长，耐心等待；
+
+### 3、验证安装成功：
+
+#### mogrify \-version
+
+## 二、脚本实现：
+
+---
+
+### 1、脚本路径：Pluglns/symbol\_blur.py
+
+### 2、参数说明：
+
+![image3](http://localhost:5173/WTC-Docs/assets/1758727509654_40faeb53.png)
+
+## 三、使用说明：
+
+---
+
+![image4](http://localhost:5173/WTC-Docs/assets/1758727509656_da7af610.png)  
+![image5](http://localhost:5173/WTC-Docs/assets/1758727509658_caacb78a.png)
+
+### 如果有修改模糊程度、模糊区域等需求，可以在程序端调整生成脚本中对应的参数后，重新执行生成操作；
+
+
+
+
+
+
+
+
+

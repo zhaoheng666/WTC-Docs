@@ -20,6 +20,35 @@ echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━�
 echo -e "${CYAN}🏗️  开始构建文档...${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
+# 0. 修复有问题的文件名
+if [ -f ".vitepress/scripts/fix-problematic-filenames.js" ]; then
+    echo -e "${CYAN}🔧 修复有问题的文件名...${NC}"
+
+    # 预览模式检查是否需要修复
+    FIX_OUTPUT=$(node .vitepress/scripts/fix-problematic-filenames.js --dry-run 2>&1)
+
+    if echo "$FIX_OUTPUT" | grep -E "📁|📄" >/dev/null; then
+        echo -e "${CYAN}  • 发现需要修复的文件名${NC}"
+
+        # 实际执行修复
+        if node .vitepress/scripts/fix-problematic-filenames.js > /tmp/fix-filenames.log 2>&1; then
+            FIXED_COUNT=$(grep -E "📁|📄" /tmp/fix-filenames.log | wc -l)
+            echo -e "${GREEN}  ✓ 修复了 $FIXED_COUNT 个文件/目录${NC}"
+        else
+            echo -e "${YELLOW}  ⚠️  文件名修复失败（继续构建）${NC}"
+            # 显示错误信息
+            if [ -f "/tmp/fix-filenames.log" ]; then
+                ERROR_MSG=$(tail -3 /tmp/fix-filenames.log)
+                [ -n "$ERROR_MSG" ] && echo -e "${YELLOW}    错误: $ERROR_MSG${NC}"
+            fi
+        fi
+    else
+        echo -e "${GREEN}  ✓ 文件名没有问题${NC}"
+    fi
+else
+    echo -e "${YELLOW}  ⚠️  fix-problematic-filenames.js 不存在，跳过文件名修复${NC}"
+fi
+
 # 0. 处理图片引用和下载
 if [ -f ".vitepress/scripts/image-processor.js" ]; then
     echo -e "${CYAN}🔍 检查 MD 文件中的图片...${NC}"

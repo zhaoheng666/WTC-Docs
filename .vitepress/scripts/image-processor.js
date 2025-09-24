@@ -13,6 +13,8 @@ const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../public/assets');
 class ImageProcessorV2 {
   constructor() {
     this.processedImages = new Set();
+    this.imageRegistry = new Map(); // 用于跟踪图片和文件的关联关系
+    this.imageContentCache = new Map(); // 内容哈希缓存 imageName -> contentHash
     this.ensureAssetsDirectory();
     this.stats = {
       filesModified: 0,
@@ -30,17 +32,8 @@ class ImageProcessorV2 {
     }
   }
 
-  // 生成基于文件路径和内容的唯一图片名
+  // 生成简洁的两段式唯一图片名
   generateUniqueImageName(mdFilePath, originalUrl, imageId = null) {
-    const relativePath = path.relative(process.cwd(), mdFilePath);
-    // 将路径转换为安全的文件名格式（移除空格和特殊字符）
-    const safePath = relativePath
-      .replace(/\//g, '_')
-      .replace(/\\/g, '_')
-      .replace(/\s+/g, '_')  // 将空格替换为下划线
-      .replace(/[^\w\u4e00-\u9fff._-]/g, '_')  // 保留中文字符、字母、数字、下划线、点号和横线
-      .replace(/\.md$/, '');
-
     // 从 URL 或路径中提取原始扩展名
     let ext = '.png';
     try {
@@ -51,13 +44,24 @@ class ImageProcessorV2 {
       }
     } catch (e) {}
 
-    // 生成基于原始URL的唯一哈希
-    const hash = crypto.createHash('md5').update(originalUrl).digest('hex').substring(0, 8);
+    // 生成基于URL内容的唯一标识符（不依赖文件路径，确保相同图片得到相同名称）
+    const contentKey = originalUrl + (imageId ? '|' + imageId : '');
+    const fullHash = crypto.createHash('md5').update(contentKey).digest('hex');
 
-    // 如果是内置图片引用，使用 imageId
-    const suffix = imageId ? `_${imageId}_${hash}` : `_${hash.substring(0, 12)}`;
+    // 检查是否已经为这个内容生成过文件名
+    if (this.imageRegistry.has(contentKey)) {
+      return this.imageRegistry.get(contentKey);
+    }
 
-    return `${safePath}${suffix}${ext}`;
+    // 生成两段式命名：时间戳(13位) + hash(8位)
+    const timestamp = Date.now().toString();
+    const shortHash = fullHash.substring(0, 8);
+    const filename = `${timestamp}_${shortHash}${ext}`;
+
+    // 记录映射关系
+    this.imageRegistry.set(contentKey, filename);
+
+    return filename;
   }
 
   async downloadImage(url, destPath) {
@@ -158,17 +162,17 @@ class ImageProcessorV2 {
     }
   }
 
-  // 从图片文件名解析出对应的 MD 文件
+  // 从图片文件名解析出对应的 MD 文件（新的两段式命名无法直接解析出文件路径）
   parseImageFileName(imageName) {
-    // 格式: 成员_赵恒_CardSystem加载优化_abc123def456.png
-    const match = imageName.match(/(.+)_[a-f0-9]{12}\.\w+$/);
+    // 新格式: 1758255105402_e3252339.png
+    // 由于新格式不包含文件路径信息，我们需要通过其他方式关联文件
+    // 这个函数现在主要用于验证是否为有效的图片文件名格式
+    const match = imageName.match(/^(\d{13})_([a-f0-9]{8})\.\w+$/);
     if (match) {
-      const [, filePathPart] = match;
-      // 将下划线转回路径分隔符，并添加 .md 扩展名
-      const mdFile = filePathPart.replace(/_/g, '/') + '.md';
-      return { mdFile };
+      const [, timestamp, hash] = match;
+      return { timestamp, hash, valid: true };
     }
-    return null;
+    return { valid: false };
   }
 
   async processMarkdownFile(filePath) {
@@ -279,23 +283,12 @@ class ImageProcessorV2 {
       modified = true;
     }
 
-    // 清理属于本文件但不再被引用的图片
-    const filePrefix = relativePath.replace(/\//g, '_').replace(/\.md$/, '_');
-    const assetsFiles = fs.existsSync(PUBLIC_ASSETS_DIR)
-      ? fs.readdirSync(PUBLIC_ASSETS_DIR)
-      : [];
-
-    for (const imageName of assetsFiles) {
-      // 只处理属于当前文件的图片
-      if (imageName.startsWith(filePrefix)) {
-        if (!processedInThisFile.has(imageName)) {
-          const imagePath = path.join(PUBLIC_ASSETS_DIR, imageName);
-          fs.unlinkSync(imagePath);
-          console.log(`  🗑️  Deleted unused image: ${imageName}`);
-          this.stats.imagesCleaned++;
-        }
-      }
+    // 记录本文件中处理的图片
+    for (const imageName of processedInThisFile) {
+      this.processedImages.add(imageName);
     }
+
+    // 记录已处理图片（用于统计）
 
     if (modified) {
       fs.writeFileSync(filePath, content);
@@ -306,6 +299,217 @@ class ImageProcessorV2 {
     }
 
     return modified || this.stats.imagesCleaned > 0;
+  }
+
+  // 智能图片清理 - 基于内容去重 + 有限扫描
+  cleanUnusedImages(changedFiles = []) {
+    if (!fs.existsSync(PUBLIC_ASSETS_DIR)) {
+      return;
+    }
+
+    console.log('🧹 检查未使用的图片...');
+
+    // 策略1：如果只有少量文件变更，使用增量检查
+    if (changedFiles.length > 0 && changedFiles.length <= 10) {
+      this.incrementalCleanup(changedFiles);
+      return;
+    }
+
+    // 策略2：基于内容哈希的去重清理
+    this.contentBasedCleanup();
+  }
+
+  // 增量清理：只检查变更文件相关的图片
+  incrementalCleanup(changedFiles) {
+    console.log(`  Using incremental cleanup for ${changedFiles.length} files`);
+
+    // 收集所有图片文件及其内容哈希
+    const allImages = fs.readdirSync(PUBLIC_ASSETS_DIR).filter(file =>
+      /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(file)
+    );
+
+    // 构建内容哈希映射
+    const contentToImages = new Map(); // contentHash -> [imageName1, imageName2]
+
+    allImages.forEach(imageName => {
+      try {
+        const imagePath = path.join(PUBLIC_ASSETS_DIR, imageName);
+        const content = fs.readFileSync(imagePath);
+        const contentHash = crypto.createHash('md5').update(content).digest('hex');
+
+        if (!contentToImages.has(contentHash)) {
+          contentToImages.set(contentHash, []);
+        }
+        contentToImages.get(contentHash).push(imageName);
+      } catch (error) {
+        console.warn(`  ⚠️  Could not read ${imageName}: ${error.message}`);
+      }
+    });
+
+    // 找出有重复内容的图片组，保留最新的
+    let duplicatesRemoved = 0;
+    for (const [contentHash, imageNames] of contentToImages) {
+      if (imageNames.length > 1) {
+        // 按修改时间排序，保留最新的
+        imageNames.sort((a, b) => {
+          const statA = fs.statSync(path.join(PUBLIC_ASSETS_DIR, a));
+          const statB = fs.statSync(path.join(PUBLIC_ASSETS_DIR, b));
+          return statB.mtime - statA.mtime;
+        });
+
+        // 删除除第一个（最新）之外的所有重复文件
+        for (let i = 1; i < imageNames.length; i++) {
+          try {
+            fs.unlinkSync(path.join(PUBLIC_ASSETS_DIR, imageNames[i]));
+            console.log(`  ✓ Deleted duplicate: ${imageNames[i]} (same as ${imageNames[0]})`);
+            duplicatesRemoved++;
+            this.stats.imagesCleaned++;
+          } catch (error) {
+            console.error(`  ✗ Failed to delete ${imageNames[i]}: ${error.message}`);
+          }
+        }
+      }
+    }
+
+    if (duplicatesRemoved === 0) {
+      console.log('  ✓ No duplicate images found');
+    } else {
+      console.log(`  ✓ Removed ${duplicatesRemoved} duplicate images`);
+    }
+  }
+
+  // 基于内容的清理：去重 + 智能检查
+  contentBasedCleanup() {
+    console.log('  Using content-based cleanup');
+
+    // 1. 获取所有图片及其内容哈希
+    const allImages = fs.readdirSync(PUBLIC_ASSETS_DIR).filter(file =>
+      /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(file)
+    );
+
+    if (allImages.length === 0) {
+      console.log('  ✓ No images to clean');
+      return;
+    }
+
+    const contentToImages = new Map();
+    const imageToContent = new Map();
+
+    // 计算所有图片的内容哈希
+    allImages.forEach(imageName => {
+      try {
+        const imagePath = path.join(PUBLIC_ASSETS_DIR, imageName);
+        const content = fs.readFileSync(imagePath);
+        const contentHash = crypto.createHash('md5').update(content).digest('hex');
+
+        imageToContent.set(imageName, contentHash);
+
+        if (!contentToImages.has(contentHash)) {
+          contentToImages.set(contentHash, []);
+        }
+        contentToImages.get(contentHash).push(imageName);
+      } catch (error) {
+        console.warn(`  ⚠️  Could not read ${imageName}: ${error.message}`);
+      }
+    });
+
+    // 2. 处理重复内容的图片（去重）
+    let duplicatesRemoved = 0;
+    for (const [contentHash, imageNames] of contentToImages) {
+      if (imageNames.length > 1) {
+        // 按文件名排序，保留字典序最小的（通常是最早的）
+        imageNames.sort();
+
+        // 删除重复的图片
+        for (let i = 1; i < imageNames.length; i++) {
+          try {
+            fs.unlinkSync(path.join(PUBLIC_ASSETS_DIR, imageNames[i]));
+            console.log(`  ✓ Deleted duplicate: ${imageNames[i]} (same content as ${imageNames[0]})`);
+            duplicatesRemoved++;
+            this.stats.imagesCleaned++;
+          } catch (error) {
+            console.error(`  ✗ Failed to delete ${imageNames[i]}: ${error.message}`);
+          }
+        }
+      }
+    }
+
+    // 3. 对于小项目，可以做一个快速的使用检查
+    const remainingImages = allImages.filter(img =>
+      fs.existsSync(path.join(PUBLIC_ASSETS_DIR, img))
+    );
+
+    if (remainingImages.length <= 50) {
+      // 只有50个以下的图片时，做一个快速检查
+      this.quickUsageCheck(remainingImages);
+    }
+
+    if (duplicatesRemoved === 0) {
+      console.log('  ✓ No duplicate images found');
+    } else {
+      console.log(`  ✓ Removed ${duplicatesRemoved} duplicate images`);
+    }
+  }
+
+  // 快速使用检查（仅针对小量图片）
+  quickUsageCheck(images) {
+    if (images.length === 0) return;
+
+    console.log(`  🔍 Quick usage check for ${images.length} images...`);
+
+    // 使用 grep 快速搜索图片引用（比逐个读取文件快）
+    const { execSync } = require('child_process');
+
+    let unusedCount = 0;
+    images.forEach(imageName => {
+      try {
+        // 使用 grep 在所有 .md 文件中搜索图片名
+        const grepResult = execSync(
+          `grep -r "${imageName}" --include="*.md" . || true`,
+          { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] }
+        );
+
+        if (!grepResult.trim()) {
+          // 如果没有找到引用，删除这个图片
+          fs.unlinkSync(path.join(PUBLIC_ASSETS_DIR, imageName));
+          console.log(`  ✓ Deleted unused: ${imageName}`);
+          unusedCount++;
+          this.stats.imagesCleaned++;
+        }
+      } catch (error) {
+        // grep 没找到或其他错误，保留图片（安全起见）
+      }
+    });
+
+    if (unusedCount > 0) {
+      console.log(`  ✓ Removed ${unusedCount} unused images`);
+    }
+  }
+
+  // 递归查找所有 Markdown 文件
+  findMarkdownFiles(dir, files = []) {
+    try {
+      const items = fs.readdirSync(dir);
+
+      for (const item of items) {
+        if (item.startsWith('.') || item === 'node_modules' || item === 'public') {
+          continue;
+        }
+
+        const fullPath = path.join(dir, item);
+        const stat = fs.statSync(fullPath);
+
+        if (stat.isDirectory()) {
+          this.findMarkdownFiles(fullPath, files);
+        } else if (item.endsWith('.md')) {
+          files.push(fullPath);
+        }
+      }
+    } catch (error) {
+      console.warn(`Warning: Could not read directory ${dir}: ${error.message}`);
+    }
+
+    return files;
   }
 
   async processChangedFiles() {
@@ -322,6 +526,17 @@ class ImageProcessorV2 {
 
       if (changedFiles.length === 0 || (changedFiles.length === 1 && !changedFiles[0])) {
         console.log('No markdown files changed.');
+
+        // 即使没有文件变更，也执行清理检查
+        this.cleanUnusedImages([]);
+
+        // 输出统计
+        console.log('\n📊 Statistics:');
+        console.log(`  Files modified: ${this.stats.filesModified}`);
+        console.log(`  Images downloaded: ${this.stats.imagesDownloaded}`);
+        console.log(`  Images processed: ${this.stats.imagesProcessed}`);
+        console.log(`  Embedded images extracted: ${this.stats.embeddedImagesExtracted}`);
+        console.log(`  Images cleaned: ${this.stats.imagesCleaned}`);
         return;
       }
 
@@ -332,6 +547,9 @@ class ImageProcessorV2 {
           await this.processMarkdownFile(file);
         }
       }
+
+      // 处理完所有文件后，执行智能清理（传入变更文件列表）
+      this.cleanUnusedImages(changedFiles);
 
       // 输出统计
       console.log('\n📊 Statistics:');

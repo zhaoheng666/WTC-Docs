@@ -1,0 +1,24 @@
+#  Q1\`25-slots-老活动资源归档、找回-程序
+
+#### 修订人：赵恒	 	修订时间： 2025.3.24
+
+#### 版本节点：master：a2f9e330faa0d9dfac2e42529d1cb856ad5feab3
+
+## 一、需求：
+
+---
+
+[Q1'25-Slots-活动资源整理-策划](https://docs.google.com/spreadsheets/d/1eTtfANEnGAa9I681Xe7tJGyDdXkwrYxbP7q3yq-Fqqs/edit?gid=0#gid=0)
+
+#### 资源太多，导致 cocosbuilder 打开缓慢或报错；
+
+## 二、实现：
+
+---
+
+### 所有标记资源不使用的，全部做了归档，如果需要找回，可以直接一个命令拉回来
+
+### ![image1](http://localhost:5173/WTC-Docs/assets/1758727509612_8551e528.png)
+
+#### 脚本路径：WorldTourCasinoResource/Archives
+

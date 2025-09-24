@@ -1,0 +1,150 @@
+# Q1\`25-slots-打包机故障恢复-程序
+
+## 2025-02-21 故障恢复-重要问题记录：
+
+### 1、ssh 指纹丢失：
+
+![image1](http://localhost:5173/WTC-Docs/assets/1758727509595_6993bf3f.png)
+
+* #### 打开 ssh 记录文件： open \~/.ssh/known\_hosts
+
+* #### 找到匹配的指纹，删除匹配行；
+
+| 127.0.0.1 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOUxINxyjH2hCUY9FqG59WcfYo/KjSMPux/gW0gOcNSC1oCQmagxwGqN9FnNmjZQbHxmH8Y7Iu9yez2g6HR4g3w= |
+| :---- |
+
+### 2、环境变量丢失：
+
+![image2](http://localhost:5173/WTC-Docs/assets/1758727509596_cf2e7872.png)![image3](http://localhost:5173/WTC-Docs/assets/1758727509598_de206093.png)
+
+#### 2.1、检查 python、node 等命令是否存在： which python
+
+#### 2.2、检查环境变量：  echo $PATH
+
+#### 2.3、shell 脚本执行环境切换到 zsh：打包机重装后，当前环境配置文件为 \~/.zprofile
+
+* **\#\!/bin/sh**
+
+  sh 是一个 POSIX 兼容的 shell，不同的系统对 sh 的实现可能不同。常见的实现有 dash（Debian Almquist Shell）、ash（Almquist Shell）等。
+
+* ##### 全局环境变量文件
+
+  * /etc/profile：这是系统全局的配置文件，在用户登录时会被执行，用于设置全局的环境变量和 shell 选项。  
+  * /etc/bash.bashrc（在某些系统中）：虽然 sh 通常不是 bash，但在一些系统中，这个文件可能会被部分继承或使用，用于设置一些基本的 shell 配置。
+
+* ##### 用户特定的环境变量文件
+
+  * \~/.profile：用户登录时会执行这个文件，用于设置用户特定的环境变量。  
+  * \~/.bashrc（在某些系统中）：类似于全局的 bash.bashrc，用于设置用户特定的 shell 配置。  
+* **\#\!/bin/zsh**
+
+  zsh 是一个功能强大的 shell，有自己的一套配置文件。
+
+* ##### 全局环境变量文件
+
+  * /etc/zsh/zshenv：每次启动 zsh 时都会读取这个文件，无论以何种方式启动（登录、非登录、交互式、非交互式），通常用于设置一些基本的环境变量，如 PATH。  
+  * /etc/zsh/zprofile：在登录 zsh 时读取，类似于 bash 的 /etc/profile，用于设置全局的登录环境。  
+  * /etc/zsh/zshrc：在交互式 zsh 会话启动时读取，用于设置全局的交互式 shell 配置。  
+  * /etc/zsh/zlogin：在登录 zsh 会话结束时读取。
+
+* ##### 用户特定的环境变量文件
+
+  * \~/.zshenv：每次启动 zsh 时都会读取，用于设置用户特定的基本环境变量。  
+  * \~/.zprofile：在登录 zsh 时读取，用于设置用户特定的登录环境。  
+  * \~/.zshrc：在交互式 zsh 会话启动时读取，用于设置用户特定的交互式 shell 配置。  
+  * \~/.zlogin：在登录 zsh 会话结束时读取。
+
+#### 2.4、补全环境变量，/usr/local/bin 等
+
+#### 2.5、修正 shell 脚本语法报错：
+
+![image4](http://localhost:5173/WTC-Docs/assets/1758727509599_1b4b02a5.png)  
+	 修正前：if \[\[ \! "$message" \=\~ \\| \]\]; then  
+ 修正后：if \[\[ \! "$message" \=\~ '\\|' \]\]; then
+
+### 3、安装 jq
+
+### 4、安装 google-sheet-api
+
+	pip install oauth2client  
+pip install google-auth==1.35.0  
+pip install google-api-core google-auth-oauthlib google-api-python-client
+
+### 5、提交错误，子仓库未更新，commit 失败，手动 discard 掉子仓库变更![image5](http://localhost:5173/WTC-Docs/assets/1758727509600_3e8e3e2b.png)
+
+### 6、初始化 cocos2dx 引擎
+
+![image6](http://localhost:5173/WTC-Docs/assets/1758727509602_b674e6b3.png)  
+手动执行  
+python /Users/apple/normal\_builder/ws\_cvs/frameworks/cocos2d-x/tools/cocos2d-console/bin/cocos.py  
+选择一次“cocos帮助改进计划”
+
+### 7、恢复 JDK 环境：
+
+![image7](http://localhost:5173/WTC-Docs/assets/1758727509602_487814ba.png)
+
+* 在打包机上找了备份做还原：
+
+![image8](http://localhost:5173/WTC-Docs/assets/1758727509603_168b1a9d.png)
+
+* 也可以重新安装，修正 JAVA\_HOME 环境变量：  
+  brew tap AdoptOpenJDK/openjdk  
+  brew install adoptopenjdk12
+
+### 8、native loading 完卡 100%：fNOP 问题
+
+![image9](http://localhost:5173/WTC-Docs/assets/1758727509605_67797f33.png)
+
+#### 原因：browserify 版本过新，代码默认按照 es6 整合，spidermonkey 不兼容；
+
+* #### 检查 browserify 版本，不要使用过新的版本，或者指定 es5 语法
+
+* #### npm install browserify@11.2.0 \-g
+
+### 9、测试服 coupon、宣发资源访问异常
+
+* 检查资源是否存在，/usr/share/nginx/html/  
+* 检查打包机 nginx 配置：  
+  ![image10](http://localhost:5173/WTC-Docs/assets/1758727509593_07d8a7a4.png)  
+  看转发位置，如果先转发到@remote\_31\_18， 检查 10.10.31.18 机器上是否配置了其他跳转  
+  
+
+
+### 10、安装 cocoapods
+
+	brew install cocoapods
+
+### 11、更新 pod 源
+
+	git clone https://github.com/CocoaPods/Specs.git \~/.cocoapods/repos/master  
+pod repo update
+
+### 12、更新 xcode 工具路径
+
+* **报错：**  
+  * xcode-select: error: tool 'xcodebuild' requires Xcode, but active developer directory   
+* **原因：**  
+  * xcode 不是重新安装的最新版本，CommandLineTools 指向默认系统路径，找不到 xcode 自身的工具链；  
+* **解决：**  
+  * sudo xcode-select \-s /Applications/Xcode.app/Contents/Developer
+
+### pod repo updatepod repo updat
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
