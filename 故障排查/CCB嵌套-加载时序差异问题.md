@@ -215,7 +215,7 @@ setAnimationManagers: function (animationManagers) {
 
 ### 结论：
 
-native 端数据类型 `std::unordered_map<Node*, CCBAnimationManager*> `，为保证插入、遍历顺序
+native 端数据类型 `std::unordered_map<Node*, CCBAnimationManager*> `，未保证插入、遍历顺序
 
 ## 解决方案
 
