@@ -75,6 +75,35 @@ npm run status # 检查状态
 
 ## 开发注意事项
 
+### 文档编写规范
+
+#### 文件路径链接规则
+在文档中提及具体的代码文件路径时，应自动转换为 GitHub 链接：
+
+1. **主项目文件**：链接到主仓库 `https://github.com/LuckyZen/WorldTourCasino`
+   - 格式：`[文件路径](https://github.com/LuckyZen/WorldTourCasino/blob/分支名/文件路径)`
+   - 示例：[`scripts/build_local_app.sh`](https://github.com/LuckyZen/WorldTourCasino/blob/classic_vegas_cvs_v855/scripts/build_local_app.sh)
+
+2. **子仓库文件**：链接到对应的子仓库
+   - cocos2d-html5：`https://github.com/LuckyZen/cocos2d-html5`
+   - cocos2d-x：`https://github.com/LuckyZen/cocos2d-x`
+   - libZenSDK：`https://github.com/LuckyZen/libZenSDK`
+
+3. **子仓库处理步骤**：
+   ```bash
+   # 获取子仓库当前提交
+   cd 主项目/frameworks/cocos2d-html5
+   git log --oneline -1  # 获取提交哈希
+
+   # 使用提交哈希构建链接
+   https://github.com/LuckyZen/cocos2d-html5/blob/提交哈希/文件路径
+   ```
+
+4. **子仓库映射表**：
+   - `frameworks/cocos2d-html5/` → `https://github.com/LuckyZen/cocos2d-html5`
+   - `frameworks/cocos2d-x/` → `https://github.com/LuckyZen/cocos2d-x`
+   - `libZenSDK/` → `https://github.com/LuckyZen/libZenSDK`
+
 ### Git 工作流
 
 #### 提交类型规范

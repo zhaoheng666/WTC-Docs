@@ -1,6 +1,10 @@
-# CCB加载顺序Native-HTML5差异分析
+# CCB嵌套-加载时序差异问题
 
-## 案例现场![1758684252684](https://file+.vscode-resource.vscode-cdn.net/Users/ghost/work/WorldTourCasino/docs/%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5/image/CCB%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/1758684252684.png)![1758684258992](https://file+.vscode-resource.vscode-cdn.net/Users/ghost/work/WorldTourCasino/docs/%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5/image/CCB%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/1758684258992.png)
+## 案例现场
+
+![1758706517331](http://localhost:5173/WTC-Docs/assets/故障排查_CCB加载顺序Native-HTML5差异分析_60ba459caf3a.png)
+
+![1758706529154](http://localhost:5173/WTC-Docs/assets/故障排查_CCB加载顺序Native-HTML5差异分析_df0bb10be159.png)
 
 父 CCB controller. `onDidLoadFromCCB` 中调用子 CCB Controller方法，在 native 端报错，子 CCB controller undefined；
 
@@ -8,8 +12,8 @@
 
 在Native和HTML5平台上，嵌套CCB文件的 `onDidLoadFromCCB` 回调执行顺序存在差异：
 
-- **HTML5平台**: 子CCB的 `onDidLoadFromCCB` → 父CCB的 `onDidLoadFromCCB`（深度优先）
-- **Native平台**: 父CCB的 `onDidLoadFromCCB` → 子CCB的 `onDidLoadFromCCB`（广度优先）
+- **HTML5平台**: 子CCB的 `onDidLoadFromCCB` → 父CCB的 `onDidLoadFromCCB`
+- **Native平台**: 父CCB的 `onDidLoadFromCCB` → 子CCB的 `onDidLoadFromCCB`
 
 ![1758698625269](http://localhost:5173/WTC-Docs/assets/故障排查_CCB加载顺序Native-HTML5差异分析_f39e9a625349.png)![1758703526432](http://localhost:5173/WTC-Docs/assets/故障排查_CCB加载顺序Native-HTML5差异分析_9833ce5d17aa.png)
 
@@ -209,6 +213,10 @@ setAnimationManagers: function (animationManagers) {
 }
 ```
 
+### 结论：
+
+native 端数据类型 `std::unordered_map<Node*, CCBAnimationManager*> `，为保证插入、遍历顺序
+
 ## 解决方案
 
 1. **避免依赖执行顺序**: 不要假设 `onDidLoadFromCCB`的调用顺序
@@ -219,11 +227,11 @@ setAnimationManagers: function (animationManagers) {
 
 - HTML5实现：
 
-  - `frameworks/cocos2d-html5/extensions/ccb-reader/CCBReader.js`
-  - `frameworks/cocos2d-html5/extensions/ccb-reader/CCNodeLoader.js`
+  - [`frameworks/cocos2d-html5/extensions/ccb-reader/CCBReader.js`](https://github.com/LuckyZen/cocos2d-html5/blob/60e61653/extensions/ccb-reader/CCBReader.js)
+  - [`frameworks/cocos2d-html5/extensions/ccb-reader/CCNodeLoader.js`](https://github.com/LuckyZen/cocos2d-html5/blob/60e61653/extensions/ccb-reader/CCNodeLoader.js)
 - Native实现：
 
-  - `frameworks/cocos2d-x/cocos/editor-support/cocosbuilder/CCBReader.cpp`
-  - `frameworks/cocos2d-x/cocos/editor-support/cocosbuilder/CCNodeLoader.cpp`
-  - `frameworks/cocos2d-x/cocos/scripting/js-bindings/script/jsb_cocosbuilder.js`
-  - `frameworks/cocos2d-x/cocos/scripting/js-bindings/manual/cocosbuilder/js_bindings_ccbreader.cpp`
+  - [`frameworks/cocos2d-x/cocos/editor-support/cocosbuilder/CCBReader.cpp`](https://github.com/LuckyZen/cocos2d-x/blob/e904f3c5de/cocos/editor-support/cocosbuilder/CCBReader.cpp)
+  - [`frameworks/cocos2d-x/cocos/editor-support/cocosbuilder/CCNodeLoader.cpp`](https://github.com/LuckyZen/cocos2d-x/blob/e904f3c5de/cocos/editor-support/cocosbuilder/CCNodeLoader.cpp)
+  - [`frameworks/cocos2d-x/cocos/scripting/js-bindings/script/jsb_cocosbuilder.js`](https://github.com/LuckyZen/cocos2d-x/blob/e904f3c5de/cocos/scripting/js-bindings/script/jsb_cocosbuilder.js)
+  - [`frameworks/cocos2d-x/cocos/scripting/js-bindings/manual/cocosbuilder/js_bindings_ccbreader.cpp`](https://github.com/LuckyZen/cocos2d-x/blob/e904f3c5de/cocos/scripting/js-bindings/manual/cocosbuilder/js_bindings_ccbreader.cpp)
