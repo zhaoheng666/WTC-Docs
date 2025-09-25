@@ -172,6 +172,37 @@ else
     echo -e "${YELLOW}  ⚠️  pdf-processor.js 不存在，跳过 PDF 处理${NC}"
 fi
 
+# 0.8. 生成目录索引文件树
+if [ -f ".vitepress/scripts/generate-directory-index.js" ]; then
+    echo -e "${CYAN}📁 生成目录索引文件树...${NC}"
+
+    # 覆盖式写入日志（不追加）
+    if node .vitepress/scripts/generate-directory-index.js > /tmp/directory-index.log 2>&1; then
+        # 提取处理信息
+        PROCESSED=$(grep "处理目录:" /tmp/directory-index.log | grep -o "[0-9]*" | tail -1)
+        SUCCESS=$(grep "成功生成:" /tmp/directory-index.log | grep -o "[0-9]*" | tail -1)
+
+        if [ -n "$PROCESSED" ] && [ "$PROCESSED" -gt 0 ]; then
+            echo -e "${GREEN}  ✓ 处理了 $PROCESSED 个目录${NC}"
+            if [ -n "$SUCCESS" ] && [ "$SUCCESS" -gt 0 ]; then
+                echo -e "${GREEN}  ✓ 成功生成 $SUCCESS 个索引文件${NC}"
+            fi
+        else
+            echo -e "${GREEN}  ✓ 目录索引已是最新状态${NC}"
+        fi
+    else
+        echo -e "${YELLOW}  ⚠️  目录索引生成失败（继续构建）${NC}"
+        # 显示错误信息
+        if [ -f "/tmp/directory-index.log" ]; then
+            ERROR_MSG=$(tail -3 /tmp/directory-index.log)
+            [ -n "$ERROR_MSG" ] && echo -e "${YELLOW}    错误: $ERROR_MSG${NC}"
+        fi
+    fi
+    # 保留日志文件用于调试，不删除
+else
+    echo -e "${YELLOW}  ⚠️  generate-directory-index.js 不存在，跳过目录索引生成${NC}"
+fi
+
 # 1. 跳过统计生成（本地不生成，仅 CI 生成）
 echo -e "${GREEN}  ✓ 跳过统计生成（仅在 CI 环境生成）${NC}"
 
