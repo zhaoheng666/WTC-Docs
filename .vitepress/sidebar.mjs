@@ -49,6 +49,56 @@ const specialCases = {
   'native': 'Native',
 }
 
+// 目录图标映射 - 为不同类型的目录添加个性化图标
+const directoryIcons = {
+  '活动': '🎮',
+  '关卡': '🎯',
+  'native': '📱',
+  'Native': '📱',
+  '协议': '📋',
+  '工程-工具': '🔧',
+  '工具': '🔧',
+  '其他': '📁',
+  '成员': '👥',
+  '故障排查': '🔍',
+  '服务器': '🖥️',
+  '需求': '📝',
+  '需求分析': '📝',
+  // Jenkins 相关
+  'Jenkins': '⚙️',
+  // VS Code 相关
+  'vscode': '💻',
+  // Apple 相关
+  'AppleDevelop': '🍎',
+  // Facebook 相关
+  'FB': '🔵',
+}
+
+// 文件图标映射 - 为不同类型的文件添加图标
+const fileIcons = {
+  // 默认 markdown 图标
+  default: '📄',
+  // 特殊文件
+  'index': '🏠',
+  '概览': '📖',
+  // 可以根据文件名添加特殊图标
+  'README': '📚',
+  '技术文档': '⚡',
+  '工作规范': '📏',
+  // 更多文件类型
+  '快速开始': '🚀',
+  '最近更新': '🕐',
+  'changelog': '📝',
+  'tutorial': '🎓',
+  'guide': '📘',
+  // 常见文档类型
+  'FAQ': '❓',
+  'API': '🔌',
+  'config': '⚙️',
+  'setup': '🔧',
+  'install': '📦',
+}
+
 // 自定义一级目录排序配置
 // 数字越小，排序越靠前；未配置的目录按字母顺序排在最后
 const directoryOrder = {
@@ -188,7 +238,7 @@ export function scanDirectory(dir, baseLink = '') {
     const subItems = scanDirectory(path.join(dir, file), `${baseLink}/${file}`)
     if (subItems.length > 0) {
       items.push({
-        text: formatTitle(file),
+        text: formatTitle(file, true), // true 表示这是目录
         collapsed: true, // 默认折叠子目录
         items: subItems
       })
@@ -204,12 +254,12 @@ export function scanDirectory(dir, baseLink = '') {
     // index.md 特殊处理 - 始终放在最前面
     if (name === 'index') {
       items.unshift({
-        text: '概览',
+        text: formatTitle('概览', false), // false 表示这是文件
         link: `${baseLink}/`
       })
     } else {
       items.push({
-        text: formatTitle(name),
+        text: formatTitle(name, false), // false 表示这是文件
         link: `${baseLink}/${name}`
       })
     }
@@ -218,14 +268,25 @@ export function scanDirectory(dir, baseLink = '') {
   return items
 }
 
-// 格式化标题 - 仅做 specialCases 替换
-function formatTitle(name) {
+// 格式化标题 - 添加图标并处理 specialCases
+function formatTitle(name, isDirectory = false) {
+  let displayName = name
+
   // 如果在 specialCases 中有定义，使用定义的值
   if (specialCases[name.toLowerCase()]) {
-    return specialCases[name.toLowerCase()]
+    displayName = specialCases[name.toLowerCase()]
   }
-  // 否则直接返回原始名称
-  return name
+
+  // 添加图标
+  if (isDirectory) {
+    // 目录图标
+    const icon = directoryIcons[displayName] || directoryIcons[name] || '📂'
+    return `${icon} ${displayName}`
+  } else {
+    // 文件图标
+    const icon = fileIcons[displayName] || fileIcons[name] || fileIcons.default
+    return `${icon} ${displayName}`
+  }
 }
 
 // 生成混合侧边栏配置
