@@ -142,8 +142,11 @@ export function scanDirectory(dir, baseLink = '') {
     return []
   }
 
-  const items = []
-  const files = fs.readdirSync(docsDir).sort()
+  const files = fs.readdirSync(docsDir)
+
+  // 分类文件和目录，并分别排序
+  const directories = []
+  const markdownFiles = []
 
   files.forEach(file => {
     // 跳过特殊文件和目录
@@ -160,36 +163,55 @@ export function scanDirectory(dir, baseLink = '') {
       if (shouldIgnore(relativePath + '/', file)) {
         return
       }
-
-      // 递归处理子目录
-      const subItems = scanDirectory(path.join(dir, file), `${baseLink}/${file}`)
-      if (subItems.length > 0) {
-        items.push({
-          text: formatTitle(file),
-          collapsed: true, // 默认折叠子目录
-          items: subItems
-        })
-      }
+      directories.push(file)
     } else if (file.endsWith('.md')) {
       // 检查文件是否应该被忽略
       if (shouldIgnore(relativePath, file)) {
         return
       }
+      markdownFiles.push(file)
+    }
+  })
 
-      // 处理 Markdown 文件
-      const name = file.replace('.md', '')
-      // index.md 特殊处理
-      if (name === 'index') {
-        items.unshift({
-          text: '概览',
-          link: `${baseLink}/`
-        })
-      } else {
-        items.push({
-          text: formatTitle(name),
-          link: `${baseLink}/${name}`
-        })
-      }
+  // 对目录和文件分别排序
+  directories.sort()
+  markdownFiles.sort()
+
+  const items = []
+
+  // 先处理目录（文件夹优先）
+  directories.forEach(file => {
+    const filePath = path.join(docsDir, file)
+    const relativePath = path.join(dir, file).replace(/\\/g, '/')
+
+    // 递归处理子目录
+    const subItems = scanDirectory(path.join(dir, file), `${baseLink}/${file}`)
+    if (subItems.length > 0) {
+      items.push({
+        text: formatTitle(file),
+        collapsed: true, // 默认折叠子目录
+        items: subItems
+      })
+    }
+  })
+
+  // 再处理Markdown文件
+  markdownFiles.forEach(file => {
+    const relativePath = path.join(dir, file).replace(/\\/g, '/')
+
+    // 处理 Markdown 文件
+    const name = file.replace('.md', '')
+    // index.md 特殊处理 - 始终放在最前面
+    if (name === 'index') {
+      items.unshift({
+        text: '概览',
+        link: `${baseLink}/`
+      })
+    } else {
+      items.push({
+        text: formatTitle(name),
+        link: `${baseLink}/${name}`
+      })
     }
   })
 
