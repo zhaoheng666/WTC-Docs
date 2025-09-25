@@ -102,12 +102,18 @@ const fileIcons = {
 // 自定义一级目录排序配置
 // 数字越小，排序越靠前；未配置的目录按字母顺序排在最后
 const directoryOrder = {
-  '活动': 1,    // 活动 - 最优先显示
-  '关卡': 2,    // 关卡
-  'Native': 3,  // native
-  '协议': 4,    // 协议
-  '工具': 5,    // 工具
-  '其他': 6,    // 其他
+  '活动': 1,        // 活动 - 最优先显示
+  '关卡': 2,        // 关卡
+  'native': 3,      // native (小写)
+  'Native': 3,      // native (大写)
+  '协议': 4,        // 协议
+  '工程-工具': 5,   // 工程工具
+  '工具': 5,        // 工具
+  '故障排查': 6,    // 故障排查
+  '服务器': 7,      // 服务器
+  '需求': 8,        // 需求
+  '需求分析': 8,    // 需求分析
+  '其他': 9,        // 其他
 }
 
 // 忽略列表配置
@@ -268,6 +274,12 @@ export function scanDirectory(dir, baseLink = '') {
   return items
 }
 
+// 提取纯文本名称（去除图标）- 用于排序匹配
+function extractTextFromTitle(titleWithIcon) {
+  // 移除开头的 emoji 图标和空格
+  return titleWithIcon.replace(/^[\u{1F300}-\u{1F9FF}][\u{FE00}-\u{FEFF}]?\s*/u, '')
+}
+
 // 格式化标题 - 添加图标并处理 specialCases
 function formatTitle(name, isDirectory = false) {
   let displayName = name
@@ -306,8 +318,9 @@ export function generateSidebar() {
 
   rootItems.forEach(item => {
     if (item.items) {
-      // 检查是否是成员目录
-      if (item.text === '成员') {
+      // 检查是否是成员目录（提取纯文本进行匹配）
+      const textName = extractTextFromTitle(item.text)
+      if (textName === '成员') {
         // 单独处理成员目录
         memberDirectory = item
       } else {
@@ -322,14 +335,18 @@ export function generateSidebar() {
 
   // 对目录进行自定义排序
   const sortedDirectories = directories.sort((a, b) => {
-    const orderA = directoryOrder[a.text] ?? 999
-    const orderB = directoryOrder[b.text] ?? 999
+    // 提取纯文本名称进行匹配
+    const textA = extractTextFromTitle(a.text)
+    const textB = extractTextFromTitle(b.text)
+
+    const orderA = directoryOrder[textA] ?? 999
+    const orderB = directoryOrder[textB] ?? 999
 
     if (orderA !== orderB) {
       return orderA - orderB  // 数字小的在前
     }
     // 如果都没有配置顺序，按字母顺序排序
-    return a.text.localeCompare(b.text)
+    return textA.localeCompare(textB)
   })
 
   // 添加自动生成的文档树
