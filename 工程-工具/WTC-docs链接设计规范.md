@@ -1,4 +1,4 @@
-# 链接设计规范
+# WTC-docs链接设计规范
 
 ## HTTP 完整链接设计原理
 
@@ -7,7 +7,9 @@
 在文档系统中，我们选择使用 **完整HTTP链接格式** 而非相对路径，这一设计决策基于以下重要考虑：
 
 #### 问题背景
+
 在开发过程中遇到的实际问题：
+
 - 相对路径在不同编辑器环境下兼容性差
 - Markdown预览与实际部署环境不一致
 - 开发调试时链接跳转失效
@@ -30,18 +32,19 @@
 
 **编辑器兼容性对比**：
 
-| 编辑器环境 | 完整HTTP链接 | 相对路径 | 备注 |
-|-----------|-------------|----------|------|
-| VS Code | ✅ 完美支持 | ⚠️ 部分支持 | 需要插件配置 |
-| Typora | ✅ 完美支持 | ❌ 路径错误 | 基础路径不匹配 |
-| Mark Text | ✅ 完美支持 | ❌ 路径错误 | 无法正确解析 |
-| Obsidian | ✅ 完美支持 | ⚠️ 需配置 | 需要设置库路径 |
-| GitHub Web | ✅ 完美支持 | ❌ 构建前失效 | 原始文件路径 |
-| 在线编辑器 | ✅ 完美支持 | ❌ 路径错误 | 无法访问本地文件 |
+| 编辑器环境 | 完整HTTP链接 | 相对路径      | 备注             |
+| ---------- | ------------ | ------------- | ---------------- |
+| VS Code    | ✅ 完美支持  | ⚠️ 部分支持 | 需要插件配置     |
+| Typora     | ✅ 完美支持  | ❌ 路径错误   | 基础路径不匹配   |
+| Mark Text  | ✅ 完美支持  | ❌ 路径错误   | 无法正确解析     |
+| Obsidian   | ✅ 完美支持  | ⚠️ 需配置   | 需要设置库路径   |
+| GitHub Web | ✅ 完美支持  | ❌ 构建前失效 | 原始文件路径     |
+| 在线编辑器 | ✅ 完美支持  | ❌ 路径错误   | 无法访问本地文件 |
 
 ### 2. 开发环境一致性
 
 **本地开发环境标准化**：
+
 - 开发服务器固定端口：`5173`
 - 基础路径统一：`/WTC-Docs/`
 - 资源路径可预测：`/pdf/`、`/assets/`
@@ -53,6 +56,7 @@ port: 5173  // 固定端口
 ```
 
 **环境切换处理**：
+
 ```javascript
 // 自动环境检测
 const BASE_URL = process.env.NODE_ENV === 'production'
@@ -63,14 +67,17 @@ const BASE_URL = process.env.NODE_ENV === 'production'
 ### 3. 避免死链问题
 
 **死链检测机制**：
+
 - VitePress构建时会检查内部链接
 - 完整HTTP链接被视为外部链接，跳过死链检查
 - 避免构建失败的同时保持链接功能
 
 **用户明确指示**：
+
 > "不要忽略 deadlink" - 用户明确要求保持死链检查功能
 
 **解决方案**：
+
 - 使用完整HTTP链接避免构建时死链检查
 - 本地开发时链接正常工作
 - 生产环境自动转换为正确的线上地址
@@ -79,17 +86,18 @@ const BASE_URL = process.env.NODE_ENV === 'production'
 
 **环境映射表**：
 
-| 环境类型 | 基础URL | 用途 | 特点 |
-|---------|---------|------|------|
-| 本地开发 | `http://localhost:5173/WTC-Docs` | 日常开发调试 | 即时热更新 |
-| 本地预览 | `http://localhost:4173/WTC-Docs` | 构建结果预览 | 模拟生产环境 |
-| GitHub Pages | `https://zhaoheng666.github.io/WTC-Docs` | 线上部署 | 自动SSL，CDN加速 |
+| 环境类型     | 基础URL                                    | 用途         | 特点             |
+| ------------ | ------------------------------------------ | ------------ | ---------------- |
+| 本地开发     | `http://localhost:5173/WTC-Docs`         | 日常开发调试 | 即时热更新       |
+| 本地预览     | `http://localhost:4173/WTC-Docs`         | 构建结果预览 | 模拟生产环境     |
+| GitHub Pages | `https://zhaoheng666.github.io/WTC-Docs` | 线上部署     | 自动SSL，CDN加速 |
 
 ## 实际应用案例
 
 ### PDF 文件链接
 
 **设计实现**：
+
 ```javascript
 // PDF处理器中的链接生成
 function getPdfLinkBasePath() {
@@ -102,6 +110,7 @@ const pdfLink = `${getPdfLinkBasePath()}/${cleanFileName}`
 ```
 
 **生产环境自动转换**：
+
 ```javascript
 // 构建时自动替换
 const productionUrl = link.replace(
@@ -113,6 +122,7 @@ const productionUrl = link.replace(
 ### 图片资源链接
 
 **命名策略配合**：
+
 ```javascript
 // 图片处理器生成完整链接
 const imageUrl = `http://localhost:5173/WTC-Docs/assets/${timestamp}_${hash}.png`
@@ -124,21 +134,25 @@ const imageUrl = `http://localhost:5173/WTC-Docs/assets/${timestamp}_${hash}.png
 ## 设计优势总结
 
 ### 1. **开发体验优化**
+
 - 任何Markdown编辑器都能正确预览
 - 点击链接直接跳转到正确资源
 - 无需额外配置和设置
 
 ### 2. **维护成本降低**
+
 - 统一的链接格式，易于批量处理
 - 自动化脚本可以可靠地生成和更新链接
 - 减少因路径问题导致的调试时间
 
 ### 3. **部署灵活性**
+
 - 本地开发和生产环境无缝切换
 - 支持多种部署方案（GitHub Pages、自托管等）
 - CDN和域名变更时易于适配
 
 ### 4. **团队协作友好**
+
 - 不同开发者使用不同编辑器都能正常工作
 - 文档分享时链接保持有效
 - 代码审查时可以直接点击查看资源
@@ -146,6 +160,7 @@ const imageUrl = `http://localhost:5173/WTC-Docs/assets/${timestamp}_${hash}.png
 ## 技术实现细节
 
 ### 环境变量配置
+
 ```bash
 # 开发环境
 VITE_BASE_URL=http://localhost:5173/WTC-Docs
@@ -155,6 +170,7 @@ VITE_BASE_URL=https://zhaoheng666.github.io/WTC-Docs
 ```
 
 ### 构建时处理
+
 ```javascript
 // 构建脚本中的链接转换
 function convertLinksForProduction(content) {
@@ -166,6 +182,7 @@ function convertLinksForProduction(content) {
 ```
 
 ### 开发服务器配置
+
 ```javascript
 // VitePress配置
 export default {
@@ -180,16 +197,19 @@ export default {
 ## 最佳实践建议
 
 ### 1. 链接生成规范
+
 - 所有资源链接使用完整HTTP格式
 - 统一使用工具函数生成链接
 - 避免硬编码路径
 
 ### 2. 环境适配
+
 - 开发时使用localhost链接
 - 构建时自动转换为生产链接
 - 保持基础路径一致性
 
 ### 3. 编辑器配置
+
 - 推荐使用支持实时预览的编辑器
 - 配置编辑器基础路径设置
 - 利用完整链接的预览优势

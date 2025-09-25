@@ -32,11 +32,13 @@ npm run status # 检查状态
 ## 文档索引
 
 ### 项目文档
+
 - **项目总览**：[README.md](./README.md) - 特性、结构、使用方法
 - **技术架构**：[技术文档.md](./技术文档.md) - 构建流程、图片处理、同步机制
 - **工作规范**：[工作规范.md](./工作规范.md) - 编写规范、命名规范
 
 ### 分类文档
+
 - **原生平台**：`native/` 目录
 - **工程工具**：`工程-工具/` 目录
 - **故障排查**：`故障排查/` 目录
@@ -49,7 +51,9 @@ npm run status # 检查状态
 ## 关键特性说明
 
 ### 自动化脚本
+
 所有脚本位于 `.vitepress/scripts/`：
+
 - `init.sh` - 环境初始化
 - `dev.sh` - 开发服务器（自动处理端口冲突）
 - `build.sh` - 构建脚本（包含图片处理）
@@ -58,17 +62,20 @@ npm run status # 检查状态
 - `generate-stats.js` - 统计生成
 
 ### 图片处理
+
 - 自动下载外部图片到 `public/assets/`
 - 命名格式：`文件路径_哈希值.扩展名`
 - 自动更新 Markdown 中的引用
 - 构建时清理未使用的图片
 
 ### 搜索优化
+
 - 使用 Intl.Segmenter 实现中文分词
 - 标题权重高于正文
 - 支持模糊匹配
 
 ### 日志位置
+
 - `/tmp/vitepress-build.log` - 构建日志
 - `/tmp/image-processor.log` - 图片处理日志
 - `/tmp/sync-build.log` - 同步日志
@@ -78,18 +85,20 @@ npm run status # 检查状态
 ### 文档编写规范
 
 #### 文件路径链接规则
+
 在文档中提及具体的代码文件路径时，应自动转换为 GitHub 链接：
 
 1. **主项目文件**：链接到主仓库 `https://github.com/LuckyZen/WorldTourCasino`
+
    - 格式：`[文件路径](https://github.com/LuckyZen/WorldTourCasino/blob/分支名/文件路径)`
    - 示例：[`scripts/build_local_app.sh`](https://github.com/LuckyZen/WorldTourCasino/blob/classic_vegas_cvs_v855/scripts/build_local_app.sh)
-
 2. **子仓库文件**：链接到对应的子仓库
+
    - cocos2d-html5：`https://github.com/LuckyZen/cocos2d-html5`
    - cocos2d-x：`https://github.com/LuckyZen/cocos2d-x`
    - libZenSDK：`https://github.com/LuckyZen/libZenSDK`
-
 3. **子仓库处理步骤**：
+
    ```bash
    # 获取子仓库当前提交
    cd 主项目/frameworks/cocos2d-html5
@@ -98,8 +107,8 @@ npm run status # 检查状态
    # 使用提交哈希构建链接
    https://github.com/LuckyZen/cocos2d-html5/blob/提交哈希/文件路径
    ```
-
 4. **子仓库映射表**：
+
    - `frameworks/cocos2d-html5/` → `https://github.com/LuckyZen/cocos2d-html5`
    - `frameworks/cocos2d-x/` → `https://github.com/LuckyZen/cocos2d-x`
    - `libZenSDK/` → `https://github.com/LuckyZen/libZenSDK`
@@ -107,18 +116,20 @@ npm run status # 检查状态
 ### Git 工作流
 
 #### 提交类型规范
-| 类型 | 描述 | 示例 |
-|------|------|------|
-| docs | 文档更新 | docs: 更新 API 接口说明 |
-| chore | 构建过程、辅助工具或杂项任务的变动 | chore: 更新 webpack 配置 |
-| feat | 新增功能或特性 | feat: 添加搜索功能 |
-| fix | 修复 bug | fix: 解决图片显示错误 |
-| style | 代码格式调整（不影响代码逻辑） | style: 调整代码缩进 |
-| refactor | 代码重构 | refactor: 优化构建流程 |
-| perf | 性能优化 | perf: 优化图片加载速度 |
-| ci | 持续集成配置更改 | ci: 更新 GitHub Actions 工作流 |
+
+| 类型     | 描述                               | 示例                           |
+| -------- | ---------------------------------- | ------------------------------ |
+| docs     | 文档更新                           | docs: 更新 API 接口说明        |
+| chore    | 构建过程、辅助工具或杂项任务的变动 | chore: 更新 webpack 配置       |
+| feat     | 新增功能或特性                     | feat: 添加搜索功能             |
+| fix      | 修复 bug                           | fix: 解决图片显示错误          |
+| style    | 代码格式调整（不影响代码逻辑）     | style: 调整代码缩进            |
+| refactor | 代码重构                           | refactor: 优化构建流程         |
+| perf     | 性能优化                           | perf: 优化图片加载速度         |
+| ci       | 持续集成配置更改                   | ci: 更新 GitHub Actions 工作流 |
 
 #### 提交规则
+
 - **不添加 AI 标识**: 提交信息中不包含 "Generated with Claude" 等 AI 相关标识
 - **简洁明了**: 提交信息应直接描述变更内容，无需额外后缀
 - **自动化提交**: docs 子项目可以自动完成提交和推送
@@ -127,10 +138,15 @@ npm run status # 检查状态
 - 构建时间 ~18秒，部署时间 ~10秒
 
 ### 常见问题快速解决
+
 - **端口占用**：`dev.sh` 会自动终止占用进程
 - **图片未清理**：运行 `npm run build` 重新处理
 - **构建失败**：查看 `/tmp/vitepress-build.log`
 - **同步冲突**：`sync.sh` 自动尝试 rebase/merge
+
+### 链接设计规范：
+
+[WTC-docs-链接设计规范](./工程-工具/WTC-docs链接设计规范.md)
 
 ## 相关链接
 
