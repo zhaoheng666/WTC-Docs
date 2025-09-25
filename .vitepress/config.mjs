@@ -31,7 +31,7 @@ export default defineConfig({
     // 配置图片处理
     image: {
       // 启用图片懒加载
-      lazyLoading: true
+      lazyLoading: false
     }
   },
 
@@ -71,6 +71,8 @@ export default defineConfig({
         text: '更多',
         items: [
           { text: 'VitePress 文档', link: 'https://vitepress.qzxdp.cn/reference/frontmatter-config.html' },
+          { text: 'ClaudeCode 配置教程', link: 'https://docs.google.com/document/d/1WM5ioMu8jgsq3OBVJfQd2pDH77qhQcjCEPbztwC-fkw/edit?tab=t.0#heading=h.o5dqq3slzr7v' },
+          { text: 'BMAD-METHOD软件工程智能体', link: 'https://github.com/bmadcode/BMAD-METHOD' }
         ]
       }
     ],

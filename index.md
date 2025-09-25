@@ -16,6 +16,7 @@ hero:
     - theme: alt
       text: 最近更新
       link: /最近更新
+
   image:                   # 图片配置（可选）
       src: /icon1.png        # 图片路径
       alt: "图片说明"        # 替代文本
@@ -52,15 +53,15 @@ features:
     details: 常见问题解决方案
     link: /故障排查/
 
+  - icon: 🎯
+    title: 工作台
+    details: 日常工作工具和链接集合
+    link: /工作台
+
   - icon: 🚀
     title: 构建进度
     details: Github Actions 构建状态
     link: https://github.com/zhaoheng666/WTC-Docs/actions/workflows/deploy.yml
-
-  - icon: 🕐
-    title: 最近更新
-    details: 查看文档更新历史和统计
-    link: /最近更新
 
   - icon: 🌐
     title: 在线文档
