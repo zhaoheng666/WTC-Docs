@@ -4,8 +4,8 @@
 
 ## 📋 目录结构
 
-- 📄 [CV 实例升级步骤](CV%20%E5%AE%9E%E4%BE%8B%E5%8D%87%E7%BA%A7%E6%AD%A5%E9%AA%A4)
-- 📄 [DH 实例升级步骤](DH%20%E5%AE%9E%E4%BE%8B%E5%8D%87%E7%BA%A7%E6%AD%A5%E9%AA%A4)
+- 📝 [CV 实例升级步骤](CV%20%E5%AE%9E%E4%BE%8B%E5%8D%87%E7%BA%A7%E6%AD%A5%E9%AA%A4)
+- 📝 [DH 实例升级步骤](DH%20%E5%AE%9E%E4%BE%8B%E5%8D%87%E7%BA%A7%E6%AD%A5%E9%AA%A4)
 
 ---
 

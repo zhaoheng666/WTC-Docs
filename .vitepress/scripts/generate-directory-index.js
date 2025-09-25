@@ -198,14 +198,24 @@ function generateMarkdownContent(dirName, fileTree) {
       let line = ''
 
       if (item.type === 'directory') {
-        // 目录
-        line = `${indent}- 📁 **${item.displayName}**\n`
-        if (item.items && item.items.length > 0) {
-          line += renderItems(item.items, level + 1)
+        // 目录 - 使用更明显的样式区分
+        if (level === 0) {
+          // 一级目录：使用标题样式
+          line = `${indent}\n### 📁 ${item.displayName}\n\n`
+          if (item.items && item.items.length > 0) {
+            line += renderItems(item.items, level + 1)
+          }
+          line += '\n'
+        } else {
+          // 子目录：使用粗体和背景色
+          line = `${indent}- **📂 ${item.displayName}**\n`
+          if (item.items && item.items.length > 0) {
+            line += renderItems(item.items, level + 1)
+          }
         }
       } else if (item.type === 'file') {
-        // Markdown 文件
-        line = `${indent}- 📄 [${item.displayName}](${item.link})\n`
+        // Markdown 文件 - 使用更清晰的图标
+        line = `${indent}- 📝 [${item.displayName}](${item.link})\n`
       } else if (item.type === 'resource') {
         // 资源文件
         const icon = getFileIcon(item.ext)
@@ -233,7 +243,7 @@ function generateMarkdownContent(dirName, fileTree) {
 // 获取文件图标
 function getFileIcon(ext) {
   const iconMap = {
-    '.pdf': '📑',
+    '.pdf': '📕',
     '.png': '🖼️',
     '.jpg': '🖼️',
     '.jpeg': '🖼️',
@@ -242,11 +252,12 @@ function getFileIcon(ext) {
     '.webp': '🖼️',
     '.drawio': '📊',
     '.json': '⚙️',
-    '.js': '📜',
+    '.js': '📄',
     '.css': '🎨',
     '.html': '🌐',
-    '.txt': '📝',
-    '.log': '📋'
+    '.txt': '📄',
+    '.log': '📋',
+    '.md': '📝'
   }
 
   return iconMap[ext] || '📎'
