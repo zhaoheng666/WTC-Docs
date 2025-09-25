@@ -18,12 +18,39 @@ if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
 
+// 获取所有贡献者
+function getAllContributors() {
+  try {
+    const gitAuthors = execSync(
+      `git shortlog -sn --all`,
+      { cwd: docsDir, encoding: 'utf8' }
+    );
+
+    return gitAuthors.split('\n')
+      .filter(line => line.trim())
+      .map(line => {
+        const match = line.trim().match(/(\d+)\s+(.+)/);
+        if (match) {
+          return {
+            name: match[2],
+            totalCommits: parseInt(match[1])
+          };
+        }
+      })
+      .filter(Boolean);
+  } catch (error) {
+    console.error('获取贡献者失败:', error.message);
+    return [];
+  }
+}
+
 // 获取最近的提交记录
 function getRecentCommits(limit = 30) {
   try {
     const format = '%H|%ai|%an|%s';
+    // 移除 -- "*.md" 限制，获取所有提交
     const gitLog = execSync(
-      `git log --pretty=format:"${format}" --name-only --diff-filter=AM -- "*.md" | head -300`,
+      `git log --pretty=format:"${format}" --name-only --diff-filter=AM | head -500`,
       { cwd: docsDir, encoding: 'utf8' }
     );
 
@@ -42,12 +69,11 @@ function getRecentCommits(limit = 30) {
           message,
           files: []
         };
-      } else if (line.endsWith('.md') && currentCommit) {
-        // 这是文件名
+        // 立即添加到commits数组
+        commits.push(currentCommit);
+      } else if (line.trim() && currentCommit) {
+        // 这是文件名（不限制.md）
         currentCommit.files.push(line);
-        if (!commits.find(c => c.hash === currentCommit.hash)) {
-          commits.push({ ...currentCommit });
-        }
       }
     }
 
@@ -139,25 +165,48 @@ function getDocStats() {
 function generateJSON() {
   const stats = getDocStats();
   const commits = isCI ? getRecentCommits(100) : []; // CI 环境获取更多提交
-  
-  // 计算贡献者数量和列表
-  const contributorsSet = new Set(commits.map(c => c.author));
-  const contributorsList = Array.from(contributorsSet).map(author => {
-    const authorCommits = commits.filter(c => c.author === author);
-    return {
-      name: author,
-      commits: authorCommits.length,
-      lastCommit: authorCommits[0]?.date || new Date().toISOString()
-    };
-  }).sort((a, b) => b.commits - a.commits);
-  
+  const allContributors = isCI ? getAllContributors() : [];
+
+  // 计算今日更新次数
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  const todayCommits = commits.filter(commit => {
+    const commitDate = commit.date.split('T')[0];
+    return commitDate === today;
+  });
+
+  // 计算贡献者统计 - 使用完整的Git历史
+  let contributorsList = [];
+  if (allContributors.length > 0) {
+    contributorsList = allContributors.map(contributor => {
+      // 找到该贡献者最近的提交
+      const recentCommit = commits.find(c => c.author === contributor.name);
+      return {
+        name: contributor.name,
+        commits: contributor.totalCommits,
+        lastCommit: recentCommit?.date || new Date().toISOString()
+      };
+    }).sort((a, b) => b.commits - a.commits);
+  } else {
+    // 降级到从recent commits计算
+    const contributorsSet = new Set(commits.map(c => c.author));
+    contributorsList = Array.from(contributorsSet).map(author => {
+      const authorCommits = commits.filter(c => c.author === author);
+      return {
+        name: author,
+        commits: authorCommits.length,
+        lastCommit: authorCommits[0]?.date || new Date().toISOString()
+      };
+    }).sort((a, b) => b.commits - a.commits);
+  }
+
   return {
     updateTime: new Date().toISOString(),
     totalDocs: stats.totalDocs,
     categoryStats: stats.categoryStats,
-    contributors: contributorsSet.size,
+    contributors: contributorsList.length,
     contributorsList: contributorsList,
-    commits: commits.map(commit => ({
+    todayUpdates: todayCommits.length,
+    commits: commits.slice(0, 30).map(commit => ({ // 限制前30个最新提交
       hash: commit.hash,
       date: commit.date,
       author: commit.author,

@@ -118,9 +118,15 @@ const sortedCategories = computed(() => {
 })
 
 const todayUpdates = computed(() => {
+  // 优先使用后端计算的today updates，如果没有则降级计算
+  if (stats.value.todayUpdates !== undefined) {
+    return stats.value.todayUpdates
+  }
+
+  // 降级计算（兼容旧数据）
   if (!stats.value.commits) return 0
   const today = new Date().toDateString()
-  return stats.value.commits.filter(c => 
+  return stats.value.commits.filter(c =>
     new Date(c.date).toDateString() === today
   ).length
 })
