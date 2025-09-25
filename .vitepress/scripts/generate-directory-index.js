@@ -178,52 +178,76 @@ function generateFileTree(dirPath, dirName, depth = 0) {
   return items
 }
 
-// 生成 Markdown 内容
-function generateMarkdownContent(dirName, fileTree) {
-  let content = `# ${dirName}\n\n`
-  content += `本目录包含与${dirName}相关的文档和资源。\n\n`
-
+// 生成目录结构内容
+function generateDirectoryStructure(fileTree) {
   if (fileTree.length === 0) {
-    content += `> 📭 该目录暂时没有文档内容。\n\n`
-    return content
+    return `> 📭 该目录暂时没有文档内容。\n\n`
   }
-
-  content += `## 📋 目录结构\n\n`
 
   function renderItems(items, level = 0) {
     let result = ''
+    let hasDirectories = false
+    let directories = []
+    let files = []
+    let resources = []
 
+    // 分类所有项目
     items.forEach(item => {
+      if (item.type === 'directory') {
+        directories.push(item)
+        hasDirectories = true
+      } else if (item.type === 'file') {
+        files.push(item)
+      } else if (item.type === 'resource') {
+        resources.push(item)
+      }
+    })
+
+    // 先渲染所有目录
+    directories.forEach(item => {
       const indent = '  '.repeat(level)
       let line = ''
 
-      if (item.type === 'directory') {
-        // 目录 - 使用更明显的样式区分
-        if (level === 0) {
-          // 一级目录：使用标题样式
-          line = `${indent}\n### 📁 ${item.displayName}\n\n`
-          if (item.items && item.items.length > 0) {
-            line += renderItems(item.items, level + 1)
-          }
-          line += '\n'
-        } else {
-          // 子目录：使用粗体和背景色
-          line = `${indent}- **📂 ${item.displayName}**\n`
-          if (item.items && item.items.length > 0) {
-            line += renderItems(item.items, level + 1)
-          }
+      if (level === 0) {
+        // 一级目录：使用标题样式
+        line = `${indent}\n#### 📁 ${item.displayName}\n\n`
+        if (item.items && item.items.length > 0) {
+          line += renderItems(item.items, level + 1)
         }
-      } else if (item.type === 'file') {
-        // Markdown 文件 - 使用更清晰的图标
-        line = `${indent}- 📝 [${item.displayName}](${item.link})\n`
-      } else if (item.type === 'resource') {
-        // 资源文件
-        const icon = getFileIcon(item.ext)
-        if (item.link) {
-          line = `${indent}- ${icon} [${item.displayName}](${item.link})\n`
-        } else {
-          line = `${indent}- ${icon} ${item.displayName}\n`
+        line += '\n'
+      } else {
+        // 子目录：使用粗体样式
+        line = `${indent}- **📂 ${item.displayName}**\n`
+        if (item.items && item.items.length > 0) {
+          line += renderItems(item.items, level + 1)
         }
+      }
+
+      result += line
+    })
+
+    // 如果有目录，并且还有文件，添加分隔
+    if (hasDirectories && (files.length > 0 || resources.length > 0) && level === 0) {
+      result += '\n#### 📝 其他\n\n'
+    }
+
+    // 然后渲染所有文件
+    files.forEach(item => {
+      const indent = '  '.repeat(level)
+      const line = `${indent}- 📝 [${item.displayName}](${item.link})\n`
+      result += line
+    })
+
+    // 最后渲染所有资源文件
+    resources.forEach(item => {
+      const indent = '  '.repeat(level)
+      const icon = getFileIcon(item.ext)
+      let line = ''
+
+      if (item.link) {
+        line = `${indent}- ${icon} [${item.displayName}](${item.link})\n`
+      } else {
+        line = `${indent}- ${icon} ${item.displayName}\n`
       }
 
       result += line
@@ -232,12 +256,45 @@ function generateMarkdownContent(dirName, fileTree) {
     return result
   }
 
-  content += renderItems(fileTree)
-  content += '\n---\n\n'
-  content += `*📅 最后更新: ${new Date().toLocaleDateString('zh-CN')}*\n`
-  content += `*🤖 此文件由构建系统自动生成*\n`
+  return renderItems(fileTree)
+}
 
-  return content
+// 更新或创建 index.md 文件
+function updateIndexFile(indexPath, dirName, fileTree) {
+  const newDirectoryStructure = generateDirectoryStructure(fileTree)
+
+  if (fs.existsSync(indexPath)) {
+    // 文件已存在，只更新目录结构部分
+    const content = fs.readFileSync(indexPath, 'utf8')
+
+    // 查找目录结构标记
+    const structureStart = content.indexOf('## 📋 目录结构')
+    const structureEndMarker = '\n---\n'
+    const structureEnd = content.indexOf(structureEndMarker, structureStart)
+
+    if (structureStart !== -1) {
+      // 替换目录结构部分
+      let updatedContent
+      if (structureEnd !== -1) {
+        // 保留 --- 之后的内容
+        const beforeStructure = content.substring(0, structureStart)
+        const afterStructure = content.substring(structureEnd)
+        updatedContent = `${beforeStructure}## 📋 目录结构\n\n${newDirectoryStructure}\n${afterStructure}`
+      } else {
+        // 没有找到结束标记，只替换到文件末尾
+        const beforeStructure = content.substring(0, structureStart)
+        updatedContent = `${beforeStructure}## 📋 目录结构\n\n${newDirectoryStructure}\n\n---\n\n*📅 最后更新: ${new Date().toLocaleDateString('zh-CN')}*\n*🤖 此文件由构建系统自动生成*\n`
+      }
+
+      return updatedContent
+    } else {
+      // 没有找到目录结构标记，在现有内容后添加
+      return `${content}\n\n## 📋 目录结构\n\n${newDirectoryStructure}\n\n---\n\n*📅 最后更新: ${new Date().toLocaleDateString('zh-CN')}*\n*🤖 此文件由构建系统自动生成*\n`
+    }
+  } else {
+    // 文件不存在，创建新文件
+    return `# ${dirName}\n\n本目录包含与${dirName}相关的文档和资源。\n\n## 📋 目录结构\n\n${newDirectoryStructure}\n\n---\n\n*📅 最后更新: ${new Date().toLocaleDateString('zh-CN')}*\n*🤖 此文件由构建系统自动生成*\n`
+  }
 }
 
 // 获取文件图标
@@ -278,13 +335,15 @@ function processDirectory(dirName) {
   // 生成文件树
   const fileTree = generateFileTree(dirPath, dirName)
 
-  // 生成 Markdown 内容
-  const content = generateMarkdownContent(dirName, fileTree)
+  // 更新或创建 index.md 文件
+  const content = updateIndexFile(indexPath, dirName, fileTree)
 
   // 写入 index.md
   try {
+    const fileExisted = fs.existsSync(indexPath)
     fs.writeFileSync(indexPath, content, 'utf8')
-    console.log(`  ✅ 已更新: ${dirName}/index.md (${fileTree.length} 项)`)
+    const action = fileExisted ? '更新' : '创建'
+    console.log(`  ✅ 已${action}: ${dirName}/index.md (${fileTree.length} 项)`)
   } catch (error) {
     console.error(`  ❌ 写入失败: ${indexPath}`)
     console.error(`     错误: ${error.message}`)

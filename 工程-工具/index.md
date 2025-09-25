@@ -5,7 +5,7 @@
 ## 📋 目录结构
 
 
-### 📁 Jenkins
+#### 📁 Jenkins
 
   - 📝 [Jenkins 发版耗时优化](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/Jenkins/Jenkins%20%E5%8F%91%E7%89%88%E8%80%97%E6%97%B6%E4%BC%98%E5%8C%96)
   - 📝 [Jenkins 用户变量](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/Jenkins/Jenkins%20%E7%94%A8%E6%88%B7%E5%8F%98%E9%87%8F)
@@ -14,12 +14,15 @@
   - 📝 [新增 Jenkins 管道](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/Jenkins/%E6%96%B0%E5%A2%9E%20Jenkins%20%E7%AE%A1%E9%81%93)
 
 
-### 📁 vscode
+#### 📁 vscode
 
   - 📝 [VSCode编辑器前端开发环境](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/VSCode%E7%BC%96%E8%BE%91%E5%99%A8%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83)
   - 📝 [google-drive-upload](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/google-drive-upload)
   - 📝 [vscode代码检查器 jshint](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/vscode%E4%BB%A3%E7%A0%81%E6%A3%80%E6%9F%A5%E5%99%A8%20jshint)
   - 📝 [vscode环境工具开发规范](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/vscode%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83)
+
+
+#### 📝 其他
 
 - 📝 [AI编程模型 RooCode 配置教程](AI%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%20RooCode%20%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B)
 - 📝 [Charles 抓包工具使用方法](Charles%20%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)
@@ -33,6 +36,7 @@
 - 📝 [模糊图标生成脚本说明](%E6%A8%A1%E7%B3%8A%E5%9B%BE%E6%A0%87%E7%94%9F%E6%88%90%E8%84%9A%E6%9C%AC%E8%AF%B4%E6%98%8E)
 - 📝 [美术 macOS 14 环境工具使用说明](%E7%BE%8E%E6%9C%AF%20macOS%2014%20%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
 - 📝 [链接设计规范](%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83)
+
 
 ---
 
