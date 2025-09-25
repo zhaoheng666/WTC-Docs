@@ -1,13 +1,13 @@
-# SlotScene onEnter 中 addChild crash
+# SlotScene onEnter 中 addChild 触发 crash
 
 ### 堆栈：
 
-[console.firebase.google.com/project/classicvegas-41d2f/crashlyti...](https://console.firebase.google.com/project/classicvegas-41d2f/crashlytics/app/ios:com.superant.classicvegasslots/issues/15862b989ffc76985f0bf5f42a05995c?hl=zh-cn&amp;time=last-seven-days&amp;types=crash&amp;sessionEventKey=7070d642d6dd4b2a84940bcfec3e8053_2070034213254120893)
+[console.firebase.google.com/project/classicvegas-41d2f/crashlyti...](https://console.firebase.google.com/project/classicvegas-41d2f/crashlytics/app/ios:com.superant.classicvegasslots/issues/15862b989ffc76985f0bf5f42a05995c?hl=zh-cn&time=last-seven-days&types=crash&sessionEventKey=7070d642d6dd4b2a84940bcfec3e8053_2070034213254120893)
 
 ```c
 已崩溃：com.apple.main-thread
 EXC_BAD_ACCESS KERN_INVALID_ADDRESS 0x0000000000000000
-         
+       
  Crashed: com.apple.main-thread
 0  OldVegasCasino                 0x13870e4 cocos2d::Node::onEnter() + 1346 (CCNode.cpp:1346)
 1  OldVegasCasino                 0x1b04300 js_cocos2dx_Node_onEnter(JSContext*, unsigned int, JS::Value*) + 17592
@@ -95,7 +95,7 @@ void Node::addChild(Node* child, int localZOrder, const std::string &name)
 {
     CCASSERT(child != nullptr, "Argument must be non-nil");
     CCASSERT(child->_parent == nullptr, "child already added. It can't be added again");
-    
+  
     addChildHelper(child, localZOrder, INVALID_TAG, name, false);//第 968 行
 }
 ```
@@ -112,26 +112,26 @@ void Node::addChildHelper(Node* child, int localZOrder, int tag, const std::stri
                     parent = parent->getParent() )
                   if ( parent == child )
                       return false;
-              
+            
               return true;
           } );
     (void)assertNotSelfChild;
-    
+  
     CCASSERT( assertNotSelfChild(),
               "A node cannot be the child of his own children" );
-    
+  
     if (_children.empty())
     {
         this->childrenAlloc();
     }
-    
+  
     this->insertChild(child, localZOrder);
-    
+  
     if (setTag)
         child->setTag(tag);
     else
         child->setName(name);
-    
+  
     child->setParent(this);
 
     child->updateOrderOfArrival();
@@ -145,12 +145,12 @@ void Node::addChildHelper(Node* child, int localZOrder, int tag, const std::stri
             child->onEnterTransitionDidFinish();
         }
     }
-    
+  
     if (_cascadeColorEnabled)
     {
         updateCascadeColor();
     }
-    
+  
     if (_cascadeOpacityEnabled)
     {
         updateCascadeOpacity();
@@ -174,7 +174,7 @@ void Node::onEnter()
             return;
     }
 #endif
-    
+  
     if (_onEnterCallback)
         _onEnterCallback();
 
@@ -182,16 +182,16 @@ void Node::onEnter()
     {
         _componentContainer->onEnter();
     }
-    
+  
     _isTransitionFinished = false;
-    
+  
     for( const auto &child: _children)
         child->onEnter();
-    
+  
     this->resume();
-    
+  
     _running = true;
-    
+  
 #if CC_ENABLE_SCRIPT_BINDING
     if (_scriptType == kScriptTypeLua)
     {
@@ -207,7 +207,7 @@ CCScriptSupport.cpp - 第 191 行
 bool ScriptEngineManager::sendNodeEventToJS(Node* node, int action)
 {
     auto scriptEngine = getInstance()->getScriptEngine();
-    
+  
     if (scriptEngine->isCalledFromScript())
     {
         // Should only be invoked at root class Node
@@ -220,7 +220,7 @@ bool ScriptEngineManager::sendNodeEventToJS(Node* node, int action)
         if (scriptEngine->sendEvent(&scriptEvent)) //第 191 行 
             return true;
     }
-    
+  
     return false;
 }
 ```
@@ -317,7 +317,7 @@ bool ScriptingCore::executeFunctionWithOwner(jsval owner, const char *name, cons
 }
 ```
 
-​`js_cocos2dx_Node_onEnter`​
+`js_cocos2dx_Node_onEnter`
 
 ```c++
 bool js_cocos2dx_Node_onEnter(JSContext *cx, uint32_t argc, jsval *vp)
@@ -327,7 +327,7 @@ bool js_cocos2dx_Node_onEnter(JSContext *cx, uint32_t argc, jsval *vp)
     js_proxy_t *proxy = jsb_get_js_proxy(obj);
     cocos2d::Node* cobj = (cocos2d::Node *)(proxy ? proxy->ptr : nullptr);
     JSB_PRECONDITION2( cobj, cx, false, "js_cocos2dx_Node_onEnter : Invalid Native Object");//此处检查了 cobj 的有效性
-    
+  
     ScriptingCore::getInstance()->setCalledFromScript(true);
     cobj->onEnter();
     args.rval().setUndefined();
@@ -351,7 +351,7 @@ void Node::onEnter()
             return;
     }
 #endif
-    
+  
     if (_onEnterCallback)
         _onEnterCallback();
 
@@ -359,16 +359,16 @@ void Node::onEnter()
     {
         _componentContainer->onEnter();
     }
-    
+  
     _isTransitionFinished = false;
-    
+  
     for( const auto &child: _children)
         child->onEnter(); //最终触发 crash 的位置
-    
+  
     this->resume();
-    
+  
     _running = true;
-    
+  
 #if CC_ENABLE_SCRIPT_BINDING
     if (_scriptType == kScriptTypeLua)
     {
@@ -380,7 +380,7 @@ void Node::onEnter()
 
 ### 业务层代码：
 
-<span id="20250414154655-x3rxxw8" style="display: none;"></span>js 代码：
+`<span id="20250414154655-x3rxxw8" style="display: none;">`js 代码：
 
 ```js
 GrandLottoSpinJackpotController.prototype.onEnter = function () {
@@ -392,7 +392,7 @@ GrandLottoSpinJackpotController.prototype.onEnter = function () {
 };
 ```
 
-​`GameDirector`:
+`GameDirector`:
 
 ```js
 update: function (dt) {
@@ -522,9 +522,9 @@ update: function (dt) {
   4. 如果去掉 onEnter 中的 addchild 普通关卡和 HR 关卡均无异常，可以排除是其他节点导致的；
   5. 关卡场景对象本质上是一个 cc.Node；
 
-      1. 仅当在关卡根节点的 onEnter 中直接对关卡根节点做 addchild 操作时会触发 crash；
-      2. 在关卡根节点的 onEnter 中操作其他子节点 addChild 无异常；
-      3. 非关卡根节点（cc.Node）的 onEnter 中为当前节点 addChild 无异常；
+     1. 仅当在关卡根节点的 onEnter 中直接对关卡根节点做 addchild 操作时会触发 crash；
+     2. 在关卡根节点的 onEnter 中操作其他子节点 addChild 无异常；
+     3. 非关卡根节点（cc.Node）的 onEnter 中为当前节点 addChild 无异常；
 - #### 堆栈定位 **：**
 
   关卡根节点的 js onEnter 方法执行完后再次调用根节点 cobj 的 onEnter 方法时，遍历关卡根节点时 child 出现了空指针；；

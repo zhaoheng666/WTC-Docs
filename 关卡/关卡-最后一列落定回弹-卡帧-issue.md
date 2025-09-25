@@ -2,7 +2,7 @@
 
 ###### *记录常见问题的处理过程*
 
-#### 修订人：赵恒	 	修订时间：2024-11-4 
+#### 修订人：赵恒	 	修订时间：2024-11-4
 
 #### 版本节点：
 
@@ -48,28 +48,25 @@
 
 ![image1](http://localhost:5173/WTC-Docs/assets/1758727509963_c5c91587.png)
 
-**var** SpinEndWaitProcess \= ***Process***.**extend**({  
+**var** SpinEndWaitProcess \= ***Process***.**extend**({
    **name**: **"CloverClashWaitProcess"**,
 
-   onEnter: **function** (args) {  
-       **this**.\_super(args);
+   onEnter: **function** (args) {
+    **this**.\_super(args);
 
-       **if** (**this**.**context**.**machineConfig**.**enterOnNextFrame**)  
-           **this**.advanceToNext();  
-       **else**  
-           **game**.**slotUtil**.delayCall(0.0001, **function** () {  
-               **this**.advanceToNext();  
-           }.bind(**this**));  
-   }  
+    **if** (**this**.**context**.**machineConfig**.**enterOnNextFrame**)
+    **this**.advanceToNext();
+    **else**
+    **game**.**slotUtil**.delayCall(0.0001, **function** () {
+    **this**.advanceToNext();
+    }.bind(**this**));
+   }
 });
 
 ## 五、测试、验证：
 
----
+#### 1、无落定卡顿表现；
 
-- [ ] #### 1、无落定卡顿表现；
+#### 2、spin 节奏、spin 按钮恢复时机符合策划预期；
 
-- [ ] #### 2、spin 节奏、spin 按钮恢复时机符合策划预期；
-
-- [ ] #### 3、无流程异常；
-
+#### 3、无流程异常；

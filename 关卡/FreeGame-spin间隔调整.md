@@ -30,14 +30,14 @@
 
 #### 1、取消 FreeGame 期间 WaitForSpinProcess 过程触发赢钱线动画
 
-shouldDisableIdleAnimation: function () {  
-   return this.currentIsFreeSpin();  
+shouldDisableIdleAnimation: function () {
+   return this.currentIsFreeSpin();
 },
 
 #### 2、取消 FreeGame 期间 WaitForSpinProcess 过程等待时长
 
-getNextSpinInterval: function () {  
-   return this.currentIsFreeSpin() ? 0 : 0.5;  
+getNextSpinInterval: function () {
+   return this.currentIsFreeSpin() ? 0 : 0.5;
 }
 
 ## 四、注意问题：
@@ -54,12 +54,7 @@ getNextSpinInterval: function () {
 
 #### FreeGame 滚动结束后：
 
-- [ ] #### 有赢钱：只播一轮 win 动画，开始下次 spin；
-
-- [ ] #### 没有赢钱：轮盘落定后直接开始下次 spin；
-
-- [ ] #### 有赢钱、无赢钱时，appear 表现正常；
-
-- [ ] #### 多列 appear、最后一列 appear 表现正常；
-
-#### 
+- #### 有赢钱：只播一轮 win 动画，开始下次 spin；
+- #### 没有赢钱：轮盘落定后直接开始下次 spin；
+- #### 有赢钱、无赢钱时，appear 表现正常；
+- #### 多列 appear、最后一列 appear 表现正常；
