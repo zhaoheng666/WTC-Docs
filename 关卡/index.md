@@ -4,17 +4,6 @@
 
 ## 📋 目录结构
 
-
-#### 📁 images
-
-  - **📂 media**
-    - 🖼️ [image1.png](http://localhost:5173/WTC-Docs%E5%85%B3%E5%8D%A1/images/media/image1.png)
-    - 🖼️ [image2.png](http://localhost:5173/WTC-Docs%E5%85%B3%E5%8D%A1/images/media/image2.png)
-    - 🖼️ [image3.gif](http://localhost:5173/WTC-Docs%E5%85%B3%E5%8D%A1/images/media/image3.gif)
-
-
-#### 📝 其他
-
 - 📝 [DH HR 大厅入口](DH%20HR%20%E5%A4%A7%E5%8E%85%E5%85%A5%E5%8F%A3)
 - 📝 [DailyMission入口样式](DailyMission%E5%85%A5%E5%8F%A3%E6%A0%B7%E5%BC%8F)
 - 📝 [FreeGame-spin间隔调整](FreeGame-spin%E9%97%B4%E9%9A%94%E8%B0%83%E6%95%B4)
