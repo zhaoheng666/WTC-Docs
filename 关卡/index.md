@@ -4,6 +4,17 @@
 
 ## 📋 目录结构
 
+
+#### 📁 images
+
+  - **📂 media**
+    - 🖼️ [image1.png](http://localhost:5173/WTC-Docs%E5%85%B3%E5%8D%A1/images/media/image1.png)
+    - 🖼️ [image2.png](http://localhost:5173/WTC-Docs%E5%85%B3%E5%8D%A1/images/media/image2.png)
+    - 🖼️ [image3.gif](http://localhost:5173/WTC-Docs%E5%85%B3%E5%8D%A1/images/media/image3.gif)
+
+
+#### 📝 其他
+
 - 📝 [DH HR 大厅入口](DH%20HR%20%E5%A4%A7%E5%8E%85%E5%85%A5%E5%8F%A3)
 - 📝 [DailyMission入口样式](DailyMission%E5%85%A5%E5%8F%A3%E6%A0%B7%E5%BC%8F)
 - 📝 [FreeGame-spin间隔调整](FreeGame-spin%E9%97%B4%E9%9A%94%E8%B0%83%E6%95%B4)
@@ -11,10 +22,12 @@
 - 📝 [Link 图标排布](Link%20%E5%9B%BE%E6%A0%87%E6%8E%92%E5%B8%83)
 - 📝 [Link 玩法异常](Link%20%E7%8E%A9%E6%B3%95%E5%BC%82%E5%B8%B8)
 - 📝 [Link 玩法结算](Link%20%E7%8E%A9%E6%B3%95%E7%BB%93%E7%AE%97)
+- 📝 [Q1_25-Slots-bigWin动画之前spin结果加倍流程-程序](Q1_25-Slots-bigWin%E5%8A%A8%E7%94%BB%E4%B9%8B%E5%89%8Dspin%E7%BB%93%E6%9E%9C%E5%8A%A0%E5%80%8D%E6%B5%81%E7%A8%8B-%E7%A8%8B%E5%BA%8F)
 - 📝 [SlotAction-优化记录](SlotAction-%E4%BC%98%E5%8C%96%E8%AE%B0%E5%BD%95)
 - 📝 [Spin 加倍流程](Spin%20%E5%8A%A0%E5%80%8D%E6%B5%81%E7%A8%8B)
 - 📝 [Winline 组件选择](Winline%20%E7%BB%84%E4%BB%B6%E9%80%89%E6%8B%A9)
 - 📝 [fastSpin 组件](fastSpin%20%E7%BB%84%E4%BB%B6)
+- 📝 [freeSpin流程Action](freeSpin%E6%B5%81%E7%A8%8BAction)
 - 📝 [关于 spin 节奏问题](%E5%85%B3%E4%BA%8E%20spin%20%E8%8A%82%E5%A5%8F%E9%97%AE%E9%A2%98)
 - 📝 [关卡-控制初始图标](%E5%85%B3%E5%8D%A1-%E6%8E%A7%E5%88%B6%E5%88%9D%E5%A7%8B%E5%9B%BE%E6%A0%87)
 - 📝 [关卡-最后一列落定回弹-卡帧-issue](%E5%85%B3%E5%8D%A1-%E6%9C%80%E5%90%8E%E4%B8%80%E5%88%97%E8%90%BD%E5%AE%9A%E5%9B%9E%E5%BC%B9-%E5%8D%A1%E5%B8%A7-issue)
