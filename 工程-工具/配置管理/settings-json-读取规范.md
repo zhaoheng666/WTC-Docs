@@ -6,7 +6,7 @@
 
 ## 核心文件
 
-**配置读取器**：[.vscode/scripts/config-reader.sh](https://github.com/LuckyZen/WorldTourCasino/blob/classic_vegas_cvs_v855/.vscode/scripts/config-reader.sh)
+**配置读取器**：[.vscode/scripts/common/config-reader.sh](https://github.com/LuckyZen/WorldTourCasino/blob/classic_vegas_cvs_v855/.vscode/scripts/common/config-reader.sh)
 
 ## 为什么使用 config-reader.sh
 
@@ -35,7 +35,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
 # 加载配置读取器
-source "$SCRIPT_DIR/config-reader.sh"
+source "$SCRIPT_DIR/common/config-reader.sh"
 ```
 
 ### 2. 使用预定义的函数

@@ -6,7 +6,7 @@
 
 ### 扩展开发
 - [扩展开发规则与最佳实践](./扩展开发规则与最佳实践.md) - VSCode 扩展开发的核心规则和经验总结
-- [Google Drive 上传扩展开发记录](./google-drive-uploader-开发记录.md) - Google Drive 上传功能从脚本到扩展的完整开发历程
+- [Google Drive 上传](./google-drive-upload.md) - Google Drive 上传功能文档
 - [fix-environment 脚本多扩展支持](./fix-environment脚本多扩展支持.md) - 环境修复脚本的多扩展多编辑器支持实现
 
 ### 项目扩展
