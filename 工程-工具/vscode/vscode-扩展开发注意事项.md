@@ -49,6 +49,44 @@ plugin_name=$($JQ -r ".["WTC.subProjects"].extensions.plugins.$plugin_key.name /
 
 ## 开发环境配置
 
+### 配置文件同步要求
+
+**重要**：插件配置必须在两个文件中保持同步：
+
+1. **主项目配置**：`.vscode/settings.json`
+2. **工作区配置**：`WorldTourCasino.code-workspace`
+
+两个文件中的 `WTC.subProjects.extensions.plugins` 配置必须完全一致：
+
+```json
+// 两个文件都需要包含相同的配置
+{
+    "WTC.subProjects": {
+        "extensions": {
+            "plugins": {
+                "toolbar": {
+                    "name": "vscode-toolbar-extension",
+                    "symlinkName": "vscode-toolbar-extension"
+                },
+                "googleDrive": {
+                    "name": "google-drive-uploader",
+                    "symlinkName": "google-drive-uploader",
+                    "scripts": {
+                        "upload-to-google-drive": "vscode-extensions/google-drive-uploader/scripts/upload-task.js"
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+⚠️ **注意事项**：
+- 修改插件配置时，必须同时更新两个文件
+- settings.json 用于普通打开项目时的配置
+- code-workspace 用于工作区模式打开时的配置
+- 不同步会导致在不同打开方式下插件行为不一致
+
 ### 软链接装载插件的关键要求
 
 **重要**：开发环境下使用软链接方式装载插件时，必须保证：
