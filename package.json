@@ -5,10 +5,10 @@
   "private": true,
   "scripts": {
     "init": "bash .vitepress/scripts/init.sh",
-    "dev": "bash .vitepress/scripts/dev.sh",
+    "dev": "zsh .vitepress/scripts/dev.sh",
     "build": "bash .vitepress/scripts/build.sh",
-    "sync": "bash .vitepress/scripts/sync.sh",
-    "status": "bash .vitepress/scripts/status.sh"
+    "sync": "zsh .vitepress/scripts/sync.sh",
+    "status": "zsh .vitepress/scripts/status.sh"
   },
   "devDependencies": {
     "jq-cli-wrapper": "^1.6.1",
@@ -21,6 +21,12 @@
   "author": "",
   "license": "MIT",
   "optionalDependencies": {
-    "@rollup/rollup-darwin-arm64": "^4.52.0"
+    "@rollup/rollup-darwin-arm64": "^4.52.0",
+    "@rollup/rollup-darwin-x64": "^4.52.0",
+    "@rollup/rollup-linux-x64-gnu": "^4.52.0",
+    "@rollup/rollup-win32-x64-msvc": "^4.52.0"
+  },
+  "overrides": {
+    "rollup": "^4.52.0"
   }
 }

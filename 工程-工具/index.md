@@ -19,11 +19,14 @@
   - 📝 [README](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/README)
   - 📝 [VSCode编辑器前端开发环境](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/VSCode%E7%BC%96%E8%BE%91%E5%99%A8%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83)
   - 📝 [fix-environment脚本多扩展支持](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/fix-environment%E8%84%9A%E6%9C%AC%E5%A4%9A%E6%89%A9%E5%B1%95%E6%94%AF%E6%8C%81)
+  - 📝 [git-hooks-重构方案](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/git-hooks-%E9%87%8D%E6%9E%84%E6%96%B9%E6%A1%88)
   - 📝 [google-drive-upload](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/google-drive-upload)
   - 📝 [vscode-扩展开发注意事项](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/vscode-%E6%89%A9%E5%B1%95%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)
   - 📝 [vscode代码检查器 jshint](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/vscode%E4%BB%A3%E7%A0%81%E6%A3%80%E6%9F%A5%E5%99%A8%20jshint)
   - 📝 [vscode环境工具开发规范](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/vscode%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83)
   - 📝 [扩展开发规则与最佳实践](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/%E6%89%A9%E5%B1%95%E5%BC%80%E5%8F%91%E8%A7%84%E5%88%99%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5)
+  - 📝 [添加新VS Code扩展规范](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/%E6%B7%BB%E5%8A%A0%E6%96%B0VS%20Code%E6%89%A9%E5%B1%95%E8%A7%84%E8%8C%83)
+  - 📝 [近期VS Code配置优化总结](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/%E8%BF%91%E6%9C%9FVS%20Code%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96%E6%80%BB%E7%BB%93)
 
 
 #### 📁 配置管理
