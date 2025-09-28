@@ -11,7 +11,7 @@ CYAN='\033[0;36m'
 NC='\033[0m'
 
 # 获取脚本所在目录的上上级目录（docs目录）
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DOCS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 cd "$DOCS_DIR" || exit 1
