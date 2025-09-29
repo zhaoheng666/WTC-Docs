@@ -78,6 +78,7 @@ sysctl -n sysctl.proc_translated  # 1 表示在 Rosetta 2 下
 ```
 
 **需要修改的脚本**：
+
 - `.vscode/scripts/wtc-docs/check-docs-setup.sh` - 已修改为 zsh ✅
 - `.vitepress/scripts/dev.sh` - 已使用 zsh ✅
 - 其他启动文档服务的脚本
@@ -204,12 +205,3 @@ npm install
 3. **维护成本增加**：需要理解额外的抽象层和依赖关系
 
 **结论**：不是所有脚本都适合 JavaScript 化。对于系统级任务和简单的自动化脚本，shell 脚本更加直观和高效。最终决定保持原有的 shell 脚本架构。
-
-## 参考信息
-
-- 环境：macOS ARM64 (M1/M2/M3)
-- 编辑器：VS Code、Trae CN、Cursor、Windsurf
-- Node.js：v23.6.0+
-- Node.js：v23.6.0
-- VS Code Task API：[官方文档](https://code.visualstudio.com/docs/editor/tasks)
-- 相关 npm issue：[#4828](https://github.com/npm/cli/issues/4828)

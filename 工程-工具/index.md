@@ -26,6 +26,7 @@
   - 📝 [vscode环境工具开发规范](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/vscode%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83)
   - 📝 [扩展开发规则与最佳实践](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/%E6%89%A9%E5%B1%95%E5%BC%80%E5%8F%91%E8%A7%84%E5%88%99%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5)
   - 📝 [添加新VS Code扩展规范](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/%E6%B7%BB%E5%8A%A0%E6%96%B0VS%20Code%E6%89%A9%E5%B1%95%E8%A7%84%E8%8C%83)
+  - 📝 [脚本系统重构-zx-just](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/%E8%84%9A%E6%9C%AC%E7%B3%BB%E7%BB%9F%E9%87%8D%E6%9E%84-zx-just)
   - 📝 [近期VS Code配置优化总结](%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/vscode/%E8%BF%91%E6%9C%9FVS%20Code%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96%E6%80%BB%E7%BB%93)
 
 
