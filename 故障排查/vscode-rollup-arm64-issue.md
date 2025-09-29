@@ -49,54 +49,74 @@ sysctl -n sysctl.proc_translated  # 1 表示在 Rosetta 2 下
 
 ## 根本原因
 
-问题的根本原因是 **VS Code Task 的 `type` 配置**：
+**更新（2025年9月29日）**：发现真正的根本原因是 **shell 解释器的差异**：
 
-- 当 Task 类型设置为 `"shell"` 时，VS Code 创建的 shell 环境与普通终端环境存在差异
-- Shell 类型的 Task 可能无法正确继承或设置某些环境变量
-- 这导致 npm 无法正确识别和加载 ARM64 平台特定的依赖
+- 使用 `#!/bin/zsh` 作为脚本解释器时，rollup 依赖能正常工作 ✅
+- 使用 `#!/bin/bash` 作为脚本解释器时，会导致 rollup 无法找到 ARM64 平台特定的依赖 ❌
+- 这是因为 zsh 和 bash 在处理 npm 的环境变量和模块解析路径时存在差异，zsh 能更好地处理 ARM64 Mac 的环境
+
+### 历史误诊（已废弃）
+
+之前认为问题的根本原因是 VS Code Task 的 `type` 配置，但实际测试表明这并非真正原因：
+
+- ~~当 Task 类型设置为 `"shell"` 时，VS Code 创建的 shell 环境与普通终端环境存在差异~~
+- ~~Shell 类型的 Task 可能无法正确继承或设置某些环境变量~~
+- ~~这导致 npm 无法正确识别和加载 ARM64 平台特定的依赖~~
 
 ## 解决方案
 
-修改 `.vscode/tasks.json` 中的任务配置，将 `type` 从 `"shell"` 改为 `"process"`：
+### 主要解决方案：修改脚本解释器
 
-### 修改前（问题配置）
+将所有相关脚本的解释器从 `#!/bin/bash` 改为 `#!/bin/zsh`：
 
-```json
-{
-  "label": "start_local_docs_server",
-  "detail": "启动本地文档服务器（自动运行）",
-  "type": "shell",
-  "command": "npm run dev",
-  "isBackground": true,
-  "options": {
-    "cwd": "${workspaceFolder}/docs"
-  }
-}
+```bash
+# 错误的配置（会导致 rollup 依赖问题）
+#!/bin/bash
+
+# 正确的配置（ARM64 Mac 环境）
+#!/bin/zsh
 ```
 
-### 修改后（正确配置）
+**需要修改的脚本**：
+- `.vscode/scripts/wtc-docs/check-docs-setup.sh` - 已修改为 zsh ✅
+- `.vitepress/scripts/dev.sh` - 已使用 zsh ✅
+- 其他启动文档服务的脚本
+
+### 备用解决方案（已验证但非必要）
+
+以下方案在某些情况下也可以解决问题，但修改解释器是最简单直接的方案：
+
+#### 1. 修改 VS Code Task 配置
+
+将 `.vscode/tasks.json` 中的任务配置，从 `"shell"` 类型改为 `"process"` 类型：
 
 ```json
+// 使用 process 类型可以绕过 shell 解释器问题
 {
   "label": "start_local_docs_server",
-  "detail": "启动本地文档服务器（自动运行）",
   "type": "process",
   "command": "npm",
   "args": ["run", "dev"],
-  "isBackground": true,
   "options": {
     "cwd": "${workspaceFolder}/docs"
   }
 }
 ```
 
-## 关键差异
+#### 2. 环境检测和自动修复
 
-| 属性     | Shell 类型                      | Process 类型       |
-| -------- | ------------------------------- | ------------------ |
-| 执行方式 | 通过 shell 解释器执行命令字符串 | 直接执行进程       |
-| 环境继承 | 可能不完整继承环境变量          | 正确继承父进程环境 |
-| 命令格式 | 单个命令字符串                  | 命令和参数分离     |
+在脚本中添加 ARM64 依赖检测和自动修复逻辑：
+
+```bash
+# ARM64 Mac 需要特殊处理 rollup 依赖
+if [[ "$OSTYPE" == darwin* ]] && [[ $(uname -m) == "arm64" ]]; then
+    if ! npm list @rollup/rollup-darwin-arm64 >/dev/null 2>&1; then
+        echo "修复 ARM64 依赖..."
+        rm -rf node_modules package-lock.json
+        npm install
+    fi
+fi
+```
 
 ## 其他尝试过但无效的方案
 
@@ -147,16 +167,12 @@ rm -rf node_modules package-lock.json
 npm install
 ```
 
-### 方案三：Shell 解释器差异问题
+### ~~方案三：Shell 解释器差异问题~~ （已作为主要解决方案）
 
 **发现时间**：2025年9月28日
+**更新时间**：2025年9月29日 - 提升为主要解决方案
 
-在某些环境下，bash 和 zsh 执行构建脚本的行为不同：
-
-- **bash**：构建成功 ✅
-- **zsh**：可能导致 VitePress 错误地包含子模块文件
-
-**解决方法**：保持构建脚本使用 bash 解释器
+详见上方主要解决方案部分。
 
 ### ~~方案四：VS Code Task 配置优化~~
 
@@ -164,10 +180,30 @@ npm install
 
 ## 总结
 
-1. **根本原因**：npm 在处理可选依赖时的 bug，以及不同平台需要不同的二进制包
-2. **特殊发现**：M3 Mac 在某些编辑器（如 Trae CN）中可能运行在混合架构环境
-3. **最佳实践**：在 package.json 中预先配置所有平台的可选依赖（方案一）
-4. **已验证**：2025年9月28日在 WorldTourCasino 项目中成功实施
+1. **根本原因**：**shell 解释器差异** - bash 和 zsh 在处理 npm 模块路径时的行为不同（2025年9月29日更新）
+2. **最简单的解决方案**：将脚本解释器从 `#!/bin/bash` 改为 `#!/bin/zsh`（ARM64 Mac 环境）
+3. **npm bug 相关**：虽然 npm 确实存在可选依赖的 bug，但在本案例中，解释器差异才是主因
+4. **特殊发现**：
+   - M3 Mac 在某些编辑器（如 Trae CN）中可能运行在混合架构环境
+   - zsh 在 ARM64 Mac 上对 npm 模块解析的兼容性更好
+5. **最佳实践**：
+   - ARM64 Mac 环境优先使用 zsh 作为脚本解释器
+   - 在 package.json 中预先配置所有平台的可选依赖作为保险
+6. **已验证**：
+   - 2025年9月28日：在 WorldTourCasino 项目中发现问题
+   - 2025年9月29日：确认 zsh 解释器解决了 rollup 依赖问题，已应用到 check-docs-setup.sh
+
+## 相关改进
+
+### 2025年9月29日 - 脚本重构尝试与回退
+
+尝试使用 zx (Google 的 shell 脚本 JavaScript 化工具) 重构所有 shell 脚本，但发现：
+
+1. **过度工程化**：简单的 shell 任务被复杂的 JavaScript 模块系统包装
+2. **可读性下降**：原本直观的 shell 命令变成了层层封装的函数调用
+3. **维护成本增加**：需要理解额外的抽象层和依赖关系
+
+**结论**：不是所有脚本都适合 JavaScript 化。对于系统级任务和简单的自动化脚本，shell 脚本更加直观和高效。最终决定保持原有的 shell 脚本架构。
 
 ## 参考信息
 
