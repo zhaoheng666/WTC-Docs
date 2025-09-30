@@ -56,15 +56,16 @@ check_json_format.py
 .vscode/local-server/
 .vscode/wtc-docs/
 
-# Shell 脚本
+# Shell 脚本（示例）
 fix-environment.sh
-check-docs-setup.sh
-sync-docs.sh
-start-local-server.sh
+docs-check-setup.sh
+open-dev.sh
+cleanup-services.sh
+onEnter.sh
 
 # 任务标签
 build-local-cv
-run-local-check
+run-js-check
 upload-to-google-drive
 ```
 

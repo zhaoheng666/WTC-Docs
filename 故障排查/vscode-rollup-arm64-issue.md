@@ -79,7 +79,7 @@ sysctl -n sysctl.proc_translated  # 1 表示在 Rosetta 2 下
 
 **需要修改的脚本**：
 
-- `.vscode/scripts/wtc-docs/check-docs-setup.sh` - 已修改为 zsh ✅
+- `.vscode/scripts/wtc-docs/docs-check-setup.sh` - 已修改为 zsh ✅
 - `.vitepress/scripts/dev.sh` - 已使用 zsh ✅
 - 其他启动文档服务的脚本
 
@@ -192,4 +192,4 @@ npm install
    - 在 package.json 中预先配置所有平台的可选依赖作为保险
 6. **已验证**：
    - 2025年9月28日：在 WorldTourCasino 项目中发现问题
-   - 2025年9月29日：确认 zsh 解释器解决了 rollup 依赖问题，已应用到 check-docs-setup.sh
+   - 2025年9月29日：确认 zsh 解释器解决了 rollup 依赖问题，已应用到 docs-check-setup.sh

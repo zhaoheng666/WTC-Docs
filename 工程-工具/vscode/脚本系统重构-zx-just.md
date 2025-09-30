@@ -177,7 +177,7 @@ just clean
 | `onEnter.sh` | `just on-enter` |
 | `cleanup-services.sh` | `just stop` |
 | `fix-environment.sh` | `just fix-env` |
-| `check-docs-setup.sh` | `just setup-docs` |
+| `docs-check-setup.sh` | `just docs-check` |
 
 ### 兼容性
 
