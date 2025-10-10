@@ -114,15 +114,63 @@
 - `${workspaceFolder}` - 工作区根目录
 - `${config:*}` - 引用其他配置项
 
-### 5. 文档建设
+### 5. 插件命名规范化（2025-01-11）
 
-#### 5.1 新增文档
+#### 5.1 统一命名规范
+将所有 VS Code 插件统一使用 `wtc-` 前缀命名：
+- `vscode-toolbar-extension` → `wtc-toolbars`
+- `google-drive-uploader` → `wtc-google-drive`
+- 新插件必须使用 `wtc-` 前缀
+
+#### 5.2 自动清理机制
+- 在 `onEnter.sh` 中添加了旧插件软链接清理功能
+- 创建了独立的清理脚本 `cleanup-plugin-symlinks.sh`
+- 自动检测并移除无效的软链接
+
+### 6. 端口配置集中管理（2025-01-11）
+
+#### 6.1 配置统一管理
+将 wtc-local-server 的端口配置移到统一位置：
+```json
+{
+  "WTC.subProjects": {
+    "extensions": {
+      "plugins": {
+        "localServer": {
+          "port": 3307  // 统一配置端口
+        }
+      }
+    }
+  }
+}
+```
+
+#### 6.2 脚本动态读取
+更新了所有相关脚本，从配置动态读取端口：
+- **config-reader.sh**: 新增 `get_local_server_port()` 函数
+- **cleanup-services.sh**: 动态读取端口停止服务
+- **open-dev.sh**: 动态读取端口打开浏览器
+- **justfile**: status 命令动态显示端口
+
+#### 6.3 插件兼容性
+wtc-local-server 插件支持两种配置方式：
+- 优先读取 `WTC.subProjects.extensions.plugins.localServer.port`
+- 备选方案：传统的 `wtc-local-server.port` 配置
+
+#### 6.4 清理无用配置
+移除了 `settings.json` 中已废弃的 `folders` 配置，该配置已被本地配置文件替代。
+
+### 7. 文档建设
+
+#### 7.1 新增文档
 - [添加新VS Code扩展规范](./添加新VS Code扩展规范.md)
+- [插件命名规范](./插件命名规范.md)
 - [VS Code 配置优化总结](./近期VS Code配置优化总结.md)（本文档）
 
-#### 5.2 文档更新
+#### 7.2 文档更新
 - 更新了扩展的 README 文档
 - 完善了故障排查指南
+- 记录了配置集中管理方案
 
 ## 技术亮点
 
