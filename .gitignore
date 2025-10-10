@@ -7,6 +7,7 @@ pnpm-lock.yaml
 # VitePress build output
 .vitepress/dist/
 .vitepress/cache/
+.vitepress/.temp/
 
 # Editor directories and files
 .vscode/*
@@ -63,3 +64,6 @@ lerna-debug.log*
 # stats.template.json 是模板文件，需要提交
 public/stats.json
 !public/stats.template.json
+
+# 图片符号链接（编辑器预览用）
+images

@@ -11,7 +11,6 @@
     "status": "zsh .vitepress/scripts/status.sh"
   },
   "devDependencies": {
-    "jq-cli-wrapper": "^1.6.1",
     "vitepress": "^1.6.4"
   },
   "repository": {
@@ -21,7 +20,7 @@
   "author": "",
   "license": "MIT",
   "optionalDependencies": {
-    "@rollup/rollup-darwin-arm64": "^4.52.0",
+    "@rollup/rollup-darwin-arm64": "^4.52.4",
     "@rollup/rollup-darwin-x64": "^4.52.3",
     "@rollup/rollup-linux-x64-gnu": "^4.52.0",
     "@rollup/rollup-win32-x64-msvc": "^4.52.0"

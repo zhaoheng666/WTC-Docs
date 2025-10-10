@@ -192,7 +192,22 @@ elif [ -L "images" ]; then
     echo -e "${GREEN}✅ 图片符号链接已存在${NC}"
 fi
 
-# 9. 环境检查汇总
+# 9. 首次构建（供扩展使用）
+echo -e "\n${CYAN}检查构建状态...${NC}"
+if [ ! -d ".vitepress/dist" ] || [ -z "$(ls -A .vitepress/dist 2>/dev/null)" ]; then
+    echo -e "${YELLOW}⚠️  未检测到构建产物，执行首次构建...${NC}"
+    npm run build
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✅ 首次构建完成${NC}"
+    else
+        echo -e "${RED}❌ 构建失败${NC}"
+        ENV_READY=false
+    fi
+else
+    echo -e "${GREEN}✅ 已存在构建产物${NC}"
+fi
+
+# 10. 环境检查汇总
 echo -e "\n${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "${CYAN}环境状态汇总：${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
