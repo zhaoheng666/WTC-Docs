@@ -197,7 +197,7 @@ export default defineConfig({
 
     // 社交链接
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/LuckyZen/WorldTourCasino' }
+      { icon: 'github', link: 'https://github.com/zhaoheng666/WTC-Docs' }
     ],
 
     // 启用编辑链接
