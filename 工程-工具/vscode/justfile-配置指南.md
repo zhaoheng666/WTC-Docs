@@ -4,6 +4,44 @@
 
 Just 是一个现代的命令运行器，类似 Make 但更简单易用。本文档详细说明 justfile 的配置选项和最佳实践。
 
+## 安装 Just
+
+### 自动安装（推荐）
+
+项目提供了自动安装脚本，可以自动检测并安装 Just：
+
+```bash
+# 执行环境修复脚本（包含 Just 安装）
+./.vscode/scripts/fix-environment.sh --system
+
+# 或执行完整环境修复
+./.vscode/scripts/fix-environment.sh
+```
+
+### 手动安装
+
+#### macOS (使用 Homebrew)
+```bash
+brew install just
+```
+
+#### Linux
+```bash
+# 使用 cargo
+cargo install just
+
+# 或从 GitHub 下载预编译版本
+wget https://github.com/casey/just/releases/download/1.43.0/just-1.43.0-x86_64-unknown-linux-musl.tar.gz
+tar -xzf just-1.43.0-x86_64-unknown-linux-musl.tar.gz
+sudo mv just /usr/local/bin/
+```
+
+#### 验证安装
+```bash
+just --version
+# 输出: just 1.43.0
+```
+
 ## 全局设置选项
 
 ### 1. Shell 配置
