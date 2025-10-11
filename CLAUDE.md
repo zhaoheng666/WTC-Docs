@@ -86,25 +86,45 @@ npm run status # 检查状态
 
 #### 代码块语言标识符规则
 
-在编写 Markdown 文档时，代码块必须使用 VitePress 支持的语言标识符：
+VitePress 使用 [Shiki](https://shiki.style/) 作为语法高亮引擎，支持 **218 种语言**。
 
-- **不支持的语言**：使用 `text` 作为默认标识符
-  - 例如：`gitignore`、`justfile`、`just`、`env`、`dotenv` 等
-- **常用支持的语言**：`bash`、`javascript`、`typescript`、`json`、`python`、`html`、`css`、`sql` 等
-- **规则**：如果 VitePress 显示"The language 'xxx' is not loaded, falling back to 'bash'"警告，应改为 `text`
+**基本规则**：
+- ✅ 使用 Shiki 支持的语言标识符
+- ❌ 不支持的语言使用 `text`（纯文本，无高亮）
+- ⚠️ 如果看到 "The language 'xxx' is not loaded, falling back to 'bash'" 警告，说明语言不支持，应改为 `text`
 
-示例：
+**常用支持的语言**：
+
+| 分类 | 支持的语言 |
+|------|-----------|
+| **Shell** | `bash`, `sh`, `shell`, `zsh`, `powershell`, `fish` |
+| **Web** | `html`, `css`, `javascript`/`js`, `typescript`/`ts`, `jsx`, `tsx`, `vue`, `svelte` |
+| **数据格式** | `json`, `yaml`/`yml`, `xml`, `toml`, `csv`, `ini` |
+| **配置文件** | `dockerfile`, `nginx`, `apache`, `makefile`, `cmake` |
+| **编程语言** | `python`/`py`, `java`, `c`, `cpp`, `go`, `rust`, `ruby`, `php`, `swift`, `kotlin` |
+| **数据库** | `sql`, `plsql`, `graphql` |
+| **文档** | `markdown`/`md`, `mdx`, `latex` |
+
+**不支持的常见格式**（使用 `text` 代替）：
+- ❌ `gitignore` - Git 忽略文件
+- ❌ `env` - 环境变量文件
+- ❌ `just` / `justfile` - Justfile 脚本
+- ❌ `editorconfig` - 编辑器配置
+
+**示例**：
 ```text
-# 错误写法
+# ❌ 错误写法
 ```gitignore
 .vscode/.env-verified
 ```
 
-# 正确写法
+# ✅ 正确写法
 ```text
 .vscode/.env-verified
 ```
 ```
+
+**完整语言列表**：https://shiki.style/languages
 
 #### 文件路径链接规则
 
