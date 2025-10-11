@@ -84,6 +84,28 @@ npm run status # 检查状态
 
 ### 文档编写规范
 
+#### 代码块语言标识符规则
+
+在编写 Markdown 文档时，代码块必须使用 VitePress 支持的语言标识符：
+
+- **不支持的语言**：使用 `text` 作为默认标识符
+  - 例如：`gitignore`、`justfile`、`just`、`env`、`dotenv` 等
+- **常用支持的语言**：`bash`、`javascript`、`typescript`、`json`、`python`、`html`、`css`、`sql` 等
+- **规则**：如果 VitePress 显示"The language 'xxx' is not loaded, falling back to 'bash'"警告，应改为 `text`
+
+示例：
+```text
+# 错误写法
+```gitignore
+.vscode/.env-verified
+```
+
+# 正确写法
+```text
+.vscode/.env-verified
+```
+```
+
 #### 文件路径链接规则
 
 在文档中提及具体的代码文件路径时，应自动转换为 GitHub 链接：
