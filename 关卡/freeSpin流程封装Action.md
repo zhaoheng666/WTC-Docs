@@ -65,7 +65,7 @@ this.machineConfig.needFreeGameAction = true;
 - 当前次数 label 节点命名：`_curCountLabel`
 - 总次数 label 节点命名：`_totalCountLabel`
 
-![计数器格式示例1](/assets/image1.png)
+![计数器格式示例1](http://localhost:5173/WTC-Docs/assets/1760346210615_7163febf.png)
 
 #### 2. 只显示剩余次数，又细分为两种情况：
 
@@ -73,7 +73,7 @@ this.machineConfig.needFreeGameAction = true;
 - ccb 节点命名：`freeSpinCounter`，需有 appear、disappear、add 动画
 - 剩余次数 label 节点命名：`_leftCountLabel`
 
-![计数器格式示例2](/assets/image2.png)
+![计数器格式示例2](http://localhost:5173/WTC-Docs/assets/1760346210616_05b05e2d.png)
 
 **(2) 通过其他节点的动画切换到展示剩余次数**
 
