@@ -8,7 +8,8 @@
     "dev": "zsh .vitepress/scripts/dev.sh",
     "build": "zsh .vitepress/scripts/build.sh",
     "sync": "zsh .vitepress/scripts/sync.sh",
-    "status": "zsh .vitepress/scripts/status.sh"
+    "status": "zsh .vitepress/scripts/status.sh",
+    "convert-docx": "zsh .vitepress/scripts/convert-docx.sh"
   },
   "devDependencies": {
     "vitepress": "^1.6.4"

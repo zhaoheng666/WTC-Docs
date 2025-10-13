@@ -38,6 +38,10 @@ lerna-debug.log*
 *.tmp
 *~
 
+# Word documents (应转换为 Markdown 后删除)
+*.docx
+*.doc
+
 # 明确不忽略图片目录（支持多种命名习惯）
 !**/image/
 !**/images/
