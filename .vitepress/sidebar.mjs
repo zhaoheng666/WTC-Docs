@@ -142,6 +142,7 @@ const ignoreList = [
   '最近更新.md',
   '技术文档.md',
   '工作规范.md',
+  '工作台.md',
   'CLAUDE.md'
 ]
 
