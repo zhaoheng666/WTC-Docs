@@ -4,9 +4,9 @@
   "description": "WorldTourCasino Documentation",
   "private": true,
   "scripts": {
-    "init": "bash .vitepress/scripts/init.sh",
+    "init": "zsh .vitepress/scripts/init.sh",
     "dev": "zsh .vitepress/scripts/dev.sh",
-    "build": "bash .vitepress/scripts/build.sh",
+    "build": "zsh .vitepress/scripts/build.sh",
     "sync": "zsh .vitepress/scripts/sync.sh",
     "status": "zsh .vitepress/scripts/status.sh"
   },

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # 文档构建脚本
 # 包含：增量图片收集、统计生成、构建测试
@@ -11,7 +11,7 @@ CYAN='\033[0;36m'
 NC='\033[0m'
 
 # 获取脚本所在目录的上上级目录（docs目录）
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${(%):-%x}")" && pwd)"
 DOCS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 cd "$DOCS_DIR" || exit 1
@@ -54,13 +54,23 @@ if [ -f ".vitepress/scripts/image-processor.js" ]; then
     echo -e "${CYAN}🔍 检查 MD 文件中的图片...${NC}"
 
     # 检查是否有包含图片的 MD 文件更改（包括暂存、未暂存和未跟踪的文件）
+    # 禁用 Git 的路径引号，以便正确处理中文文件名
     CHANGED_MDS=$(
-        (git diff --cached --name-only; git diff --name-only; git ls-files --others --exclude-standard) |
+        (git -c core.quotePath=false diff --cached --name-only; \
+         git -c core.quotePath=false diff --name-only; \
+         git -c core.quotePath=false ls-files --others --exclude-standard) |
         grep "\.md$" | sort -u
     )
 
+    # 调试输出
+    if [ -n "$DEBUG" ]; then
+        echo -e "${YELLOW}DEBUG: 检测到的 MD 文件:${NC}" >&2
+        echo "$CHANGED_MDS" >&2
+        echo -e "${YELLOW}DEBUG: 文件数量: $(echo "$CHANGED_MDS" | grep -c '^')${NC}" >&2
+    fi
+
     if [ -n "$CHANGED_MDS" ]; then
-        MD_COUNT=$(echo "$CHANGED_MDS" | wc -l)
+        MD_COUNT=$(echo "$CHANGED_MDS" | wc -l | tr -d ' ')
         echo -e "${CYAN}  • 发现 $MD_COUNT 个变更的 MD 文件${NC}"
 
         # 只要有 MD 文件变更就处理（image-processor 会自己判断是否需要清理）
@@ -109,7 +119,7 @@ if [ -f ".vitepress/scripts/image-processor.js" ]; then
                             MD_DIR=$(dirname "$md_file")
 
                             # 删除常见的图片目录
-                            for img_dir in assets images image img pics pictures; do
+                            for img_dir in assets images image img pics pictures media; do
                                 if [ -d "$MD_DIR/$img_dir" ]; then
                                     echo -e "${CYAN}    • 删除 $MD_DIR/$img_dir/${NC}"
                                     rm -rf "$MD_DIR/$img_dir"

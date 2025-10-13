@@ -519,8 +519,9 @@ class ImageProcessorV2 {
     try {
       // 获取所有变更的 MD 文件（包括暂存、未暂存和未跟踪）
       // 同时检测相对于 HEAD 的变更（用于 sync.sh 场景）
+      // 禁用 Git 的路径引号，以便正确处理中文文件名
       const changedFiles = execSync(
-        `(git diff --cached --name-only; git diff --name-only; git diff HEAD --name-only; git ls-files --others --exclude-standard) | grep "\\.md$" | sort -u || true`,
+        `(git -c core.quotePath=false diff --cached --name-only; git -c core.quotePath=false diff --name-only; git -c core.quotePath=false diff HEAD --name-only; git -c core.quotePath=false ls-files --others --exclude-standard) | grep "\\.md$" | sort -u || true`,
         { encoding: 'utf8' }
       ).trim().split('\n').filter(f => f);
 
