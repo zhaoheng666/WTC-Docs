@@ -1,133 +1,133 @@
-# Core Rules (Detailed)
+# 核心规则（详细）
 
-Detailed rules for WorldTourCasino project. This file is imported by main CLAUDE.md.
+WorldTourCasino 项目的详细规则。此文件通过主项目 CLAUDE.md 的 @ 导入。
 
-## Mandatory Rules
+## 强制规则
 
-### File Path Links
+### 文件路径链接
 
-Convert all source code file links to GitHub format when writing documentation.
+编写文档时，将所有源码文件链接转换为 GitHub 格式。
 
-Format:
+格式：
 ```
 https://github.com/zhaoheng666/WorldTourCasino/blob/classic_vegas/path/to/file.ext
 https://github.com/zhaoheng666/WorldTourCasino/blob/classic_vegas/path/to/file.ext#L10
 https://github.com/zhaoheng666/WorldTourCasino/blob/classic_vegas/path/to/file.ext#L10-L20
 ```
 
-### Docs Subproject Links
+### Docs 子项目链接
 
-In `docs/` subproject only:
-- Convert all relative markdown links to absolute HTTP links
-- Use `http://localhost:5173/WTC-Docs/` for local
-- Use `https://zhaoheng666.github.io/WTC-Docs/` for production
-- Link processor runs automatically during build
+仅在 `docs/` 子项目中：
+- 将所有相对 markdown 链接转换为绝对 HTTP 链接
+- 本地使用：`http://localhost:5173/WTC-Docs/`
+- 生产使用：`https://zhaoheng666.github.io/WTC-Docs/`
+- 链接处理器在构建时自动运行
 
-### Extension Activation
+### 扩展激活规则
 
-VS Code extensions must activate only in WTC project:
-- Check `workspace.getWorkspaceFolder()` name
-- Use activation event: `onStartupFinished`
-- Never activate globally
+VS Code 扩展必须只在 WTC 项目中激活：
+- 检查 `workspace.getWorkspaceFolder()` 名称
+- 使用激活事件：`onStartupFinished`
+- 禁止全局激活
 
-### Config File Sync
+### 配置文件同步
 
-Synchronize `.vscode/settings.json` ↔ `WorldTourCasino.code-workspace`:
-- Update both files when changing configurations
-- Use scripts in `.vscode/scripts/` for automation
-- Test after changes
+同步 `.vscode/settings.json` ↔ `WorldTourCasino.code-workspace`：
+- 修改配置时更新两个文件
+- 使用 `.vscode/scripts/` 中的自动化脚本
+- 修改后测试
 
-## Shell Scripts
+## Shell 脚本
 
-Write all shell scripts following these rules:
+编写 Shell 脚本遵循以下规则：
 
-Shebang:
+Shebang：
 ```bash
 #!/usr/bin/env zsh
 ```
 
-Error handling:
+错误处理：
 ```bash
 set -euo pipefail
 ```
 
-Best practices:
-- Use absolute paths
-- Avoid `cd` commands when possible
-- Quote all variables: `"$var"`
-- Check file existence before operations
+最佳实践：
+- 使用绝对路径
+- 尽可能避免 `cd` 命令
+- 引用所有变量：`"$var"`
+- 操作前检查文件是否存在
 
-## Git Commit Messages
+## Git 提交信息
 
-### Main Project
+### 主项目
 
-Format: `cv：关卡X [描述]`
+格式：`cv：关卡X [描述]`
 
-Examples:
+示例：
 - `cv：关卡1 fix bug in slot machine`
 - `cv：关卡2 add new bonus feature`
 
-Or use standard format:
+或使用标准格式：
 - `type(scope): subject`
-- Types: feat, fix, chore, docs, style, refactor
+- 类型：feat, fix, chore, docs, style, refactor
 
-### Docs Subproject
+### Docs 子项目
 
-Always use standard format:
+始终使用标准格式：
 - `type(scope): subject`
-- Add footer: `🤖 Generated with [Claude Code](https://claude.com/claude-code)`
+- 添加页脚：`🤖 Generated with [Claude Code](https://claude.com/claude-code)`
 
-## Terminology
+## 术语
 
-### Flavor System
+### 风格系统
 
-- **Flavor**: Game variant/brand
+- **Flavor**：游戏变体/品牌
   - CV = Classic Vegas (res_oldvegas/)
   - DH = Double Hit (res_doublehit/)
   - DHX = Double X (res_doublex/)
   - VS = Vegas Star (res_vegasstar/)
 
-- **res_*/** directories: Flavor-specific resources
-- **src/** directory: Shared code across all flavors
-- **flavor/** subdirectory: Flavor-specific JavaScript code
+- **res_*/** 目录：风格特定资源
+- **src/** 目录：所有风格共享代码
+- **flavor/** 子目录：风格特定 JavaScript 代码
 
-### Important Files
+### 重要文件
 
-- `resource_dirs.json`: Resource version control (debug/release)
-- `project.json`: Cocos2d project configuration
-- `main.js`: Game entry point
-- `.vscode/settings.json`: VS Code workspace settings
-- `WorldTourCasino.code-workspace`: Multi-root workspace config
+- `resource_dirs.json`：资源版本控制（debug/release）
+- `project.json`：Cocos2d 项目配置
+- `main.js`：游戏入口
+- `.vscode/settings.json`：VS Code 工作区设置
+- `WorldTourCasino.code-workspace`：多根工作区配置
 
-## Workflow Patterns
+## 工作流程模式
 
-### Adding New Feature
+### 添加新功能
 
-1. Check current branch and flavor context
-2. Modify `src/` (shared) or `res_*/flavor/` (flavor-specific)
-3. Run local build: `scripts/build_local_[flavor].sh`
-4. Test in browser
-5. Run `npm run lint`
-6. Commit with proper format
+1. 检查当前分支和风格上下文
+2. 修改 `src/`（共享）或 `res_*/flavor/`（风格特定）
+3. 运行本地构建：`scripts/build_local_[flavor].sh`
+4. 在浏览器中测试
+5. 运行 `npm run lint`
+6. 使用正确格式提交
 
-### Updating Resources
+### 更新资源
 
-1. Add/modify resources in appropriate `res_*/` directory
-2. Run `scripts/gen_res_list.py` to update manifest
-3. Update version in `resource_dirs.json` if needed
-4. Build and test locally
+1. 在相应的 `res_*/` 目录中添加/修改资源
+2. 运行 `scripts/gen_res_list.py` 更新清单
+3. 如需要，更新 `resource_dirs.json` 中的版本
+4. 本地构建并测试
 
-### Working with Docs
+### 处理文档
 
-1. Enter docs subproject: `cd docs`
-2. Start dev server: `npm run dev`
-3. Make changes
-4. Test build: `npm run build`
-5. Commit in docs repo (separate from main project)
-6. Sync to GitHub Pages: `npm run sync`
+1. 进入 docs 子项目：`cd docs`
+2. 启动开发服务器：`npm run dev`
+3. 进行修改
+4. 测试构建：`npm run build`
+5. 在 docs 仓库提交（独立于主项目）
+6. 同步到 GitHub Pages：`npm run sync`
 
-## Reference
+## 参考
 
-For complete project architecture and detailed information, see:
-- `docs/工程-工具/ai-rules/WTC/CLAUDE-REFERENCE.md` (comprehensive reference)
-- Online docs: https://zhaoheng666.github.io/WTC-Docs/
+完整的项目架构和详细信息，请参阅：
+- `docs/工程-工具/ai-rules/WTC/CLAUDE-REFERENCE.md`（综合参考）
+- 在线文档：https://zhaoheng666.github.io/WTC-Docs/

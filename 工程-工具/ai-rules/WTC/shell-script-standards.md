@@ -18,13 +18,11 @@
 
 ### 原因
 
-1. **解决 ARM64 Mac 上的依赖问题**
-   - 特别是 rollup 等 npm 模块的路径解析
+1. **npm 模块路径解析更稳定**
 
-2. **npm 模块路径解析更稳定**
    - zsh 环境下 Node.js 模块路径解析更可靠
-
 3. **macOS 默认 shell**
+
    - macOS Catalina (10.15) 之后，系统默认 shell 从 bash 改为 zsh
 
 ---
