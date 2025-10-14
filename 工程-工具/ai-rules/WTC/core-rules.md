@@ -1,52 +1,57 @@
-# 核心规则（详细）
+# 核心规则
 
-WorldTourCasino 项目的详细规则。此文件通过主项目 CLAUDE.md 的 @ 导入。
+WorldTourCasino 项目核心规则。此文件通过主项目 CLAUDE.md 的 @ 导入。
 
-## 强制规则
+---
 
-### 文件路径链接
+## 🔧 开发规则
 
-编写文档时，将所有源码文件链接转换为 GitHub 格式。
+### 代码风格
 
-格式：
+- 只使用 ES5 JavaScript
+- 启用严格模式：`'use strict';`
+- 使用 Browserify 模块系统
+- 禁止使用：箭头函数、模板字符串、const/let、ES6+ 特性
+
+示例：
+
+```javascript
+'use strict';
+var MyClass = function() {
+    this.value = 0;
+};
+MyClass.prototype.getValue = function() {
+    return this.value;
+};
 ```
-https://github.com/zhaoheng666/WorldTourCasino/blob/classic_vegas/path/to/file.ext
-https://github.com/zhaoheng666/WorldTourCasino/blob/classic_vegas/path/to/file.ext#L10
-https://github.com/zhaoheng666/WorldTourCasino/blob/classic_vegas/path/to/file.ext#L10-L20
-```
 
-### Docs 子项目链接
+### 文件操作规则
 
-仅在 `docs/` 子项目中：
-- 将所有相对 markdown 链接转换为绝对 HTTP 链接
-- 本地使用：`http://localhost:5173/WTC-Docs/`
-- 生产使用：`https://zhaoheng666.github.io/WTC-Docs/`
+**源码文件链接**：
+- 编写文档时，源码文件链接必须使用 GitHub 格式
+- 格式：`https://github.com/zhaoheng666/WorldTourCasino/blob/classic_vegas/路径`
+
+**Docs 文档链接**：
+- 在 docs 子项目中，所有相对链接必须转换为绝对 HTTP 链接
+- 本地：`http://localhost:5173/WTC-Docs/路径`
+- 生产：`https://zhaoheng666.github.io/WTC-Docs/路径`
 - 链接处理器在构建时自动运行
 
-### 扩展激活规则
-
-VS Code 扩展必须只在 WTC 项目中激活：
-- 检查 `workspace.getWorkspaceFolder()` 名称
-- 使用激活事件：`onStartupFinished`
-- 禁止全局激活
-
-### 配置文件同步
-
-同步 `.vscode/settings.json` ↔ `WorldTourCasino.code-workspace`：
-- 修改配置时更新两个文件
+**配置文件同步**：
+- 修改 `.vscode/settings.json` 时，必须同步更新 `WorldTourCasino.code-workspace`
 - 使用 `.vscode/scripts/` 中的自动化脚本
 - 修改后测试
 
-## Shell 脚本
-
-编写 Shell 脚本遵循以下规则：
+### Shell 脚本
 
 Shebang：
+
 ```bash
-#!/usr/bin/env zsh
+#!/bin/zsh
 ```
 
 错误处理：
+
 ```bash
 set -euo pipefail
 ```
@@ -57,27 +62,56 @@ set -euo pipefail
 - 引用所有变量：`"$var"`
 - 操作前检查文件是否存在
 
-## Git 提交信息
+---
 
-### 主项目
+## 📝 Git 工作流
 
-格式：`cv：关卡X [描述]`
+### 主项目提交
 
-示例：
-- `cv：关卡1 fix bug in slot machine`
-- `cv：关卡2 add new bonus feature`
+**格式**：`cv：关卡X [描述]` 或 `type(scope): subject`
 
-或使用标准格式：
-- `type(scope): subject`
-- 类型：feat, fix, chore, docs, style, refactor
+**确认流程**（强制）：
+1. 生成提交大纲（提交信息、文件列表、变更大纲）
+2. 明确询问："是否继续执行提交？"
+3. 等待用户确认（"确认"、"继续"、"yes"）
+4. 执行提交
 
-### Docs 子项目
+**忽略构建产物**：
+- `res_*/flavor/index.html`
+- `res_*/flavor/main*.css`
+- `res_*/flavor/project.json`
+- `res_*/flavor/js_src/common/util/Config.js`
+- `res_*/resource_list/**/*.json`
+- `res_*/resource_dirs.json`
 
-始终使用标准格式：
-- `type(scope): subject`
-- 添加页脚：`🤖 Generated with [Claude Code](https://claude.com/claude-code)`
+### docs 子项目提交
 
-## 术语
+- 自动化提交，满足触发条件即可执行
+- 使用标准格式：`type(scope): subject`
+- 不添加 AI 标识
+
+---
+
+## 🎯 子项目规则
+
+### 进入 docs 子项目时
+
+应用以下规则：
+- VitePress 开发规范
+- 链接处理规则（强制）
+- 图片自动处理
+- 自动化提交流程
+
+### 进入 extensions 子项目时
+
+应用以下规则：
+- 扩展必须只在 WTC 项目激活（强制）
+- TypeScript 标准配置
+- 符号链接安装到多个编辑器
+
+---
+
+## 📚 术语速查
 
 ### 风格系统
 
@@ -91,43 +125,24 @@ set -euo pipefail
 - **src/** 目录：所有风格共享代码
 - **flavor/** 子目录：风格特定 JavaScript 代码
 
-### 重要文件
+### 核心系统
 
-- `resource_dirs.json`：资源版本控制（debug/release）
-- `project.json`：Cocos2d 项目配置
-- `main.js`：游戏入口
-- `.vscode/settings.json`：VS Code 工作区设置
-- `WorldTourCasino.code-workspace`：多根工作区配置
+- **CardSystem**：收集系统/卡册系统
+- **resource_dirs.json**：资源版本控制（debug/release）
+- **project.json**：Cocos2d 项目配置
 
-## 工作流程模式
+---
 
-### 添加新功能
+## 🔗 详细规则
 
-1. 检查当前分支和风格上下文
-2. 修改 `src/`（共享）或 `res_*/flavor/`（风格特定）
-3. 运行本地构建：`scripts/build_local_[flavor].sh`
-4. 在浏览器中测试
-5. 运行 `npm run lint`
-6. 使用正确格式提交
+完整规则索引和详细说明，请查看：
 
-### 更新资源
+- WTC 主项目规则：`docs/工程-工具/ai-rules/WTC/`
+- 通用规则：`docs/工程-工具/ai-rules/shared/`
+- docs 子项目规则：`docs/工程-工具/ai-rules/docs/`
+- extensions 子项目规则：`docs/工程-工具/ai-rules/extensions/`
 
-1. 在相应的 `res_*/` 目录中添加/修改资源
-2. 运行 `scripts/gen_res_list.py` 更新清单
-3. 如需要，更新 `resource_dirs.json` 中的版本
-4. 本地构建并测试
+---
 
-### 处理文档
-
-1. 进入 docs 子项目：`cd docs`
-2. 启动开发服务器：`npm run dev`
-3. 进行修改
-4. 测试构建：`npm run build`
-5. 在 docs 仓库提交（独立于主项目）
-6. 同步到 GitHub Pages：`npm run sync`
-
-## 参考
-
-完整的项目架构和详细信息，请参阅：
-- `docs/工程-工具/ai-rules/WTC/CLAUDE-REFERENCE.md`（综合参考）
-- 在线文档：https://zhaoheng666.github.io/WTC-Docs/
+**最后更新**: 2025-10-14
+**维护者**: WorldTourCasino Team

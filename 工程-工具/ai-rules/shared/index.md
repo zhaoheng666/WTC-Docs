@@ -6,9 +6,9 @@
 
 ## 📚 规则列表
 
-- [Git 提交类型参考](./git-commit-types-reference.md) - Git 提交 type 字段标准化定义
-- [文件路径链接规则](./file-path-links-rules.md) - 源码链接转 GitHub 格式 📜 **强制**
-- [文档编写标准](./doc-writing-standards.md) - Markdown/VitePress 文档编写规范
+- [Git 提交类型](./git-commit-types.md) - Git 提交 type 字段标准化定义
+- [文件路径链接](./file-path-links.md) - 源码链接转 GitHub 格式 📜 **强制**
+- [文档编写规范](./doc-writing.md) - Markdown/VitePress 文档编写规范
 
 ---
 
