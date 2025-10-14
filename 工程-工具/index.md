@@ -16,6 +16,7 @@
 #### 📁 ai-rules
 
   - **📂 WTC**
+    - 📝 [CLAUDE](ai-rules/WTC/CLAUDE)
     - 📝 [config-sync-rules](ai-rules/WTC/config-sync-rules)
     - 📝 [documentation-guide](ai-rules/WTC/documentation-guide)
     - 📝 [git-commit-rules](ai-rules/WTC/git-commit-rules)
