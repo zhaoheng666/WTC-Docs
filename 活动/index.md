@@ -7,22 +7,22 @@
 
 #### 📁 接口
 
-  - 📝 [Activity](%E6%B4%BB%E5%8A%A8/%E6%8E%A5%E5%8F%A3/Activity)
-  - 📝 [EntranceController](%E6%B4%BB%E5%8A%A8/%E6%8E%A5%E5%8F%A3/EntranceController)
-  - 📝 [MainUIController](%E6%B4%BB%E5%8A%A8/%E6%8E%A5%E5%8F%A3/MainUIController)
-  - 📝 [SmartCCBController](%E6%B4%BB%E5%8A%A8/%E6%8E%A5%E5%8F%A3/SmartCCBController)
-  - 📝 [WidgetController](%E6%B4%BB%E5%8A%A8/%E6%8E%A5%E5%8F%A3/WidgetController)
+  - 📝 [Activity](%E6%8E%A5%E5%8F%A3/Activity)
+  - 📝 [EntranceController](%E6%8E%A5%E5%8F%A3/EntranceController)
+  - 📝 [MainUIController](%E6%8E%A5%E5%8F%A3/MainUIController)
+  - 📝 [SmartCCBController](%E6%8E%A5%E5%8F%A3/SmartCCBController)
+  - 📝 [WidgetController](%E6%8E%A5%E5%8F%A3/WidgetController)
 
 
 #### 📁 操作手册
 
-  - 📝 [HR赛季资源替换](%E6%B4%BB%E5%8A%A8/%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C/HR%E8%B5%9B%E5%AD%A3%E8%B5%84%E6%BA%90%E6%9B%BF%E6%8D%A2)
-  - 📝 [新版收集系统SOP操作手册](%E6%B4%BB%E5%8A%A8/%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C/%E6%96%B0%E7%89%88%E6%94%B6%E9%9B%86%E7%B3%BB%E7%BB%9FSOP%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C)
+  - 📝 [HR赛季资源替换](%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C/HR%E8%B5%9B%E5%AD%A3%E8%B5%84%E6%BA%90%E6%9B%BF%E6%8D%A2)
+  - 📝 [新版收集系统SOP操作手册](%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C/%E6%96%B0%E7%89%88%E6%94%B6%E9%9B%86%E7%B3%BB%E7%BB%9FSOP%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C)
 
 
 #### 📁 流程
 
-  - 📝 [新人活动开发流程](%E6%B4%BB%E5%8A%A8/%E6%B5%81%E7%A8%8B/%E6%96%B0%E4%BA%BA%E6%B4%BB%E5%8A%A8%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B)
+  - 📝 [新人活动开发流程](%E6%B5%81%E7%A8%8B/%E6%96%B0%E4%BA%BA%E6%B4%BB%E5%8A%A8%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B)
 
 
 #### 📝 其他

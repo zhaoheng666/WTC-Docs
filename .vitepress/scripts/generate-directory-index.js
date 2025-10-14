@@ -78,8 +78,13 @@ function encodeUrlPath(filePath) {
 }
 
 // 生成友好的文档树结构
-function generateFileTree(dirPath, dirName, depth = 0) {
+function generateFileTree(dirPath, dirName, depth = 0, rootDirPath = null) {
   const items = []
+
+  // 第一层调用时，记录根目录路径
+  if (depth === 0 && rootDirPath === null) {
+    rootDirPath = dirPath
+  }
 
   try {
     const files = fs.readdirSync(dirPath).sort()
@@ -107,7 +112,7 @@ function generateFileTree(dirPath, dirName, depth = 0) {
     // 处理子目录
     directories.forEach(subDir => {
       const subPath = path.join(dirPath, subDir)
-      const subItems = generateFileTree(subPath, subDir, depth + 1)
+      const subItems = generateFileTree(subPath, subDir, depth + 1, rootDirPath)
 
       if (subItems.length > 0) {
         items.push({
@@ -124,16 +129,15 @@ function generateFileTree(dirPath, dirName, depth = 0) {
     markdownFiles.forEach(file => {
       const displayName = getDisplayName(file)
 
-      // 生成相对于当前目录的链接路径
+      // 生成相对于根目录（index.md 所在目录）的链接路径
       let relativePath
       if (depth === 0) {
         // 一级目录：直接使用文件名，进行URL编码
         relativePath = encodeUrlPath(displayName)
       } else {
-        // 子目录：使用相对路径，进行URL编码
-        const fullPath = path.relative(process.cwd(), path.join(dirPath, file))
+        // 子目录：生成相对于根目录的相对路径，进行URL编码
+        const fullPath = path.relative(rootDirPath, path.join(dirPath, file))
           .replace(/\\/g, '/')
-          .replace(/^docs\//, '')
           .replace(/\.md$/, '')
         relativePath = encodeUrlPath(fullPath)
       }

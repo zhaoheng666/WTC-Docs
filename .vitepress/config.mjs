@@ -15,7 +15,14 @@ export default defineConfig({
   // 忽略死链接检查（对于一些动态链接）
   ignoreDeadLinks: [
     // 忽略 URL 编码的中文路径（暂时）
-    /\/%E/
+    /\/%E/,
+    // 忽略 base URL 后的 /index 路径（VitePress 路由机制导致的误报）
+    // 当链接到 http://localhost:5173/WTC-Docs/ 时，VitePress 会将其解析为 /WTC-Docs/index
+    // 但实际文件是 index.md，死链检测器会误报为死链
+    (url) => {
+      const baseIndex = `${process.env.GITHUB_ACTIONS ? 'https://zhaoheng666.github.io' : 'http://localhost:5173'}/WTC-Docs/index`;
+      return url === baseIndex || url === `${baseIndex}.html`;
+    }
   ],
 
   // Markdown 配置

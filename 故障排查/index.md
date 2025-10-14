@@ -17,6 +17,7 @@
 - 📝 [SlotScene_onEnter中addChild触发crash](SlotScene_onEnter%E4%B8%ADaddChild%E8%A7%A6%E5%8F%91crash)
 - 📝 [Wails 重构 CCB 生成工具-issue](Wails%20%E9%87%8D%E6%9E%84%20CCB%20%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7-issue)
 - 📝 [rollup-指令集兼容性问题](rollup-%E6%8C%87%E4%BB%A4%E9%9B%86%E5%85%BC%E5%AE%B9%E6%80%A7%E9%97%AE%E9%A2%98)
+- 📝 [vitepress-base-url-死链误报](vitepress-base-url-%E6%AD%BB%E9%93%BE%E8%AF%AF%E6%8A%A5)
 - 📝 [vscode-rollup-arm64-issue](vscode-rollup-arm64-issue)
 - 📝 [vscode-扩展工作区兼容性问题](vscode-%E6%89%A9%E5%B1%95%E5%B7%A5%E4%BD%9C%E5%8C%BA%E5%85%BC%E5%AE%B9%E6%80%A7%E9%97%AE%E9%A2%98)
 - 📝 [web端无法更新到最新资源](web%E7%AB%AF%E6%97%A0%E6%B3%95%E6%9B%B4%E6%96%B0%E5%88%B0%E6%9C%80%E6%96%B0%E8%B5%84%E6%BA%90)

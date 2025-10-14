@@ -182,6 +182,39 @@ else
     echo -e "${YELLOW}  ⚠️  pdf-processor.js 不存在，跳过 PDF 处理${NC}"
 fi
 
+# 0.7. 处理文档链接（转换相对链接为绝对 HTTP 链接）
+if [ -f ".vitepress/scripts/link-processor.js" ]; then
+    echo -e "${CYAN}🔗 处理文档链接...${NC}"
+
+    # 覆盖式写入日志（不追加）
+    if node .vitepress/scripts/link-processor.js > /tmp/link-processor.log 2>&1; then
+        # 提取处理信息
+        MODIFIED=$(grep "Files modified:" /tmp/link-processor.log | grep -o "[0-9]*" | tail -1)
+        CONVERTED=$(grep "Links converted:" /tmp/link-processor.log | grep -o "[0-9]*" | tail -1)
+        SKIPPED=$(grep "Links skipped:" /tmp/link-processor.log | grep -o "[0-9]*" | tail -1)
+
+        if [ -n "$MODIFIED" ] && [ "$MODIFIED" -gt 0 ]; then
+            echo -e "${GREEN}  ✓ 处理了 $MODIFIED 个文件${NC}"
+        fi
+        [ -n "$CONVERTED" ] && [ "$CONVERTED" -gt 0 ] && echo -e "${GREEN}  ✓ 转换了 $CONVERTED 个相对链接${NC}"
+        [ -n "$SKIPPED" ] && [ "$SKIPPED" -gt 0 ] && echo -e "${CYAN}  • 跳过了 $SKIPPED 个链接（已是正确格式）${NC}"
+
+        if [ -z "$MODIFIED" ] || [ "$MODIFIED" -eq 0 ]; then
+            echo -e "${GREEN}  ✓ 链接已是最新状态${NC}"
+        fi
+    else
+        echo -e "${YELLOW}  ⚠️  链接处理失败（继续构建）${NC}"
+        # 显示错误信息
+        if [ -f "/tmp/link-processor.log" ]; then
+            ERROR_MSG=$(tail -5 /tmp/link-processor.log)
+            [ -n "$ERROR_MSG" ] && echo -e "${YELLOW}    错误: $ERROR_MSG${NC}"
+        fi
+    fi
+    # 保留日志文件用于调试，不删除
+else
+    echo -e "${YELLOW}  ⚠️  link-processor.js 不存在，跳过链接处理${NC}"
+fi
+
 # 0.8. 生成目录索引文件树
 if [ -f ".vitepress/scripts/generate-directory-index.js" ]; then
     echo -e "${CYAN}📁 生成目录索引文件树...${NC}"
