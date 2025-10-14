@@ -1,6 +1,8 @@
 # 核心规则
 
-WorldTourCasino 项目核心规则。此文件通过主项目 CLAUDE.md 的 @ 导入。
+WorldTourCasino 项目核心规则详细说明。
+
+**注意**：核心规则已内联到主项目 CLAUDE.md，此文件作为详细参考。
 
 ---
 
