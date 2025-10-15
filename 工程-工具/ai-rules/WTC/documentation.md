@@ -94,7 +94,7 @@ docs 子目录是一个独立的 Git 仓库，使用 VitePress 构建，托管�
 
 ```bash
 cd docs
-npm run dev  # 在 http://localhost:5173 预览
+npm run dev  # 启动本地预览服务器（端口 5173）
 ```
 
 ### 4. 发布文档
@@ -106,8 +106,8 @@ npm run sync  # 同步文档到 GitHub Pages
 
 ## 文档访问地址
 
-- **本地**: http://localhost:5173/WTC-Docs/
 - **线上**: https://zhaoheng666.github.io/WTC-Docs/
+- **本地**: 运行 `npm run dev` 后访问端口 5173
 
 ## 重要提醒
 
