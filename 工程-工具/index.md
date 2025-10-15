@@ -19,7 +19,7 @@
     - 📝 [CLAUDE-REFERENCE](ai-rules/WTC/CLAUDE-REFERENCE)
     - 📝 [config-sync](ai-rules/WTC/config-sync)
     - 📝 [core-rules](ai-rules/WTC/core-rules)
-    - 📝 [documentation](ai-rules/WTC/documentation)
+    - 📝 [doc-workflow](ai-rules/WTC/doc-workflow)
     - 📝 [git-commits](ai-rules/WTC/git-commits)
     - 📝 [shell-scripts](ai-rules/WTC/shell-scripts)
     - 📝 [terminology](ai-rules/WTC/terminology)

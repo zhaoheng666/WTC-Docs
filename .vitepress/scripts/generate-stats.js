@@ -50,7 +50,7 @@ function getRecentCommits(limit = 30) {
     const format = '%H|%ai|%an|%s';
     // 移除 -- "*.md" 限制，获取所有提交
     const gitLog = execSync(
-      `git log --pretty=format:"${format}" --name-only --diff-filter=AM | head -500`,
+      `git -c core.quotepath=false log --pretty=format:"${format}" --name-only --diff-filter=AM | head -500`,
       { cwd: docsDir, encoding: 'utf8' }
     );
 
@@ -87,7 +87,7 @@ function getRecentCommits(limit = 30) {
         let changedFiles = [];
         try {
           const filesOutput = execSync(
-            `git diff-tree --no-commit-id --name-only -r HEAD -- "*.md"`,
+            `git -c core.quotepath=false diff-tree --no-commit-id --name-only -r HEAD -- "*.md"`,
             { cwd: docsDir, encoding: 'utf8' }
           ).trim();
           if (filesOutput) {
