@@ -20,7 +20,7 @@
 
 ### 文档管理
 
-- [文档记录](./documentation.md) - 如何使用 docs 子项目记录
+- [文档记录](./doc-workflow.md) - 如何使用 docs 子项目记录
 
 ---
 
