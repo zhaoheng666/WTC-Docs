@@ -24,21 +24,16 @@
 
 ---
 
-## 🔗 核心规则
+## 📖 历史参考文档
 
-核心规则通过主项目 `CLAUDE.md` 的 @ 导入自动加载：
+以下文件作为历史参考保留（不会自动加载）：
 
-- [core-rules.md](./core-rules.md) - 开发规则、Git 工作流、术语速查
-
----
-
-## 📖 参考文档
-
-完整项目架构和详细信息：
-
+- [core-rules.md](./core-rules.md) - 旧规则体系核心规则（已重构并内联到 CLAUDE.md）
 - [CLAUDE-REFERENCE.md](./CLAUDE-REFERENCE.md) - 综合参考文档（仅供查阅）
 
+**当前规则体系**: 核心规则已采用三层架构，详见主项目 `CLAUDE.md`
+
 ---
 
-**最后更新**: 2025-10-14
+**最后更新**: 2025-10-15
 **维护者**: WorldTourCasino Team

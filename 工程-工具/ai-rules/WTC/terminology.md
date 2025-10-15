@@ -31,16 +31,17 @@
 
 ### 风格列表
 
-| 风格名称 | 目录 | 简称 | 说明 |
-|---------|------|------|------|
-| Classic Vegas | `res_oldvegas/` | **CV/cv** | 主要工作分支 |
-| Double Hit | `res_doublehit/` | **DH/dh** | |
-| Vegas Star | `res_vegasstar/` | **VSS/VS/vs** | |
-| Double X | `res_doublex/` | **DHX/dhx** | |
+| 风格名称      | 目录               | 简称                | 说明         |
+| ------------- | ------------------ | ------------------- | ------------ |
+| Classic Vegas | `res_oldvegas/`  | **CV/cv**     | 主要工作分支 |
+| Double Hit    | `res_doublehit/` | **DH/dh**     |              |
+| Vegas Star    | `res_vegasstar/` | **VSS/VS/vs** |              |
+| Double X      | `res_doublex/`   | **DHX/dhx**   |              |
 
 ### 风格目录结构
 
 每个风格（`res_*`）包含：
+
 - `flavor/index.html` - 入口文件
 - `flavor/project.json` - Cocos2d 配置
 - `flavor/js_src/common/util/Config.js` - 风格特定设置
@@ -62,6 +63,7 @@
 ### 构建产物
 
 以下文件由构建脚本自动生成，**不应提交到版本控制**：
+
 - `res_*/flavor/index.html`
 - `res_*/flavor/main*.css`
 - `res_*/flavor/project.json`
@@ -119,13 +121,13 @@
 
 ## 重要文件
 
-| 文件路径 | 说明 |
-|---------|------|
-| `resource_dirs.json` | 资源版本控制（每个 res_*/ 下） |
-| `src/log/enum/UIClickId.js` | UI 点击事件跟踪定义 |
-| `src/social/controller/card_system/` | 收集系统实现 |
-| `src/social/model/CardSystemMan.js` | 收集系统管理器 |
-| `.vscode/tasks.json` | VS Code 自动化配置（100+ 任务） |
+| 文件路径                               | 说明                            |
+| -------------------------------------- | ------------------------------- |
+| `resource_dirs.json`                 | 资源版本控制（每个 res_*/ 下）  |
+| `src/log/enum/UIClickId.js`          | UI 点击事件跟踪定义             |
+| `src/social/controller/card_system/` | 收集系统实现                    |
+| `src/social/model/CardSystemMan.js`  | 收集系统管理器                  |
+| `.vscode/tasks.json`                 | VS Code 自动化配置（100+ 任务） |
 
 ---
 
