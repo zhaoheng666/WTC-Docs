@@ -17,25 +17,27 @@
 
   - **📂 WTC**
     - 📝 [CLAUDE-REFERENCE](ai-rules/WTC/CLAUDE-REFERENCE)
-    - 📝 [config-sync-rules](ai-rules/WTC/config-sync-rules)
+    - 📝 [config-sync](ai-rules/WTC/config-sync)
     - 📝 [core-rules](ai-rules/WTC/core-rules)
-    - 📝 [documentation-guide](ai-rules/WTC/documentation-guide)
-    - 📝 [git-commit-rules](ai-rules/WTC/git-commit-rules)
-    - 📝 [shell-script-standards](ai-rules/WTC/shell-script-standards)
-    - 📝 [terminology-glossary](ai-rules/WTC/terminology-glossary)
+    - 📝 [documentation](ai-rules/WTC/documentation)
+    - 📝 [git-commits](ai-rules/WTC/git-commits)
+    - 📝 [shell-scripts](ai-rules/WTC/shell-scripts)
+    - 📝 [terminology](ai-rules/WTC/terminology)
   - **📂 docs**
-    - 📝 [auto-commit-rules](ai-rules/docs/auto-commit-rules)
-    - 📝 [image-processing-reference](ai-rules/docs/image-processing-reference)
-    - 📝 [link-processing-rules](ai-rules/docs/link-processing-rules)
-    - 📝 [vitepress-dev-standards](ai-rules/docs/vitepress-dev-standards)
+    - 📝 [auto-commits](ai-rules/docs/auto-commits)
+    - 📝 [image-processing](ai-rules/docs/image-processing)
+    - 📝 [link-processing](ai-rules/docs/link-processing)
+    - 📝 [vitepress](ai-rules/docs/vitepress)
   - **📂 extensions**
-    - 📝 [activation-rules](ai-rules/extensions/activation-rules)
-    - 📝 [extension-dev-standards](ai-rules/extensions/extension-dev-standards)
-    - 📝 [symlink-installation-guide](ai-rules/extensions/symlink-installation-guide)
+    - 📝 [activation](ai-rules/extensions/activation)
+    - 📝 [extension-dev](ai-rules/extensions/extension-dev)
+    - 📝 [symlink-management](ai-rules/extensions/symlink-management)
   - **📂 shared**
-    - 📝 [doc-writing-standards](ai-rules/shared/doc-writing-standards)
-    - 📝 [file-path-links-rules](ai-rules/shared/file-path-links-rules)
-    - 📝 [git-commit-types-reference](ai-rules/shared/git-commit-types-reference)
+    - 📝 [doc-writing](ai-rules/shared/doc-writing)
+    - 📝 [file-path-links](ai-rules/shared/file-path-links)
+    - 📝 [git-commit-types](ai-rules/shared/git-commit-types)
+    - 📝 [rule-maintenance](ai-rules/shared/rule-maintenance)
+  - 📝 [规则架构演进史](ai-rules/%E8%A7%84%E5%88%99%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E5%8F%B2)
 
 
 #### 📁 vscode

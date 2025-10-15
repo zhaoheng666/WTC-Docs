@@ -121,7 +121,7 @@ echo -e "${GREEN}  ✓ 检测到本地更改${NC}"
 echo -e "${CYAN}🔨 执行构建测试...${NC}"
 
 # 执行构建并保存完整日志
-BUILD_OUTPUT=$(bash .vitepress/scripts/build.sh 2>&1)
+BUILD_OUTPUT=$(zsh .vitepress/scripts/build.sh 2>&1)
 BUILD_RESULT=$?
 echo "$BUILD_OUTPUT" > /tmp/sync-build.log
 
