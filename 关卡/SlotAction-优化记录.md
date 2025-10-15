@@ -66,14 +66,14 @@
 
 #### 组织结构：src/newdesign\_slot/actions/
 
-![image1](http://localhost:5173/WTC-Docs/assets/1758727509913_678fb0bd.png)
+![image1](/assets/1758727509913_678fb0bd.png)
 
 #### SlowDrumModeAction：
 
-![image2](http://localhost:5173/WTC-Docs/assets/1758727509922_8a64a39c.png)  
-![image3](http://localhost:5173/WTC-Docs/assets/1758727509923_aa73f2a3.png)  
-![image4](http://localhost:5173/WTC-Docs/assets/1758727509925_1f564af0.png)  
-![image5](http://localhost:5173/WTC-Docs/assets/1758727509925_270c1538.png)
+![image2](/assets/1758727509922_8a64a39c.png)  
+![image3](/assets/1758727509923_aa73f2a3.png)  
+![image4](/assets/1758727509925_1f564af0.png)  
+![image5](/assets/1758727509925_270c1538.png)
 
 ## 五、结果评估：
 
@@ -147,25 +147,25 @@
 
 #### 1、SlotActionEasy、SlotAction 分层：
 
-#### ![image6](http://localhost:5173/WTC-Docs/assets/1758727509926_370b6fcf.png)
+#### ![image6](/assets/1758727509926_370b6fcf.png)
 
 #### 2、优化退出接口：
 
-![image7](http://localhost:5173/WTC-Docs/assets/1758727509928_0b07143a.png)
+![image7](/assets/1758727509928_0b07143a.png)
 
 #### 3、新增工厂类 SlotActionFactory ，提供两种注册（生成）方式：
 
 ##### 3.1、生成、注册通用 SlotAction
 
-![image8](http://localhost:5173/WTC-Docs/assets/1758727509929_213fc701.png)
+![image8](/assets/1758727509929_213fc701.png)
 
 ##### 	3.2、生成注册自定义 SlotAction、继承的 SlotAction
 
-##### ![image9](http://localhost:5173/WTC-Docs/assets/1758727509931_99b225f4.png)
+##### ![image9](/assets/1758727509931_99b225f4.png)
 
 ##### 	3.3、统一的 get 接口，不建议直接绑定到 SlotMachineScene；
 
-##### ![image10](http://localhost:5173/WTC-Docs/assets/1758727509894_ef407410.png)
+##### ![image10](/assets/1758727509894_ef407410.png)
 
 ## 五、结果评估：
 
@@ -241,7 +241,7 @@
 
 ##### **案例：**
 
-![image11](http://localhost:5173/WTC-Docs/assets/1758727509896_4128c266.png)  
+![image11](/assets/1758727509896_4128c266.png)  
 修正：a67bba5aa732b60e6511a30d4f4364dede07fe69
 
 #### 3、补充代码说明、注释；
@@ -264,11 +264,11 @@
 
 #### 1、onExit 去重;
 
-#### ![image12](http://localhost:5173/WTC-Docs/assets/1758727509898_c91e0b4a.png)
+#### ![image12](/assets/1758727509898_c91e0b4a.png)
 
 #### 2、优化退出顺序：
 
-![image13](http://localhost:5173/WTC-Docs/assets/1758727509899_70ac9eb0.png)
+![image13](/assets/1758727509899_70ac9eb0.png)
 
 #### 3、SlotActionFactory ，Register 方法归并：
 
@@ -278,11 +278,11 @@
 
 * ##### 基于 cc.class 内部封装有对原型链的修改，定义为静态成员无效；
 
-![image14](http://localhost:5173/WTC-Docs/assets/1758727509901_1472ca83.png)
+![image14](/assets/1758727509901_1472ca83.png)
 
 ##### 	3.2、Register 中分流：
 
-	![image15](http://localhost:5173/WTC-Docs/assets/1758727509902_727f92aa.png)
+	![image15](/assets/1758727509902_727f92aa.png)
 
 ## 四、影响范围、测试要点：
 
@@ -331,18 +331,18 @@
 
 #### 1、修改细节：
 
-#### ![image16](http://localhost:5173/WTC-Docs/assets/1758727509905_70dc5a95.png)
+#### ![image16](/assets/1758727509905_70dc5a95.png)
 
-![image17](http://localhost:5173/WTC-Docs/assets/1758727509907_b0231a9e.png)  
-![image18](http://localhost:5173/WTC-Docs/assets/1758727509909_e3504139.png)  
-![image19](http://localhost:5173/WTC-Docs/assets/1758727509912_26dbd910.png)  
-![image20](http://localhost:5173/WTC-Docs/assets/1758727509915_7947a1e0.png)
+![image17](/assets/1758727509907_b0231a9e.png)  
+![image18](/assets/1758727509909_e3504139.png)  
+![image19](/assets/1758727509912_26dbd910.png)  
+![image20](/assets/1758727509915_7947a1e0.png)
 
 #### 2、使用范例：
 
-![image21](http://localhost:5173/WTC-Docs/assets/1758727509917_660bb53c.png)  
-![image22](http://localhost:5173/WTC-Docs/assets/1758727509920_dcffba7d.png)  
-![image23](http://localhost:5173/WTC-Docs/assets/1758727509921_32f78c6e.png)
+![image21](/assets/1758727509917_660bb53c.png)  
+![image22](/assets/1758727509920_dcffba7d.png)  
+![image23](/assets/1758727509921_32f78c6e.png)
 
 ## 四、影响范围、注意要点：
 

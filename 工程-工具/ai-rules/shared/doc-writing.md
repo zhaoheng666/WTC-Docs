@@ -22,8 +22,8 @@ const hello = 'world';
 
 ### 链接和图片
 
-- 链接: `[文字](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/shared/URL)`
-- 图片: `![描述](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/shared/图片URL)`
+- 链接: `[文字](./URL)`
+- 图片: `![描述](./图片URL)`
 - 相对路径: 使用相对路径引用项目内文件
 
 ## VitePress 特定规范

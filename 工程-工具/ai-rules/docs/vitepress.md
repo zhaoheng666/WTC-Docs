@@ -8,7 +8,7 @@
 
 ## 代码块语言标识符（已在通用规则中定义）
 
-参考: [文档编写规范](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/shared/doc-writing)
+参考: [文档编写规范](../shared/doc-writing)
 
 VitePress 使用 Shiki 语法高亮，详细规范请查看通用规则文档。
 
@@ -27,8 +27,8 @@ VitePress 使用 Shiki 语法高亮，详细规范请查看通用规则文档。
 
 在 Markdown 中使用相对路径：
 
-```markdown
-![描述](http://localhost:5173/WTC-Docs/assets/image_abc123.png)
+```txt
+![描述](/assets/image_abc123.png)
 ```
 
 ---
@@ -97,7 +97,7 @@ docs 子项目的重要架构决策：
 
 ##链接设计规范
 
-参考: [WTC-docs-链接设计规范](http://localhost:5173/WTC-Docs/工程-工具/WTC-docs链接设计规范)
+参考: [WTC-docs-链接设计规范](../../WTC-docs链接设计规范)
 
 ---
 

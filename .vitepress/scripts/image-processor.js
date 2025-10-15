@@ -7,7 +7,9 @@ const https = require('https');
 const http = require('http');
 const { URL } = require('url');
 
-const BASE_URL = process.env.GITHUB_ACTIONS ? 'https://zhaoheng666.github.io/WTC-Docs' : 'http://localhost:5173/WTC-Docs';
+// 使用 VitePress 标准格式：/assets/ 绝对路径
+// VitePress 会根据 config.mjs 中的 base 配置自动处理完整 URL
+const ASSETS_URL_PATH = '/assets';
 const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../public/assets');
 
 class ImageProcessorV2 {
@@ -102,7 +104,7 @@ class ImageProcessorV2 {
         this.stats.imagesDownloaded++;
       }
 
-      return `${BASE_URL}/assets/${filename}`;
+      return `${ASSETS_URL_PATH}/${filename}`;
     } catch (error) {
       console.error(`  ✗ Failed to download Gitee image: ${error.message}`);
       return url;
@@ -127,7 +129,7 @@ class ImageProcessorV2 {
       this.stats.imagesProcessed++;
     }
 
-    return `${BASE_URL}/assets/${filename}`;
+    return `${ASSETS_URL_PATH}/${filename}`;
   }
 
   // 处理内置图片（base64编码）
@@ -155,7 +157,7 @@ class ImageProcessorV2 {
         this.stats.embeddedImagesExtracted++;
       }
 
-      return `${BASE_URL}/assets/${filename}`;
+      return `${ASSETS_URL_PATH}/${filename}`;
     } catch (error) {
       console.error(`  ✗ Failed to process embedded image ${imageId}:`, error.message);
       return dataUrl;
@@ -240,7 +242,8 @@ class ImageProcessorV2 {
         const [fullMatch, altText, imageSrc] = match;
 
         // 跳过已处理的图片，但记录它们
-        if (imageSrc.includes('/WTC-Docs/assets/')) {
+        // 支持新旧两种格式：/assets/xxx 和 http://.../assets/xxx
+        if (imageSrc.includes('/assets/') || imageSrc.startsWith('/assets/')) {
           const imageName = imageSrc.split('/assets/')[1];
           if (imageName) {
             processedInThisFile.add(imageName);

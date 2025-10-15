@@ -105,7 +105,7 @@ WorldTourCasino/
 - **独立资源**: `res_*/` 目录
 - **版本控制**: `resource_dirs.json` (debug/release)
 
-详见: [专业术语表](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/WTC/terminology)
+详见: [专业术语表](./terminology)
 
 ### VS Code 集成
 
@@ -116,7 +116,7 @@ WorldTourCasino/
   - `wtc-toolbars` - 工具栏快捷操作
   - `wtc-google-drive` - Google Drive 上传
 
-详见: [extensions 子项目规则](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/extensions)
+详见: [extensions 子项目规则](../extensions/extension-dev)
 
 ---
 

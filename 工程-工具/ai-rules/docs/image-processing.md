@@ -50,7 +50,9 @@
 
 **自动更新为**:
 ```markdown
-![示例](http://localhost:5173/WTC-Docs/assets/工程-工具_vscode_abc123def.png)
+<!-- <!-- ![示例](/assets/工程-工具_vscode_abc123def.png) -->
+<!-- ⚠️ 图片文件缺失，已注释 --> -->
+<!-- ⚠️ 图片文件缺失，已注释 -->
 ```
 
 ### 4. 清理未使用的图片

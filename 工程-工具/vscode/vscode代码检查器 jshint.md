@@ -14,30 +14,30 @@
 
 - 开启前：
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174599842_86f13173.png)​
+![image](/assets/1758174599842_86f13173.png)​
 
 - 开启后：
 
-ge![image](http://localhost:5173/WTC-Docs/assets/1758174599843_d38e6e34.png)​
+ge![image](/assets/1758174599843_d38e6e34.png)​
 
 ### 三、webstrom 开启集成 jshint：
 
 使用项目公用配置
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174599845_34926313.png)​
+![image](/assets/1758174599845_34926313.png)​
 
 ### 四、vscode 开启 jshint：
 
 - 1、安装 jshint: `npm install jshint --save-dev`​
 
-  ![image](http://localhost:5173/WTC-Docs/assets/1758174599845_f4e01897.png)​
+  ![image](/assets/1758174599845_f4e01897.png)​
 
 - 2、安装 vscode-插件：
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174599846_cbe1bbfb.png)​
+![image](/assets/1758174599846_cbe1bbfb.png)​
 
 - 使用项目公用配置：
 
-  ![image](http://localhost:5173/WTC-Docs/assets/1758174599846_717240cb.png)​
+  ![image](/assets/1758174599846_717240cb.png)​
 
 ‍

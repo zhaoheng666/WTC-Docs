@@ -116,7 +116,7 @@ AI: 执行提交...
 
 ### 子项目特殊规则
 
-- **docs 子项目**: 参考 [docs 子项目规则](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/docs/auto-commit-rules)
+- **docs 子项目**: 参考 [docs 子项目规则](../docs/vitepress)
 - **extensions 子项目**: 使用与主项目相同的确认流程
 
 ---

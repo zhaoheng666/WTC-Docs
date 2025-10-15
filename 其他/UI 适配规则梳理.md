@@ -167,11 +167,11 @@ public void init() {
 
 ##### 全屏后
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174599815_e66ac64f.png)
+![image](/assets/1758174599815_e66ac64f.png)
 
 ##### 全屏前
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174599829_449bb5b3.png)
+![image](/assets/1758174599829_449bb5b3.png)
 
 ### 六、全屏后需要做的适配调整：
 

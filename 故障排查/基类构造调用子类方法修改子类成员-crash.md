@@ -70,9 +70,9 @@ export class Test extends Component {
 
 #### 2、运行时报错：
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174599859_6318b181.png)
+![image](/assets/1758174599859_6318b181.png)
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174599860_ff5009a0.png)
+![image](/assets/1758174599860_ff5009a0.png)
 
 #### 3、结论：
 

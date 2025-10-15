@@ -9,31 +9,31 @@
 ## 制作slots-wtc-main2的镜像
 
 镜像名称: cv-main-20240820-1  
-![image1](http://localhost:5173/WTC-Docs/assets/1758727509660_07fb5765.png)
+![image1](/assets/1758727509660_07fb5765.png)
 
 ## 通过镜像启动备份实例
 
 名称: cv-main-20240820-1  
 镜像: cv-main-20240820-1  
-![image2](http://localhost:5173/WTC-Docs/assets/1758727509662_8ab97083.png)
+![image2](/assets/1758727509662_8ab97083.png)
 
-## ![image3](http://localhost:5173/WTC-Docs/assets/1758727509663_1953d035.png)
+## ![image3](/assets/1758727509663_1953d035.png)
 
 安全组: slots-classicvegas-prod-sg  
-![image4](http://localhost:5173/WTC-Docs/assets/1758727509664_d9aef7c4.png)  
-![image5](http://localhost:5173/WTC-Docs/assets/1758727509666_ed3e5644.png)
+![image4](/assets/1758727509664_d9aef7c4.png)  
+![image5](/assets/1758727509666_ed3e5644.png)
 
 添加弹性IP  
-![image6](http://localhost:5173/WTC-Docs/assets/1758727509667_1fe38e2f.png)  
-![image7](http://localhost:5173/WTC-Docs/assets/1758727509668_d41e1291.png)  
-![image8](http://localhost:5173/WTC-Docs/assets/1758727509670_2b0d2642.png)  
-![image9](http://localhost:5173/WTC-Docs/assets/1758727509671_a3c9e8f7.png)
+![image6](/assets/1758727509667_1fe38e2f.png)  
+![image7](/assets/1758727509668_d41e1291.png)  
+![image8](/assets/1758727509670_2b0d2642.png)  
+![image9](/assets/1758727509671_a3c9e8f7.png)
 
 ## 修改实例类型
 
 停止实例: 在控制台中停止实例  
 修改实例类型:c5.9xlarge  
-![image10](http://localhost:5173/WTC-Docs/assets/1758727509659_3257297d.png)
+![image10](/assets/1758727509659_3257297d.png)
 
 ## 启用ENA
 

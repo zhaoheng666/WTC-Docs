@@ -2,7 +2,7 @@
 
 ## Developer Policy 6.1
 
-![image1](http://localhost:5173/WTC-Docs/assets/1758727509867_32617415.png)  
+![image1](/assets/1758727509867_32617415.png)  
 **Where can we find the app?**  
 Provide an app store address or ID, or a website URL.
 
@@ -47,7 +47,7 @@ Thank you for your understanding and consideration.
 
 ## Developer Policy 1.2 \- App is not loading or has broken functionality
 
-![image2](http://localhost:5173/WTC-Docs/assets/1758727509869_eb50be09.png)
+![image2](/assets/1758727509869_eb50be09.png)
 
 **Provide instructions for accessing the app so we may complete our review.**  
 Explain how to navigate to the app, and provide instructions for testing.
@@ -63,18 +63,18 @@ We hope you can provide us with further explanation and guidance to help us reso
 ## **Platform Term 7.a \- Provide required information**
 
 Platform affected: Website  
-![image3](http://localhost:5173/WTC-Docs/assets/1758727509872_3126188b.png)
+![image3](/assets/1758727509872_3126188b.png)
 
 ### 回复内容：
 
 Our application uses the Graph API solely to retrieve user profile pictures and to access the 'invite friends' feature. These features are located in the top left corner of the application's main lobby interface. I have provided screenshots for your review. Additionally, is there anything else you require us to clarify?  
 【附带截图】：  
-![image4](http://localhost:5173/WTC-Docs/assets/1758727509880_c9de9837.png)  
-![image5](http://localhost:5173/WTC-Docs/assets/1758727509882_acf1ad3d.png)
+![image4](/assets/1758727509880_c9de9837.png)  
+![image5](/assets/1758727509882_acf1ad3d.png)
 
 ### 存在一个隐性问题：
 
-![image6](http://localhost:5173/WTC-Docs/assets/1758727509884_a9f8ff5e.png)  
+![image6](/assets/1758727509884_a9f8ff5e.png)  
 Help 按钮遮挡了部分分享按钮，审核人员可能想点分享功能，结果打开的是 Help
 
 

@@ -1,6 +1,6 @@
 # DH线上crash-ProgressTimer::initWithSprite问题
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593042_8f4d94b1.png)
+![image](/assets/1758174593042_8f4d94b1.png)
 
 ### 目前掌握的一手信息：
 
@@ -24,13 +24,13 @@
 
 > removeFromParent 改为 false，问题未解决；
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593043_001fc221.png)
+![image](/assets/1758174593043_001fc221.png)
 
 ##### b、HighRoller 大厅入口
 
 > 增加 native object 检查
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593044_aaadc11d.png)
+![image](/assets/1758174593044_aaadc11d.png)
 
 ### 解决方案：
 
@@ -52,19 +52,19 @@
 
 3、延后 remove；
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593045_c413730f.png)
+![image](/assets/1758174593045_c413730f.png)
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593046_c6e9d271.png)
+![image](/assets/1758174593046_c6e9d271.png)
 
 ‍
 
 ### 分析二：
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593047_13c80512.png)
+![image](/assets/1758174593047_13c80512.png)
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593048_95262908.png)
+![image](/assets/1758174593048_95262908.png)
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593048_5dbcda77.png)
+![image](/assets/1758174593048_5dbcda77.png)
 
 #### 1、按照堆栈分析，问题只能出现在 sp->getTexture();否则堆栈至少应该多一层；
 

@@ -8,7 +8,7 @@
 
 After connecting your iPhone to your Mac, open Finder and select your device. Click once on the device name located on the right side. This will cycle through different information—when it displays the UDID (a string of numbers and letters), right-click and copy it.
 
-![image1](http://localhost:5173/WTC-Docs/assets/1758727510002_27141a9d.png)
+![image1](/assets/1758727510002_27141a9d.png)
 
 # 2、Windows电脑方法： 2、On Windows:
 
@@ -22,7 +22,7 @@ Install i4Tools on your Windows PC. Once you connect your device, go to "My Devi
 
 Download i4Tools: [https://www.i4.cn/](https://www.i4.cn/)
 
-![image2](http://localhost:5173/WTC-Docs/assets/1758727510004_80e230c3.png)
+![image2](/assets/1758727510004_80e230c3.png)
 
 ## 
 
@@ -36,9 +36,9 @@ Install iTunes on your Windows computer. In iTunes, select your device and go to
 
 Download iTunes: https://support.apple.com/downloads/itunes
 
-![image3](http://localhost:5173/WTC-Docs/assets/1758727510006_9ed04967.png)
+![image3](/assets/1758727510006_9ed04967.png)
 
-![image4](http://localhost:5173/WTC-Docs/assets/1758727510007_2c4b4f6f.png)
+![image4](/assets/1758727510007_2c4b4f6f.png)
 
 
 

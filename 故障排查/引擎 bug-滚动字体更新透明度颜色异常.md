@@ -4,17 +4,17 @@
 
 - 时间线中存在 Opacity、color 关键帧，导致初始化时已经存在但未实际显示的 charNode 在需要显示时透明度、颜色异常的情况
 
-  ![image](http://localhost:5173/WTC-Docs/assets/1758174599857_d9fd302f.png)​
+  ![image](/assets/1758174599857_d9fd302f.png)​
 
   滚动更新后尾部 char 丢失：
 
-  ![image](http://localhost:5173/WTC-Docs/assets/1758174599857_aed5d153.png)
+  ![image](/assets/1758174599857_aed5d153.png)
 
 - jackpot 滚动数字，时间线中存在 Opacity、color 关键帧，滚动过程中会出现某位数字颜色、透明度显示异常的情况：
 
-  ![image](http://localhost:5173/WTC-Docs/assets/1758174599857_569aa9bc.png)​
+  ![image](/assets/1758174599857_569aa9bc.png)​
 
-  ![image](http://localhost:5173/WTC-Docs/assets/1758174599858_cacb48ab.png)​
+  ![image](/assets/1758174599858_cacb48ab.png)​
 
 ### 核心问题：
 
@@ -68,7 +68,7 @@ setNodeText: function(node, text, isScaleY){
 
 - 例如：从 0/100 递增变化为 100/100，需要保证 CCB 中设置的初始字符串个数小于 5，可以是 0、0/0、0/10 等；
 
-  ![image](http://localhost:5173/WTC-Docs/assets/1758174599859_0c0b070d.png)
+  ![image](/assets/1758174599859_0c0b070d.png)
 
 - 原因：CCNode 的 addChild 内部接口 addchildHelper 中，若本节点启用了级联颜色_cascadeColorEnabled、级联透明度_cascadeOpacityEnabled，会立即触发一次本节点对应标记位刷新；
 

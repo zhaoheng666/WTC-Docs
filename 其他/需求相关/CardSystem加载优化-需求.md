@@ -12,19 +12,19 @@
 
 查玩家日志发现玩家设备反复下载 card_system_lagload ,且都有 suc 记录；
 
-![1758539037715](http://localhost:5173/WTC-Docs/assets/1758540493399_2068cbdc.png)
+![1758539037715](/assets/1758540493399_2068cbdc.png)
 
 可进一步排查，若无其他发现，暂不做处理
 
 ### 二、收集系统主界面元素过多，设备 RAM、CPU 承压
 
-![1758525317445](http://localhost:5173/WTC-Docs/assets/1758525842724_fae0fd4c.png)
+![1758525317445](/assets/1758525842724_fae0fd4c.png)
 
 蓝屏定位：转场动画第 41 帧
 
-![1758525351338](http://localhost:5173/WTC-Docs/assets/1758525842727_bedaea92.png)
+![1758525351338](/assets/1758525842727_bedaea92.png)
 
-![1758525365317](http://localhost:5173/WTC-Docs/assets/1758525842729_2654246b.png)
+![1758525365317](/assets/1758525842729_2654246b.png)
 
 ### 现阶段优化方案：
 

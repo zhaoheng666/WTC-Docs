@@ -3,6 +3,16 @@
 const fs = require('fs');
 const path = require('path');
 
+// ⚠️ 链接处理器已弃用
+//
+// VitePress 原生支持相对路径链接，无需手动转换为完整 HTTP 链接。
+// 请参考：docs/工程-工具/WTC-docs链接设计规范.md
+//
+// 此脚本保留用于向后兼容，但不再进行强制转换。
+// 新文档请使用 VitePress 标准格式：
+//   - 文档链接：[文档](./path/to/doc)
+//   - 图片链接：![图片](/assets/image.png)
+
 const BASE_URL = process.env.GITHUB_ACTIONS ? 'https://zhaoheng666.github.io/WTC-Docs' : 'http://localhost:5173/WTC-Docs';
 
 class LinkProcessor {
@@ -18,8 +28,16 @@ class LinkProcessor {
    * 判断链接是否需要转换
    * @param {string} link - 原始链接
    * @returns {boolean} - 是否需要转换
+   *
+   * ⚠️ 注意：此函数已弃用，不再进行强制转换
+   * VitePress 原生支持相对路径，无需手动转换
    */
   shouldConvertLink(link) {
+    // ⚠️ 不再进行任何转换
+    // VitePress 会自动处理相对路径
+    return false;
+
+    /* 原有逻辑已禁用
     // 跳过以下类型的链接：
     // 1. 已经是完整 HTTP/HTTPS 链接
     if (link.startsWith('http://') || link.startsWith('https://')) {
@@ -48,6 +66,7 @@ class LinkProcessor {
 
     // 其他相对路径都需要转换
     return true;
+    */
   }
 
   /**

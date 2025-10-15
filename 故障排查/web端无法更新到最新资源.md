@@ -15,14 +15,14 @@
 
 1、比对后端目录发现index.html,game.mini.js中的版本信息是旧的;  
 对比publish资源,定位到文件缺失:  
-![image1](http://localhost:5173/WTC-Docs/assets/1758727509636_a9e668e7.png)  
+![image1](/assets/1758727509636_a9e668e7.png)  
 2、追溯game.min.js,index.html文件的同步、生成:  
 由deploy\_fb\_native.sh同步,日志中找到相应输出:js not found  
 由命令frameworks/cocos2d-x/tools/cocos2d-console/bin/cocos compile \-p web \-m release \--source-map生成,  
 查找相应位置找到输出:No valid JDK installed.  
 3、查No valid JDK installed 原因:  
 定位到/Users/apple/normal\_builder/ws\_cvs/frameworks/cocos2d-x/tools/cocos2d-console/plugins/plugin\_compile/build\_web/\_\_init\_\_.py  
-![image2](http://localhost:5173/WTC-Docs/assets/1758727509637_df953e3d.png)  
+![image2](/assets/1758727509637_df953e3d.png)  
 check\_jdk\_version依赖java \-version命令选择编译jar包  
 4、打包机执行java \-version  
 bogon:build\_web apple$ java \-version  

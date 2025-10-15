@@ -8,11 +8,11 @@
 
 ## 2、Meta developer 后台添加 Web Payment Tester：
 
-![image1](http://localhost:5173/WTC-Docs/assets/1758727509857_b5767297.png)
+![image1](/assets/1758727509857_b5767297.png)
 
 ## 3、确认支付页面显示“正在测试”，否则，回 1、2 步：
 
-![image2](http://localhost:5173/WTC-Docs/assets/1758727509857_d279d208.png)
+![image2](/assets/1758727509857_d279d208.png)
 
 ## 4、首次测试，需要完成一次信息校验：
 
@@ -22,15 +22,15 @@
 
 #### CVV：任意三个数字
 
-![image3](http://localhost:5173/WTC-Docs/assets/1758727509858_43709f02.png)
+![image3](/assets/1758727509858_43709f02.png)
 
 ## 5、有概率请求失败，重试、直到出现 Test Payment 按钮
 
-![image4](http://localhost:5173/WTC-Docs/assets/1758727509860_8618e207.png)
+![image4](/assets/1758727509860_8618e207.png)
 
-![image5](http://localhost:5173/WTC-Docs/assets/1758727509861_e1bf8c04.png)
+![image5](/assets/1758727509861_e1bf8c04.png)
 
-![image6](http://localhost:5173/WTC-Docs/assets/1758727509864_48be5ac2.png)
+![image6](/assets/1758727509864_48be5ac2.png)
 
 ## 6、支付完成后，FB 会推送订单邮件：
 
@@ -38,7 +38,7 @@
 
 #### 作用不大、知道是沙盒支付产生的邮件就行；
 
-![image7](http://localhost:5173/WTC-Docs/assets/1758727509865_104b4365.png)
+![image7](/assets/1758727509865_104b4365.png)
 
 
 

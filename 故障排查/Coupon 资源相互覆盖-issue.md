@@ -4,7 +4,7 @@
 
 ### 原理：
 
-![image1](http://localhost:5173/WTC-Docs/assets/1758727509719_9c9da077.png)
+![image1](/assets/1758727509719_9c9da077.png)
 
 ### 解决方法：
 

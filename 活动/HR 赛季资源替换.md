@@ -12,13 +12,13 @@
 
 #### cocosbuilder 打开（final\_prize\_view.ccb），添加新赛季节点（注意绑定）；
 
-![image1](http://localhost:5173/WTC-Docs/assets/1758727509687_6bf413bd.png)
+![image1](/assets/1758727509687_6bf413bd.png)
 
 #### 4.修改画册配置：
 
 #### 代码找到HR 配置(HR2Constants)，添加赛季画册名称（找策划要）；
 
-![image2](http://localhost:5173/WTC-Docs/assets/1758727509689_c56ac4e7.png)
+![image2](/assets/1758727509689_c56ac4e7.png)
 
 ### 注：最后的一个空格是hr rank的名称，不能删除！
 

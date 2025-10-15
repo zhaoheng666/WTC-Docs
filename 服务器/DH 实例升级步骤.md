@@ -8,28 +8,38 @@ sudo vi /etc/rc.local 注释掉启动命令行
 
 ## 制作DH-main的镜像
 
-![image1](http://localhost:5173/WTC-Docs/assets/1758727509675_8f26199a.png)
+<!-- ![image1](/assets/1758727509675_8f26199a.png) -->
+<!-- ⚠️ 图片文件缺失，已注释 -->
 
 ## 通过镜像启动备份实例
 
-![image2](http://localhost:5173/WTC-Docs/assets/1758727509677_b294b08f.png)
+<!-- ![image2](/assets/1758727509677_b294b08f.png) -->
+<!-- ⚠️ 图片文件缺失，已注释 -->
 
-## ![image3](http://localhost:5173/WTC-Docs/assets/1758727509678_236071a1.png)
+## <!-- ![image3](/assets/1758727509678_236071a1.png) -->
+<!-- ⚠️ 图片文件缺失，已注释 -->
 
-![image4](http://localhost:5173/WTC-Docs/assets/1758727509679_2beb1404.png)  
-![image5](http://localhost:5173/WTC-Docs/assets/1758727509681_d5aa5b93.png)
+<!-- ![image4](/assets/1758727509679_2beb1404.png) -->
+<!-- ⚠️ 图片文件缺失，已注释 -->  
+<!-- ![image5](/assets/1758727509681_d5aa5b93.png) -->
+<!-- ⚠️ 图片文件缺失，已注释 -->
 
 添加弹性IP  
-![image6](http://localhost:5173/WTC-Docs/assets/1758727509682_a91bc7f6.png)  
-![image7](http://localhost:5173/WTC-Docs/assets/1758727509683_218d54ca.png)  
-![image8](http://localhost:5173/WTC-Docs/assets/1758727509685_0830d98b.png)  
-![image9](http://localhost:5173/WTC-Docs/assets/1758727509686_3a39a56b.png)
+<!-- ![image6](/assets/1758727509682_a91bc7f6.png) -->
+<!-- ⚠️ 图片文件缺失，已注释 -->  
+<!-- ![image7](/assets/1758727509683_218d54ca.png) -->
+<!-- ⚠️ 图片文件缺失，已注释 -->  
+<!-- ![image8](/assets/1758727509685_0830d98b.png) -->
+<!-- ⚠️ 图片文件缺失，已注释 -->  
+<!-- ![image9](/assets/1758727509686_3a39a56b.png) -->
+<!-- ⚠️ 图片文件缺失，已注释 -->
 
 ## 修改实例类型
 
 停止实例: 在控制台中停止实例  
 修改实例类型:c5.9xlarge  
-![image10](http://localhost:5173/WTC-Docs/assets/1758727509672_e0950969.png) 
+<!-- ![image10](/assets/1758727509672_e0950969.png) -->
+<!-- ⚠️ 图片文件缺失，已注释 --> 
 
 ## 启用ENA
 
@@ -245,12 +255,12 @@ db.DeletePlayerMap.find().sort({\_id:-1})
 
 当前使用:  c4.8xlarge (36 个 vCPU，61440 内存，仅限于 EBS)  
 使用量:  
-![image11](http://localhost:5173/WTC-Docs/assets/1758727509674_80b38ff8.png)
+![image11](/assets/1758727509674_80b38ff8.png)
 
 备选:  
 c5.9xlarge (36 个 vCPU，73728 内存，仅限于 EBS) 比目前使用的稍大一点  
 c5.4xlarge (16 个 vCPU，32768 内存，仅限于 EBS) 腰斩不合适  
-![image12](http://localhost:5173/WTC-Docs/assets/1758727509674_61220789.png)
+![image12](/assets/1758727509674_61220789.png)
 
 
 

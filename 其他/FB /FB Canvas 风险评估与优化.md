@@ -138,11 +138,11 @@ FB 对我们 canvas 端的审核越来越频繁，去年两三个月一次，今
 
 #### 过去30天：
 
-![image1](http://localhost:5173/WTC-Docs/assets/1758727509839_0348a866.png)
+![image1](/assets/1758727509839_0348a866.png)
 
 #### 最近 7 天：
 
-![image2](http://localhost:5173/WTC-Docs/assets/1758727509840_602e640b.png)
+![image2](/assets/1758727509840_602e640b.png)
 
 
 

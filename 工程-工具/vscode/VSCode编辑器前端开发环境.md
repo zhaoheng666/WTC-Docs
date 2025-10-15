@@ -273,9 +273,9 @@
 
    `Command+Shift+P` ->  setting(打开设置) -> 扩展 -> Shortcut Menu Bar
 
-   ![image](http://localhost:5173/WTC-Docs/assets/1758120878187_1ab5ac61.png)
+   ![image](/assets/1758120878187_1ab5ac61.png)
 
-   ![image](http://localhost:5173/WTC-Docs/assets/1758120878188_03ba2518.png)
+   ![image](/assets/1758120878188_03ba2518.png)
 4. ‍
 
 ---
@@ -289,14 +289,14 @@
    ```
 2. 状态栏始终显示调试菜单：
 
-   ![image](http://localhost:5173/WTC-Docs/assets/1758120878188_cb1dde1a.png)
+   ![image](/assets/1758120878188_cb1dde1a.png)
 
    ```json
    "debug.showInStatusBar": "always",
    ```
 3. 启动代码片段导航
 
-   ![image](http://localhost:5173/WTC-Docs/assets/1758120878189_81050d0c.png)
+   ![image](/assets/1758120878189_81050d0c.png)
 
    ```json
    "editor.snippetSuggestions": "top"
@@ -312,18 +312,18 @@
 2. 安装依赖库：`npm install`
 3. 方式一：命令触发 Command+Shift+P -> task
 
-   ![image](http://localhost:5173/WTC-Docs/assets/1758120878189_ef821822.png)
+   ![image](/assets/1758120878189_ef821822.png)
 4. 方式二：状态栏 -> 调试运行菜单
 
-   ![image](http://localhost:5173/WTC-Docs/assets/1758120878189_afdab9c2.png)
+   ![image](/assets/1758120878189_afdab9c2.png)
 
-   ![image](http://localhost:5173/WTC-Docs/assets/1758120878190_ff48aaca.png)
+   ![image](/assets/1758120878190_ff48aaca.png)
 5. 方式三：运行调试菜单
 
-   ![image](http://localhost:5173/WTC-Docs/assets/1758120878190_cf81f112.png)
+   ![image](/assets/1758120878190_cf81f112.png)
 6. 方式四：插件按钮
 
-   ![image](http://localhost:5173/WTC-Docs/assets/1758120878191_00a49c99.png)
+   ![image](/assets/1758120878191_00a49c99.png)
 7. 自定义插件按钮图标：
 
    - 目前工程中添加了 user action 1（热更），user action 2（CV），user action 3（DH），可以通过脚本替换生效：
@@ -335,6 +335,6 @@
 
    - 想自定义的话，可以自己做 svg 图，放到 `WorldTourCasino/.vscode/scripts/replace_shortcut-menu-bar_icons/icons`
 
-   ![image](http://localhost:5173/WTC-Docs/assets/1758120878191_70957f85.png)
+   ![image](/assets/1758120878191_70957f85.png)
 
 ‍

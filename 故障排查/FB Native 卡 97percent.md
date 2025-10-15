@@ -10,19 +10,19 @@ md5 check failed:Download md5 check failed for file path: /var/mobile/Containers
 
 对比：exepected: 4d00df2c99aa6c53a3b304be0155f084与 7.24 版本manifest 文件记录的md5 一致，
 
-![image1](http://localhost:5173/WTC-Docs/assets/1758727509520_64e23e71.png)
+![image1](/assets/1758727509520_64e23e71.png)
 
 说明 manifest 文件同步成功、且下载成功；
 
 ### **3、手动下载 7.2.4 版本的game.js，本地获取该文件 md5 值为3d6cd067de196f6303899d4efab586ee，与设备下载到本地的game.js的 md5 一致；**
 
-**![image2](http://localhost:5173/WTC-Docs/assets/1758727509522_145a7d34.png)**
+**![image2](/assets/1758727509522_145a7d34.png)**
 
 说明 7.24 版本的game.js文件下载成功，但上传到 cdn 的 game.js 文件出现了问题；
 
 ### **4、继续排查上传前的 game.js 文件，无异常、与 manifest 记录一致；**
 
-**![image3](http://localhost:5173/WTC-Docs/assets/1758727509523_de829651.png)**
+**![image3](/assets/1758727509523_de829651.png)**
 
 ### **5、至此，**
 
@@ -58,19 +58,19 @@ rsync \--checksum \-avz user@remote\_host:/path/to/source /path/to/destination
 
 ### **6、重新发版后解决问题，继续分析原因，对比打包机提交的 game.js 文件字节数，发现并未发生改变，怀疑大概率是文件上传到资源服务器后发生变化；**
 
-**![image4](http://localhost:5173/WTC-Docs/assets/1758727509526_80d32f2e.png)**
+**![image4](/assets/1758727509526_80d32f2e.png)**
 
-**![image5](http://localhost:5173/WTC-Docs/assets/1758727509528_08c60185.png)**
+**![image5](/assets/1758727509528_08c60185.png)**
 
 ### **7、从 cdn下载对比7.2.4和 7.2.5 game.js字节大小，发现 7.2.4 多了一个字节；**
 
-**![image6](http://localhost:5173/WTC-Docs/assets/1758727509530_26b98d3b.png)**
+**![image6](/assets/1758727509530_26b98d3b.png)**
 
 ### **8、使用UtralCompare 对比，确认行尾多了一个换行符（0A-ASCII:LF）**
 
-**![image7](http://localhost:5173/WTC-Docs/assets/1758727509532_3eac9962.png)**
+**![image7](/assets/1758727509532_3eac9962.png)**
 
-**![image8](http://localhost:5173/WTC-Docs/assets/1758727509539_497208c4.png)**
+**![image8](/assets/1758727509539_497208c4.png)**
 
 ### **结论、分析可能的原因：**
 

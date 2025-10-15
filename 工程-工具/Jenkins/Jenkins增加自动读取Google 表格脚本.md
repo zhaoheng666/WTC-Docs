@@ -5,26 +5,26 @@
 #### 1、新建项目：
 
 [https://console.cloud.google.com/apis/dashboard?hl=zh-cn\&orgonly=true\&project=sheets-api-437103\&supportedpurview=organizationId](https://console.cloud.google.com/apis/dashboard?hl=zh-cn&orgonly=true&project=sheets-api-437103&supportedpurview=organizationId)  
-![image1](http://localhost:5173/WTC-Docs/assets/1758727509885_6163b50e.png)
+![image1](/assets/1758727509885_6163b50e.png)
 
 #### 2、启用 Google Sheets API：
 
-![image2](http://localhost:5173/WTC-Docs/assets/1758727509886_467f0133.png)】  
-![image3](http://localhost:5173/WTC-Docs/assets/1758727509888_7a1b1bea.png)
+![image2](/assets/1758727509886_467f0133.png)】  
+![image3](/assets/1758727509888_7a1b1bea.png)
 
 #### 3、创建服务账号：
 
-![image4](http://localhost:5173/WTC-Docs/assets/1758727509889_878b6ba6.png)  
-![image5](http://localhost:5173/WTC-Docs/assets/1758727509890_ffbc215e.png)
+![image4](/assets/1758727509889_878b6ba6.png)  
+![image5](/assets/1758727509890_ffbc215e.png)
 
 #### 4、创建服务密钥（选择 json 格式）：
 
-![image6](http://localhost:5173/WTC-Docs/assets/1758727509892_580d4f15.png)  
+![image6](/assets/1758727509892_580d4f15.png)  
 创建完成后，会自动将 json 文件下载到本地，这个文件将是后续脚本创建服务的基础配置文件；
 
 #### 5、为服务账号添加共享权限：
 
-![image7](http://localhost:5173/WTC-Docs/assets/1758727509893_d4b32eaa.png)
+![image7](/assets/1758727509893_d4b32eaa.png)
 
 #### 6、编写脚本读取未来两周活动：
 

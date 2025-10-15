@@ -16,7 +16,7 @@
 
 ### 1、rclone 替换 rsync 做本地拷贝、同步：
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593053_ce037db9.png)​
+![image](/assets/1758174593053_ce037db9.png)​
 
 - 安装 rclone：`brew install rclone`​
 - 开启并行传输，提升多核 CPU 使用率，大幅缩短任务时长；
@@ -71,7 +71,7 @@
 
 ### 3、time 命令监控子任务运行时长：
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593054_40e632f1.png)​
+![image](/assets/1758174593054_40e632f1.png)​
 
 - set -x 打开原始命令 echo
 - time 监控命令执行时长：
@@ -89,7 +89,7 @@
 
 - 前置脚本 `sync_flavor.sh` ​中已经同步过一次
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593054_c654b565.png)​
+![image](/assets/1758174593054_c654b565.png)​
 
 ## 三、剩余可优化空间：
 
@@ -106,9 +106,9 @@
 
 平均降低任务时长 40%-50%
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593054_664531cd.png)​
+![image](/assets/1758174593054_664531cd.png)​
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593055_a0cc1b3b.png)​
+![image](/assets/1758174593055_a0cc1b3b.png)​
 
 #### Release 管道：
 
@@ -120,7 +120,7 @@ Releaase 阶段：↓～10%-25%
 
 Upload 阶段：↓～70%+
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593055_6abc6572.png)​
+![image](/assets/1758174593055_6abc6572.png)​
 
 ## 五、线上资源服动态资源管理：
 

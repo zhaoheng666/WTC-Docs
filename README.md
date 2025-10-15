@@ -152,7 +152,7 @@ npm run init          # 自动检查和修复环境问题
 
 - 推荐使用 vscode 插件：
 
-  ![1758077225108](http://localhost:5173/WTC-Docs/assets/1758120878197_7fc81ffc.png)
+  ![1758077225108](/assets/1758120878197_7fc81ffc.png)
 
 ---
 

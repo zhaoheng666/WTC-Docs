@@ -22,5 +22,5 @@
    2. BUILD\_USER: 用户全名  
    3. BUILD\_USER\_EMAIL: 用户邮箱
 
-![image1](http://localhost:5173/WTC-Docs/assets/1758727509754_46c6b2e7.png)
+![image1](/assets/1758727509754_46c6b2e7.png)
 

@@ -18,7 +18,7 @@
 
 ## 多导出文件的更新问题：
 
-![image](http://localhost:5173/WTC-Docs/assets/1758174593053_c961e456.png)
+![image](/assets/1758174593053_c961e456.png)
 
 1. 情形一：未触发该文件的 require
 
