@@ -37,7 +37,7 @@ cd WorldTourCasino/scripts/
 
 #### **1.1 添加保护代码：**
 
-![image2](/assets/1758727509627_5b7c0668.png)
+<img src="/assets/1758727509627_5b7c0668.png">
 
 #### **1.2将修正后的 jsb\_boot.js文件推送到手机：**
 

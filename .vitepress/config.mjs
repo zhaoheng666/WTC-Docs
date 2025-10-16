@@ -25,6 +25,27 @@ export default defineConfig({
     }
   ],
 
+  // Vite 配置
+  vite: {
+    build: {
+      rollupOptions: {
+        onwarn(warning, warn) {
+          // 忽略 public 目录资源被 import 的警告
+          // 原因：我们的图片在 public/assets/ 目录，由 image-processor.js 统一管理
+          // VitePress 会将 Markdown 中的图片引用转为 import，触发 Vite 警告
+          // 实际上这不影响构建结果，且我们的设计已经优化过图片处理流程
+          if (warning.message && (
+            warning.message.includes('public directory') ||
+            warning.message.includes('Instead of')
+          )) {
+            return
+          }
+          warn(warning)
+        }
+      }
+    }
+  },
+
   // Markdown 配置
   markdown: {
     // 配置语法高亮
