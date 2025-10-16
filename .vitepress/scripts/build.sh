@@ -182,7 +182,7 @@ else
     echo -e "${YELLOW}  ⚠️  pdf-processor.js 不存在，跳过 PDF 处理${NC}"
 fi
 
-# 0.7. 处理文档链接（转换相对链接为绝对 HTTP 链接）
+# 0.7. 处理文档链接（转换相对路径为根路径）
 if [ -f ".vitepress/scripts/link-processor.js" ]; then
     echo -e "${CYAN}🔗 处理文档链接...${NC}"
 
@@ -196,11 +196,11 @@ if [ -f ".vitepress/scripts/link-processor.js" ]; then
         if [ -n "$MODIFIED" ] && [ "$MODIFIED" -gt 0 ]; then
             echo -e "${GREEN}  ✓ 处理了 $MODIFIED 个文件${NC}"
         fi
-        [ -n "$CONVERTED" ] && [ "$CONVERTED" -gt 0 ] && echo -e "${GREEN}  ✓ 转换了 $CONVERTED 个相对链接${NC}"
-        [ -n "$SKIPPED" ] && [ "$SKIPPED" -gt 0 ] && echo -e "${CYAN}  • 跳过了 $SKIPPED 个链接（已是正确格式）${NC}"
+        [ -n "$CONVERTED" ] && [ "$CONVERTED" -gt 0 ] && echo -e "${GREEN}  ✓ 转换了 $CONVERTED 个相对路径链接为根路径格式${NC}"
+        [ -n "$SKIPPED" ] && [ "$SKIPPED" -gt 0 ] && echo -e "${CYAN}  • 跳过了 $SKIPPED 个链接（已是根路径格式）${NC}"
 
         if [ -z "$MODIFIED" ] || [ "$MODIFIED" -eq 0 ]; then
-            echo -e "${GREEN}  ✓ 链接已是最新状态${NC}"
+            echo -e "${GREEN}  ✓ 链接已是根路径格式${NC}"
         fi
     else
         echo -e "${YELLOW}  ⚠️  链接处理失败（继续构建）${NC}"
