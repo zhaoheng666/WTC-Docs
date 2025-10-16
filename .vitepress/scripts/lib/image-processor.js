@@ -11,7 +11,8 @@ const { URL } = require('url');
 // VitePress 会根据 config.mjs 中的 base 配置自动处理完整 URL
 const ASSETS_URL_PATH = '/assets';
 // 图片存放在 docs/assets/ (源码目录，非 public/)
-const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../assets');
+// __dirname 是 docs/.vitepress/scripts/lib/，所以需要 ../../../assets 到达 docs/assets/
+const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../../assets');
 
 class ImageProcessorV2 {
   constructor() {
@@ -460,12 +461,20 @@ class ImageProcessorV2 {
     if (images.length === 0) return;
 
     console.log(`  🔍 Quick usage check for ${images.length} images...`);
+    console.log(`  📝 Processed images count: ${this.processedImages.size}`);
 
     // 使用 grep 快速搜索图片引用（比逐个读取文件快）
     const { execSync } = require('child_process');
 
     let unusedCount = 0;
+    let skippedCount = 0;
     images.forEach(imageName => {
+      // 跳过刚刚处理过的图片（避免删除刚创建的图片）
+      if (this.processedImages.has(imageName)) {
+        skippedCount++;
+        return;
+      }
+
       try {
         // 使用 grep 在所有 .md 文件中搜索图片名
         const grepResult = execSync(
@@ -485,6 +494,9 @@ class ImageProcessorV2 {
       }
     });
 
+    if (skippedCount > 0) {
+      console.log(`  ✓ Skipped ${skippedCount} recently processed images`);
+    }
     if (unusedCount > 0) {
       console.log(`  ✓ Removed ${unusedCount} unused images`);
     }
