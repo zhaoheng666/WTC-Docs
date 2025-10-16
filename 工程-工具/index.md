@@ -27,6 +27,7 @@
     - 📝 [auto-commits](ai-rules/docs/auto-commits)
     - 📝 [image-processing](ai-rules/docs/image-processing)
     - 📝 [link-processing](ai-rules/docs/link-processing)
+    - 📝 [vitepress-public-directory](ai-rules/docs/vitepress-public-directory)
     - 📝 [vitepress](ai-rules/docs/vitepress)
   - **📂 extensions**
     - 📝 [activation](ai-rules/extensions/activation)

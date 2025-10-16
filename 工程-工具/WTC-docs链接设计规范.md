@@ -62,9 +62,9 @@ VitePress 会自动处理根路径：
 ```
 
 **设计理念**（与文档链接一致）：
-- 图片统一存储在 `public/assets/`
+- 图片统一存储在 `assets/` （源码目录，非 public/）
 - 文档移动位置不影响图片引用
-- 通过软链接 `docs/assets/` → `docs/public/assets/` 支持编辑器预览
+- VitePress 自动处理 `/assets/` 路径到正确的资源位置
 
 ### 3. PDF 文件链接
 
@@ -188,7 +188,7 @@ node .vitepress/scripts/convert-to-absolute-paths.js
 | 链接类型 | 预览效果 | 说明 |
 |---------|---------|------|
 | `/工程-工具/config` | ⚠️ 需运行服务器 | 启动 `npm run dev` 后可预览 |
-| `/assets/image.png` | ⚠️ 需软链接 | 通过 `docs/assets/` 软链接预览 |
+| `/assets/image.png` | ✅ 正常显示 | VitePress 自动处理资源路径 |
 
 **最佳实践**：
 1. 启动 VitePress 开发服务器：`npm run dev`

@@ -24,7 +24,7 @@ print_warning() { echo "${YELLOW}⚠️  $1${NC}" }
 
 # 通知脚本路径
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-NOTIFY_SCRIPT="$SCRIPT_DIR/notify.sh"
+NOTIFY_SCRIPT="$SCRIPT_DIR/utils/notify.sh"
 
 # 通知函数
 notify_success() {

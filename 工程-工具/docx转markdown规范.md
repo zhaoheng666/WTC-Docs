@@ -119,7 +119,7 @@ npm run build
 构建脚本会自动：
 1. 检测变更的 Markdown 文件
 2. 处理相对路径图片引用
-3. 复制图片到 `public/assets/`
+3. 复制图片到 `assets/` （源码目录）
 4. 重命名为 `{timestamp}_{hash}.{ext}` 格式
 5. 更新 Markdown 中的引用为 HTTP 链接
 6. 删除 `media/` 原始图片目录
@@ -182,4 +182,4 @@ rm "文档名.docx"
 1. **构建验证必须通过**才删除 DOCX 文件
 2. **DOCX 文件已在 .gitignore 中**，不会被提交
 3. **图片使用相对路径**，不要手动修改为 HTTP 链接
-4. **media/ 目录会自动删除**，图片移到 public/assets/
+4. **media/ 目录会自动删除**，图片移到 assets/（源码目录）

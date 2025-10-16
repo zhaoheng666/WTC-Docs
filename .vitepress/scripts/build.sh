@@ -21,17 +21,17 @@ echo -e "${CYAN}🏗️  开始构建文档...${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
 # 0. 修复有问题的文件名
-if [ -f ".vitepress/scripts/fix-problematic-filenames.js" ]; then
+if [ -f ".vitepress/scripts/lib/fix-problematic-filenames.js" ]; then
     echo -e "${CYAN}🔧 修复有问题的文件名...${NC}"
 
     # 预览模式检查是否需要修复
-    FIX_OUTPUT=$(node .vitepress/scripts/fix-problematic-filenames.js --dry-run 2>&1)
+    FIX_OUTPUT=$(node .vitepress/scripts/lib/fix-problematic-filenames.js --dry-run 2>&1)
 
     if echo "$FIX_OUTPUT" | grep -E "📄.*->" >/dev/null; then
         echo -e "${CYAN}  • 发现需要修复的文件名${NC}"
 
         # 实际执行修复
-        if node .vitepress/scripts/fix-problematic-filenames.js > /tmp/fix-filenames.log 2>&1; then
+        if node .vitepress/scripts/lib/fix-problematic-filenames.js > /tmp/fix-filenames.log 2>&1; then
             FIXED_COUNT=$(grep -E "📄.*->" /tmp/fix-filenames.log | wc -l)
             echo -e "${GREEN}  ✓ 修复了 $FIXED_COUNT 个文件/目录${NC}"
         else
@@ -50,7 +50,7 @@ else
 fi
 
 # 0. 处理图片引用和下载
-if [ -f ".vitepress/scripts/image-processor.js" ]; then
+if [ -f ".vitepress/scripts/lib/image-processor.js" ]; then
     echo -e "${CYAN}🔍 检查 MD 文件中的图片...${NC}"
 
     # 检查是否有包含图片的 MD 文件更改（包括暂存、未暂存和未跟踪的文件）
@@ -90,7 +90,7 @@ if [ -f ".vitepress/scripts/image-processor.js" ]; then
         fi
 
         # 覆盖式写入日志（不追加）
-        if node .vitepress/scripts/image-processor.js > /tmp/image-processor.log 2>&1; then
+        if node .vitepress/scripts/lib/image-processor.js > /tmp/image-processor.log 2>&1; then
             # 提取处理信息
             MODIFIED=$(grep "Files modified:" /tmp/image-processor.log | grep -o "[0-9]*" | tail -1)
             DOWNLOADED=$(grep "Images downloaded:" /tmp/image-processor.log | grep -o "[0-9]*" | tail -1)
@@ -151,11 +151,11 @@ else
 fi
 
 # 0.5. 处理 PDF 文件
-if [ -f ".vitepress/scripts/pdf-processor.js" ]; then
+if [ -f ".vitepress/scripts/lib/pdf-processor.js" ]; then
     echo -e "${CYAN}📄 处理 PDF 文件...${NC}"
 
     # 覆盖式写入日志（不追加）
-    if node .vitepress/scripts/pdf-processor.js > /tmp/pdf-processor.log 2>&1; then
+    if node .vitepress/scripts/lib/pdf-processor.js > /tmp/pdf-processor.log 2>&1; then
         # 提取处理信息
         PDF_FOUND=$(grep "发现 PDF 文件:" /tmp/pdf-processor.log | grep -o "[0-9]* 个" | grep -o "[0-9]*")
         PDF_COPIED=$(grep "新复制文件:" /tmp/pdf-processor.log | grep -o "[0-9]* 个" | grep -o "[0-9]*")
@@ -183,11 +183,11 @@ else
 fi
 
 # 0.7. 处理文档链接（转换相对路径为根路径）
-if [ -f ".vitepress/scripts/link-processor.js" ]; then
+if [ -f ".vitepress/scripts/lib/link-processor.js" ]; then
     echo -e "${CYAN}🔗 处理文档链接...${NC}"
 
     # 覆盖式写入日志（不追加）
-    if node .vitepress/scripts/link-processor.js > /tmp/link-processor.log 2>&1; then
+    if node .vitepress/scripts/lib/link-processor.js > /tmp/link-processor.log 2>&1; then
         # 提取处理信息
         MODIFIED=$(grep "Files modified:" /tmp/link-processor.log | grep -o "[0-9]*" | tail -1)
         CONVERTED=$(grep "Links converted:" /tmp/link-processor.log | grep -o "[0-9]*" | tail -1)
@@ -216,11 +216,11 @@ else
 fi
 
 # 0.8. 生成目录索引文件树
-if [ -f ".vitepress/scripts/generate-directory-index.js" ]; then
+if [ -f ".vitepress/scripts/lib/generate-directory-index.js" ]; then
     echo -e "${CYAN}📁 生成目录索引文件树...${NC}"
 
     # 覆盖式写入日志（不追加）
-    if node .vitepress/scripts/generate-directory-index.js > /tmp/directory-index.log 2>&1; then
+    if node .vitepress/scripts/lib/generate-directory-index.js > /tmp/directory-index.log 2>&1; then
         # 提取处理信息
         PROCESSED=$(grep "处理目录:" /tmp/directory-index.log | grep -o "[0-9]*" | tail -1)
         SUCCESS=$(grep "成功生成:" /tmp/directory-index.log | grep -o "[0-9]*" | tail -1)

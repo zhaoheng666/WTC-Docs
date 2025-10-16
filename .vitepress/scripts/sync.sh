@@ -43,7 +43,7 @@ show_success() {
     local message="$2"
     
     # 调用 notify.sh 发送系统通知
-    bash "$SCRIPT_DIR/notify.sh" --title "$title" --message "$message" --type system --sound Glass > /dev/null 2>&1
+    bash "$SCRIPT_DIR/utils/notify.sh" --title "$title" --message "$message" --type system --sound Glass > /dev/null 2>&1
     echo -e "${GREEN}✅ $title: $message${NC}"
 }
 
@@ -53,7 +53,7 @@ show_error() {
     local message="$2"
     
     # 调用 notify.sh 发送系统通知
-    bash "$SCRIPT_DIR/notify.sh" --title "$title" --message "$message" --type system --sound Basso > /dev/null 2>&1
+    bash "$SCRIPT_DIR/utils/notify.sh" --title "$title" --message "$message" --type system --sound Basso > /dev/null 2>&1
     echo -e "${RED}❌ $title: $message${NC}"
 }
 

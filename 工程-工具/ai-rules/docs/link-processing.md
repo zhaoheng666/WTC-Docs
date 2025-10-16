@@ -32,8 +32,8 @@
 [首页](/README)
 
 # ❌ 不推荐：相对路径
-[配置管理](../WTC/config-sync)
-[Shell 规范](../../vscode/shell-脚本规范)
+[配置管理](/../工程-工具/ai-rules/WTC/config-sync)
+[Shell 规范](/../工程-工具/vscode/shell-脚本规范)
 ```
 
 **VitePress 自动处理**：
@@ -83,8 +83,8 @@
 [工具列表](/工程-工具/vscode/README)
 
 # ❌ 错误：相对路径
-[配置管理](../WTC/config-sync)
-[工具列表](../../vscode/README)
+[配置管理](/../工程-工具/ai-rules/WTC/config-sync)
+[工具列表](/../工程-工具/vscode/README)
 ```
 
 **图片引用**：
@@ -94,7 +94,7 @@
 ![截图](/assets/screenshot.png)
 
 # ❌ 错误：相对路径
-![截图](../public/assets/screenshot.png)
+![截图](../assets/screenshot.png)
 ```
 
 **代码文件引用**（在 Markdown 文本中说明位置）：

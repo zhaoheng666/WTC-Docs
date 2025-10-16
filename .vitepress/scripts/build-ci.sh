@@ -20,13 +20,13 @@ CURRENT_COMMIT_AUTHOR=$(git log -1 --pretty=format:"%an")
 echo "📝 Current commit: $CURRENT_COMMIT_HASH - $CURRENT_COMMIT_MSG by $CURRENT_COMMIT_AUTHOR"
 
 # 生成统计页面（CI 环境，包含完整提交历史）
-if [ -f ".vitepress/scripts/generate-stats.js" ]; then
+if [ -f ".vitepress/scripts/lib/generate-stats.js" ]; then
     echo "📊 Generating stats page..."
     # 设置环境变量，让 generate-stats.js 知道当前提交信息
     export CURRENT_COMMIT_HASH="$CURRENT_COMMIT_HASH"
     export CURRENT_COMMIT_MSG="$CURRENT_COMMIT_MSG"
     export CURRENT_COMMIT_AUTHOR="$CURRENT_COMMIT_AUTHOR"
-    node .vitepress/scripts/generate-stats.js
+    node .vitepress/scripts/lib/generate-stats.js
 fi
 
 # 设置 GitHub Pages URL

@@ -20,7 +20,7 @@
 
 - 扫描 Markdown 文件中的图片引用
 - 识别外部 URL（如 https://example.com/image.png）
-- 自动下载到 `public/assets/` 目录
+- 自动下载到 `assets/` 目录（源码目录，非 public/）
 
 ### 2. 命名格式
 
@@ -50,7 +50,7 @@
 
 **自动更新为**:
 ```markdown
-<!-- <!-- ![示例](/assets/工程-工具_vscode_abc123def.png) -->
+![示例](/assets/工程-工具_vscode_abc123def.png)
 <!-- ⚠️ 图片文件缺失，已注释 --> -->
 <!-- ⚠️ 图片文件缺失，已注释 -->
 ```
@@ -58,7 +58,7 @@
 ### 4. 清理未使用的图片
 
 - 构建时扫描所有 Markdown 文件
-- 识别 `public/assets/` 中未被引用的图片
+- 识别 `assets/` 中未被引用的图片
 - 自动删除，保持目录清洁
 
 ---
@@ -69,7 +69,7 @@
 
 ```javascript
 {
-  assetsDir: 'public/assets',  // 图片存放目录
+  assetsDir: 'assets',         // 图片存放目录（源码目录）
   hashLength: 8,               // 哈希值长度
   enableCleanup: true,         // 是否清理未使用图片
   supportedFormats: [          // 支持的图片格式
@@ -115,7 +115,7 @@ cat /tmp/image-processor.log
 
 确保：
 1. 图片引用使用绝对路径（`/assets/...`）
-2. 图片文件在 `public/assets/` 目录中
+2. 图片文件在 `assets/` 目录中（源码目录）
 3. 文件名没有特殊字符
 
 ---

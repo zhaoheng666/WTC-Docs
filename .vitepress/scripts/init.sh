@@ -173,6 +173,8 @@ echo -e "${GREEN}✅ 目录结构已创建${NC}"
 # 8. 验证脚本权限
 echo -e "\n${CYAN}设置脚本权限...${NC}"
 chmod +x .vitepress/scripts/*.sh
+chmod +x .vitepress/scripts/utils/*.sh
+chmod +x .vitepress/scripts/tools/*.sh
 echo -e "${GREEN}✅ 脚本权限已设置${NC}"
 
 # 8.5 创建图片符号链接（用于编辑器预览）
