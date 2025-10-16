@@ -19,9 +19,9 @@
 
 ### 主项目 (WTC)
 - **核心规则**: [必读] @docs/工程-工具/ai-rules/WTC/core-rules.md
-- **Git 提交**: [触发提交任务时-必读] `docs/.../git-commits.md`
-- **Shell 脚本**: [编写脚本时-必读] `docs/.../shell-scripts.md`
-- **配置同步**: [修改配置时-强制] `docs/.../config-sync.md`
+- **Git 提交**: [触发提交任务时-必读] `docs/工程-工具/ai-rules/WTC/git-commits.md`
+- **Shell 脚本**: [编写脚本时-必读] `docs/工程-工具/ai-rules/WTC/shell-scripts.md`
+- **配置同步**: [修改配置时-强制] `docs/工程-工具/ai-rules/WTC/config-sync.md`
 
 .....
 ```
