@@ -4,7 +4,8 @@ const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto')
 
-const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../public/assets')
+// 图片存放在 docs/assets/ (源码目录，非 public/)
+const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../assets')
 
 if (!fs.existsSync(PUBLIC_ASSETS_DIR)) {
   fs.mkdirSync(PUBLIC_ASSETS_DIR, { recursive: true })

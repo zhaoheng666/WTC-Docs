@@ -10,7 +10,8 @@ const { URL } = require('url');
 // 使用 VitePress 标准格式：/assets/ 绝对路径
 // VitePress 会根据 config.mjs 中的 base 配置自动处理完整 URL
 const ASSETS_URL_PATH = '/assets';
-const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../public/assets');
+// 图片存放在 docs/assets/ (源码目录，非 public/)
+const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../assets');
 
 class ImageProcessorV2 {
   constructor() {

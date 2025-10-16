@@ -8,7 +8,8 @@ const http = require('http');
 const { URL } = require('url');
 
 const BASE_URL = process.env.GITHUB_ACTIONS ? 'https://zhaoheng666.github.io/WTC-Docs' : 'http://localhost:5173/WTC-Docs';
-const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../public/assets');
+// 图片存放在 docs/assets/ (源码目录，非 public/)
+const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../assets');
 const IMAGE_MANIFEST = path.join(__dirname, '../../public/image-manifest.json');
 
 class ImageProcessor {

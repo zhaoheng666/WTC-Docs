@@ -4,12 +4,13 @@ const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto')
 
-const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../public/assets')
+// 图片存放在 docs/assets/ (源码目录，非 public/)
+const PUBLIC_ASSETS_DIR = path.join(__dirname, '../../assets')
 
 console.log('=== 图片内容去重检查工具 ===')
 
 if (!fs.existsSync(PUBLIC_ASSETS_DIR)) {
-  console.log('❌ public/assets 目录不存在')
+  console.log('❌ assets 目录不存在')
   process.exit(1)
 }
 
