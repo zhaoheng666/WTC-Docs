@@ -25,48 +25,6 @@ export default defineConfig({
     }
   ],
 
-  // Vite 配置
-  vite: {
-    // 使用插件过滤 public 目录警告
-    plugins: [
-      {
-        name: 'suppress-public-asset-warnings',
-        configResolved(config) {
-          // 包装原始的 logger.warn 方法
-          const originalWarn = config.logger.warn
-          config.logger.warn = (msg, options) => {
-            // 过滤掉 public 目录资源相关的警告
-            if (typeof msg === 'string' && (
-              msg.includes('Assets in public directory') ||
-              msg.includes('Files in the public directory') ||
-              msg.includes('Instead of /public/')
-            )) {
-              return
-            }
-            originalWarn(msg, options)
-          }
-        }
-      }
-    ],
-    build: {
-      rollupOptions: {
-        onwarn(warning, warn) {
-          // 忽略 public 目录资源被 import 的警告（构建阶段）
-          // 原因：我们的图片在 public/assets/ 目录，由 image-processor.js 统一管理
-          // VitePress 会将 Markdown 中的图片引用转为 import，触发 Vite 警告
-          // 实际上这不影响构建结果，且我们的设计已经优化过图片处理流程
-          if (warning.message && (
-            warning.message.includes('public directory') ||
-            warning.message.includes('Instead of')
-          )) {
-            return
-          }
-          warn(warning)
-        }
-      }
-    }
-  },
-
   // Markdown 配置
   markdown: {
     // 配置语法高亮
