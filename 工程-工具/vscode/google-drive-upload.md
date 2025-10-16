@@ -149,6 +149,13 @@ A: 删除 `token.json` 文件后重新运行，会自动重新认证
 **Q: 中文显示乱码**
 A: 已优化中文支持，如仍有问题请检查原始 Markdown 文件编码（应为 UTF-8）
 
+**Q: 上传时提示 "File not found: ."**
+A: 检查配置文件中的文件夹 ID 是否完整。常见错误：
+- ❌ 错误：`"1KLqd4ZZqGzsFiUzPhZ4vswj_VYTBrr9"` (缺少尾部字符)
+- ✅ 正确：`"1KLqd4ZZqGzsFiUzPhZ4vswj_VYTBrr9-"`
+
+从 Google Drive URL 复制文件夹 ID 时，务必完整复制，包括尾部的特殊字符（如 `-`）。不完整的 ID 会导致无法找到目标文件夹。
+
 ### 重置配置
 如需重新配置，删除以下文件：
 - `uploadConfig.json` - 重置文件夹配置

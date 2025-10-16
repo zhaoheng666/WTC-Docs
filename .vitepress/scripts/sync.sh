@@ -200,22 +200,53 @@ echo -e "${CYAN}📝 准备提交...${NC}"
 
 # 获取变更统计
 CHANGED_FILES=$(git diff --cached --name-only | wc -l)
-CHANGED_MD=$(git diff --cached --name-only | grep "\.md$" | wc -l)
+
+# 改进的 MD 文件检测：处理重命名、新增、删除等情况
+# 使用 --name-status 获取完整信息，然后提取所有 .md 文件
+CHANGED_MD=$(git diff --cached --name-status | awk '$2 ~ /\.md$/ || $3 ~ /\.md$/ {print}' | wc -l)
 CHANGED_OTHER=$((CHANGED_FILES - CHANGED_MD))
 
 # 获取具体变更文件列表
 CHANGED_LIST=$(git diff --cached --name-status | head -10)
 
+# 分析变更类型
+RENAMED_MD=$(git diff --cached --name-status | grep "^R.*\.md$" | wc -l)
+ADDED_MD=$(git diff --cached --name-status | grep "^A.*\.md$" | wc -l)
+MODIFIED_MD=$(git diff --cached --name-status | grep "^M.*\.md$" | wc -l)
+DELETED_MD=$(git diff --cached --name-status | grep "^D.*\.md$" | wc -l)
+
 # 生成提交信息
 if [ "$CHANGED_MD" -gt 0 ]; then
-    MD_FILES=$(git diff --cached --name-only | grep "\.md$" | head -3 | xargs -I {} basename {} .md | paste -sd ", " -)
-    if [ "$CHANGED_MD" -gt 3 ]; then
-        COMMIT_MSG="docs: 更新 ${MD_FILES} 等 ${CHANGED_MD} 个文档"
+    # 获取文件名（优先显示新路径）
+    MD_FILES=$(git diff --cached --name-status | awk '$2 ~ /\.md$/ || $3 ~ /\.md$/ {
+        if ($3 != "") print $3; else print $2
+    }' | head -3 | xargs -n1 basename | sed 's/\.md$//' | paste -sd ", " -)
+
+    # 根据变更类型生成信息
+    if [ "$RENAMED_MD" -gt 0 ] && [ "$RENAMED_MD" -eq "$CHANGED_MD" ]; then
+        # 全部是重命名
+        if [ "$CHANGED_MD" -gt 3 ]; then
+            COMMIT_MSG="docs: 重命名 ${MD_FILES} 等 ${CHANGED_MD} 个文档"
+        else
+            COMMIT_MSG="docs: 重命名 ${MD_FILES}"
+        fi
+    elif [ "$ADDED_MD" -gt 0 ] && [ "$MODIFIED_MD" -eq 0 ] && [ "$RENAMED_MD" -eq 0 ]; then
+        # 全部是新增
+        if [ "$CHANGED_MD" -gt 3 ]; then
+            COMMIT_MSG="docs: 新增 ${MD_FILES} 等 ${CHANGED_MD} 个文档"
+        else
+            COMMIT_MSG="docs: 新增 ${MD_FILES}"
+        fi
     else
-        COMMIT_MSG="docs: 更新 ${MD_FILES}"
+        # 混合变更
+        if [ "$CHANGED_MD" -gt 3 ]; then
+            COMMIT_MSG="docs: 更新 ${MD_FILES} 等 ${CHANGED_MD} 个文档"
+        else
+            COMMIT_MSG="docs: 更新 ${MD_FILES}"
+        fi
     fi
 else
-    COMMIT_MSG="chore: 更新配置文件"
+    COMMIT_MSG="chore: 文档构建更新"
 fi
 
 # 弹窗确认提交
