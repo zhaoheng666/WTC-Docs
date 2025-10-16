@@ -44,19 +44,19 @@
 
 ### 🔧 操作手册
 
--**[新版收集系统SOP操作手册](操作手册/新版收集系统SOP操作手册.md)** - S19赛季收集系统完整操作指南，包含代码调整、资源处理、部署流程等
+-**[新版收集系统SOP操作手册](/活动/操作手册/新版收集系统SOP操作手册)** - S19赛季收集系统完整操作指南，包含代码调整、资源处理、部署流程等
 
--**[HR赛季资源替换](操作手册/HR赛季资源替换.md)** - High Rollers赛季资源替换工作流程，包含FAQ处理、最终大奖配置等
+-**[HR赛季资源替换](/活动/操作手册/HR赛季资源替换)** - High Rollers赛季资源替换工作流程，包含FAQ处理、最终大奖配置等
 
 ### 🚀 开发流程
 
--**[新人活动开发流程](流程/新人活动开发流程.md)** - 新人活动完整开发指南，从脚本生成到部署上线的全流程
+-**[新人活动开发流程](/活动/流程/新人活动开发流程)** - 新人活动完整开发指南，从脚本生成到部署上线的全流程
 
 ### 📖 接口文档
 
 #### 核心架构
 
--**[Activity](接口/Activity.md)** - Activity核心类体系详细文档
+-**[Activity](/活动/接口/Activity)** - Activity核心类体系详细文档
 
 -`Activity.js` - 活动基类
 
@@ -66,13 +66,13 @@
 
 #### UI控制器体系
 
--**[EntranceController](接口/EntranceController.md)** - 活动入口控制器文档
+-**[EntranceController](/活动/接口/EntranceController)** - 活动入口控制器文档
 
 -`ActivityEntranceController.js` - 大厅入口控制器基类
 
 - 具体实现示例
 
--**[MainUIController](接口/MainUIController.md)** - 主界面控制器文档
+-**[MainUIController](/活动/接口/MainUIController)** - 主界面控制器文档
 
 -`ActivityBaseController.js` - UI控制器基类
 
@@ -80,11 +80,11 @@
 
 - 具体实现示例
 
--**[SmartCCBController](接口/SmartCCBController.md)** - 智能CCB控制器文档
+-**[SmartCCBController](/活动/接口/SmartCCBController)** - 智能CCB控制器文档
 
 -`ActivityWidgetController.js` - UI控制器基类，提供事件管理、定时任务等功能
 
--**[WidgetController](接口/WidgetController.md)** - 小部件控制器文档
+-**[WidgetController](/活动/接口/WidgetController)** - 小部件控制器文档
 
 -`ActivityWidgetController.js` - 关卡入口控制器基类
 
@@ -215,11 +215,11 @@
 
 -**Q**: 如何创建新的活动？
 
--**A**: 参考[新人活动开发流程](流程/新人活动开发流程.md)文档
+-**A**: 参考[新人活动开发流程](/活动/流程/新人活动开发流程)文档
 
 -**Q**: 如何更新收集系统赛季？
 
--**A**: 参考[新版收集系统SOP操作手册](操作手册/新版收集系统SOP操作手册.md)文档
+-**A**: 参考[新版收集系统SOP操作手册](/活动/操作手册/新版收集系统SOP操作手册)文档
 
 -**Q**: 控制器继承关系如何选择？
 
@@ -243,9 +243,9 @@
 
 ### 项目文档
 
-- [技术文档总览](../技术文档.md)
-- [工作规范](../工作规范.md)
-- [故障排查指南](../故障排查/)
+- [技术文档总览](/技术文档)
+- [工作规范](/工作规范)
+- [故障排查指南](/故障排查)
 
 ### 开发工具
 

@@ -246,6 +246,6 @@ task2:
 
 ## 相关文档
 
-- [Shell 脚本规范](./shell-脚本规范.md)
-- [脚本系统重构](./脚本系统重构-zx-just.md)
-- [VS Code 环境工具开发规范](./vscode环境工具开发规范.md)
+- [Shell 脚本规范](/工程-工具/vscode/shell-脚本规范)
+- [脚本系统重构](/工程-工具/vscode/脚本系统重构-zx-just)
+- [VS Code 环境工具开发规范](/工程-工具/vscode/vscode环境工具开发规范)

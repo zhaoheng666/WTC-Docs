@@ -6,9 +6,9 @@
 
 ## 📚 规则列表
 
-- [扩展开发规范](./extension-dev.md) - TypeScript/package.json 开发规范
-- [扩展激活规则](./activation.md) - 只在 WTC 项目激活 📜 **强制**
-- [符号链接管理](./symlink-management.md) - 扩展安装机制说明
+- [扩展开发规范](/工程-工具/ai-rules/extensions/extension-dev) - TypeScript/package.json 开发规范
+- [扩展激活规则](/工程-工具/ai-rules/extensions/activation) - 只在 WTC 项目激活 📜 **强制**
+- [符号链接管理](/工程-工具/ai-rules/extensions/symlink-management) - 扩展安装机制说明
 
 ---
 

@@ -174,7 +174,7 @@ rm "文档名.docx"
 
 ## 相关文档
 
-- [WTC-docs 链接设计规范](./WTC-docs链接设计规范.md) - HTTP 链接设计原理
+- [WTC-docs 链接设计规范](/工程-工具/WTC-docs链接设计规范) - HTTP 链接设计原理
 - [image-processor.js](https://github.com/LuckyZen/WorldTourCasino/blob/classic_vegas/docs/.vitepress/scripts/image-processor.js) - 图片处理脚本源码
 
 ## 注意事项

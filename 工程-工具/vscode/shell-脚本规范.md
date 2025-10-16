@@ -55,7 +55,7 @@ set shell := ["zsh", "-euo", "pipefail", "-c"]
 1. **Rollup 平台依赖问题**
    - 问题：使用 bash 时无法找到 ARM64 依赖
    - 解决：改用 zsh 后问题自动解决
-   - 相关文档：[vscode-rollup-arm64-issue.md](../../故障排查/vscode-rollup-arm64-issue.md)
+   - 相关文档：[vscode-rollup-arm64-issue.md](/故障排查/vscode-rollup-arm64-issue)
 
 2. **npm 模块路径解析**
    - 问题：bash 环境下 npm 模块路径解析异常
@@ -105,5 +105,5 @@ source "$(dirname "${BASH_SOURCE[0]}")/common/base.sh"
 
 ## 相关文档
 
-- [故障排查：Rollup ARM64 问题](../../故障排查/vscode-rollup-arm64-issue.md)
-- [VS Code 环境工具开发规范](./vscode环境工具开发规范.md)
+- [故障排查：Rollup ARM64 问题](/故障排查/vscode-rollup-arm64-issue)
+- [VS Code 环境工具开发规范](/工程-工具/vscode/vscode环境工具开发规范)

@@ -69,7 +69,7 @@ git push
 
 docs 子项目遵循与主项目相同的提交类型规范：
 
-参考: [Git 提交类型规范](../shared/git-commit-types)
+参考: [Git 提交类型规范](/工程-工具/ai-rules/shared/git-commit-types)
 
 **常用类型**:
 - `docs: 更新 API 文档`

@@ -1,231 +1,271 @@
-# WTC-docs链接设计规范
+# WTC-docs 链接设计规范
 
-## HTTP 完整链接设计原理
+## 核心原则
 
-### 核心设计决策
+**使用 VitePress 根路径格式，实现文档与位置解耦**
 
-在文档系统中，我们选择使用 **完整HTTP链接格式** 而非相对路径，这一设计决策基于以下重要考虑：
-
-#### 问题背景
-
-在开发过程中遇到的实际问题：
-
-- 相对路径在不同编辑器环境下兼容性差
-- Markdown预览与实际部署环境不一致
-- 开发调试时链接跳转失效
-
-#### 设计原则
-
-### 1. 编辑器兼容性优先
-
-**使用完整链接的核心原因：兼容各种编辑器**
-
-```markdown
-# 完整HTTP链接格式（推荐）
-[PDF文档](http://localhost:5173/WTC-Docs/pdf/文档名.pdf)
-[图片资源](http://localhost:5173/WTC-Docs/assets/1758727509512_c2bd9e6b.png)
-
-# 相对路径格式（不推荐）
-[PDF文档](../public/pdf/文档名.pdf)
-[图片资源](../public/assets/1758727509512_c2bd9e6b.png)
-```
-
-**编辑器兼容性对比**：
-
-| 编辑器环境 | 完整HTTP链接 | 相对路径      | 备注             |
-| ---------- | ------------ | ------------- | ---------------- |
-| VS Code    | ✅ 完美支持  | ⚠️ 部分支持 | 需要插件配置     |
-| Typora     | ✅ 完美支持  | ❌ 路径错误   | 基础路径不匹配   |
-| Mark Text  | ✅ 完美支持  | ❌ 路径错误   | 无法正确解析     |
-| Obsidian   | ✅ 完美支持  | ⚠️ 需配置   | 需要设置库路径   |
-| GitHub Web | ✅ 完美支持  | ❌ 构建前失效 | 原始文件路径     |
-| 在线编辑器 | ✅ 完美支持  | ❌ 路径错误   | 无法访问本地文件 |
-
-### 2. 开发环境一致性
-
-**本地开发环境标准化**：
-
-- 开发服务器固定端口：`5173`
-- 基础路径统一：`/WTC-Docs/`
-- 资源路径可预测：`/pdf/`、`/assets/`
-
-```javascript
-// VitePress 配置中的基础路径
-base: '/WTC-Docs/',
-port: 5173  // 固定端口
-```
-
-**环境切换处理**：
-
-```javascript
-// 自动环境检测
-const BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'https://zhaoheng666.github.io/WTC-Docs'
-  : 'http://localhost:5173/WTC-Docs'
-```
-
-### 3. 避免死链问题
-
-**死链检测机制**：
-
-- VitePress构建时会检查内部链接
-- 完整HTTP链接被视为外部链接，跳过死链检查
-- 避免构建失败的同时保持链接功能
-
-**用户明确指示**：
-
-> "不要忽略 deadlink" - 用户明确要求保持死链检查功能
-
-**解决方案**：
-
-- 使用完整HTTP链接避免构建时死链检查
-- 本地开发时链接正常工作
-- 生产环境自动转换为正确的线上地址
-
-### 4. 多环境部署适配
-
-**环境映射表**：
-
-| 环境类型     | 基础URL                                    | 用途         | 特点             |
-| ------------ | ------------------------------------------ | ------------ | ---------------- |
-| 本地开发     | `http://localhost:5173/WTC-Docs`         | 日常开发调试 | 即时热更新       |
-| 本地预览     | `http://localhost:4173/WTC-Docs`         | 构建结果预览 | 模拟生产环境     |
-| GitHub Pages | `https://zhaoheng666.github.io/WTC-Docs` | 线上部署     | 自动SSL，CDN加速 |
-
-## 实际应用案例
-
-### PDF 文件链接
-
-**设计实现**：
-
-```javascript
-// PDF处理器中的链接生成
-function getPdfLinkBasePath() {
-  return 'http://localhost:5173/WTC-Docs/pdf'
-}
-
-// 生成的链接格式
-const pdfLink = `${getPdfLinkBasePath()}/${cleanFileName}`
-// 结果：http://localhost:5173/WTC-Docs/pdf/数据安全审核.pdf
-```
-
-**生产环境自动转换**：
-
-```javascript
-// 构建时自动替换
-const productionUrl = link.replace(
-  'http://localhost:5173/WTC-Docs',
-  'https://zhaoheng666.github.io/WTC-Docs'
-)
-```
-
-### 图片资源链接
-
-**命名策略配合**：
-
-```javascript
-// 图片处理器生成完整链接
-const imageUrl = `http://localhost:5173/WTC-Docs/assets/${timestamp}_${hash}.png`
-
-// Markdown中的引用
-![图片描述](http://localhost:5173/WTC-Docs/assets/1758727509512_c2bd9e6b.png)
-```
-
-## 设计优势总结
-
-### 1. **开发体验优化**
-
-- 任何Markdown编辑器都能正确预览
-- 点击链接直接跳转到正确资源
-- 无需额外配置和设置
-
-### 2. **维护成本降低**
-
-- 统一的链接格式，易于批量处理
-- 自动化脚本可以可靠地生成和更新链接
-- 减少因路径问题导致的调试时间
-
-### 3. **部署灵活性**
-
-- 本地开发和生产环境无缝切换
-- 支持多种部署方案（GitHub Pages、自托管等）
-- CDN和域名变更时易于适配
-
-### 4. **团队协作友好**
-
-- 不同开发者使用不同编辑器都能正常工作
-- 文档分享时链接保持有效
-- 代码审查时可以直接点击查看资源
-
-## 技术实现细节
-
-### 环境变量配置
-
-```bash
-# 开发环境
-VITE_BASE_URL=http://localhost:5173/WTC-Docs
-
-# 生产环境
-VITE_BASE_URL=https://zhaoheng666.github.io/WTC-Docs
-```
-
-### 构建时处理
-
-```javascript
-// 构建脚本中的链接转换
-function convertLinksForProduction(content) {
-  return content.replace(
-    /http:\/\/localhost:5173\/WTC-Docs/g,
-    'https://zhaoheng666.github.io/WTC-Docs'
-  )
-}
-```
-
-### 开发服务器配置
-
-```javascript
-// VitePress配置
-export default {
-  base: '/WTC-Docs/',
-  server: {
-    port: 5173,
-    host: true
-  }
-}
-```
-
-## 最佳实践建议
-
-### 1. 链接生成规范
-
-- 所有资源链接使用完整HTTP格式
-- 统一使用工具函数生成链接
-- 避免硬编码路径
-
-### 2. 环境适配
-
-- 开发时使用localhost链接
-- 构建时自动转换为生产链接
-- 保持基础路径一致性
-
-### 3. 编辑器配置
-
-- 推荐使用支持实时预览的编辑器
-- 配置编辑器基础路径设置
-- 利用完整链接的预览优势
-
-## 结论
-
-使用 **完整HTTP链接** 的设计决策是基于实际开发需求和用户体验考虑的最佳选择：
-
-1. **解决了编辑器兼容性问题** - 任何编辑器都能正确处理
-2. **提升了开发效率** - 无需为不同环境配置不同的预览设置
-3. **保证了构建稳定性** - 避免死链检查导致的构建失败
-4. **支持了多环境部署** - 开发和生产环境无缝切换
-
-这种设计体现了 **"开发者体验优先"** 和 **"工具适应人，而非人适应工具"** 的工程哲学。
+本规范基于 [VitePress 官方文档](https://vitepress.dev/guide/routing) 和实际项目需求制定。
 
 ---
 
-*设计记录时间: 2024-09-25*
-*记录原因: 用户要求记录完整HTTP链接设计的原因和考虑*
+## 设计理念
+
+### 问题：文档链接与位置强耦合
+
+使用相对路径（`./` `../`）的问题：
+- 文档移动位置后，所有链接失效
+- 维护困难，重构成本高
+- 与图片链接设计不一致
+
+### 解决方案：统一使用根路径
+
+| 链接类型 | 格式示例 | 特点 |
+|---------|---------|------|
+| **图片** | `/assets/screenshot.png` | ✅ 位置无关 |
+| **文档** | `/工程-工具/vscode/shell-脚本规范` | ✅ 位置无关 |
+| **PDF** | `/pdf/guide.pdf` | ✅ 位置无关 |
+
+**核心优势**：文档可以随意移动目录，链接保持有效。
+
+---
+
+## 链接格式规范
+
+### 1. 文档链接（推荐格式）
+
+**✅ 使用根路径绝对引用**
+
+```markdown
+# 根路径格式（推荐）
+[配置管理](/工程-工具/ai-rules/WTC/config-sync)
+[Shell 规范](/工程-工具/vscode/shell-脚本规范)
+[首页](/README)
+
+# 相对路径格式（不推荐）
+[配置管理](../WTC/config-sync)  # ❌ 文档移动后失效
+[Shell 规范](../../vscode/shell-脚本规范)  # ❌ 维护困难
+```
+
+**为什么使用根路径？**
+
+VitePress 会自动处理根路径：
+- 开发环境：`/工程-工具/config` → `/WTC-Docs/工程-工具/config.html`
+- 生产环境：自动适配 `base` 配置
+- **文档移动位置不影响链接**
+
+### 2. 图片资源链接（已实现）
+
+**✅ 使用 `/assets/` 绝对路径**
+
+```markdown
+![截图](/assets/screenshot.png)
+```
+
+**设计理念**（与文档链接一致）：
+- 图片统一存储在 `public/assets/`
+- 文档移动位置不影响图片引用
+- 通过软链接 `docs/assets/` → `docs/public/assets/` 支持编辑器预览
+
+### 3. PDF 文件链接
+
+**✅ 使用 `/pdf/` 绝对路径**
+
+```markdown
+[开发指南](/pdf/dev-guide.pdf)
+```
+
+### 4. 外部链接
+
+外部链接保持完整 URL：
+
+```markdown
+[VitePress 官方](https://vitepress.dev/)
+[GitHub 仓库](https://github.com/zhaoheng666/WTC-Docs)
+```
+
+---
+
+## VitePress 原生机制
+
+### 1. `base` 配置自动处理
+
+VitePress 的 `base` 配置处理所有路径：
+
+```javascript
+// docs/.vitepress/config.mjs
+export default {
+  base: '/WTC-Docs/',  // GitHub Pages 路径前缀
+}
+```
+
+**效果**：
+
+| 链接写法 | 开发环境 | 生产环境 |
+|---------|---------|---------|
+| `/assets/image.png` | `http://localhost:5173/WTC-Docs/assets/image.png` | `https://zhaoheng666.github.io/WTC-Docs/assets/image.png` |
+| `/工程-工具/config` | `http://localhost:5173/WTC-Docs/工程-工具/config.html` | `https://zhaoheng666.github.io/WTC-Docs/工程-工具/config.html` |
+
+### 2. 文件路由系统
+
+VitePress 自动将文件结构映射为 URL：
+
+```
+docs/
+├── 工程-工具/
+│   ├── vscode/
+│   │   └── shell-脚本规范.md  → /工程-工具/vscode/shell-脚本规范
+│   └── ai-rules/
+│       └── WTC/
+│           └── config-sync.md  → /工程-工具/ai-rules/WTC/config-sync
+└── README.md                   → /README
+```
+
+### 3. `public/` 目录静态资源
+
+`docs/public/` 下的文件直接复制到输出根目录：
+
+```
+docs/public/
+├── assets/
+│   └── screenshot.png  → /assets/screenshot.png
+└── pdf/
+    └── guide.pdf       → /pdf/guide.pdf
+```
+
+---
+
+## 设计优势
+
+### 与图片链接设计统一
+
+| 资源类型 | 格式 | 位置依赖 |
+|---------|------|---------|
+| **图片** | `/assets/xxx.png` | ✅ 无依赖 |
+| **文档** | `/工程-工具/xxx` | ✅ 无依赖 |
+| **PDF** | `/pdf/xxx.pdf` | ✅ 无依赖 |
+
+**设计一致性**：所有资源都使用根路径，文档可以随意重组目录结构。
+
+### 优势对比
+
+| 维度 | 相对路径 | 根路径（当前方案） |
+|------|---------|-----------------|
+| **文档可移动性** | ❌ 移动后失效 | ✅ 任意移动 |
+| **维护成本** | ❌ 需要手动修复 | ✅ 零维护 |
+| **框架兼容** | ✅ 标准格式 | ✅ 标准格式 |
+| **重构友好** | ❌ 重构困难 | ✅ 重构容易 |
+| **与图片一致** | ❌ 设计不一致 | ✅ 设计统一 |
+
+---
+
+## 迁移指南
+
+### 从相对路径迁移
+
+**转换规则**：
+
+| 相对路径 | 根路径 | 说明 |
+|---------|--------|------|
+| `./config` | `/工程-工具/ai-rules/WTC/config` | 同级目录 |
+| `../shared/doc` | `/工程-工具/ai-rules/shared/doc` | 上级目录 |
+| `../../vscode/tool` | `/工程-工具/vscode/tool` | 跨目录 |
+
+**自动化工具**：
+
+```bash
+# 批量转换脚本
+node .vitepress/scripts/convert-to-absolute-paths.js
+```
+
+---
+
+## 编辑器兼容性
+
+### VS Code 预览支持
+
+根路径格式在 VS Code 中的表现：
+
+| 链接类型 | 预览效果 | 说明 |
+|---------|---------|------|
+| `/工程-工具/config` | ⚠️ 需运行服务器 | 启动 `npm run dev` 后可预览 |
+| `/assets/image.png` | ⚠️ 需软链接 | 通过 `docs/assets/` 软链接预览 |
+
+**最佳实践**：
+1. 启动 VitePress 开发服务器：`npm run dev`
+2. 在浏览器中预览文档（http://localhost:5173/WTC-Docs/）
+3. 最终效果以 VitePress 渲染结果为准
+
+---
+
+## 常见问题
+
+### Q: 根路径和相对路径哪个更符合 VitePress 规范？
+
+**A**: 两者都是 VitePress 原生支持的格式。但根路径更适合需要频繁重组目录的项目：
+- **相对路径**：适合结构固定的文档
+- **根路径**：适合需要灵活重组的文档（我们的选择）
+
+### Q: 为什么不用完整 HTTP 链接？
+
+**A**: HTTP 链接有以下问题：
+1. 绕过 VitePress 的死链检测
+2. 需要构建时转换
+3. 不符合框架设计理念
+
+根路径格式同时具备：
+- ✅ VitePress 原生支持
+- ✅ 位置无关性
+- ✅ 死链检测有效
+
+### Q: 如何处理死链？
+
+**A**: 根路径会触发 VitePress 死链检测，这是**好事**：
+- 构建时发现问题
+- 及时修复错误链接
+- 保证文档质量
+
+如需忽略特定链接：
+
+```javascript
+// .vitepress/config.mjs
+export default {
+  ignoreDeadLinks: [
+    /\/%E/,  // URL 编码的中文路径
+  ]
+}
+```
+
+---
+
+## 总结
+
+### 核心要点
+
+1. **文档链接**：使用根路径 `/工程-工具/xxx`
+   ```markdown
+   [配置](/工程-工具/ai-rules/WTC/config-sync)
+   ```
+
+2. **图片资源**：使用 `/assets/`（已实现）
+   ```markdown
+   ![截图](/assets/screenshot.png)
+   ```
+
+3. **外部链接**：保持完整 URL
+   ```markdown
+   [VitePress](https://vitepress.dev/)
+   ```
+
+### 设计理念
+
+**"资源与位置解耦，文档结构灵活重组"**
+
+- ✅ 所有资源使用根路径
+- ✅ 文档可以随意移动
+- ✅ 利用 VitePress 原生能力
+- ✅ 设计统一（图片、文档、PDF）
+
+---
+
+**文档更新时间**: 2025-10-16
+**更新原因**: 统一链接设计为根路径格式，实现文档与位置解耦

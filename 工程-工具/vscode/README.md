@@ -5,9 +5,9 @@
 ## 📋 目录结构
 
 ### 扩展开发
-- [扩展开发规则与最佳实践](./扩展开发规则与最佳实践.md) - VSCode 扩展开发的核心规则和经验总结
-- [Google Drive 上传](./google-drive-upload.md) - Google Drive 上传功能文档
-- [fix-environment 脚本多扩展支持](./fix-environment脚本多扩展支持.md) - 环境修复脚本的多扩展多编辑器支持实现
+- [扩展开发规则与最佳实践](/工程-工具/vscode/扩展开发规则与最佳实践) - VSCode 扩展开发的核心规则和经验总结
+- [Google Drive 上传](/工程-工具/vscode/google-drive-upload) - Google Drive 上传功能文档
+- [fix-environment 脚本多扩展支持](/工程-工具/vscode/fix-environment脚本多扩展支持) - 环境修复脚本的多扩展多编辑器支持实现
 
 ### 项目扩展
 
@@ -107,7 +107,7 @@ done
 - `fix-environment.sh` 精简 21%（217 行 → 171 行）
 - 所有模块支持独立运行和测试
 
-详见：[环境管理系统重构文档](./环境管理系统重构-2025-10.md)
+详见：[环境管理系统重构文档](/工程-工具/vscode/环境管理系统重构-2025-10)
 
 ### 服务管理优化（2024-09）
 - 新增 `cleanup-services.sh` 脚本，在 VS Code reload 前自动清理所有服务
@@ -127,4 +127,4 @@ done
 ## 相关文档
 - [近期VS Code配置优化总结](./近期VS Code配置优化总结.md)
 - [添加新VS Code扩展规范](./添加新VS Code扩展规范.md)
-- [VSCode 扩展工作区兼容性问题](../../故障排查/vscode-扩展工作区兼容性问题.md)
+- [VSCode 扩展工作区兼容性问题](/故障排查/vscode-扩展工作区兼容性问题)

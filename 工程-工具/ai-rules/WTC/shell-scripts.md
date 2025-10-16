@@ -102,7 +102,7 @@ build:
 
 ## 相关文档
 
-详细说明请参考: [Shell 脚本规范](../../vscode/shell-脚本规范)
+详细说明请参考: [Shell 脚本规范](/工程-工具/vscode/shell-脚本规范)
 
 ---
 

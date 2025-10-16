@@ -2,126 +2,183 @@
 
 ## 规则概述
 
-**所有文档中的相对链接必须在构建时转换为完整的 HTTP 链接**
+**使用根路径绝对引用，实现文档与位置解耦**
 
-这是 **强制性规则**，适用于所有文档编写和构建流程。
+这是 **强制性规则**，适用于所有文档编写。
 
-## 为什么需要链接处理
+## 核心原则
 
-详细设计原理参见：[WTC-docs链接设计规范](http://localhost:5173/WTC-Docs/工程-工具/WTC-docs链接设计规范)
+详细设计原理参见：[WTC-docs链接设计规范](/工程-工具/WTC-docs链接设计规范)
 
-### 核心原因
+### 为什么使用根路径
 
-1. **编辑器兼容性**：相对路径在不同编辑器（VS Code、Typora、Mark Text）中表现不一致
-2. **避免死链**：VitePress 构建时死链检测可能因相对路径误报
-3. **多环境支持**：统一格式便于在本地开发和线上部署间切换
+1. **位置无关性**：文档可以随意移动目录，链接不受影响
+2. **与图片一致**：图片使用 `/assets/`，文档也使用根路径
+3. **VitePress 原生支持**：框架自动处理根路径
+4. **重构友好**：目录结构调整时无需修改链接
 
-### 推荐格式对比
+---
+
+## 链接格式规范
+
+### 1. 文档链接
+
+**✅ 使用根路径绝对引用**
 
 ```markdown
-# ✅ 推荐：完整 HTTP 链接
-[PDF文档](http://localhost:5173/WTC-Docs/pdf/文档名.pdf)
-[图片资源](http://localhost:5173/WTC-Docs/assets/1758727509512_c2bd9e6b.png)
-[内部文档](http://localhost:5173/WTC-Docs/工程-工具/vscode/配置说明)
+# 推荐格式
+[配置管理](/工程-工具/ai-rules/WTC/config-sync)
+[Shell 规范](/工程-工具/vscode/shell-脚本规范)
+[首页](/README)
 
 # ❌ 不推荐：相对路径
-[PDF文档](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/public/pdf/文档名.pdf)
-[图片资源](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/docs/assets/image.png)
-[内部文档](http://localhost:5173/WTC-Docs/工程-工具/other/doc)
+[配置管理](../WTC/config-sync)
+[Shell 规范](../../vscode/shell-脚本规范)
 ```
 
-## 构建流程集成
+**VitePress 自动处理**：
+- 开发：`/工程-工具/config` → `/WTC-Docs/工程-工具/config.html`
+- 生产：`/工程-工具/config` → `https://zhaoheng666.github.io/WTC-Docs/工程-工具/config.html`
 
-### 处理时机
+### 2. 图片资源链接
 
-链接处理在构建流程中的位置：
+**✅ 使用 `/assets/` 绝对路径**
 
-```bash
-图片处理 → 链接处理 → VitePress Build
+```markdown
+![截图](/assets/screenshot.png)
 ```
 
-- **在图片处理之后**：确保图片引用已经转换完成
-- **在 VitePress 构建之前**：避免构建时出现死链检测问题
+**VitePress 自动处理**：
+- 开发：`http://localhost:5173/WTC-Docs/assets/screenshot.png`
+- 生产：`https://zhaoheng666.github.io/WTC-Docs/assets/screenshot.png`
 
-### 处理范围
+### 3. PDF 文件链接
 
-链接处理器会检查：
+**✅ 使用 `/pdf/` 绝对路径**
 
-1. **变更文件**：通过 `git diff` 检测修改的 markdown 文件
-2. **相对链接**：检测 `[text](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/docs/相对路径)` 和 `![alt](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/docs/相对路径)` 格式
-3. **自动转换**：将相对路径转换为 `http://localhost:5173/WTC-Docs/` 开头的绝对链接
-
-### 排除规则
-
-以下类型的链接**不会**被转换：
-
-- 已经是完整 HTTP/HTTPS 链接（`http://`、`https://`）
-- GitHub 链接（`github.com`）
-- 外部网站链接
-- 锚点链接（`#heading`）
-
-## 实现细节
-
-### 脚本位置
-
-```bash
-docs/.vitepress/scripts/link-processor.js
+```markdown
+[开发指南](/pdf/dev-guide.pdf)
 ```
 
-### 调用方式
+### 4. 外部链接
 
-在 `build.sh` 和 `build-ci.sh` 中：
+外部链接保持完整 URL：
 
-```bash
-# 1. 处理图片
-node .vitepress/scripts/image-processor.js
-
-# 2. 处理链接（新增）
-node .vitepress/scripts/link-processor.js
-
-# 3. 构建文档
-npm run docs:build
+```markdown
+[VitePress 官方](https://vitepress.dev/)
+[GitHub 仓库](https://github.com/zhaoheng666/WTC-Docs)
 ```
+
+---
 
 ## AI 工作规范
 
-### 编写文档时
+### 编写文档时的链接格式
 
-**在编写任何文档时，必须直接使用完整 HTTP 链接格式**：
+**文档链接**：
 
 ```markdown
-[链接文本](http://localhost:5173/WTC-Docs/路径)
+# ✅ 正确：根路径
+[配置管理](/工程-工具/ai-rules/WTC/config-sync)
+[工具列表](/工程-工具/vscode/README)
+
+# ❌ 错误：相对路径
+[配置管理](../WTC/config-sync)
+[工具列表](../../vscode/README)
 ```
 
-### 引用文件时
+**图片引用**：
 
-- **文档引用**：使用 `http://localhost:5173/WTC-Docs/` 格式
-- **代码文件引用**：使用 GitHub 链接（参见 [文件路径链接规范](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/shared/file-path-links)）
+```markdown
+# ✅ 正确：/assets/ 路径
+![截图](/assets/screenshot.png)
 
-### 构建检查
+# ❌ 错误：相对路径
+![截图](../public/assets/screenshot.png)
+```
 
-构建流程会自动处理遗漏的相对链接，但建议：
+**代码文件引用**（在 Markdown 文本中说明位置）：
 
-1. **主动使用正确格式**：减少构建时的转换工作
-2. **检查构建日志**：确认链接转换是否成功
-3. **本地预览验证**：构建后检查链接是否正常工作
+```markdown
+# ✅ 推荐：文件路径格式
+修改 `docs/.vitepress/config.mjs:10` 中的 base 配置
+
+# ✅ 可选：GitHub 链接（用于代码审查等场景）
+参见：https://github.com/zhaoheng666/WTC-Docs/blob/main/docs/.vitepress/config.mjs#L10
+```
+
+---
+
+## 迁移工具
+
+### 自动转换脚本
+
+从相对路径迁移到根路径：
+
+```bash
+node .vitepress/scripts/convert-to-absolute-paths.js
+```
+
+**转换规则**：
+
+| 相对路径 | 根路径 | 说明 |
+|---------|--------|------|
+| `./config` | `/工程-工具/ai-rules/WTC/config` | 同级目录 |
+| `../shared/doc` | `/工程-工具/ai-rules/shared/doc` | 上级目录 |
+| `../../vscode/tool` | `/工程-工具/vscode/tool` | 跨目录 |
+
+---
 
 ## 故障排查
 
-### 链接无法访问
+### 链接显示 404
 
-1. 检查链接格式是否正确：`http://localhost:5173/WTC-Docs/...`
-2. 确认文件路径是否存在
-3. 检查构建日志中的链接转换记录
+**检查项**：
+1. 确认文件路径正确（注意大小写）
+2. 检查文件是否存在
+3. 启动开发服务器测试：`npm run dev`
 
-### 构建时报死链
+### 图片无法显示
 
-1. 检查是否有外部相对链接未被正确转换
-2. 查看 link-processor 日志
-3. 手动修正问题链接
+**检查项**：
+1. 图片是否在正确的资源目录
+2. 使用 `/assets/` 开头（不是 `./assets/`）
+3. 检查图片文件名和扩展名
 
-## 相关规则
+### 死链检测误报
 
-- [WTC-docs链接设计规范](http://localhost:5173/WTC-Docs/工程-工具/WTC-docs链接设计规范)：完整设计原理
-- [文件路径链接规范](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/shared/file-path-links)：代码文件链接格式
-- [VitePress 开发规范](http://localhost:5173/WTC-Docs/工程-工具/ai-rules/docs/vitepress-standards)：文档开发标准
+**处理方式**（`config.mjs`）：
+
+```javascript
+export default {
+  ignoreDeadLinks: [
+    /\/%E/,  // URL 编码的中文路径
+    (url) => url.includes('/external-api/')
+  ]
+}
+```
+
+---
+
+## 设计优势
+
+| 维度 | 相对路径 | 根路径（当前方案） |
+|------|---------|-----------------|
+| **位置依赖** | ❌ 强依赖 | ✅ 无依赖 |
+| **维护成本** | ❌ 需手动修复 | ✅ 零维护 |
+| **框架兼容** | ✅ 标准 | ✅ 标准 |
+| **与图片一致** | ❌ 不一致 | ✅ 一致 |
+| **重构友好** | ❌ 困难 | ✅ 容易 |
+
+---
+
+## 相关文档
+
+- [WTC-docs 链接设计规范](/工程-工具/WTC-docs链接设计规范)：详细设计理念
+- [文件路径链接规范](/工程-工具/ai-rules/shared/file-path-links)：代码文件引用格式
+- [VitePress 官方文档](https://vitepress.dev/guide/routing)：路由和链接规范
+
+---
+
+**更新时间**：2025-10-16
+**更新原因**：统一链接格式为根路径，实现文档与位置解耦

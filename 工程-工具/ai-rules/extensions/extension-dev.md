@@ -147,8 +147,8 @@ vsce package
 
 ## 相关文档
 
-- [扩展激活条件规则](./activation)
-- [符号链接管理](./symlink-management)
+- [扩展激活条件规则](/工程-工具/ai-rules/extensions/activation)
+- [符号链接管理](/工程-工具/ai-rules/extensions/symlink-management)
 
 ---
 
