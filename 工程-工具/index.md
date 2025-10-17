@@ -89,11 +89,11 @@
 #### 📝 其他
 
 - 📝 [Charles 抓包工具使用方法](Charles%20%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)
+- 📝 [Macos Rosetta 兼容模式(x86_64) 覆盖原生版本(arm64)的问题](Macos%20Rosetta%20%E5%85%BC%E5%AE%B9%E6%A8%A1%E5%BC%8F(x86_64)%20%E8%A6%86%E7%9B%96%E5%8E%9F%E7%94%9F%E7%89%88%E6%9C%AC(arm64)%E7%9A%84%E9%97%AE%E9%A2%98)
 - 📝 [Symbol-CCB创建工具](Symbol-CCB%E5%88%9B%E5%BB%BA%E5%B7%A5%E5%85%B7)
 - 📝 [UI 模板库插件](UI%20%E6%A8%A1%E6%9D%BF%E5%BA%93%E6%8F%92%E4%BB%B6)
 - 📝 [WTC-DOCS-MIGRATION](WTC-DOCS-MIGRATION)
 - 📝 [WTC-docs链接设计规范](WTC-docs%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83)
-- 📝 [WTC-res-load-improve](WTC-res-load-improve)
 - 📝 [Wails 重构 CCB 生成工具](Wails%20%E9%87%8D%E6%9E%84%20CCB%20%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7)
 - 📝 [adb 同步脚本使用说明](adb%20%E5%90%8C%E6%AD%A5%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
 - 📝 [docx转markdown规范](docx%E8%BD%ACmarkdown%E8%A7%84%E8%8C%83)

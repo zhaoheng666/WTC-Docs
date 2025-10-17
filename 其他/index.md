@@ -22,6 +22,7 @@
 #### 📁 工作记录
 
   - 📝 [9 月程序会](%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/9%20%E6%9C%88%E7%A8%8B%E5%BA%8F%E4%BC%9A)
+  - 📝 [WTC-res-load-improve](%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/WTC-res-load-improve)
   - 📝 [组内技术管理梳理](%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/%E7%BB%84%E5%86%85%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E6%A2%B3%E7%90%86)
 
 
