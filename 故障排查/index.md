@@ -27,7 +27,6 @@
 - 📝 [onDidLoadFromCCB 生命周期问题](onDidLoadFromCCB%20%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%97%AE%E9%A2%98)
 - 📝 [rollup-指令集兼容性问题](rollup-%E6%8C%87%E4%BB%A4%E9%9B%86%E5%85%BC%E5%AE%B9%E6%80%A7%E9%97%AE%E9%A2%98)
 - 📝 [vitepress-base-url-死链误报](vitepress-base-url-%E6%AD%BB%E9%93%BE%E8%AF%AF%E6%8A%A5)
-- 📝 [vscode-rollup-arm64-issue](vscode-rollup-arm64-issue)
 - 📝 [vscode-扩展工作区兼容性问题](vscode-%E6%89%A9%E5%B1%95%E5%B7%A5%E4%BD%9C%E5%8C%BA%E5%85%BC%E5%AE%B9%E6%80%A7%E9%97%AE%E9%A2%98)
 - 📝 [web端无法更新到最新资源](web%E7%AB%AF%E6%97%A0%E6%B3%95%E6%9B%B4%E6%96%B0%E5%88%B0%E6%9C%80%E6%96%B0%E8%B5%84%E6%BA%90)
 - 📝 [全角右单引号丢失](%E5%85%A8%E8%A7%92%E5%8F%B3%E5%8D%95%E5%BC%95%E5%8F%B7%E4%B8%A2%E5%A4%B1)

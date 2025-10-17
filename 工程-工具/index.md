@@ -11,6 +11,19 @@
   - 📝 [Claude Code 模块化拆分+标注机制实验报告](AI/Claude%20Code%20%E6%A8%A1%E5%9D%97%E5%8C%96%E6%8B%86%E5%88%86%2B%E6%A0%87%E6%B3%A8%E6%9C%BA%E5%88%B6%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A)
 
 
+#### 📁 CocosBuilder
+
+  - **📂 archive**
+    - 📝 [ARM64_FSEvents_FIX](CocosBuilder/archive/ARM64_FSEvents_FIX)
+    - 📝 [ARM64_MIGRATION_SUMMARY](CocosBuilder/archive/ARM64_MIGRATION_SUMMARY)
+    - 📝 [BUG_FIX_SUMMARY](CocosBuilder/archive/BUG_FIX_SUMMARY)
+    - 📝 [FINAL_FIX_SUMMARY](CocosBuilder/archive/FINAL_FIX_SUMMARY)
+    - 📝 [README](CocosBuilder/archive/README)
+    - 📎 runtime_log
+  - 📝 [ARM64_SUPPORT_GUIDE](CocosBuilder/ARM64_SUPPORT_GUIDE)
+  - 📝 [xcode16 编译错误处理](CocosBuilder/xcode16%20%E7%BC%96%E8%AF%91%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86)
+
+
 #### 📁 Jenkins
 
   - 📝 [Jenkins 发版耗时优化](Jenkins/Jenkins%20%E5%8F%91%E7%89%88%E8%80%97%E6%97%B6%E4%BC%98%E5%8C%96)
@@ -80,6 +93,7 @@
 - 📝 [UI 模板库插件](UI%20%E6%A8%A1%E6%9D%BF%E5%BA%93%E6%8F%92%E4%BB%B6)
 - 📝 [WTC-DOCS-MIGRATION](WTC-DOCS-MIGRATION)
 - 📝 [WTC-docs链接设计规范](WTC-docs%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83)
+- 📝 [WTC-res-load-improve](WTC-res-load-improve)
 - 📝 [Wails 重构 CCB 生成工具](Wails%20%E9%87%8D%E6%9E%84%20CCB%20%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7)
 - 📝 [adb 同步脚本使用说明](adb%20%E5%90%8C%E6%AD%A5%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
 - 📝 [docx转markdown规范](docx%E8%BD%ACmarkdown%E8%A7%84%E8%8C%83)
