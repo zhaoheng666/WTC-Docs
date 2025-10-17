@@ -8,7 +8,8 @@ const { execSync } = require('child_process');
 const isCI = process.env.GITHUB_ACTIONS === 'true';
 const isForce = process.argv[2] === '--force';
 
-const docsDir = path.join(__dirname, '../..');
+// 从 .vitepress/scripts/lib/ 向上三级到 docs 根目录
+const docsDir = path.join(__dirname, '../../..');
 // 不再生成 markdown 文件，只生成 JSON 数据
 const jsonOutputFile = path.join(docsDir, 'public/stats.json');
 
