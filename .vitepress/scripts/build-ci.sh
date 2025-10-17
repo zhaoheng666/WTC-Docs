@@ -2,6 +2,7 @@
 
 # GitHub Actions 构建脚本（精简版）
 # 只处理必要的构建任务
+# Last updated: 2025-10-17
 
 set -e
 
