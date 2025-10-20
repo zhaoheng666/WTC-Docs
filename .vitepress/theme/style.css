@@ -7,39 +7,9 @@
   --vp-c-brand-1: #646cff;
   --vp-c-brand-2: #535bf2;
 
-  /* 侧边栏宽度优化 */
-  --vp-sidebar-width: 300px;  /* 默认 272px，调整到 300px */
+  --vp-sidebar-width: 330px;
+  --vp-layout-max-width: 1600px;
 }
-
-/* 左侧边 Title */
-.VPNavBarTitle {
-  padding-left: 0px !important;
-}
-
-/* 左侧边栏 */
-.VPSidebar {
-  padding-left: 100px !important;
-}
-
-/* 左侧边栏导航 */
-.VPSidebarNav {
-  padding-left: 100px !important;
-}
-
-/*内容区域左移*/
-/*
-.VPContent {
-  padding-left: 170px !important;
-}
-*/
-
-/* 文档容器左移 */
-/* 
-.VPDoc.has-sidebar .container {
-  margin-left: 0px !important;
-  padding-left: 0px !important;
-}
-*/
 
 .dark {
   --vp-c-brand-1: #747bff;
