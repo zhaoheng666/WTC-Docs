@@ -18,6 +18,7 @@
   - Markdown 富文本悬停提示
   - 一键同步到 GitHub Pages
   - 在新窗口打开 docs 功能
+  - 智能终端管理（复用 + reload 自动清理）
   - 版本：0.0.1
 
 - **wtc-local-server** - 本地开发服务器扩展
@@ -67,7 +68,7 @@ bash .vscode/scripts/fix-environment.sh
 3. 在 `.vscode/settings.json` 的 `WTC.subProjects.extensions.plugins` 中添加扩展配置
 4. 更新 `.vscode/scripts/onEnter.sh` 中的 `setup_plugin` 调用
 5. 添加激活条件限制扩展仅在 WTC 项目中激活
-6. 详细规范参见：[添加新VS Code扩展规范](./添加新VS Code扩展规范.md)
+6. 详细规范参见：[添加新VS Code扩展规范](/../工程-工具/vscode/添加新VS Code扩展规范)
 
 ### 调试扩展
 ```bash
@@ -125,6 +126,6 @@ done
 - 扩展配置集中在 `settings.json` 管理
 
 ## 相关文档
-- [近期VS Code配置优化总结](./近期VS Code配置优化总结.md)
-- [添加新VS Code扩展规范](./添加新VS Code扩展规范.md)
+- [近期VS Code配置优化总结](/../工程-工具/vscode/近期VS Code配置优化总结)
+- [添加新VS Code扩展规范](/../工程-工具/vscode/添加新VS Code扩展规范)
 - [VSCode 扩展工作区兼容性问题](/故障排查/vscode-扩展工作区兼容性问题)
