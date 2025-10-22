@@ -21,6 +21,7 @@
 - 📝 [EaseTableView 刷新偏移问题](EaseTableView%20%E5%88%B7%E6%96%B0%E5%81%8F%E7%A7%BB%E9%97%AE%E9%A2%98)
 - 📝 [FB Native 卡 97percent](FB%20Native%20%E5%8D%A1%2097percent)
 - 📝 [HotFix插件代码更新无效问题](HotFix%E6%8F%92%E4%BB%B6%E4%BB%A3%E7%A0%81%E6%9B%B4%E6%96%B0%E6%97%A0%E6%95%88%E9%97%AE%E9%A2%98)
+- 📝 [Python2.7-安装Pillow失败](Python2.7-%E5%AE%89%E8%A3%85Pillow%E5%A4%B1%E8%B4%A5)
 - 📝 [README](README)
 - 📝 [SlotScene_onEnter中addChild触发crash](SlotScene_onEnter%E4%B8%ADaddChild%E8%A7%A6%E5%8F%91crash)
 - 📝 [Wails 重构 CCB 生成工具-issue](Wails%20%E9%87%8D%E6%9E%84%20CCB%20%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7-issue)
@@ -39,5 +40,5 @@
 
 ---
 
-*📅 最后更新: 2025/9/25*
+*📅 最后更新: 2025/10/21*
 *🤖 此文件由构建系统自动生成*
