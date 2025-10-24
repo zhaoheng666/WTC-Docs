@@ -32,7 +32,7 @@
 ## 相关文档
 
 - [Cocos2d-html5 官方文档](https://docs.cocos2d-x.org/cocos2d-x/v3/zh/)
-- [活动资源优化-后置加载方案](/工程-工具/活动资源优化-后置加载方案) - 最终方案文档
+- [活动资源优化-后置加载方案](/活动/活动资源优化-后置加载方案) - 最终方案文档
 
 ---
 
@@ -215,7 +215,7 @@ ACTIVITY_RESOURCE_DOWNLOAD_COMPLETE: "activity_resource_download_complete"
 
 **提交**: [e8b62e66889](https://github.com/LuckyZen/WorldTourCasino/commit/e8b62e66889)
 
-**详细文档**: [活动资源优化-后置加载方案](/工程-工具/活动资源优化-后置加载方案)
+**详细文档**: [活动资源优化-后置加载方案](/活动/活动资源优化-后置加载方案)
 
 ---
 
