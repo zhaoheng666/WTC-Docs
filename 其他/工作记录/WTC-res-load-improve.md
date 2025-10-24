@@ -67,5 +67,25 @@
 4. ⚠️ 图片资源批量加载（无懒加载）
 5. ⚠️ 预下载队列无优先级调度
 
-**最后更新**: 2025-10-16
+---
+
+### 2025-10-24：活动资源下载架构重构
+
+#### 完成事项
+
+✅ **ActivityDownloader 依赖倒置重构** ([提交 e8b62e6](https://github.com/LuckyZen/WorldTourCasino/commit/e8b62e66889))
+
+- **问题**：ActivityDownloader 既负责下载又管理 UI（Placeholder），持有 UI 层 Node 引用
+- **方案**：引入事件驱动架构，彻底解耦资源层和 UI 层
+- **成果**：
+  - 资源层（ActivityDownloader）：只负责下载，通过事件通知
+  - UI层（ActivityEntranceGroupController）：监听事件，完全管理 Placeholder 生命周期
+  - 新增事件：`ACTIVITY_RESOURCE_DOWNLOAD_START` / `ACTIVITY_RESOURCE_DOWNLOAD_COMPLETE`
+- **优势**：符合依赖倒置原则，无跨层引用，无生命周期风险
+
+**详细文档**: [活动资源优化-后置加载方案](/工程-工具/活动资源优化-后置加载方案)
+
+---
+
+**最后更新**: 2025-10-24
 **维护者**: WTC Team
