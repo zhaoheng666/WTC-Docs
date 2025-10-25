@@ -50,7 +50,7 @@ class ImageProcessorV2 {
 
     // 生成基于URL内容的唯一标识符（不依赖文件路径，确保相同图片得到相同名称）
     const contentKey = originalUrl + (imageId ? '|' + imageId : '');
-    const fullHash = crypto.createHash('md5').update(contentKey).digest('hex');
+    // const fullHash = crypto.createHash('md5').update(contentKey).digest('hex');
 
     // 检查是否已经为这个内容生成过文件名
     if (this.imageRegistry.has(contentKey)) {
@@ -58,9 +58,18 @@ class ImageProcessorV2 {
     }
 
     // 生成两段式命名：时间戳(13位) + hash(8位)
-    const timestamp = Date.now().toString();
-    const shortHash = fullHash.substring(0, 8);
-    const filename = `${timestamp}_${shortHash}${ext}`;
+    // const timestamp = Date.now().toString();
+    // const shortHash = fullHash.substring(0, 8);
+    // const filename = `${timestamp}_${shortHash}${ext}`;
+
+    // 直接使用内容哈希作为文件名，避免与时间戳、路径关联
+    const mdDir = path.dirname(mdFilePath);
+    const absoluteImagePath = path.resolve(mdDir, originalUrl);
+    const imageBuffer = fs.readFileSync(absoluteImagePath);
+    const contentHash = crypto.createHash('md5').update(imageBuffer).digest('hex');
+    const filename =`${contentHash}${ext}`;
+    console.log('absoluteImagePath:', absoluteImagePath,filename);
+    
 
     // 记录映射关系
     this.imageRegistry.set(contentKey, filename);
