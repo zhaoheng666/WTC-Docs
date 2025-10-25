@@ -245,7 +245,7 @@ class ImageProcessorV2 {
 
         // 跳过已处理的图片，但记录它们
         // 支持新旧两种格式：/assets/xxx 和 http://.../assets/xxx
-        if (imageSrc.includes('/assets/') || imageSrc.startsWith('/assets/')) {
+        if (imageSrc.startsWith('/assets/')) {
           const imageName = imageSrc.split('/assets/')[1];
           if (imageName) {
             processedInThisFile.add(imageName);

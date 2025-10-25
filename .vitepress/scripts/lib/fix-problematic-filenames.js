@@ -5,7 +5,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const docsDir = path.resolve(__dirname, '../..')
+const docsDir = path.resolve(__dirname, '../../..')
 
 // 温和的文件名修复配置
 const CONFIG = {
