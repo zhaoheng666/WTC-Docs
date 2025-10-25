@@ -13,11 +13,11 @@
 
 ### 一、创建模板：
 
-![image1](/assets/1758727509756_1198455c.png)
+![image1](/assets/e9ef3225d18d3d30a0215fbd2f5bc144.png)
 
-#### ![image2](/assets/1758727509758_e0522cc8.png)
+#### ![image2](/assets/811a66bd687cbc65f6dea66725c5b33c.png)
 
-![image3](/assets/1758727509759_f826d1f0.png)
+![image3](/assets/b12b19ec7d5b579a1afccaa6d83221e9.png)
 
 #### 命名规范：
 
@@ -37,20 +37,20 @@ slot\_tips\_bet\_lock\_tpl\_v1
 生成模板以 CCB 为单位，递归处理其嵌套 CCB，  
 如果一个功能模块包含多个 CCB，可将关联 CCB 拖入到主 CCB，实现一键生成；  
 eg：排行榜和排行榜列表 item  
-![image4](/assets/1758727509762_78374253.png)
+![image4](/assets/b47d55c395bc367cd6017d6949a6ae3d.png)
 
 #### 注意：
 
 1、如果输入的 目标名和替换关键字名有重合，将会忽略重复的关键字替换；  
 2、如果目标 CCB 为通用（common、slot、casino）资源目录中的 CCB，将会忽略关键字替换，指拷贝 CCB 到模板库，以避免通用资源引用分叉冗余；  
 3、默认关闭了裁剪，如果遇到图集过大无法打包会尝试开启裁剪重新打包；  
-![image5](/assets/1758727509763_9dde99db.png)  
+![image5](/assets/b5bf625d1365aaf4692a03eb687d5a96.png)  
 因为只存在删减的情况，不大可能出现裁剪后仍无法打包的情况，但不排除美术通过手动打包的资源原本就超过 2048\*2048 的情况；遇到该情况，请手动拆解图集后打包，并修正模板库中的引用；
 
 ### 二、应用模板到任意目录：
 
-![image6](/assets/1758727509765_bb8e23a7.png)  
-![image7](/assets/1758727509766_1b423887.png)  
+![image6](/assets/1e81deaf27399bf05fbdc2bf7aa25f44.png)  
+![image7](/assets/ef16b6dd61652e5538e6d4a5e8ca27ce.png)  
 1、自动列举了模板库中所有已存在的模板，输入对应序号，回车；  
 2、1-2 秒内执行完毕，看到应用完”成字”样后，到 cocosbuilder 中刷新目录；
 

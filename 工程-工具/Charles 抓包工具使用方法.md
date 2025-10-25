@@ -6,15 +6,15 @@
 
 ## 一、charles基础设置：
 
-### 1、安装根证书 "Help" \-\> "SSL Proxying" \-\> "Install Charles Root Certificate"![image1](/assets/1758727509828_89d5241a.png)
+### 1、安装根证书 "Help" \-\> "SSL Proxying" \-\> "Install Charles Root Certificate"![image1](/assets/3db713b49f737bb8f4e6c12b6be9e949.png)
 
-### 2、证书安装位置选择到系统：![image2](/assets/1758727509829_b4a9403b.png)
+### 2、证书安装位置选择到系统：![image2](/assets/aa25f31ef3034cb7f007be54777e6e42.png)
 
-### 3、打开钥匙串-\>搜索 charles 找到证书-\>右键显示简介-\>始终信任证书：![image3](/assets/1758727509830_8d85b5c5.png)![image4](/assets/1758727509832_5ceaa906.png)
+### 3、打开钥匙串-\>搜索 charles 找到证书-\>右键显示简介-\>始终信任证书：![image3](/assets/1a02cc71f855cfb2d76dbdff78ca708a.png)![image4](/assets/7ba7aa80258514f1c8f973daf06dd600.png)
 
-### 4、配置 Proxy Settings：  ![image5](/assets/1758727509833_4f700c7b.png) ![image6](/assets/1758727509834_fd67c0e4.png)
+### 4、配置 Proxy Settings：  ![image5](/assets/bc6129451e8d9e329479e409ef6dbdc5.png) ![image6](/assets/820686dbe81e04a09921c01bc09e74cf.png)
 
-### 5、配置 SSL 代理： ![image7](/assets/1758727509836_0312321c.png)![image8](/assets/1758727509837_60330f51.png)
+### 5、配置 SSL 代理： ![image7](/assets/6d62f40890e1ed806a09d63cb28d4c2e.png)![image8](/assets/20ec59bed786f22611a055257dd9cf09.png)
 
 #### 可以指定具体域名端口，或使用通配符；
 
@@ -28,11 +28,11 @@
 
 #### 服务器端口：chales 中配置的 HTTP Proxy Port
 
-![image9](/assets/1758727509839_7c935abb.png)
+![image9](/assets/e0f664dfd65894ea30c19d19fbf7c7ff.png)
 
 ### 3、安装证书：“Help” \> “SSL Proxying” \> “Install Charles Root Certificate on a Mobile Device or Remote Browser”
 
-![image10](/assets/1758727509814_d43b3b16.png)
+![image10](/assets/a10ff77c42b3fe6c51dfc4393910badb.png)
 
 ### 4、设备浏览器输入 [chls.pro/ssl，下载证书到手机；](http://chls.pro/ssl)
 
@@ -46,11 +46,11 @@
 
 #### 服务器主机名：链接电脑的局域网 ip
 
-#### 服务器端口：chales 中配置的 HTTP Proxy Port![image11](/assets/1758727509815_1017d933.png)
+#### 服务器端口：chales 中配置的 HTTP Proxy Port![image11](/assets/53ac6e249b1e60d4bc4ba9558e2951df.png)
 
 ### 3、安装证书：“Help” \> “SSL Proxying” \> “Install Charles Root Certificate on a Mobile Device or Remote Browser”
 
-![image12](/assets/1758727509817_3c3e0123.png)
+![image12](/assets/648346832caabf89de33c1b8b7a566d3.png)
 
 ### 4、设备浏览器输入 [chls.pro/ssl，下载证书到手机；](http://chls.pro/ssl) 或者电脑下载 drop 到设备；
 
@@ -66,9 +66,9 @@
 
 选择要设置断点的请求，右键选择breakpoints，这样每次请求这条链接的时候，都会弹出处理界面，询问要如何处理
 
-![image13](/assets/1758727509818_2b0b6002.png)  
+![image13](/assets/6ec44d2bd1dc9f8be08ff9405dce2632.png)  
 此时可以选择取消或者返回对应的数据，模拟超时请求的情况  
-![image14](/assets/1758727509819_02fe90bc.png)
+![image14](/assets/ff8f7e9827e6ee4831106b3e564491ba.png)
 
 ### 3、保存和修改返回值
 
@@ -76,19 +76,19 @@
 
 如图，右键选中请求，选择对应选项就可以把返回保存到本地
 
-![image15](/assets/1758727509821_908fabaa.png)
+![image15](/assets/6c511f80d6a06cf44d8029ad646524a3.png)
 
 替换请求数据同样也是右键所需请求，选择本地的对应要替换的文件  
-![image16](/assets/1758727509822_3942f8fc.png)
+![image16](/assets/d4bb568cccbde3fbe6dcdc6ba8975ce9.png)
 
-![image17](/assets/1758727509823_5bcc3751.png)
+![image17](/assets/0c72a556a87fad4ad937776e4249acd8.png)
 
 ### 4、模拟弱网
 
-![image18](/assets/1758727509825_5d26d3b4.png)
+![image18](/assets/bae45cf99def9dc92d4a5a4fe828d387.png)
 
 可以根据自己的需要，筛选对应生效的域名，更改带宽，限速等  
-![image19](/assets/1758727509826_0a0f3dee.png)
+![image19](/assets/142c03347abea5a26205366191a86d9b.png)
 
 
 

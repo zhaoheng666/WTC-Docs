@@ -18,7 +18,7 @@
 
 ## 多导出文件的更新问题：
 
-![image](/assets/1758174593053_c961e456.png)
+![image](/assets/c961e456e5f0aa4badebcfe3b130d14a.png)
 
 1. 情形一：未触发该文件的 require
 

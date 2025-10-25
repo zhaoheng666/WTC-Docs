@@ -4,7 +4,7 @@
 
 ### 原理：
 
-![image1](/assets/1758727509719_9c9da077.png)
+![image1](/assets/531a6657920276e07ffc404d81b2bb2b.png)
 
 ### 解决方法：
 

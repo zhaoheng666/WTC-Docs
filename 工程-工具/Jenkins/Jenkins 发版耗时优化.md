@@ -16,7 +16,7 @@
 
 ### 1、rclone 替换 rsync 做本地拷贝、同步：
 
-![image](/assets/1758174593053_ce037db9.png)​
+![image](/assets/ce037db9d1341df503c27043a810b208.png)​
 
 - 安装 rclone：`brew install rclone`​
 - 开启并行传输，提升多核 CPU 使用率，大幅缩短任务时长；
@@ -71,7 +71,7 @@
 
 ### 3、time 命令监控子任务运行时长：
 
-![image](/assets/1758174593054_40e632f1.png)​
+![image](/assets/40e632f1ce04ddab51c944690ed9503c.png)​
 
 - set -x 打开原始命令 echo
 - time 监控命令执行时长：
@@ -89,7 +89,7 @@
 
 - 前置脚本 `sync_flavor.sh` ​中已经同步过一次
 
-![image](/assets/1758174593054_c654b565.png)​
+![image](/assets/c654b565c910e63d0782746401268bd7.png)​
 
 ## 三、剩余可优化空间：
 
@@ -106,9 +106,9 @@
 
 平均降低任务时长 40%-50%
 
-![image](/assets/1758174593054_664531cd.png)​
+![image](/assets/664531cd65969fa27637d37d16c77661.png)​
 
-![image](/assets/1758174593055_a0cc1b3b.png)​
+![image](/assets/a0cc1b3b09a8d658d20d312e965297d4.png)​
 
 #### Release 管道：
 
@@ -120,7 +120,7 @@ Releaase 阶段：↓～10%-25%
 
 Upload 阶段：↓～70%+
 
-![image](/assets/1758174593055_6abc6572.png)​
+![image](/assets/6abc65724bcfeb0bb454637833cbced7.png)​
 
 ## 五、线上资源服动态资源管理：
 

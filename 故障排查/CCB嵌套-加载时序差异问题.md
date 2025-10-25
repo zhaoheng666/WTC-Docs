@@ -2,9 +2,9 @@
 
 ## 案例现场
 
-![1758706517331](/assets/1758727510009_93c0d313.png)
+![1758706517331](/assets/02a34c92af7ca3e58dc7e7a179153cae.png)
 
-![1758706529154](/assets/1758727510011_6078eba4.png)
+![1758706529154](/assets/724f47409ed74df79b175c6dfe7b1865.png)
 
 父 CCB controller. `onDidLoadFromCCB` 中调用子 CCB Controller方法，在 native 端报错，子 CCB controller undefined；
 
@@ -15,7 +15,7 @@
 - **HTML5平台**: 子CCB的 `onDidLoadFromCCB` → 父CCB的 `onDidLoadFromCCB`
 - **Native平台**: 父CCB的 `onDidLoadFromCCB` → 子CCB的 `onDidLoadFromCCB`
 
-![1758698625269](/assets/1758727510013_674df88a.png)![1758703526432](/assets/1758727510010_856b84fb.png)
+![1758698625269](/assets/da3b6a99d58a504fd12e8dde7a60e4c6.png)![1758703526432](/assets/35feb71735ccfe59f39f75675e90911b.png)
 
 ## 原因分析
 

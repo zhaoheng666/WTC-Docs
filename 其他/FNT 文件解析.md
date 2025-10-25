@@ -1,6 +1,6 @@
 # **fnt文件解析&调等宽字体**
 
-![image1](/assets/1758727509634_35365e90.png)  
+![image1](/assets/523929fcbfb9fad2937e76fb16f81dee.png)  
 **字段说明:**  
 id: 每个字符的唯一标识符,对应ASCII码表;  
 letter: 字符本身;

@@ -85,7 +85,7 @@ classDiagram
 
 保证与通用逻辑的隔离；
 
-![](/assets/1758766387324_97b411ac.png)
+![](/assets/eb6d51b06aa5ee0a00667ff4a058df16.png)
 
 #### 5、ActivityRewardItemFactory负责创建 、接管、初始化rewardNode；
 
@@ -120,13 +120,13 @@ ActivityRewardItemFactory.unRegistExtendHandlers();
 
 ### 1、统一使用新的活动奖励CCB ，请避免直接放图、或旧的 Reward 模板；
 
-![](/assets/1758766387325_088f342a.png)
+![](/assets/105ae66f95716914ae43e09fdb12616e.png)
 
 ### 2、结构说明：
 
 #### a、最外层节点：程序识别节点，tag 为奖励类型，与文件名种的数字一致；
 
-![](/assets/1758766387325_49a15e66.png)
+![](/assets/e6ab4592d193d24689ac12ff59558bf7.png)
 
 #### b、大小缩放：新增的奖励类型直接在CCB 里调整，已经在用不要动；
 
@@ -144,7 +144,7 @@ ActivityRewardItemFactory.unRegistExtendHandlers();
 
 **被引用的通用图集：**（老的通用资源）
 
-![](/assets/1758766387326_d30901be.png)
+![](/assets/d3465f855a914cecbeeb9da079c1a3e0.png)
 
 引用这些通用图集的地方，按使用场景划分：
 
@@ -152,9 +152,9 @@ ActivityRewardItemFactory.unRegistExtendHandlers();
 
 老活动大量使用，动了通用图集，这些 CCB 得重新调整缩放，使用到这些通用 CCB 的活动要全部检查、修正、测试一遍；
 
-![](/assets/1758766387327_0749de62.png)
+![](/assets/a107d0c047291ead7ea1591df01e3ae5.png)
 
-![](/assets/1758766387327_3c279488.png)
+![](/assets/c5ebf3e9e8ae1be52b4005e69cb12fbf.png)
 
 **ii、新的拆分通用 CCB：**
 
@@ -182,7 +182,7 @@ iii、调整好大小等，删除coins 节点，保存；
 
 iiii、将弄好的新的 ccb 移动到 oldvegas/common/activity\_reward;(或 doublehit)
 
-![](/assets/1758766387328_cfd681b1.png)
+![](/assets/5ba095cd89a63663c92249c1504a0818.png)
 
 #### b、解决金币显示样式不统一问题：
 
@@ -194,7 +194,7 @@ iiii、将弄好的新的 ccb 移动到 oldvegas/common/activity\_reward;(或 do
 
 #### c、解决底色问题：
 
-![](/assets/1758766387328_7f868704.png)
+![](/assets/6592a29790fc0007ff957aef59f42a4e.png)
 
 i、扣出底色、光晕、描边等，作为底图添加到各通用奖励 CCB的bgEffectNode 下；
 
@@ -202,9 +202,9 @@ ii、程序封装接口，控制是否显示bgEffectNode；
 
 iii、程序分装接口，变更底色、光晕、描边等图片颜色（基础色美术定，需要变更的色彩 RGBA 值美术提供）；
 
-![](/assets/1758766387329_e4a30b7a.png)
+![](/assets/debf9c3895a7fae9a4b6aeaa2e2c0a19.png)
 
-![](/assets/1758766387330_ed019244.png)
+![](/assets/5f4900e2e204a448c435dc786bfaa449.png)
 
 
 

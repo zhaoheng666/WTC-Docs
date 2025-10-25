@@ -1,6 +1,6 @@
 # native 增加切换 cdn 功能
 
-![image](/assets/1758174593056_a1517c63.png)
+![image](/assets/a1517c63056492bccea1b1dbbfc5f22f.png)
 
 <span data-type="text" style="color: var(--b3-font-color2);">修订人：</span> 赵恒			修订时间：2025.4.28
 
@@ -47,10 +47,10 @@ CDN：分发加速服务，发布到 CDN 后，玩家可见，即线上资源；
 
 1. native debug 面板增加切换 cdn 地址按钮：
 
-    ![image](/assets/1758174593057_56f9159e.png)
+    ![image](/assets/56f9159eabd43712824593492957469c.png)
 2. native debug、release VIP 信息界面增加隐藏点击序列，触发 cdn 地址切换：
 
-    ![image](/assets/1758174593059_b934d2ab.png)
+    ![image](/assets/b934d2abe09911c35ab3d39833598e86.png)
 
     1. 切换到正式资源服：（1212121）
     2. 关闭切换：（1111111）

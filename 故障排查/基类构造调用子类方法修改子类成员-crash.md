@@ -70,9 +70,9 @@ export class Test extends Component {
 
 #### 2、运行时报错：
 
-![image](/assets/1758174599859_6318b181.png)
+![image](/assets/6318b18171f50142625df8cd34b3de28.png)
 
-![image](/assets/1758174599860_ff5009a0.png)
+![image](/assets/ff5009a0d9a7c3cd17cd58a6463730a9.png)
 
 #### 3、结论：
 

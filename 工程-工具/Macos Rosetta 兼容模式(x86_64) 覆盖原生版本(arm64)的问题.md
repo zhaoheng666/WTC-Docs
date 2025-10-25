@@ -12,13 +12,13 @@ macOS 的 **Rosetta 模式**，特别是其第二代技术 **Rosetta 2**，是�
 
 - ### 查看软件包是否是 x86_64 位版本
 
-![image](/assets/1760679359268_c4984ef3.png)
+![image](/assets/d24129b33e3ec32a83b760eaba56018b.png)
 
-![image](/assets/1760679359269_52445dac.png)
+![image](/assets/277e8968133ce5da9b279288ebd0a383.png)
 
 - ### 查看是否以安装支持 Rosetta，那些应用运行在 Rosetta 兼容模式下：
 
-![image](/assets/1760679359270_41c4fac4.png)
+![image](/assets/e0a43c66d34e5ca00b6c5e91571d98a6.png)
 
 
 ## Rosetta 模式的影响

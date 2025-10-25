@@ -46,7 +46,7 @@
 
 #### columnStopAnimationComponent 有占用不方便重写时可用， 强制隔断主流程 SpinProcess 流转；该自定义流程流转前插入一帧延时；
 
-![image1](/assets/1758727509963_c5c91587.png)
+![image1](/assets/cca24d92d22cc67b3f9185877b8b45f9.png)
 
 **var** SpinEndWaitProcess \= ***Process***.**extend**({
    **name**: **"CloverClashWaitProcess"**,

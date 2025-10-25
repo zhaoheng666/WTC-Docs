@@ -6,7 +6,7 @@
 
 - FB 后台没有待处理项、App Mode：Live、inbox 无相关信息、无相关邮件提醒；
 
-![img_v3_02qr_21ffbacc-64f7-4353-b3ab-22de096123bg](/assets/1760597753057_b3bf2cfb.jpg)
+![img_v3_02qr_21ffbacc-64f7-4353-b3ab-22de096123bg](/assets/6cfb9c800ec576c546f6a54585b1f338.jpg)
 
 ### 原因：
 

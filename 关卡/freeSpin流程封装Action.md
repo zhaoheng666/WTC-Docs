@@ -65,7 +65,7 @@ this.machineConfig.needFreeGameAction = true;
 - 当前次数 label 节点命名：`_curCountLabel`
 - 总次数 label 节点命名：`_totalCountLabel`
 
-![计数器格式示例1](/assets/1760346210615_7163febf.png)
+![计数器格式示例1](/assets/b54200c9e4faeb8da46d4c2c4f305c53.png)
 
 #### 2. 只显示剩余次数，又细分为两种情况：
 
@@ -73,7 +73,7 @@ this.machineConfig.needFreeGameAction = true;
 - ccb 节点命名：`freeSpinCounter`，需有 appear、disappear、add 动画
 - 剩余次数 label 节点命名：`_leftCountLabel`
 
-![计数器格式示例2](/assets/1760346210616_05b05e2d.png)
+![计数器格式示例2](/assets/a40757d5e7ef82c2a413a0c031524a3a.png)
 
 **(2) 通过其他节点的动画切换到展示剩余次数**
 

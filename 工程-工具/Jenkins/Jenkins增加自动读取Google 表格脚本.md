@@ -5,26 +5,26 @@
 #### 1、新建项目：
 
 [https://console.cloud.google.com/apis/dashboard?hl=zh-cn\&orgonly=true\&project=sheets-api-437103\&supportedpurview=organizationId](https://console.cloud.google.com/apis/dashboard?hl=zh-cn&orgonly=true&project=sheets-api-437103&supportedpurview=organizationId)  
-![image1](/assets/1758727509885_6163b50e.png)
+![image1](/assets/38b17eb96d58b088d421c37af104cc30.png)
 
 #### 2、启用 Google Sheets API：
 
-![image2](/assets/1758727509886_467f0133.png)】  
-![image3](/assets/1758727509888_7a1b1bea.png)
+![image2](/assets/6e33e53dbf204a548a4c729ed8f4bec3.png)】  
+![image3](/assets/c5f0038424347f11bccfe4f6d89621f6.png)
 
 #### 3、创建服务账号：
 
-![image4](/assets/1758727509889_878b6ba6.png)  
-![image5](/assets/1758727509890_ffbc215e.png)
+![image4](/assets/b6df149d414b234f68da2a18b8c17452.png)  
+![image5](/assets/c2902895b9830ea9fe5c2df0da88a8bb.png)
 
 #### 4、创建服务密钥（选择 json 格式）：
 
-![image6](/assets/1758727509892_580d4f15.png)  
+![image6](/assets/35fc38654666c1a06143ea419764fdce.png)  
 创建完成后，会自动将 json 文件下载到本地，这个文件将是后续脚本创建服务的基础配置文件；
 
 #### 5、为服务账号添加共享权限：
 
-![image7](/assets/1758727509893_d4b32eaa.png)
+![image7](/assets/b40a4a68ec3b4518319aafdbadeedb9b.png)
 
 #### 6、编写脚本读取未来两周活动：
 

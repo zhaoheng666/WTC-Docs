@@ -117,15 +117,15 @@ Appcharge 提供了一些参数，比如邮箱，可以在拉起支付页面的�
 国家地区：随便选		// 最好是美国
 
 
-[image1]: http://localhost:5173/WTC-Docs/assets/1758732304110_8c118278.png
-[image2]: http://localhost:5173/WTC-Docs/assets/1758732304110_3e636410.png
-[image3]: http://localhost:5173/WTC-Docs/assets/1758732304111_83bd047d.png
-[image4]: http://localhost:5173/WTC-Docs/assets/1758732304112_8bf6ec4c.png
-[image5]: http://localhost:5173/WTC-Docs/assets/1758732304112_883268ab.png
-[image6]: http://localhost:5173/WTC-Docs/assets/1758732304113_87277e7e.png
-[image7]: http://localhost:5173/WTC-Docs/assets/1758732304114_5b6ef7b5.png
-[image8]: http://localhost:5173/WTC-Docs/assets/1758732304116_8289bdad.png
-[image9]: http://localhost:5173/WTC-Docs/assets/1758732304117_2a674d5d.png
-[image10]: http://localhost:5173/WTC-Docs/assets/1758732304118_41ded213.png
-[image11]: http://localhost:5173/WTC-Docs/assets/1758732304118_acd872ec.png
-[image12]: http://localhost:5173/WTC-Docs/assets/1758732304119_034c61f7.png
+[image1]: http://localhost:5173/WTC-Docs/assets/4cdf0b38f6909214a220302e2c552f08.png
+[image2]: http://localhost:5173/WTC-Docs/assets/e2af9fdcd99078d0b93f7e3ce43c9567.png
+[image3]: http://localhost:5173/WTC-Docs/assets/2299ea35564ba3d0e16fba76f307262a.png
+[image4]: http://localhost:5173/WTC-Docs/assets/3ae7fc6d5c2d0eb336ab67fbd17be3c5.png
+[image5]: http://localhost:5173/WTC-Docs/assets/edff7d36917e1a49d756255be2a2efc0.png
+[image6]: http://localhost:5173/WTC-Docs/assets/53fd38f104998c0811deb96691b40943.png
+[image7]: http://localhost:5173/WTC-Docs/assets/b9146d933c2ac1230b22df480fcb5d50.png
+[image8]: http://localhost:5173/WTC-Docs/assets/474a018e31bd8be4b57b602cf212d653.png
+[image9]: http://localhost:5173/WTC-Docs/assets/ac7a05473c1f317a94de9a262c1f6f25.png
+[image10]: http://localhost:5173/WTC-Docs/assets/4ea82c352a2a3bcd04cbe0c573e58c48.png
+[image11]: http://localhost:5173/WTC-Docs/assets/26c70241ef3868700675407c6ee9eb6a.png
+[image12]: http://localhost:5173/WTC-Docs/assets/ad4f081ff6d5205d7c16e5c44834c25a.png

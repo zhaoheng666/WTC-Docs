@@ -6,7 +6,7 @@
 
 根据左侧页签查看程序相关用法及美术注意事项。
 
-![BigWin 动画流程示例](/assets/1760346210618_b5dab9d3.gif)
+![BigWin 动画流程示例](/assets/7358b2fe80825a24b87c2306ffbb4d06.gif)
 
 ## 程序配置
 
@@ -89,7 +89,7 @@ this.machineConfig.multiUpFontRangeConfig = [
 
 4. 如果不同区间使用同一个字体，采用设置字体颜色的方案来实现不同区间展示效果的话，需要向程序详细提供不同区间所对应的颜色rgb值
 
-![字体配置示例](/assets/1760346210615_7163febf.png)
+![字体配置示例](/assets/b54200c9e4faeb8da46d4c2c4f305c53.png)
 
 ### 动画注意事项
 
@@ -101,4 +101,4 @@ this.machineConfig.multiUpFontRangeConfig = [
    - 赢钱文本：`_winChipsLabel`
    - 倍数文本：`_multiLabel`
 
-![节点绑定示例](/assets/1760346210616_05b05e2d.png)
+![节点绑定示例](/assets/a40757d5e7ef82c2a413a0c031524a3a.png)

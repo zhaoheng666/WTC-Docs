@@ -9,31 +9,31 @@
 ## 制作slots-wtc-main2的镜像
 
 镜像名称: cv-main-20240820-1  
-![image1](/assets/1758727509660_07fb5765.png)
+![image1](/assets/7e7abbd788fb8c0d82cf906639f2ae9b.png)
 
 ## 通过镜像启动备份实例
 
 名称: cv-main-20240820-1  
 镜像: cv-main-20240820-1  
-![image2](/assets/1758727509662_8ab97083.png)
+![image2](/assets/71c81ccb455c7570dc2ec799a4fc450d.png)
 
-## ![image3](/assets/1758727509663_1953d035.png)
+## ![image3](/assets/156907da80db424aa99457902e574f16.png)
 
 安全组: slots-classicvegas-prod-sg  
-![image4](/assets/1758727509664_d9aef7c4.png)  
-![image5](/assets/1758727509666_ed3e5644.png)
+![image4](/assets/dbc87fb0ef5c3b9a0f53d4f681c420cd.png)  
+![image5](/assets/383b9e506daf9d3e0659784f3c8fa46c.png)
 
 添加弹性IP  
-![image6](/assets/1758727509667_1fe38e2f.png)  
-![image7](/assets/1758727509668_d41e1291.png)  
-![image8](/assets/1758727509670_2b0d2642.png)  
-![image9](/assets/1758727509671_a3c9e8f7.png)
+![image6](/assets/6d7ad27135cfb15f6e668b54a94bd63d.png)  
+![image7](/assets/3e4a20f98e82b01afdfa7f8a85398788.png)  
+![image8](/assets/d3d360c2afd89e9f11d5b9e2d57f1d2e.png)  
+![image9](/assets/ab10a227b53e4c7c15c585bf30bd6481.png)
 
 ## 修改实例类型
 
 停止实例: 在控制台中停止实例  
 修改实例类型:c5.9xlarge  
-![image10](/assets/1758727509659_3257297d.png)
+![image10](/assets/f9040c9cfad6873470c79d5ee224f815.png)
 
 ## 启用ENA
 

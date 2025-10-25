@@ -10,7 +10,7 @@
 
 	抽出来一个公共路径只存放一套小机台资源，资源发布按照策划配表按需发布，活动界面的走动态加载  
 配置表地址:[🔥运营计划- Slots](https://docs.google.com/spreadsheets/d/1n9-hHrvvzyGcvktimZVQU9hwydTJn5bIWV-QpnPZNjw/edit?pli=1&skip_itp2_check=true&gid=722776441#gid=722776441)  
-	![image1](/assets/1758727510014_8ede6d2f.png)
+	![image1](/assets/d6dd04c48a418045fa8831cad897a402.png)
 
 # 3、环境准备
 
@@ -20,7 +20,7 @@ pip install oauth2client
 
 # 4、资源发布
 
-![image2](/assets/1758727510016_f511269f.png)
+![image2](/assets/094c504e23988a7999abbe6e4051e9f0.png)
 
 
 # 5、DH移植

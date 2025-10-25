@@ -167,11 +167,11 @@ public void init() {
 
 ##### 全屏后
 
-![image](/assets/1758174599815_e66ac64f.png)
+![image](/assets/e66ac64f79bd37a8ad01f60a0b16a242.png)
 
 ##### 全屏前
 
-![image](/assets/1758174599829_449bb5b3.png)
+![image](/assets/449bb5b3ca2cce1dbd6e15bdf759bdbc.png)
 
 ### 六、全屏后需要做的适配调整：
 

@@ -255,12 +255,12 @@ db.DeletePlayerMap.find().sort({\_id:-1})
 
 当前使用:  c4.8xlarge (36 个 vCPU，61440 内存，仅限于 EBS)  
 使用量:  
-![image11](/assets/1758727509674_80b38ff8.png)
+![image11](/assets/af1887223f6eb91e18219110f0a612f1.png)
 
 备选:  
 c5.9xlarge (36 个 vCPU，73728 内存，仅限于 EBS) 比目前使用的稍大一点  
 c5.4xlarge (16 个 vCPU，32768 内存，仅限于 EBS) 腰斩不合适  
-![image12](/assets/1758727509674_61220789.png)
+![image12](/assets/7c0e94d65f4834750170b7967041fba4.png)
 
 
 

@@ -2,11 +2,11 @@
 
 单纯渲染崩溃，逻辑还在正常跑
 
-![image](/assets/1760337193440_8c256044.png)
+![image](/assets/7aa0fd68e8c14bdb2bb47574af88ba19.png)
 
 未掉线，我甚至能点开支付、能正常 spin、autospin、音效触发正常，单纯渲染中断
 
-![image](/assets/1760337193441_37cc51be.png)
+![image](/assets/d874a02187074fdc11dab2f1d98806f4.png)
 
 渲染中断，在那一层出的问题？
 

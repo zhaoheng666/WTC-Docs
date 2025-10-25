@@ -22,5 +22,5 @@
    2. BUILD\_USER: 用户全名  
    3. BUILD\_USER\_EMAIL: 用户邮箱
 
-![image1](/assets/1758727509754_46c6b2e7.png)
+![image1](/assets/75938eb584f11e95e5cb3d85413a5950.png)
 

@@ -39,7 +39,7 @@
 - 通过标注告诉 AI 何时读取
 - CLAUDE.md 仅作索引,具体规则文件放到 docs 子项目集中管理
 
-**验证：** ​[Claude Code 模块化拆分+标注机制实验报告](./Claude%20Code%20模块化拆分+标注机制实验报告.md)
+**验证：** ​[Claude Code 模块化拆分+标注机制实验报告](/../工程-工具/AI/Claude Code 模块化拆分+标注机制实验报告)
 
 **结论**：标注系统无效，❌ 即使标注 [必读]，新的 AI 实例依然无法主动读取链接文档
 
@@ -150,15 +150,15 @@
   - **明确任务执行过程：基础、重要的规则直接内联，明确执行过程**
   - **添加规则索引表：**
 
-  ![image](/assets/1760596246787_d1320646.png)
+  ![image](/assets/af150574d6a88c5e9a9b9b305c0dec19.png)
 
-  ![image](/assets/1760596246788_cd310f17.png)
+  ![image](/assets/0f2f2f1bd4c3c25075e0fb549762eac4.png)
 
 - #### 添加规则维护引导
 
-  ![image](/assets/1760596246790_c156e922.png)
+  ![image](/assets/771f3cc4a02a2444b32fa20b380cdef8.png)
 
-  ![image](/assets/1760596246790_30f21601.png)
+  ![image](/assets/b4df0aaaab2505fd20c3cc58ca2aef5b.png)
 
 
 

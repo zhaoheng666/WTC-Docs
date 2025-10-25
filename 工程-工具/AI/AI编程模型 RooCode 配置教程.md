@@ -8,11 +8,11 @@
 
 3、点击Install安装
 
-![image1](/assets/1758727509512_c2bd9e6b.png)
+![image1](/assets/474945bb4bdde2b600cf75e864a6eeaf.png)
 
 4、点击左侧的小火箭按钮，打开Roo Code
 
-![image2](/assets/1758727509513_d7c6b3f2.png)
+![image2](/assets/5eb574b04a7e77440b0099c0a449ce62.png)
 
 5、点击Roo Code右上角的设置图标
 
@@ -37,21 +37,21 @@ Model名字填写：**gemini-2.5-flash**
 
 其中，推理模型适合用来进行Architect，不适合用来生成Code，可以通过在Provider Settings中建立多个Configuration Profile，并在Architect和Code的时候进行选择切换。另外，由于推理模型需要思考，首次输出会在思考结束之后才会有结果，请耐心等待。
 
-![image3](/assets/1758727509515_ec1985f4.png)
+![image3](/assets/cd1e779e5c285cf6869237d415a86954.png)
 
 7、配置模型的上下文窗口大小：
 
 展开Model Configuration，将Context Window Size根据上面的表格，填写模型对应的最大的上下文窗口大小，以方便大模型一次就能提交更多的内容上去。
 
 此外，由于编程模型不支持图片识别，还应该取消Image Support勾选。配置完成后点击Done保存。  
-![image4](/assets/1758727509517_63e3bd82.png)  
+![image4](/assets/8abab0af4c1a639edd3a969bb8135e67.png)  
 8、配置思考语言
 
 由于大模型采用英文语料训练，因而让大模型使用英文进行思考可获得更高的智力和准确度，配置方法如下：
 
 点击Roo Code上方第二个按钮，进入Prompts配置，在Preferred language中选择English，点击Done保存。
 
-![image5](/assets/1758727509518_d9d23856.png)
+![image5](/assets/f91d9e391f179fc6f91a427d0de40601.png)
 
 ## 二、使用Roo Code
 

@@ -14,30 +14,30 @@
 
 - 开启前：
 
-![image](/assets/1758174599842_86f13173.png)​
+![image](/assets/86f1317397f6a92f863c506afa49cb3f.png)​
 
 - 开启后：
 
-ge![image](/assets/1758174599843_d38e6e34.png)​
+ge![image](/assets/d38e6e349f0c4bac38c9c927c7fbc73a.png)​
 
 ### 三、webstrom 开启集成 jshint：
 
 使用项目公用配置
 
-![image](/assets/1758174599845_34926313.png)​
+![image](/assets/34926313be4400371a7bfbbf0fd91777.png)​
 
 ### 四、vscode 开启 jshint：
 
 - 1、安装 jshint: `npm install jshint --save-dev`​
 
-  ![image](/assets/1758174599845_f4e01897.png)​
+  ![image](/assets/f4e018978a5d20adcb5c52c7c9c43b01.png)​
 
 - 2、安装 vscode-插件：
 
-![image](/assets/1758174599846_cbe1bbfb.png)​
+![image](/assets/cbe1bbfbcae61c17c7675fdf114e3a89.png)​
 
 - 使用项目公用配置：
 
-  ![image](/assets/1758174599846_717240cb.png)​
+  ![image](/assets/717240cbdef0b084e6981730425f2ad2.png)​
 
 ‍

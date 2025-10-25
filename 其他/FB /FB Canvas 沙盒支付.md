@@ -8,11 +8,11 @@
 
 ## 2、Meta developer 后台添加 Web Payment Tester：
 
-![image1](/assets/1758727509857_b5767297.png)
+![image1](/assets/8eb74cd6eca14d57f42032ab6edd26ce.png)
 
 ## 3、确认支付页面显示“正在测试”，否则，回 1、2 步：
 
-![image2](/assets/1758727509857_d279d208.png)
+![image2](/assets/2e51cc72f855a62be30800893d2b9ce6.png)
 
 ## 4、首次测试，需要完成一次信息校验：
 
@@ -22,15 +22,15 @@
 
 #### CVV：任意三个数字
 
-![image3](/assets/1758727509858_43709f02.png)
+![image3](/assets/52debd2e2e3cdea5f3515a5a1365a78b.png)
 
 ## 5、有概率请求失败，重试、直到出现 Test Payment 按钮
 
-![image4](/assets/1758727509860_8618e207.png)
+![image4](/assets/8f0ccab027416c3f9498d70ef814357f.png)
 
-![image5](/assets/1758727509861_e1bf8c04.png)
+![image5](/assets/42bab8a7bbb414dffe68818bf005ef37.png)
 
-![image6](/assets/1758727509864_48be5ac2.png)
+![image6](/assets/d00280f4692f61ba7262aac976601f3c.png)
 
 ## 6、支付完成后，FB 会推送订单邮件：
 
@@ -38,7 +38,7 @@
 
 #### 作用不大、知道是沙盒支付产生的邮件就行；
 
-![image7](/assets/1758727509865_104b4365.png)
+![image7](/assets/633f0b9d0e1df83e83b9f712df8262fb.png)
 
 
 

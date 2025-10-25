@@ -1,7 +1,7 @@
 # 图标drum动画组件 SymbolDrumAction
 
 所有配置已在生成关卡脚本中添加默认属性。  
-![image1](/assets/1758727509650_5d3bd56b.png)
+![image1](/assets/9e72327f0a61845d41f9e093fe1ea6b2.png)
 
 ## 组件开关
 

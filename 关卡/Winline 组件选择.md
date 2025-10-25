@@ -10,7 +10,7 @@
 
 ###  二、winline 服务器数据：
 
-***![image1](/assets/1758727509967_5120fab7.png)***  
+***![image1](/assets/1406489992245014c9ee29e16bdcd2b4.png)***  
 原始字段：wl  
 客户端解析后字段： winlines  
 获取方式：winLineComponent.getAllWinLines()

@@ -24,7 +24,7 @@
 
 ## 1、使用 webstorm 内置服务器：
 
-![image1](/assets/1758727509606_60a79ba2.png)
+![image1](/assets/48a7b64a3abf34a867d4604d76bdf6ad.png)
 
 * 端口：低于 63342
 * 勾选接受外部链接
@@ -32,10 +32,10 @@
 
 ## 2、本地仓库更新，本地启动一次
 
-    ![image2](/assets/1758727509608_e7eea6f5.png)
+    ![image2](/assets/4d07463d39a00e35c0c87c5b19c7b6af.png)
 
 ## 3、使用内网 ip 访问：
 
-* option \+ 鼠标左键，查看本机 ip![image3](/assets/1758727509609_d7f03935.png)![image4](/assets/1758727509610_e86344aa.png)
+* option \+ 鼠标左键，查看本机 ip![image3](/assets/5e144bd4ba847da8b51c31aef2f23eb0.png)![image4](/assets/bfcb2be9027daee2280452601134a4a8.png)
 * 拼接访问地址：http://本机 ip:内置服务器端口/WorldTourCasino/index.html
   [http://10.10.27.80:63341/WorldTourCasino/index.html](http://10.10.27.80:63341/WorldTourCasino/index.html)

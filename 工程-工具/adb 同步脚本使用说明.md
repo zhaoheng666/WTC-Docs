@@ -37,18 +37,18 @@ cd WorldTourCasino/scripts/
 
 #### **1.1 添加保护代码：**
 
-<img src="/assets/1758727509627_5b7c0668.png">
+<img src="/assets/0ff732470ca26076a2d8d3e822b76291.png">
 
 #### **1.2将修正后的 jsb\_boot.js文件推送到手机：**
 
-![image3](/assets/1758727509629_7e497a3d.png)
+![image3](/assets/29108d31bb62e2543733322eb47a6e77.png)
 
 ### **2、每次重启后仍然重新去线上拉更新：**
 
 #### **2.1修正 Config.js 配置，serverData.serverUrl是否跟ServerURLType.RESOURCES\_SERVER\_URL一致**
 
-![image5](/assets/1758727509631_bc788245.png)
+![image5](/assets/e426e83ef3bac4cc9b999e80914ede90.png)
 
 #### **2.2 把选服弹板公开出来，方便切换测试资源服，切换 manifest**
 
-![image6](/assets/1758727509633_b8022bc3.png)
+![image6](/assets/142037a4326b2325c4d7e730dee6510c.png)

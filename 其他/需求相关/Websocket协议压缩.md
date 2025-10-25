@@ -36,8 +36,8 @@
 
 ##### 前后端约定并保持一致
 
-![image1](/assets/1758727509956_de31dcfe.png)  
-![image2](/assets/1758727509957_4ebe24e0.png)
+![image1](/assets/e7c045ea367a0910fc2d8abb937c762f.png)  
+![image2](/assets/60e6fcf800509feb0dbccaf9d6921ddd.png)
 
 ### 2、路由分离： 修正 protocol route，需支持压缩的协议，增加 \_gzip 路由；
 
@@ -45,7 +45,7 @@
 
 ##### 原因：客户端收到返回协议，经过 decode 后的 msgbody 统一为 Uint8Array 类型，无法仅通过 msgbody 类型区分是否为需解压数据；
 
-![image3](/assets/1758727509958_329a2c4e.png)
+![image3](/assets/d7a4d6a82ed329c3dc770a6f94a6eb7c.png)
 
 ### 3、后端 gzip 压缩： 在约定开启 gzip 的协议返回前，对协议进行 gzip 压缩；
 
@@ -133,7 +133,7 @@ var deCompose \= function(msg) {
 
 ##### 服务器：
 
-![image4](/assets/1758727509960_81c9c4f0.png)
+![image4](/assets/0684f83a252f6e73a1bde7e62dd9868a.png)
 
 ##### 客户端：
 
@@ -183,7 +183,7 @@ zlib.gzip(JSON.stringify(sendObj), function (error, data) {
 
 ##### 对比工具：Chrome Debug Tool \-\> 网络 \-\> WS ｜native \-\>  [charles 使用说明](https://docs.google.com/document/d/13qhNSaPfDM6lhDQXUUHIBHIqsGNDFdeGtAEXFO03cGs/edit?usp=sharing)
 
-![image5](/assets/1758727509961_09ae25c0.png)
+![image5](/assets/c73a24481ac2a94d67e20fc6013f7c4a.png)
 
 #### 1、相同服务器，相同等级账号，login协议对比：
 

@@ -1,6 +1,6 @@
 # DH线上crash-ProgressTimer::initWithSprite问题
 
-![image](/assets/1758174593042_8f4d94b1.png)
+![image](/assets/8f4d94b16359a0ce4c58b0bdcc15dbae.png)
 
 ### 目前掌握的一手信息：
 
@@ -24,13 +24,13 @@
 
 > removeFromParent 改为 false，问题未解决；
 
-![image](/assets/1758174593043_001fc221.png)
+![image](/assets/001fc221ff161ab3b72baef10ac32d7d.png)
 
 ##### b、HighRoller 大厅入口
 
 > 增加 native object 检查
 
-![image](/assets/1758174593044_aaadc11d.png)
+![image](/assets/aaadc11d4386a193c0b24d16f4e29931.png)
 
 ### 解决方案：
 
@@ -52,19 +52,19 @@
 
 3、延后 remove；
 
-![image](/assets/1758174593045_c413730f.png)
+![image](/assets/c413730f48cbd9c413fa354df9b3046b.png)
 
-![image](/assets/1758174593046_c6e9d271.png)
+![image](/assets/c6e9d271033e11b22b64804f0d2af8df.png)
 
 ‍
 
 ### 分析二：
 
-![image](/assets/1758174593047_13c80512.png)
+![image](/assets/13c80512fd19f216e9430221f4b4f120.png)
 
-![image](/assets/1758174593048_95262908.png)
+![image](/assets/95262908f72dbe586e60a101a312955c.png)
 
-![image](/assets/1758174593048_5dbcda77.png)
+![image](/assets/5dbcda77fb7ec281d48265c58de1526d.png)
 
 #### 1、按照堆栈分析，问题只能出现在 sp->getTexture();否则堆栈至少应该多一层；
 
