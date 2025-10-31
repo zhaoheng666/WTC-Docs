@@ -49,5 +49,3 @@ if (this.doNotUseCenterWidget || !cc.sys.isObjectValid(centerWidget)) {
 ## 现场记录
 
 👉 **[CV发版通知群 2025年10月30日](https://ghoststudio.feishu.cn/wiki/FjqOwGH72izxYHkbgKgcUSEbnZb?from=from_copylink)**
-
-含：截图 · 完整讨论 · 时间轴
