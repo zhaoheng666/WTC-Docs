@@ -354,5 +354,84 @@ assets_config/
 
 ---
 
-**最后更新**: 2025-10-24
+## CanvasDownloader Local 模式进度回调修复（2025-11-05）
+
+### 问题背景
+
+在测试 CardSystemLoader 进度更新时，发现 Local Canvas 模式下只显示 0% 和 100%，缺少中间进度更新。
+
+**问题根源**：
+- CanvasDownloader 在 Local 模式使用 `cc.loader._handleAliases`
+- `_handleAliases` API 不支持进度回调（只有完成回调）
+
+### 对比分析
+
+#### ResourceMan vs CardSystemDownloadMan
+
+| 实现 | Local 模式处理 | 进度回调 |
+|-----|--------------|---------|
+| **ResourceMan** | 使用 `cc.loader._handleAliases` | ❌ 无 |
+| **CardSystemDownloadMan** | 统一使用 `cc.loader.load` | ✅ 有 |
+
+#### cc.loader API 对比
+
+| API | 进度回调 | 完成回调 | 用途 |
+|-----|---------|---------|------|
+| `cc.loader.load(arr, progressCb, completeCb)` | ✅ 有 | ✅ 有 | 正常资源加载 |
+| `cc.loader._handleAliases(aliases, completeCb)` | ❌ 无 | ✅ 有 | 快速注册别名 |
+
+### 设计方案
+
+**原则**：不取缔 `_handleAliases`，而是让 Loader 通过 metadata 控制 Local 模式行为。
+
+#### 1. 新增控制参数
+
+在 DownloadTask metadata 中添加 `useLoadInLocalCanvas` 参数：
+
+```javascript
+// CardSystemLoader
+metadata: {
+    loaderType: 'CARD_SYSTEM_FOLDER',
+    folderName: folderName,
+    useLoadInLocalCanvas: true  // 强制 Local Canvas 使用 cc.loader.load
+}
+```
+
+#### 2. CanvasDownloader 支持参数
+
+```javascript
+download: function (task, onProgress, onComplete) {
+    var useLoadInLocalCanvas = task.metadata && task.metadata.useLoadInLocalCanvas;
+
+    // Local 模式判断
+    if (Config.isLocal() && !useLoadInLocalCanvas) {
+        // 默认：使用 _handleAliases（快速，无进度）
+        this._loadLocalResources(...);
+    } else {
+        // 1. 正常模式
+        // 2. 或 Local 模式但需要进度回调
+        this._loadResources(...);
+    }
+}
+```
+
+### 修改内容
+
+**文件**:
+- `src/common/resource_v2/loaders/CardSystemLoader.js`
+- `src/common/resource_v2/adapters/CanvasDownloader.js`
+
+**效果**:
+- CardSystemLoader: Local Canvas 模式显示完整进度（0% → 25% → 50% → 100%）
+- 其他 Loader: 保持原有行为（Local 模式使用 `_handleAliases`）
+- 灵活性: 任何 Loader 都可通过 `useLoadInLocalCanvas: true` 启用进度回调
+
+**原因**:
+- `_handleAliases` 用于快速注册别名映射，不适合需要进度反馈的下载场景
+- CardSystem 等需要显示下载进度的模块，应使用 `cc.loader.load`
+- LobbyBoard、Poster 等远程资源依然可以使用 `_handleAliases` 快速加载
+
+---
+
+**最后更新**: 2025-11-05
 **维护者**: WTC Team
