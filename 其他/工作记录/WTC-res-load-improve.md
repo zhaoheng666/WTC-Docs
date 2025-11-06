@@ -433,5 +433,189 @@ download: function (task, onProgress, onComplete) {
 
 ---
 
-**最后更新**: 2025-11-05
+## Phase 8: 统一日志系统（2025-11-06）
+
+### 背景
+
+ResourceManV2 各模块日志格式不统一，缺少文件路径前缀，调试时难以快速定位问题。BaseLoader 自定义的 `_log`、`_warn` 方法造成代码冗余。
+
+### 实现方案
+
+#### 1. 新增 Logger.js 工厂函数
+
+**文件**: `src/common/resource_v2/core/Logger.js`
+
+**核心机制**:
+```javascript
+module.exports = function(prefix) {
+    if (Config.isRelease()) {
+        return function() { return ''; };
+    }
+
+    return function() {
+        var args = Array.prototype.slice.call(arguments);
+
+        // 添加文件路径前缀
+        if (args.length > 0 && typeof args[0] === 'string') {
+            args[0] = "[" + prefix + "] " + args[0];
+        } else {
+            args.unshift("[" + prefix + "]");
+        }
+
+        // 智能返回类型
+        var hasComplexArg = false;
+        for (var i = 0; i < args.length; i++) {
+            var type = typeof args[i];
+            if (type !== 'string' && type !== 'number') {
+                hasComplexArg = true;
+                break;
+            }
+        }
+
+        // 复杂类型 → 返回数组（保留 console 展开性）
+        if (hasComplexArg) {
+            return args;
+        }
+
+        // 简单类型 → 返回字符串（节省性能）
+        return args.join('');
+    };
+};
+```
+
+**特性**:
+- **闭包捕获前缀**: 每个模块创建时传入文件路径
+- **智能返回类型**:
+  - 对象/函数 → 返回数组，保留 console.log 的对象展开能力
+  - 字符串/数字 → 返回拼接字符串，性能更优
+- **Release 模式优化**: 生产环境自动禁用日志
+
+#### 2. 重构 BaseLoader
+
+**移除方法**:
+- `_log()`
+- `_warn()`
+- `_error()`
+
+**强制规范**:
+- 所有子类直接使用 `cc.log(_G(...))`
+- 简化日志调用链路
+
+**差异对比**:
+```javascript
+// 旧方式（已移除）
+this._log('Loading', count, 'items');
+this._warn('Failed:', error);
+
+// 新方式（统一规范）
+cc.log(_G('Loading', count, 'items'));
+cc.warn(_G('Failed:', error));
+```
+
+#### 3. 全面应用 _G 前缀
+
+**涉及文件** (19 个):
+
+**核心模块**:
+- `ResourceManV2.js`
+- `core/DownloadQueue.js`
+- `core/LoaderRegistry.js`
+- `core/ConfigManager.js`
+- `core/DownloadTask.js`
+
+**适配器**:
+- `adapters/CanvasDownloader.js`
+- `adapters/NativeDownloader.js`
+
+**所有 Loader**:
+- `loaders/BaseLoader.js`
+- `loaders/ActivityLoader.js`
+- `loaders/CardSystemLoader.js`
+- `loaders/CouponLoader.js`
+- `loaders/FeatureLoader.js`
+- `loaders/GenericLoader.js`
+- `loaders/LobbyBoardLoader.js`
+- `loaders/LobbyThemeLoader.js`
+- `loaders/PosterLoader.js`
+- `loaders/SlotLoader.js`
+- `loaders/StoreLoader.js`
+
+**统一格式**:
+```javascript
+var _G = require('../core/Logger')('模块路径');
+
+cc.log(_G('message', arg1, arg2));
+cc.warn(_G('warning', error));
+cc.error(_G('error', details));
+```
+
+### 技术细节
+
+#### cc.log 实现原理
+
+```javascript
+// Cocos2d-html5/CCDebugger.js:331
+cc.log = Function.prototype.bind.call(console.log, console);
+
+// 等价于
+cc.log = console.log.bind(console);
+```
+
+**特性**:
+- 接受多个参数，原样传递给 console.log
+- 支持对象展开、数组展开等所有原生特性
+- 无需 `apply` 或特殊处理
+
+#### 为什么不用 `cc.log.apply()`?
+
+```javascript
+// ❌ 错误（过度设计）
+cc.log.apply(cc, _G('message', obj));
+
+// ✅ 正确（简洁直接）
+cc.log(_G('message', obj));
+```
+
+**原因**: `_G()` 返回的数组/字符串可以直接作为参数传递给 `cc.log`，后者会自动处理。
+
+### 日志输出示例
+
+#### 简单类型（字符串拼接）
+
+```javascript
+cc.log(_G('Loading', 10, 'items'));
+// 输出: "[ResourceManV2.js] Loading10items"
+```
+
+#### 复杂类型（数组展开）
+
+```javascript
+cc.log(_G('Task config:', {id: 1, path: '/res/'}));
+// 输出: ["[DownloadQueue.js] Task config:", {id: 1, path: "/res/"}]
+// Console 中可展开对象查看详情
+```
+
+### 验证结果
+
+**构建脚本**: ✅ 通过
+```bash
+cd scripts && ./build_local_oldvegas.sh
+```
+
+**语法检查**: ✅ 无错误
+
+**变更统计**:
+- 修改文件: 19 个
+- 新增文件: 1 个 (`Logger.js`)
+- 变更行数: +283 / -288
+
+### 提交记录
+
+**Commit**: `0def18057af`
+**消息**: `cv: ResourceManV2 统一日志系统并应用 _G 前缀`
+**日期**: 2025-11-06
+
+---
+
+**最后更新**: 2025-11-06
 **维护者**: WTC Team
