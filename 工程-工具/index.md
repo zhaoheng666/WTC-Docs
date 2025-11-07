@@ -8,6 +8,7 @@
 
   - 📝 [AI 上下文膨胀问题](AI/AI%20%E4%B8%8A%E4%B8%8B%E6%96%87%E8%86%A8%E8%83%80%E9%97%AE%E9%A2%98)
   - 📝 [AI编程模型 RooCode 配置教程](AI/AI%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%20RooCode%20%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B)
+  - 📝 [Claude Code Schedule Coordinator Agent 配置指南](AI/Claude%20Code%20Schedule%20Coordinator%20Agent%20%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97)
   - 📝 [Claude Code 模块化拆分+标注机制实验报告](AI/Claude%20Code%20%E6%A8%A1%E5%9D%97%E5%8C%96%E6%8B%86%E5%88%86%2B%E6%A0%87%E6%B3%A8%E6%9C%BA%E5%88%B6%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A)
 
 
@@ -45,6 +46,7 @@
     - 📝 [terminology](ai-rules/WTC/terminology)
   - **📂 docs**
     - 📝 [auto-commits](ai-rules/docs/auto-commits)
+    - 📝 [feishu-integration](ai-rules/docs/feishu-integration)
     - 📝 [image-processing](ai-rules/docs/image-processing)
     - 📝 [link-processing](ai-rules/docs/link-processing)
     - 📝 [vitepress-public-directory](ai-rules/docs/vitepress-public-directory)
@@ -90,6 +92,8 @@
 
 - 📝 [Charles 抓包工具使用方法](Charles%20%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)
 - 📝 [Macos Rosetta 兼容模式(x86_64) 覆盖原生版本(arm64)的问题](Macos%20Rosetta%20%E5%85%BC%E5%AE%B9%E6%A8%A1%E5%BC%8F(x86_64)%20%E8%A6%86%E7%9B%96%E5%8E%9F%E7%94%9F%E7%89%88%E6%9C%AC(arm64)%E7%9A%84%E9%97%AE%E9%A2%98)
+- 📝 [OpenSpec分享稿](OpenSpec%E5%88%86%E4%BA%AB%E7%A8%BF)
+- 📝 [ResourceManV2-技术架构报告](ResourceManV2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E6%8A%A5%E5%91%8A)
 - 📝 [Symbol-CCB创建工具](Symbol-CCB%E5%88%9B%E5%BB%BA%E5%B7%A5%E5%85%B7)
 - 📝 [UI 模板库插件](UI%20%E6%A8%A1%E6%9D%BF%E5%BA%93%E6%8F%92%E4%BB%B6)
 - 📝 [WTC-DOCS-MIGRATION](WTC-DOCS-MIGRATION)
