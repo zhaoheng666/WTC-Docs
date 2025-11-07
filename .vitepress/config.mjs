@@ -231,9 +231,43 @@ export default withMermaid(defineConfig({
   },
 
   // Mermaid 配置
+  // 文档：https://mermaid.js.org/config/configuration.html
   mermaid: {
-    // 可选：配置 Mermaid 主题和样式
-    // 详见：https://mermaid.js.org/config/setup/modules/mermaidAPI.html#mermaidapi-configuration-defaults
+    // 主题选择（5 个内置主题）
+    // - 'default': 默认主题
+    // - 'neutral': 适合黑白打印
+    // - 'dark': 深色模式
+    // - 'forest': 绿色系
+    // - 'base': 可自定义主题
+    theme: 'default',
+
+    // 主题变量（仅 base 主题支持）
+    // themeVariables: {
+    //   primaryColor: '#ff0000',       // 主色（仅支持 hex，不支持颜色名）
+    //   primaryTextColor: '#ffffff',   // 主文本色
+    //   primaryBorderColor: '#000000', // 主边框色
+    //   lineColor: '#666666',          // 连线颜色
+    //   secondaryColor: '#00ff00',     // 次要颜色
+    //   tertiaryColor: '#0000ff',      // 第三颜色
+    //   fontFamily: 'arial, sans-serif' // 字体
+    // },
+
+    // 外观风格
+    // look: 'classic',  // 'classic' 或 'handDrawn'（手绘风格）
+
+    // 字体配置
+    // fontFamily: 'trebuchet ms, verdana, arial, sans-serif',
+    // fontSize: 16,
+
+    // 安全级别
+    // securityLevel: 'loose',  // 'strict', 'loose', 'antiscript', 'sandbox'
+
+    // 布局算法
+    // layout: 'dagre',  // 默认布局引擎
+
+    // 性能限制
+    // maxTextSize: 50000,  // 最大文本大小
+    // maxEdges: 500,       // 最大边数
   },
   mermaidPlugin: {
     class: 'mermaid'
