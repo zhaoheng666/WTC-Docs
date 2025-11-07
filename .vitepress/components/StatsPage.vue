@@ -60,7 +60,10 @@
         <div v-for="commit in stats.commits.slice(0, 10)" :key="commit.hash" class="timeline-item">
           <div class="timeline-date">{{ formatDate(commit.date) }}</div>
           <div class="timeline-content">
-            <div class="timeline-file">
+            <a v-if="getFileLink(commit.files[0])" :href="getFileLink(commit.files[0])" class="timeline-file-link">
+              {{ getFileName(commit.files[0]) }}
+            </a>
+            <div v-else class="timeline-file">
               {{ getFileName(commit.files[0]) }}
             </div>
             <div class="timeline-meta">
@@ -144,6 +147,18 @@ function formatDate(dateStr) {
 function getFileName(filePath) {
   if (!filePath) return '未知文件'
   return filePath.split('/').pop().replace('.md', '')
+}
+
+function getFileLink(filePath) {
+  if (!filePath || !filePath.endsWith('.md')) return null
+
+  // 判断环境
+  const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  const base = isDev ? 'http://localhost:5173/WTC-Docs/' : '/WTC-Docs/'
+
+  // 移除 .md 后缀，构建 VitePress 路由
+  const path = filePath.replace('.md', '')
+  return base + path
 }
 
 // 加载数据
@@ -497,6 +512,21 @@ onMounted(() => {
   font-weight: 600;
   color: var(--vp-c-text-1);
   font-size: 1rem;
+}
+
+.timeline-file-link {
+  font-weight: 600;
+  color: var(--vp-c-brand);
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.timeline-file-link:hover {
+  color: var(--vp-c-brand-dark);
+  text-decoration: underline;
+  transform: translateX(2px);
 }
 
 .timeline-meta {
