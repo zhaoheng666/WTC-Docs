@@ -1,8 +1,9 @@
 import { defineConfig } from 'vitepress'
 import { generateMultiSidebar } from './sidebar.mjs'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 
 // https://vitepress.dev/reference/site-config
-export default defineConfig({
+export default withMermaid(defineConfig({
   title: "WorldTourCasino",
   description: "WorldTourCasino 项目文档",
 
@@ -227,5 +228,14 @@ export default defineConfig({
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2024-present WorldTourCasino'
     }
+  },
+
+  // Mermaid 配置
+  mermaid: {
+    // 可选：配置 Mermaid 主题和样式
+    // 详见：https://mermaid.js.org/config/setup/modules/mermaidAPI.html#mermaidapi-configuration-defaults
+  },
+  mermaidPlugin: {
+    class: 'mermaid'
   }
-})
+}))
