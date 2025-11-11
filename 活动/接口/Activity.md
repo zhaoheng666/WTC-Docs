@@ -192,6 +192,9 @@
 - `showFlagStoneTag`: 显示角标标签
 - `_flagStoneTagOrder`: 角标顺序
 
+#### 新手活动
+- `isNewUserActivity`: 是否为新手活动（用于差异化逻辑，如屏蔽排行榜等功能）
+
 ### 方法
 
 #### 活动生命周期
@@ -266,7 +269,7 @@
 ## 3. RechargeBonanzaActivity.js
 
 ### 功能
-继承自 [`BaseActivity`](BaseActivity.js)，实现充值狂欢活动逻辑。
+继承自 [`BaseActivity`](/../活动/接口/BaseActivity.js)，实现充值狂欢活动逻辑。
 
 ### 变量
 
@@ -352,11 +355,11 @@
 
 ### RechargeBonanzaActivity.js 使用场景
 - 充值狂欢活动的具体实现
-- 展示如何继承 [`BaseActivity`](BaseActivity.js) 实现特定活动逻辑
+- 展示如何继承 [`BaseActivity`](/../活动/接口/BaseActivity.js) 实现特定活动逻辑
 - 可作为其他活动实现的参考模板
 
 ### 开发建议
-1. **新活动开发**：继承 [`BaseActivity`](BaseActivity.js)，重写必要的方法
+1. **新活动开发**：继承 [`BaseActivity`](/../活动/接口/BaseActivity.js)，重写必要的方法
 2. **通用功能**：优先使用基类提供的方法，避免重复实现
 3. **资源管理**：合理使用资源验证和路径获取方法
 4. **事件处理**：正确使用事件验证和通知系统

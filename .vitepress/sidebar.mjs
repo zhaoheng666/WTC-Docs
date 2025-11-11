@@ -11,10 +11,10 @@ const manualSection = [
     collapsed: false,
     items: [
       { text: '📚 概览', link: '/README' },
-      { text: '🚀 快速开始', link: '/快速开始' },
+      // { text: '🚀 快速开始', link: '/快速开始' },
       { text: '🕐 最近更新', link: '/最近更新' },
       { text: '📋 工作规范', link: '/工作规范' },
-      { text: '📖 WTC-docs 技术文档', link: '/技术文档' },
+      // { text: '📖 WTC-docs 技术文档', link: '/技术文档' },
       { text: '🎯 工作台', link: '/工作台' },
     ]
   },
@@ -22,10 +22,10 @@ const manualSection = [
     text: '快速链接',
     collapsed: false,
     items: [
-      { text: 'Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
-      { text: '程序排期', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=130371487#gid=130371487' },
+      { text: '📆Slots排期', link: 'https://docs.google.com/spreadsheets/d/1Zn_ULWSIoq_6Bxz3DvHDKed-KS_OrcqTtrSLHmHvR2E/edit?gid=1399784065#gid=1399784065' },
+      { text: '📊程序排期', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=130371487#gid=130371487' },
       {
-        text: 'A版反馈',
+        text: '❗A版反馈',
         collapsed: true,
         items: [
           { text: '关卡', link: 'https://docs.google.com/spreadsheets/d/1mvgxECitMFnweyG6ZM5ibTDUpfzVWERw8SglejeZ61I/edit?gid=1594819754#gid=1594819754' },
@@ -33,7 +33,7 @@ const manualSection = [
         ]
       },
       {
-        text: 'A版自测',
+        text: '✅ A版自测',
         collapsed: true,
         items: [
           { text: '关卡', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=846946624#gid=846946624' },

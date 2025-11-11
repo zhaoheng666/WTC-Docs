@@ -62,19 +62,21 @@ export default withMermaid(defineConfig({
     // 顶部导航栏
     nav: [
       { text: '首页', link: '/' },
-      { text: '团队', link: '/团队' },
+      { text: '工作台', link: '/工作台' },
       { text: '程序总表', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=0#gid=0' },
+      { text: '团队', link: '/团队' },
 
-      {
-        text: '发版',
-        items: [
-          { text: '发版记录', link: 'https://docs.google.com/document/d/1KmLcqFHg5FKiYZ0K7poLMHUl7054ZoXx7YEg3SRGtx0/edit?tab=t.0' },
-          { text: 'Jenkins', link: 'http://39.106.57.54:42453/view/debug/job/Classic_Debug_deploy/' },
-          { text: 'JIRA', link: 'http://39.106.57.54:42456/browse' },
-          { text: '测试平台', link: 'http://39.106.57.54:42457/' },
-          { text: 'QA 工具', link: 'https://slots-team-test-server-v0.me2zengame.com/qa.html' },
-        ]
-      },
+      // {
+      //   text: '发版',
+      //   items: [
+      //     { text: '发版记录', link: 'https://docs.google.com/document/d/1KmLcqFHg5FKiYZ0K7poLMHUl7054ZoXx7YEg3SRGtx0/edit?tab=t.0' },
+      //     { text: 'Jenkins', link: 'http://39.106.57.54:42453/view/debug/job/Classic_Debug_deploy/' },
+      //     { text: 'JIRA', link: 'http://39.106.57.54:42456/browse' },
+      //     { text: '测试平台', link: 'http://39.106.57.54:42457/' },
+      //     { text: 'QA 工具', link: 'https://slots-team-test-server-v0.me2zengame.com/qa.html' },
+      //   ]
+      // },
+
       {
         text: '更多',
         items: [
