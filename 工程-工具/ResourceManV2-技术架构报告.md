@@ -1,7 +1,7 @@
 # ResourceManV2 技术架构报告
 
-> **生成时间**: 2025-11-06
-> **版本**: v1.0
+> **生成时间**: 2025-11-12
+> **版本**: v2.0
 > **作者**: WorldTourCasino Team
 
 ---
@@ -148,6 +148,38 @@ classDiagram
         +getResourceVersion(type)
     }
 
+    %% 事件监控组件
+    class LoaderEventBus {
+        -Object listeners
+        +subscribe(eventType, listener, context)
+        +emit(eventType, eventData)
+        +unsubscribe(eventType, listener)
+        +unsubscribeAll(eventType)
+        +clear()
+    }
+
+    class LoaderMonitor {
+        -Number totalTasks
+        -Number completedTasks
+        -Number failedTasks
+        -Object loaderMetrics
+        +initialize(eventBus)
+        +getMetrics()
+        +destroy()
+    }
+
+    class LoaderEvent {
+        <<enumeration>>
+        TASK_START
+        TASK_PROGRESS
+        TASK_COMPLETE
+        TASK_FAIL
+        TASK_CANCEL
+        LOADER_START
+        LOADER_COMPLETE
+        LOADER_FAIL
+    }
+
     %% 下载适配器
     class CanvasDownloader {
         +download(url, savePath, callbacks)
@@ -164,6 +196,8 @@ classDiagram
     ResourceManV2 *-- DownloadQueue : 包含
     ResourceManV2 *-- CacheManager : 包含
     ResourceManV2 *-- ConfigManager : 包含
+    ResourceManV2 *-- LoaderEventBus : 包含
+    ResourceManV2 *-- LoaderMonitor : 包含
 
     LoaderRegistry o-- BaseLoader : 管理
 
@@ -175,11 +209,16 @@ classDiagram
     BaseLoader ..> DownloadQueue : 依赖
     BaseLoader ..> CacheManager : 依赖
     BaseLoader ..> ConfigManager : 依赖
+    BaseLoader ..> LoaderEventBus : 依赖
 
     DownloadQueue *-- DownloadTask : 管理
 
     DownloadTask ..> CanvasDownloader : 使用
     DownloadTask ..> NativeDownloader : 使用
+
+    LoaderMonitor ..> LoaderEventBus : 订阅
+    LoaderEventBus ..> LoaderEvent : 使用
+    BaseLoader ..> LoaderEvent : 使用
 ```
 
 ### 2.2 序列图 - 关键资源加载流程
@@ -261,6 +300,8 @@ graph TB
         DQ[DownloadQueue<br/>下载队列]
         CM[CacheManager<br/>缓存管理]
         CFG[ConfigManager<br/>配置管理]
+        EB[LoaderEventBus<br/>事件总线]
+        MON[LoaderMonitor<br/>监控器]
     end
 
     subgraph "适配器层 (Adapters)"
@@ -283,6 +324,8 @@ graph TB
     RM --> DQ
     RM --> CM
     RM --> CFG
+    RM --> EB
+    RM --> MON
 
     %% 注册层 -> 加载器层
     LR --> AL
@@ -302,6 +345,15 @@ graph TB
 
     AL --> CM
     AL --> CFG
+    AL --> EB
+    PL --> EB
+    SL --> EB
+    LBL --> EB
+    CSL --> EB
+    FL --> EB
+
+    %% 事件监控关系
+    MON --> EB
 
     %% 核心层 -> 适配器层
     DQ --> CD
@@ -1716,6 +1768,391 @@ var FeatureLoader = BaseLoader.extend({
 
 ---
 
+### 5.10 LoaderEventBus & LoaderMonitor - 事件监控系统
+
+**职责**: 提供统一的资源加载事件监控和统计分析能力。
+
+#### 5.10.1 LoaderEventBus - 事件总线
+
+**职责**: 提供轻量级的内部事件发布/订阅机制,独立于 Cocos2d EventDispatcher。
+
+**核心功能**:
+
+1. **事件订阅**:
+   ```javascript
+   subscribe(eventType, listener, context) {
+       if (!this._listeners[eventType]) {
+           this._listeners[eventType] = [];
+       }
+       this._listeners[eventType].push({
+           callback: listener,
+           context: context || null
+       });
+   }
+   ```
+
+2. **事件发布**:
+   ```javascript
+   emit(eventType, eventData) {
+       var listeners = this._listeners[eventType];
+       if (!listeners || listeners.length === 0) {
+           return;
+       }
+
+       for (var i = 0; i < listeners.length; i++) {
+           var listener = listeners[i];
+           try {
+               listener.callback.call(listener.context, eventData);
+           } catch (error) {
+               cc.error('Event listener error:', error);
+           }
+       }
+   }
+   ```
+
+3. **生命周期管理**:
+   ```javascript
+   unsubscribe(eventType, listener)   // 取消订阅
+   unsubscribeAll(eventType)          // 清空指定事件的所有监听器
+   clear()                            // 清空所有监听器
+   ```
+
+**事件类型枚举** (`LoaderEvent`):
+
+| 事件类型 | 触发时机 | 数据格式 |
+|---------|---------|---------|
+| `TASK_START` | 任务开始执行 | `{resourcePath, priority, metadata}` |
+| `TASK_PROGRESS` | 任务下载进度更新 | `{resourcePath, loaded, total, metadata}` |
+| `TASK_COMPLETE` | 任务成功完成 | `{resourcePath, metadata}` |
+| `TASK_FAIL` | 任务执行失败 | `{resourcePath, error, metadata}` |
+| `TASK_CANCEL` | 任务被取消 | `{resourcePath, metadata}` |
+| `LOADER_START` | Loader 开始批量加载 | `{loaderType, resourcePath, metadata}` |
+| `LOADER_COMPLETE` | Loader 批量加载完成 | `{loaderType, resourcePath, successCount, failCount, metadata}` |
+| `LOADER_FAIL` | Loader 批量加载失败 | `{loaderType, resourcePath, error, metadata}` |
+
+**关键设计**:
+- **独立性**: 不依赖 Cocos2d EventDispatcher,避免内存泄漏
+- **轻量级**: 最小化内存占用和性能开销
+- **错误隔离**: 单个监听器错误不影响其他监听器
+- **单例模式**: 全局唯一实例
+
+#### 5.10.2 LoaderMonitor - 监控器
+
+**职责**: 订阅所有 LoaderEvent 事件并收集统计数据,提供资源加载的全局视图。
+
+**核心功能**:
+
+1. **自动监听所有事件**:
+   ```javascript
+   initialize: function(eventBus) {
+       var self = this;
+
+       // 订阅所有事件类型
+       eventBus.subscribe(LoaderEvent.TASK_START, function(data) {
+           self._onTaskStart(data);
+       }, this);
+
+       eventBus.subscribe(LoaderEvent.TASK_COMPLETE, function(data) {
+           self._onTaskComplete(data);
+       }, this);
+
+       eventBus.subscribe(LoaderEvent.TASK_FAIL, function(data) {
+           self._onTaskFail(data);
+       }, this);
+
+       // ... 其他事件
+   }
+   ```
+
+2. **统计数据收集**:
+   ```javascript
+   getMetrics: function() {
+       return {
+           totalTasks: this._totalTasks,
+           completedTasks: this._completedTasks,
+           failedTasks: this._failedTasks,
+           cancelledTasks: this._cancelledTasks,
+           successRate: this._totalTasks > 0
+               ? (this._completedTasks / this._totalTasks)
+               : 0,
+           loaderStats: this._getLoaderStats()
+       };
+   }
+   ```
+
+3. **按 Loader 类型统计**:
+   ```javascript
+   _getLoaderStats: function() {
+       var stats = {};
+       for (var loaderType in this._loaderMetrics) {
+           var metrics = this._loaderMetrics[loaderType];
+           stats[loaderType] = {
+               totalTasks: metrics.totalTasks,
+               completedTasks: metrics.completedTasks,
+               failedTasks: metrics.failedTasks,
+               successRate: metrics.totalTasks > 0
+                   ? (metrics.completedTasks / metrics.totalTasks)
+                   : 0
+           };
+       }
+       return stats;
+   }
+   ```
+
+**统计指标**:
+
+- **全局指标**:
+  - `totalTasks`: 总任务数
+  - `completedTasks`: 成功完成任务数
+  - `failedTasks`: 失败任务数
+  - `cancelledTasks`: 取消任务数
+  - `successRate`: 成功率 (0-1)
+
+- **按 Loader 类型统计**:
+  - 每个 Loader 的任务数和成功率
+  - 支持的 Loader 类型: activity, poster, slot, lobbyBoard, cardSystem, feature
+
+**关键设计**:
+- **被动监听**: 不干预加载流程,只负责统计
+- **实时统计**: 事件触发时立即更新数据
+- **低耦合**: 与 Loader 实现解耦,方便独立测试
+- **单例模式**: 全局唯一实例
+
+#### 5.10.3 混合事件系统架构
+
+ResourceManV2 采用**双事件系统**设计:
+
+```
+┌─────────────────────────────────────────┐
+│          Loader (ActivityLoader)        │
+│                                         │
+│  ┌───────────────────────────────────┐  │
+│  │  1. 内部监控事件                   │  │
+│  │     (LoaderEventBus)              │  │
+│  │                                   │  │
+│  │     this._emitEvent(              │  │
+│  │       LoaderEvent.TASK_COMPLETE,  │  │
+│  │       eventData                   │  │
+│  │     )                             │  │
+│  │                                   │  │
+│  │     ↓                             │  │
+│  │  LoaderMonitor 自动收集统计        │  │
+│  └───────────────────────────────────┘  │
+│                                         │
+│  ┌───────────────────────────────────┐  │
+│  │  2. UI 层业务事件                  │  │
+│  │     (EventDispatcher)             │  │
+│  │                                   │  │
+│  │     game.eventDispatcher.         │  │
+│  │       dispatchEvent(              │  │
+│  │         CommonEvent.XXX,          │  │
+│  │         eventData                 │  │
+│  │       )                           │  │
+│  │                                   │  │
+│  │     ↓                             │  │
+│  │  UI 组件响应并更新界面             │  │
+│  └───────────────────────────────────┘  │
+└─────────────────────────────────────────┘
+```
+
+**设计原则**:
+
+1. **内部监控事件** (LoaderEventBus):
+   - 用途: 系统内部监控、统计、调试
+   - 特点: 轻量级、独立管理、自动清理
+   - 订阅者: LoaderMonitor、调试工具
+
+2. **UI 层业务事件** (EventDispatcher):
+   - 用途: UI 组件响应、游戏逻辑
+   - 特点: Cocos2d 自动管理生命周期
+   - 订阅者: UI 组件、游戏场景
+
+**关键优势**:
+
+- **职责分离**: 监控和业务逻辑互不干扰
+- **内存安全**: LoaderEventBus 独立清理,避免内存泄漏
+- **向后兼容**: 保留原有 UI 事件,不影响现有代码
+- **易于调试**: 监控数据独立收集,不混入业务逻辑
+
+#### 5.10.4 使用示例
+
+**在 Loader 中发送事件**:
+
+```javascript
+// ActivityLoader.js
+var ActivityLoader = BaseLoader.extend({
+    load: function(activities, callback) {
+        // 发送 Loader 启动事件
+        this._emitEvent(LoaderEvent.LOADER_START, {
+            resourcePath: 'activity/*',
+            metadata: {
+                activityCount: activities.length
+            }
+        });
+
+        // 加载每个活动
+        activities.forEach(function(activity) {
+            // 发送任务开始事件
+            this._emitEvent(LoaderEvent.TASK_START, {
+                resourcePath: activity.resourceUrl,
+                priority: priority,
+                metadata: {
+                    activityId: activity.id,
+                    activityName: activity.name
+                }
+            });
+
+            // 下载任务...
+
+            // 发送任务完成事件
+            this._emitEvent(LoaderEvent.TASK_COMPLETE, {
+                resourcePath: activity.resourceUrl,
+                metadata: {
+                    activityId: activity.id
+                }
+            });
+
+            // 保留原有 UI 事件 (向后兼容)
+            game.eventDispatcher.dispatchEvent(
+                CommonEvent.ACTIVITY_RESOURCE_DOWNLOAD_COMPLETE,
+                {
+                    activityInfo: {
+                        activityId: activity.id,
+                        isSuccess: true
+                    }
+                }
+            );
+        });
+    }
+});
+```
+
+**调试时获取监控数据**:
+
+```javascript
+// 获取全局统计
+var metrics = game.ResourceMan.getInstance().getMonitorMetrics();
+cc.log('Total tasks:', metrics.totalTasks);
+cc.log('Success rate:', (metrics.successRate * 100).toFixed(2) + '%');
+
+// 获取各 Loader 统计
+for (var loaderType in metrics.loaderStats) {
+    var stats = metrics.loaderStats[loaderType];
+    cc.log(loaderType + ':', stats.completedTasks + '/' + stats.totalTasks);
+}
+```
+
+**关键设计**:
+- **双事件系统**: 内部监控 + 外部 UI
+- **向后兼容**: 保留原有 EventDispatcher 事件
+- **自动统计**: LoaderMonitor 自动收集数据
+- **易于调试**: 提供统一的监控数据接口
+
+---
+
+### 5.11 LoadingProgressIndicatorController - 加载进度指示器
+
+**职责**: 在资源依赖下载期间显示模态加载进度提示，并提供超时自动关闭功能。
+
+**核心功能**:
+
+1. **进度显示**
+   - 实时显示资源下载进度（已下载/总数）
+   - 监听 `ACTIVITY_RESOURCE_DOWNLOAD_START/COMPLETE` 事件
+   - 监听 `POSTER_DOWNLOAD_START/COMPLETE` 事件
+   - 使用引用计数 `_dependencyLoadingUIRefCount` 管理多次调用
+
+2. **10 秒超时关闭按钮**
+   - 加载提示显示超过 10 秒后，自动显示关闭按钮（右上角）
+   - 用户点击关闭按钮后，仅关闭 UI，后台下载继续
+   - 使用 Cocos2d-js 原生 `scheduleOnce` API 实现定时器
+   - 界面退出或用户关闭时自动清理定时器
+
+**实现细节**:
+
+```javascript
+// 弹出时启动 10 秒定时器
+LoadingProgressIndicatorController.prototype.popup = function () {
+    DialogManager.getInstance().popup(this.rootNode, {
+        overlayOpacity: 128  // 半透明背景
+    });
+    this.startTime = Date.now();
+
+    // 10 秒后显示关闭按钮（scheduleOnce 的延迟单位是秒）
+    this.rootNode.scheduleOnce(this._showCloseButton.bind(this), 10);
+};
+
+// 定时器触发：显示关闭按钮
+LoadingProgressIndicatorController.prototype._showCloseButton = function () {
+    if (this._btn_close && cc.sys.isObjectValid(this._btn_close)) {
+        this._btn_close.setVisible(true);
+        cc.log("[LoadingProgressIndicator] Close button shown after timeout");
+    } else {
+        this.close();
+    }
+};
+
+// 用户点击关闭按钮
+LoadingProgressIndicatorController.prototype.onCloseClicked = function () {
+    cc.log("[LoadingProgressIndicator] User manually closed the loading indicator");
+    game.audioHelper.playBtnClickSound();
+
+    // 取消所有定时器（该界面只有一个定时器）
+    this.rootNode.unscheduleAllCallbacks();
+
+    // 关闭 UI（下载任务继续后台进行）
+    this.close();
+};
+
+// 界面退出时清理
+LoadingProgressIndicatorController.prototype.onExit = function () {
+    // ... 移除事件监听器 ...
+
+    // 取消所有定时器
+    this.rootNode.unscheduleAllCallbacks();
+
+    // 隐藏关闭按钮
+    if (this._btn_close) {
+        this._btn_close.setVisible(false);
+    }
+};
+```
+
+**定时器 API 要点**:
+
+| API | 说明 | 时间单位 |
+|-----|------|---------|
+| `scheduleOnce(callback, delay)` | 延迟执行一次 | **秒**（不是毫秒） |
+| `unscheduleAllCallbacks()` | 取消节点上所有定时器 | - |
+| `unschedule(callback)` | 取消指定回调 | 需传入完全相同的函数引用 |
+
+**关键设计**:
+- **用户体验优化**: 长时间加载时允许用户手动关闭 UI，避免界面卡住感
+- **后台继续下载**: 关闭 UI 不影响资源下载任务，保证功能完整性
+- **简洁实现**: 使用 `unscheduleAllCallbacks()` 简化定时器管理（因为该界面只有一个定时器）
+- **CCB 节点绑定**: 关闭按钮 `_btn_close` 通过 CCB 文件绑定，初始隐藏
+
+**用户交互流程**:
+
+```
+资源依赖下载开始
+    ↓
+显示 LoadingProgressIndicator
+    ↓
+启动 10 秒定时器
+    ↓
+    ├─ 10 秒内下载完成 → 自动关闭
+    └─ 超过 10 秒 → 显示关闭按钮
+           ↓
+       用户点击关闭
+           ↓
+       关闭 UI + 清理定时器
+           ↓
+       后台继续下载
+```
+
+---
+
 ## 数据流与控制流
 
 ### 6.1 资源加载主流程
@@ -2145,6 +2582,92 @@ var DownloadTask = cc.Class.extend({
 
 ---
 
+### 7.9 事件监控系统
+
+**混合事件架构**:
+
+ResourceManV2 采用创新的**双事件系统**设计,将内部监控和外部业务逻辑分离:
+
+```javascript
+// 1. 内部监控事件 (LoaderEventBus)
+this._emitEvent(LoaderEvent.TASK_START, {
+    resourcePath: 'activity/123',
+    priority: 2500,
+    metadata: { activityId: 123 }
+});
+
+// 2. 外部 UI 事件 (EventDispatcher) - 保留兼容
+game.eventDispatcher.dispatchEvent(
+    CommonEvent.ACTIVITY_RESOURCE_DOWNLOAD_COMPLETE,
+    { activityInfo: {...} }
+);
+```
+
+**核心组件**:
+
+1. **LoaderEventBus**: 轻量级事件总线
+   - 独立于 Cocos2d EventDispatcher
+   - 手动管理生命周期,避免内存泄漏
+   - 错误隔离,单个监听器异常不影响其他
+
+2. **LoaderMonitor**: 统计数据收集器
+   - 订阅所有 LoaderEvent 事件
+   - 实时统计任务成功率、失败率
+   - 按 Loader 类型分类统计
+
+3. **LoaderEvent**: 标准化事件枚举
+   - 8 种事件类型覆盖完整生命周期
+   - 统一的事件数据格式
+   - 支持元数据扩展
+
+**关键优势**:
+
+1. **职责分离**:
+   - 监控数据不污染业务逻辑
+   - UI 事件与统计事件独立
+   - 便于独立测试和调试
+
+2. **内存安全**:
+   - LoaderEventBus 在场景切换时自动清理
+   - 不依赖 Cocos2d 自动内存管理
+   - 避免 EventDispatcher 的内存泄漏问题
+
+3. **向后兼容**:
+   - 保留原有 EventDispatcher 事件
+   - 不影响现有 UI 组件代码
+   - 渐进式引入监控能力
+
+4. **实时统计**:
+   ```javascript
+   var metrics = game.ResourceMan.getInstance().getMonitorMetrics();
+   // {
+   //   totalTasks: 100,
+   //   completedTasks: 95,
+   //   failedTasks: 5,
+   //   successRate: 0.95,
+   //   loaderStats: {
+   //     activity: { totalTasks: 30, completedTasks: 28, successRate: 0.93 },
+   //     poster: { totalTasks: 20, completedTasks: 20, successRate: 1.00 },
+   //     ...
+   //   }
+   // }
+   ```
+
+**应用场景**:
+
+- **开发调试**: 实时监控资源加载状况
+- **性能分析**: 分析各类资源的加载成功率
+- **故障排查**: 快速定位加载失败的资源类型
+- **数据上报**: 收集用户资源加载统计数据
+
+**设计模式**:
+
+- 观察者模式: LoaderMonitor 订阅 LoaderEventBus
+- 发布订阅: Loader 发布事件,Monitor 订阅事件
+- 单例模式: EventBus 和 Monitor 全局唯一
+
+---
+
 ## 总结
 
 ### 8.1 架构评价
@@ -2159,6 +2682,7 @@ var DownloadTask = cc.Class.extend({
 6. **平台适配**: 统一接口,隐藏平台差异
 7. **细粒度进度**: 三级进度追踪,实时反馈
 8. **自动错误恢复**: 重试机制,指数退避
+9. **事件监控系统**: 双事件架构,内部监控与业务分离,实时统计
 
 **设计模式应用**:
 
@@ -2240,7 +2764,10 @@ resource_v2/
 │   ├── DownloadQueue.js       # 下载队列
 │   ├── LoaderRegistry.js      # 加载器注册表
 │   ├── ConfigManager.js       # 配置管理器
-│   └── DownloadTask.js        # 下载任务
+│   ├── DownloadTask.js        # 下载任务
+│   ├── LoaderEventBus.js      # 事件总线
+│   ├── LoaderMonitor.js       # 监控器
+│   └── LoaderEvent.js         # 事件类型枚举
 ├── loaders/
 │   ├── BaseLoader.js          # 基础加载器
 │   ├── ActivityLoader.js      # 活动加载器
@@ -2294,6 +2821,7 @@ resource_v2/
 - **CLAUDE.md** - 项目 AI 上下文文件（主项目根目录）
 - **OpenSpec - add-critical-priority-resource-loading** - 关键资源优先加载规范（`openspec/changes/archive/2025-11-06-add-critical-priority-resource-loading`）
 - **OpenSpec - add-resource-dependency-management** - 资源依赖管理规范（`openspec/changes/archive/2025-11-06-add-resource-dependency-management`）
+- **OpenSpec - add-loader-event-monitoring** - Loader 事件监控规范（`openspec/specs/event-monitoring/spec.md` / `openspec/changes/archive/2025-11-12-add-loader-event-monitoring`）
 
 ---
 
