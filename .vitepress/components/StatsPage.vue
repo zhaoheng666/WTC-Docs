@@ -79,7 +79,10 @@
     <div class="category-section">
       <h2>📊 分类分布</h2>
       <div class="category-container">
-        <div v-for="[category, count] in sortedCategories" :key="category" class="category-card">
+        <a v-for="[category, count] in sortedCategories"
+           :key="category"
+           :href="getCategoryLink(category)"
+           class="category-card">
           <div class="category-header">
             <span class="category-name">{{ category }}</span>
             <span class="category-count">{{ count }}</span>
@@ -87,7 +90,7 @@
           <div class="category-bar">
             <div class="category-fill" :style="{width: `${(count / stats.totalDocs) * 100}%`}"></div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </div>
@@ -159,6 +162,15 @@ function getFileLink(filePath) {
   // 移除 .md 后缀，构建 VitePress 路由
   const path = filePath.replace('.md', '')
   return base + path
+}
+
+function getCategoryLink(category) {
+  // 判断环境
+  const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  const base = isDev ? 'http://localhost:5173/WTC-Docs/' : '/WTC-Docs/'
+
+  // 构建分类页面链接
+  return base + category + '/'
 }
 
 // 加载数据
@@ -407,11 +419,16 @@ onMounted(() => {
   border-radius: 8px;
   padding: 1rem;
   transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
 }
 
 .category-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--vp-c-brand);
 }
 
 .category-header {
