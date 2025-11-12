@@ -113,6 +113,78 @@ const wikiToken = wikiTokenMatch ? wikiTokenMatch[1] : null;
 
 ---
 
+### 关键截图下载（自动）
+
+**功能**：自动识别并下载飞书文档中的关键截图（1-3张），保存到 `docs/assets/` 并在 Markdown 中引用。
+
+#### 识别规则
+
+| 判断维度 | 规则 |
+|---------|------|
+| **位置** | 标题下方第一张图 |
+| **前后文本** | 包含"问题"、"错误"、"截图"、"结果" |
+| **数量限制** | 每个文档最多 3 张 |
+
+#### 下载方法
+
+使用 `chrome-devtools` 的 `take_screenshot` 工具：
+
+```javascript
+// 步骤1: 从 snapshot 中提取图片 uid
+uid=3_73 image "飞书文档 - 图片" url="https://internal-api-drive-stream.feishu.cn/..."
+
+// 步骤2: 截取图片并保存
+mcp__chrome_devtools__take_screenshot({
+  uid: '3_73',
+  format: 'png',
+  filePath: '/Users/ghost/work/WorldTourCasino/docs/assets/xxx.png'
+})
+```
+
+#### 文件命名
+
+使用 MD5 hash 命名（与 VitePress 图片处理系统一致）：
+
+```bash
+# 生成 hash
+python3 -c "import hashlib; print(hashlib.md5(b'U214bghiJoSEwzxe0GrcIVTHn5f').hexdigest())"
+# 输出: 98181749cacff0cd8bbda942aabdb7b5
+
+# 文件名: 98181749cacff0cd8bbda942aabdb7b5.png
+```
+
+#### Markdown 引用
+
+在摘要表格后添加"## 问题截图"章节：
+
+```markdown
+## 问题截图
+
+![问题表现 - 资源下载弹窗](/assets/98181749cacff0cd8bbda942aabdb7b5.png)
+
+*新号进游戏一直弹资源下载板子，只有点 NO 才能关掉*
+
+![验证结果](/assets/67aa723b4c3ce80c12a3ad36dc63795e.png)
+
+*下掉问题资源后的验证截图*
+```
+
+#### 错误处理
+
+| 错误场景 | 处理策略 |
+|---------|---------|
+| **下载失败** | 跳过该图片，继续处理其他图片 |
+| **超出数量** | 只下载前 3 张 |
+| **文件过大** | > 5MB 跳过并警告 |
+
+#### 注意事项
+
+1. **浏览器登录**：用户必须在浏览器中已登录飞书
+2. **图片大小**：限制下载数量（1-3张），避免仓库膨胀
+3. **降级处理**：如果下载失败，保留飞书原文档链接供查阅
+
+---
+
 ## 错误处理
 
 ### 权限错误
