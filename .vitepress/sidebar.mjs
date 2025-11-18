@@ -40,6 +40,11 @@ const manualSection = [
           { text: '活动', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=933143491#gid=933143491' },
           { text: '赛季', link: 'https://docs.google.com/spreadsheets/d/1XSZKSkupKyU-kauAxyFjorZVFDZflCHkLxZ6Ytilbvc/edit?gid=1921777137#gid=1921777137' },
         ]
+      },
+      {
+        text: '☑️ 待办',
+        collapsed: true,
+        link: '/待办'
       }
     ]
   }
