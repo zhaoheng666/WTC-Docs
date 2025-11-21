@@ -82,7 +82,8 @@ export default withMermaid(defineConfig({
         items: [
           { text: 'VitePress 文档', link: 'https://vitepress.qzxdp.cn/reference/frontmatter-config.html' },
           { text: 'ClaudeCode 配置教程', link: 'https://docs.google.com/document/d/1WM5ioMu8jgsq3OBVJfQd2pDH77qhQcjCEPbztwC-fkw/edit?tab=t.0#heading=h.o5dqq3slzr7v' },
-          { text: 'BMAD-METHOD软件工程智能体', link: 'https://github.com/bmadcode/BMAD-METHOD' }
+          { text: 'BMAD-METHOD软件工程智能体', link: 'https://github.com/bmadcode/BMAD-METHOD' },
+          { text: '各平台操作手册', link: 'https://docs.google.com/document/d/1qGd_08C3Sax0tDs8GXa9m2-TCKcqe2Q0ECN3CpVPIAA/edit?tab=t.0#heading=h.uuruknyisldm'}
         ]
       }
     ],
