@@ -171,6 +171,10 @@
   },
   "active": "8fbbc79c708c8194",
   "lastOpenFiles": [
+    "其他/优化重构/resource-v2/ResourceManV2内存优化.md",
+    "其他/优化重构/resource-v2/活动资源优化-后置加载方案.md",
+    "其他/优化重构/resource-v2/活动补单-回调未执行导致进度卡住.md",
+    "其他/优化重构/resource-v2",
     "其他/优化重构/活动补单-回调未执行导致进度卡住.md",
     "其他/优化重构/活动资源优化-后置加载方案.md",
     "其他/优化重构/ResourceManV2内存优化.md",
