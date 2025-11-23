@@ -34,7 +34,7 @@ ResourceManV2 存在严重的内存泄漏问题，导致长时间运行后内存
 
 #### 修改文件
 
-1. **[DownloadQueue.js](../../src/resource_v2/core/DownloadQueue.js)**
+1. **DownloadQueue.js**
    - 删除 `_completedMap` 属性和初始化
    - 注入 `CacheManager` 作为 `config.cache`
    - 将所有 `_completedMap` 检查改为 `this._cache.isDownloaded()`
@@ -42,7 +42,7 @@ ResourceManV2 存在严重的内存泄漏问题，导致长时间运行后内存
    - 修改 `getTask()` 逻辑（只查询待下载和下载中的任务）
    - 删除 `clearCompletedMap()` 方法
 
-2. **[ResourceManV2.js](../../src/resource_v2/ResourceManV2.js)**
+2. **ResourceManV2.js**
    - 在初始化 `DownloadQueue` 时注入 `cache: this._cacheManager`
 
 #### 代码示例
@@ -72,7 +72,7 @@ this._downloadQueue = new DownloadQueue({
 
 #### 修改文件
 
-**[ActivityLoader.js](../../src/resource_v2/loaders/ActivityLoader.js)**
+**ActivityLoader.js**
 
 #### 代码示例
 
@@ -129,40 +129,6 @@ taskConfigs.forEach(function(config, index) {
 });
 ```
 
-### 新增：内存监控
-
-添加 `MemoryMonitor` 模块提供内存监控能力（仅 debug 模式）。
-
-#### 新增文件
-
-**[MemoryMonitor.js](../../src/resource_v2/core/MemoryMonitor.js)**
-
-#### 集成方式
-
-```javascript
-// ResourceManV2.js
-var MemoryMonitor = require('./core/MemoryMonitor');
-
-_initEventMonitoring: function() {
-    // ...
-    this._memoryMonitor = new MemoryMonitor();
-},
-
-_onTaskComplete: function(task, error) {
-    if (!error) {
-        this._cacheManager.markAsDownloaded(task.resourcePath);
-
-        // 拍摄内存快照（仅 debug 模式）
-        if (Config.IS_DEBUG && this._memoryMonitor) {
-            this._memoryMonitor.takeSnapshot('task_complete_' + task.resourcePath, {
-                resourcePath: task.resourcePath,
-                loaderType: task.loaderType,
-                duration: task.getDuration()
-            });
-        }
-    }
-}
-```
 
 ## 性能改善
 
@@ -220,11 +186,7 @@ _onTaskComplete: function(task, error) {
 ### 内存测试
 
 1. 触发 100+ 次活动下载
-2. 检查 MemoryMonitor 快照（debug 模式）：
-   ```javascript
-   game.ResourceMan.getInstance()._memoryMonitor.getSummary()
-   ```
-3. 验证内存占用稳定（无持续增长）
+2. 验证内存占用稳定（无持续增长）
 
 ### 回归测试
 
@@ -234,9 +196,9 @@ _onTaskComplete: function(task, error) {
 
 ## 相关文档
 
-- [OpenSpec 提案](../../openspec/changes/optimize-resourcemanv2-memory/proposal.md)
-- [活动补单回调未执行问题](./活动补单-回调未执行导致进度卡住.md)
-- [ResourceManV2 架构](../../openspec/changes/archive/2025-11-05-refactor-resourcemanv2-architecture/proposal.md)
+-OpenSpec 提案
+- [活动补单回调未执行问题](/../其他/优化重构/活动补单-回调未执行导致进度卡住)
+-ResourceManV2 架构
 
 ## 技术要点
 
