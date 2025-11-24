@@ -156,8 +156,8 @@ cd scripts
 
 ## 相关文档
 
-- [ResourceManV2 内存优化](./ResourceManV2内存优化.md)
-- [OpenSpec: optimize-resourcemanv2-memory](../../openspec/changes/optimize-resourcemanv2-memory/)
+- ResourceManV2内存优化.md
+- openspec/changes/optimize-resourcemanv2-memory/
 
 ## 更新历史
 
