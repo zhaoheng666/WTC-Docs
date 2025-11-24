@@ -39,6 +39,7 @@
 - 📝 [新号进游戏一直弹资源下载板子](%E6%96%B0%E5%8F%B7%E8%BF%9B%E6%B8%B8%E6%88%8F%E4%B8%80%E7%9B%B4%E5%BC%B9%E8%B5%84%E6%BA%90%E4%B8%8B%E8%BD%BD%E6%9D%BF%E5%AD%90)
 - 📝 [新手五期排行榜打不开](%E6%96%B0%E6%89%8B%E4%BA%94%E6%9C%9F%E6%8E%92%E8%A1%8C%E6%A6%9C%E6%89%93%E4%B8%8D%E5%BC%80)
 - 📝 [日志textClipping报错](%E6%97%A5%E5%BF%97textClipping%E6%8A%A5%E9%94%99)
+- 📝 [海报中心-createProgram-is-not-a-function](%E6%B5%B7%E6%8A%A5%E4%B8%AD%E5%BF%83-createProgram-is-not-a-function)
 - 📝 [缺失图片记录](%E7%BC%BA%E5%A4%B1%E5%9B%BE%E7%89%87%E8%AE%B0%E5%BD%95)
 
 
