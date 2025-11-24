@@ -1,5 +1,15 @@
 # 海报中心 createProgram is not a function 错误
 
+## 摘要
+
+| 项目 | 内容 |
+|------|------|
+| 状态 | ✅ 已解决 |
+| 提交 | - |
+| 文件 | [src/task/controller/poster_center/PosterCenterMainController.js](/../../src/task/controller/poster_center/PosterCenterMainController.js#L88-L91) |
+| 原因 | 宣发或海报资源损坏导致 WebGL 上下文丢失 |
+| 现场记录 | 👉 [CV发版通知群 2025年11月24日](https://ghoststudio.feishu.cn/wiki/NeDTwn325i5svbkJmujc3CFynaf) |
+
 ## 问题描述
 
 **发生时间**：2025年11月24日
