@@ -327,6 +327,8 @@ if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
                             ACTION_URL="https://github.com/$REPO_INFO/actions/runs/$RUN_ID"
                             echo -e "${CYAN}📎 GitHub Actions: ${ACTION_URL}${NC}"
                         fi
+
+                        echo -e "文档访问地址: ${CYAN}https://${REPO_INFO}.github.io/WTC-Docs/${NC}"
                         
                         show_success "部署成功" "文档已成功部署到 GitHub Pages"
                     else
