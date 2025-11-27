@@ -328,7 +328,15 @@ if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
                             echo -e "${CYAN}📎 GitHub Actions: ${ACTION_URL}${NC}"
                         fi
 
-                        echo -e "文档访问地址: ${CYAN}https://${REPO_INFO}.github.io/WTC-Docs/${NC}"
+                        # 文档访问地址，根据仓库名称自动生成；https://zhaoheng666.github.io/WTC-Docs/
+                        # 从远程URL中提取用户名和仓库名
+                        REPO_INFO=$(git config --get remote.origin.url | sed 's/.*github.com[:/]\(.*\)\.git/\1/')
+                        # 提取用户名和仓库名（格式：用户名/仓库名）
+                        USER_NAME=$(echo "$REPO_INFO" | cut -d'/' -f1)
+                        REPO_NAME=$(echo "$REPO_INFO" | cut -d'/' -f2)
+                        # 构建正确的GitHub Pages URL
+                        DOCS_URL="https://$USER_NAME.github.io/$REPO_NAME/"
+                        echo -e "${CYAN}📎 文档访问: ${DOCS_URL}${NC}"
                         
                         show_success "部署成功" "文档已成功部署到 GitHub Pages"
                     else
