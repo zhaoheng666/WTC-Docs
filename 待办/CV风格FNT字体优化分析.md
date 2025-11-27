@@ -120,6 +120,144 @@
 
 ---
 
+## 引擎现有优化机制
+
+### 1. 字体配置缓存（FNTConfig）
+
+**位置**: `frameworks/cocos2d-html5/cocos2d/labels/CCLabelBMFont.js`
+
+| 机制 | 说明 |
+|------|------|
+| **解析器** | `cc._fntLoader` 负责解析 .fnt 文件 |
+| **缓存位置** | `cc.loader.cache[fntFile]` 全局缓存 |
+| **缓存内容** | commonHeight、atlasName、fontDefDictionary、kerningDict |
+
+```javascript
+// 初始化时从缓存获取
+var newConf = cc.loader.getRes(fntFile);
+if (!newConf) {
+    var txt = cc.loader._loadTxtSync(fntFile);
+    newConf = cc._fntLoader.parseFnt(txt, fntFile);
+    cc.loader.cache[fntFile] = newConf;  // 缓存配置
+}
+```
+
+### 2. 纹理缓存机制
+
+**位置**: `frameworks/cocos2d-html5/cocos2d/core/textures/CCTextureCache.js`
+
+| 机制 | 说明 |
+|------|------|
+| **全局单例** | `cc.textureCache` |
+| **缓存结构** | `_textures` 对象（key = 路径，value = Texture2D） |
+| **自动关联** | 字体纹理通过 `cc.textureCache.addImage()` 自动加载 |
+
+```javascript
+// 字体初始化时加载纹理
+texture = cc.textureCache.addImage(newConf.atlasName);
+```
+
+### 3. Sprite 复用机制
+
+| 机制 | 说明 |
+|------|------|
+| **复用策略** | 使用 `tag`（字符索引）管理 Sprite |
+| **更新逻辑** | 复用已存在的 Sprite，仅更新纹理区域 |
+
+```javascript
+var fontChar = self.getChildByTag(i);  // 尝试获取已存在的 Sprite
+if (!fontChar) {
+    fontChar = new cc.Sprite();  // 不存在才创建
+    this.addChild(fontChar, 0, i);
+} else {
+    cmd._updateCharTexture(fontChar, rect, key);  // 复用
+}
+```
+
+---
+
+## 字体加载流程
+
+```text
+阶段 1: .fnt 文件加载与解析
+┌─────────────────────────────────────────────────────────────┐
+│ new cc.LabelBMFont(str, fntFile)                            │
+│     ↓                                                       │
+│ cc.loader.getRes(fntFile)  ← 检查缓存                        │
+│     ↓ [未缓存]                                               │
+│ cc._fntLoader.load(fntFile)  ← 异步加载                      │
+│     ↓                                                       │
+│ cc._fntLoader.parseFnt(txt)  ← 解析 .fnt 格式                │
+│     ↓                                                       │
+│ cc.loader.cache[fntFile] = config  ← 缓存配置对象            │
+└─────────────────────────────────────────────────────────────┘
+
+阶段 2: 纹理图集加载
+┌─────────────────────────────────────────────────────────────┐
+│ cc.textureCache.addImage(config.atlasName)                  │
+│     ↓                                                       │
+│ 检查 _textures[atlasName]                                   │
+│     ↓ [未缓存]                                               │
+│ cc.loader.loadImg(atlasName)  ← 加载 PNG                     │
+│     ↓                                                       │
+│ new cc.Texture2D() + initWithElement()                      │
+│     ↓                                                       │
+│ _textures[atlasName] = texture  ← 缓存纹理                   │
+└─────────────────────────────────────────────────────────────┘
+
+阶段 3: 字符 Sprite 创建
+┌─────────────────────────────────────────────────────────────┐
+│ createFontChars()                                           │
+│     ↓                                                       │
+│ 遍历字符串每个字符                                            │
+│     ↓                                                       │
+│ 从 fontDefDictionary 获取字符矩形区域                         │
+│     ↓                                                       │
+│ new cc.Sprite() + initWithTexture(texture, rect)  ← 共享纹理 │
+│     ↓                                                       │
+│ addChild(sprite, 0, charIndex)                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**关键点**：
+1. **.fnt 配置只解析一次**，存储在 `cc.loader.cache`
+2. **纹理全局共享**，所有使用相同字体的 Label 共享同一纹理对象
+3. **延迟加载**，纹理异步加载，Label 监听 `"load"` 事件后再创建字符
+
+---
+
+## 字体释放机制
+
+### 引擎提供的释放方法
+
+| 方法 | 说明 |
+|------|------|
+| `cc.textureCache.removeTexture(texture)` | 移除单个纹理 |
+| `cc.textureCache.removeTextureForKey(key)` | 按路径移除纹理 |
+| `cc.textureCache.removeAllTextures()` | 清空所有纹理 |
+| `texture.releaseTexture()` | 释放纹理（调用 WebGL deleteTexture） |
+
+### 自动释放时机
+
+| 场景 | 行为 |
+|------|------|
+| **配置缓存** | `cc.loader.cache[fntFile]` **永不自动释放** |
+| **纹理缓存** | `cc.textureCache._textures` **永不自动释放** |
+| **Label 销毁** | `removeFromParent()` 仅清理子节点 Sprite，**不释放纹理** |
+
+### 项目资源管理现状
+
+| 维度 | 现状 | 风险 |
+|------|------|------|
+| **活动资源清理** | 无统一机制 | 🔴 高 |
+| **字体引用计数** | 无 | 🔴 高 |
+| **配置内存** | 永久缓存 | 🟡 中 |
+| **纹理内存** | 永久缓存 | 🔴 高 |
+
+**核心问题**：引擎提供了纹理缓存机制，但项目层面**缺少字体资源的生命周期管理**，活动结束后资源未释放。
+
+---
+
 ## 运行时性能影响分析
 
 ### BMFont 引擎实现原理
@@ -203,15 +341,58 @@ Draw Call：    1              2              3 (无法合并回字体1)
 
 **预期收益**：减少 30-40% 字体变体
 
-### 优先级 2：清理未使用资源（中等收益）
+### 优先级 2：资源生命周期管理（中等收益）
 
-#### 2.1 清理未使用字体
+#### 2.1 活动资源清理机制
+
+**目标**：活动结束时释放专属字体资源
+
+```javascript
+// 在 BaseActivity.prototype.onActivityEnd 中添加
+cleanupActivityFonts: function() {
+    var themeName = this.getThemeName();
+    var pattern = "activity/" + themeName + "/";
+    var textures = cc.textureCache._textures;
+
+    for (var key in textures) {
+        if (key.indexOf(pattern) !== -1) {
+            cc.textureCache.removeTextureForKey(key);
+        }
+    }
+};
+```
+
+#### 2.2 字体资源池（引用计数）
+
+**目标**：避免误删仍在使用的共享字体
+
+```javascript
+var FontResourcePool = {
+    _refCount: {},
+
+    retainFont: function(fntFile) {
+        this._refCount[fntFile] = (this._refCount[fntFile] || 0) + 1;
+    },
+
+    releaseFont: function(fntFile) {
+        if (--this._refCount[fntFile] <= 0) {
+            var config = cc.loader.getRes(fntFile);
+            if (config && config.atlasName) {
+                cc.textureCache.removeTextureForKey(config.atlasName);
+            }
+            delete cc.loader.cache[fntFile];
+        }
+    }
+};
+```
+
+#### 2.3 清理未使用字体
 
 - 生成完整的字体使用报告
 - 识别零引用的字体文件
 - 清理未使用字体
 
-#### 2.2 大纹理优化
+#### 2.4 大纹理优化
 
 - 评估 1MB+ 的特效字体是否必要
 - 考虑使用更小的尺寸或压缩
@@ -296,5 +477,20 @@ Draw Call：    1              2              3 (无法合并回字体1)
 
 ---
 
-**生成日期**: 2024-11-27
+## 关键文件参考
+
+| 类型 | 文件路径 |
+|------|----------|
+| **引擎 BMFont 实现** | `frameworks/cocos2d-html5/cocos2d/labels/CCLabelBMFont.js` |
+| **引擎纹理缓存** | `frameworks/cocos2d-html5/cocos2d/core/textures/CCTextureCache.js` |
+| **引擎批量渲染** | `frameworks/cocos2d-html5/cocos2d/core/sprites/CCSpriteBatchNode.js` |
+| **字体加载器** | `frameworks/cocos2d-html5/cocos2d/labels/CCLabelBMFont.js` (cc._fntLoader) |
+| **项目资源管理** | `src/common/model/ResourceMan.js` |
+| **活动基类** | `src/task/entity/BaseActivity.js` |
+| **公共字体目录** | `res_oldvegas/common/fonts/` |
+| **活动字体目录** | `res_oldvegas/activity/*/fonts/` |
+
+---
+
+**生成日期**: 2025-11-27
 **数据来源**: res_oldvegas 目录分析
