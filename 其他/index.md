@@ -24,6 +24,7 @@
   - **📂 resource-v2**
     - 📝 [ActivityMan资源依赖检查优化](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/resource-v2/ActivityMan%E8%B5%84%E6%BA%90%E4%BE%9D%E8%B5%96%E6%A3%80%E6%9F%A5%E4%BC%98%E5%8C%96)
     - 📝 [ResourceManV2内存优化](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/resource-v2/ResourceManV2%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96)
+    - 📝 [WTC-res-load-improve](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/resource-v2/WTC-res-load-improve)
     - 📝 [活动补单-回调未执行导致进度卡住](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/resource-v2/%E6%B4%BB%E5%8A%A8%E8%A1%A5%E5%8D%95-%E5%9B%9E%E8%B0%83%E6%9C%AA%E6%89%A7%E8%A1%8C%E5%AF%BC%E8%87%B4%E8%BF%9B%E5%BA%A6%E5%8D%A1%E4%BD%8F)
     - 📝 [活动资源优化-后置加载方案](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/resource-v2/%E6%B4%BB%E5%8A%A8%E8%B5%84%E6%BA%90%E4%BC%98%E5%8C%96-%E5%90%8E%E7%BD%AE%E5%8A%A0%E8%BD%BD%E6%96%B9%E6%A1%88)
 
@@ -31,7 +32,6 @@
 #### 📁 工作记录
 
   - 📝 [9 月程序会](%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/9%20%E6%9C%88%E7%A8%8B%E5%BA%8F%E4%BC%9A)
-  - 📝 [WTC-res-load-improve](%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/WTC-res-load-improve)
   - 📝 [组内技术管理梳理](%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/%E7%BB%84%E5%86%85%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E6%A2%B3%E7%90%86)
 
 
