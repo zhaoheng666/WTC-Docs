@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WTC-Docs 文档系统介绍</title>
+  <style>
+    :root {
+      --primary-color: #646cff;
+      --primary-light: #747bff;
+      --bg-color: #ffffff;
+      --text-color: #213547;
+      --border-color: #e2e8f0;
+      --code-bg: #f6f8fa;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.8;
+      color: var(--text-color);
+      background: var(--bg-color);
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 60px;
+      font-size: 14px;
+    }
+
+    /* 封面页 */
+    .cover {
+      text-align: center;
+      padding: 80px 0 60px;
+      border-bottom: 3px solid var(--primary-color);
+      margin-bottom: 40px;
+      page-break-after: always;
+    }
+
+    .cover h1 {
+      font-size: 42px;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .cover .subtitle {
+      font-size: 20px;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    .cover .logo {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      border-radius: 24px;
+      margin: 0 auto 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: white;
+    }
+
+    .cover .meta {
+      color: #888;
+      font-size: 14px;
+    }
+
+    /* 目录 */
+    .toc {
+      background: #f8fafc;
+      padding: 30px 40px;
+      border-radius: 12px;
+      margin-bottom: 40px;
+      page-break-after: always;
+    }
+
+    .toc h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+
+    .toc ul {
+      list-style: none;
+      counter-reset: toc;
+    }
+
+    .toc li {
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border-color);
+      counter-increment: toc;
+    }
+
+    .toc li::before {
+      content: counter(toc) ". ";
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    .toc a {
+      color: var(--text-color);
+      text-decoration: none;
+    }
+
+    /* 标题 */
+    h2 {
+      font-size: 28px;
+      color: var(--primary-color);
+      margin: 50px 0 25px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--primary-color);
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-size: 20px;
+      color: var(--text-color);
+      margin: 30px 0 15px;
+      padding-left: 15px;
+      border-left: 4px solid var(--primary-color);
+    }
+
+    h4 {
+      font-size: 16px;
+      color: #555;
+      margin: 20px 0 10px;
+    }
+
+    /* 段落和列表 */
+    p {
+      margin: 15px 0;
+    }
+
+    ul, ol {
+      margin: 15px 0;
+      padding-left: 25px;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    /* 表格 */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+
+    th {
+      background: var(--primary-color);
+      color: white;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    /* 代码块 */
+    pre {
+      background: var(--code-bg);
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 20px 0;
+      border: 1px solid var(--border-color);
+    }
+
+    code {
+      font-family: "SF Mono", "Fira Code", Consolas, monospace;
+      font-size: 13px;
+    }
+
+    p code {
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--primary-color);
+    }
+
+    /* 流程图样式 */
+    .diagram {
+      background: #f8fafc;
+      padding: 25px;
+      border-radius: 12px;
+      margin: 20px 0;
+      text-align: center;
+      font-family: monospace;
+      white-space: pre;
+      line-height: 1.4;
+      overflow-x: auto;
+    }
+
+    /* 特性卡片 */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin: 25px 0;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, #f8fafc, #fff);
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .feature-card h4 {
+      color: var(--primary-color);
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: #666;
+      font-size: 13px;
+    }
+
+    /* 高亮框 */
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(100, 108, 255, 0.1), rgba(100, 108, 255, 0.05));
+      border-left: 4px solid var(--primary-color);
+      padding: 20px 25px;
+      border-radius: 0 8px 8px 0;
+      margin: 25px 0;
+    }
+
+    /* 分页控制 */
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* 页脚 */
+    .footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      color: #888;
+      font-size: 12px;
+    }
+
+    /* 打印优化 */
+    @media print {
+      body {
+        padding: 20px 40px;
+      }
+
+      .cover {
+        padding: 60px 0 40px;
+      }
+
+      h2, h3 {
+        page-break-after: avoid;
+      }
+
+      table, pre {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 封面 -->
+<div class="cover">
+  <div class="logo">📚</div>
+  <h1>WTC-Docs</h1>
+  <p class="subtitle">一站式游戏项目文档管理解决方案</p>
+  <p class="meta">WorldTourCasino 项目组 · 2025</p>
+</div>
+
+<!-- 目录 -->
+<div class="toc">
+  <h2>目录</h2>
+  <ul>
+    <li><a href="#overview">系统概述</a></li>
+    <li><a href="#features">核心特性</a></li>
+    <li><a href="#architecture">技术架构</a></li>
+    <li><a href="#workflow">自动化工作流</a></li>
+    <li><a href="#search">搜索系统</a></li>
+    <li><a href="#image">图片处理系统</a></li>
+    <li><a href="#stats">统计与可视化</a></li>
+    <li><a href="#deploy">部署架构</a></li>
+    <li><a href="#quickstart">快速开始</a></li>
+  </ul>
+</div>
+
+<!-- 系统概述 -->
+<h2 id="overview">1. 系统概述</h2>
+
+<h3>项目背景</h3>
+<p>WorldTourCasino 是一个多风格赌场游戏项目，包含 Classic Vegas、Double Hit、Vegas Star、Double X 四个游戏风格。随着项目规模扩大，文档管理面临以下挑战：</p>
+<ul>
+  <li>文档分散在飞书、本地文件、聊天记录中</li>
+  <li>缺乏统一的搜索入口</li>
+  <li>图片资源管理混乱</li>
+  <li>无法追踪文档更新历史</li>
+</ul>
+
+<h3>解决方案</h3>
+<p>WTC-Docs 基于 VitePress 构建，提供完整的文档管理能力：</p>
+
+<table>
+  <tr>
+    <th>功能</th>
+    <th>描述</th>
+  </tr>
+  <tr>
+    <td>统一文档中心</td>
+    <td>所有文档集中管理，分类清晰</td>
+  </tr>
+  <tr>
+    <td>智能中文搜索</td>
+    <td>支持分词、模糊匹配</td>
+  </tr>
+  <tr>
+    <td>自动化图片处理</td>
+    <td>外部图片自动下载、去重</td>
+  </tr>
+  <tr>
+    <td>版本追踪</td>
+    <td>基于 Git 的完整历史记录</td>
+  </tr>
+  <tr>
+    <td>一键部署</td>
+    <td>GitHub Pages 自动发布</td>
+  </tr>
+</table>
+
+<div class="highlight-box">
+  <strong>访问地址</strong><br>
+  线上：https://zhaoheng666.github.io/WTC-Docs/<br>
+  本地：http://localhost:5173/WTC-Docs/
+</div>
+
+<!-- 核心特性 -->
+<h2 id="features" class="page-break">2. 核心特性</h2>
+
+<div class="feature-grid">
+  <div class="feature-card">
+    <h4>🔍 智能搜索</h4>
+    <p>使用 Intl.Segmenter 原生 API 实现中文分词，支持 20% 模糊度匹配，标题权重优先</p>
+  </div>
+  <div class="feature-card">
+    <h4>📸 图片自动化</h4>
+    <p>外部 URL 图片自动下载，基于 MD5 哈希去重，未引用图片自动清理</p>
+  </div>
+  <div class="feature-card">
+    <h4>📊 数据统计</h4>
+    <p>文档总数、贡献者排行、最近更新时间线、分类分布图表</p>
+  </div>
+  <div class="feature-card">
+    <h4>🚀 自动化部署</h4>
+    <p>Git 推送触发构建，GitHub Actions 全自动 CI/CD，零配置发布</p>
+  </div>
+</div>
+
+<!-- 技术架构 -->
+<h2 id="architecture">3. 技术架构</h2>
+
+<h3>技术栈</h3>
+<table>
+  <tr>
+    <th>组件</th>
+    <th>技术选型</th>
+  </tr>
+  <tr>
+    <td>前端框架</td>
+    <td>VitePress 1.6.4</td>
+  </tr>
+  <tr>
+    <td>图表支持</td>
+    <td>Mermaid 11.12.1</td>
+  </tr>
+  <tr>
+    <td>构建工具</td>
+    <td>Vite + Rollup</td>
+  </tr>
+  <tr>
+    <td>脚本语言</td>
+    <td>Node.js + Shell</td>
+  </tr>
+  <tr>
+    <td>部署平台</td>
+    <td>GitHub Pages</td>
+  </tr>
+</table>
+
+<h3>目录结构</h3>
+<pre><code>docs/
+├── .vitepress/
+│   ├── config.mjs          # VitePress 主配置
+│   ├── sidebar.mjs         # 侧边栏自动生成
+│   ├── theme/              # 自定义主题
+│   ├── components/         # Vue 组件
+│   └── scripts/            # 自动化脚本
+│       ├── build.sh        # 构建入口
+│       ├── lib/            # 核心处理器
+│       └── tools/          # 手动工具
+├── assets/                 # 图片资源（444个文件）
+├── public/                 # 静态资源
+├── 活动/                   # 活动文档
+├── 关卡/                   # 关卡文档
+├── 工程-工具/              # 工程文档
+└── ...</code></pre>
+
+<h3>脚本分层架构</h3>
+<div class="diagram">
+┌─────────────────────────────────────────────────────┐
+│           第一层：NPM 入口脚本                       │
+│  init.sh | dev.sh | build.sh | sync.sh | status.sh │
+└───────────────────────┬─────────────────────────────┘
+                        │ 调用
+┌───────────────────────▼─────────────────────────────┐
+│           第二层：核心处理器 (lib/)                  │
+│  fix-filenames.js | image-processor.js              │
+│  link-processor.js | generate-stats.js              │
+└───────────────────────┬─────────────────────────────┘
+                        │ 依赖
+┌───────────────────────▼─────────────────────────────┐
+│           第三层：辅助工具 (utils/)                  │
+│                    notify.sh                        │
+└───────────────────────┬─────────────────────────────┘
+                        │ 独立
+┌───────────────────────▼─────────────────────────────┐
+│           第四层：手动工具 (tools/)                  │
+│  image-duplicate-checker.js | rename-images.js      │
+└─────────────────────────────────────────────────────┘
+</div>
+
+<!-- 自动化工作流 -->
+<h2 id="workflow" class="page-break">4. 自动化工作流</h2>
+
+<h3>构建流程</h3>
+<div class="diagram">
+npm run build
+     │
+     ▼
+┌────────────┐   ┌────────────┐   ┌────────────┐
+│  修复文件名  │ → │  处理图片   │ → │  处理 PDF  │
+└────────────┘   └────────────┘   └────────────┘
+                                        │
+     ┌──────────────────────────────────┘
+     ▼
+┌────────────┐   ┌────────────┐   ┌────────────┐
+│  转换链接   │ → │ 生成目录索引 │ → │ VitePress  │
+└────────────┘   └────────────┘   └────────────┘
+                                        │
+                                        ▼
+                                   输出 dist/
+</div>
+
+<h3>各阶段处理内容</h3>
+<table>
+  <tr>
+    <th>阶段</th>
+    <th>脚本</th>
+    <th>处理内容</th>
+  </tr>
+  <tr>
+    <td>1. 修复文件名</td>
+    <td>fix-problematic-filenames.js</td>
+    <td>移除非法字符、处理长文件名</td>
+  </tr>
+  <tr>
+    <td>2. 处理图片</td>
+    <td>image-processor.js</td>
+    <td>下载外部图片、去重、清理</td>
+  </tr>
+  <tr>
+    <td>3. 处理 PDF</td>
+    <td>pdf-processor.js</td>
+    <td>收集 PDF 资源</td>
+  </tr>
+  <tr>
+    <td>4. 转换链接</td>
+    <td>link-processor.js</td>
+    <td>相对路径转绝对路径</td>
+  </tr>
+  <tr>
+    <td>5. 生成索引</td>
+    <td>generate-directory-index.js</td>
+    <td>目录自动索引</td>
+  </tr>
+  <tr>
+    <td>6. VitePress</td>
+    <td>vitepress build</td>
+    <td>最终构建</td>
+  </tr>
+</table>
+
+<!-- 搜索系统 -->
+<h2 id="search">5. 搜索系统</h2>
+
+<h3>搜索架构</h3>
+<div class="diagram">
+用户输入 "活动配置文件"
+          │
+          ▼
+┌─────────────────────┐
+│     中文分词器       │  Intl.Segmenter('zh-CN')
+│ → ["活动", "配置",  │
+│    "文件", ...]    │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│    MiniSearch       │  本地搜索引擎
+│     索引数据库       │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│     权重排序         │  title:4 > text:2 > titles:1
+└──────────┬──────────┘
+           │
+           ▼
+      搜索结果
+</div>
+
+<h3>搜索配置</h3>
+<pre><code>{
+  boost: { title: 4, text: 2, titles: 1 },
+  fuzzy: 0.2,           // 20% 模糊度
+  prefix: true,         // 前缀匹配
+  combineWith: 'OR'     // 提高召回率
+}</code></pre>
+
+<!-- 图片处理系统 -->
+<h2 id="image" class="page-break">6. 图片处理系统</h2>
+
+<h3>处理流程</h3>
+<div class="diagram">
+扫描 MD 文件
+      │
+      ▼
+┌─────────────────┐
+│   图片类型判断   │
+├─────────────────┤
+│ 外部 URL → 下载 │
+│ 本地路径 → 复制 │
+│ Base64  → 提取 │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  计算 MD5 哈希   │
+│ 重命名: abc123.png │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  更新 MD 引用    │
+│  清理未引用图片   │
+└─────────────────┘
+</div>
+
+<h3>命名规则</h3>
+<pre><code>原始: https://example.com/image.png
+处理: assets/a1b2c3d4e5f6.png  (MD5 哈希)</code></pre>
+
+<h3>统计示例</h3>
+<div class="highlight-box">
+  图片处理完成:<br>
+  - 文件修改: 15<br>
+  - 下载图片: 8<br>
+  - 处理图片: 23<br>
+  - 提取内嵌: 2<br>
+  - 清理未用: 5
+</div>
+
+<!-- 统计与可视化 -->
+<h2 id="stats">7. 统计与可视化</h2>
+
+<h3>统计数据结构</h3>
+<pre><code>{
+  "totalDocs": 156,
+  "contributors": 5,
+  "contributorsList": [
+    { "name": "张三", "commits": 120 },
+    { "name": "李四", "commits": 80 }
+  ],
+  "recentUpdates": [...],
+  "categories": {
+    "活动": 45,
+    "关卡": 32,
+    "工程-工具": 28
+  }
+}</code></pre>
+
+<h3>可视化组件</h3>
+<table>
+  <tr>
+    <th>组件</th>
+    <th>功能</th>
+    <th>位置</th>
+  </tr>
+  <tr>
+    <td>Dashboard.vue</td>
+    <td>最近更新时间线</td>
+    <td>首页</td>
+  </tr>
+  <tr>
+    <td>StatsPage.vue</td>
+    <td>完整统计页面</td>
+    <td>/stats</td>
+  </tr>
+  <tr>
+    <td>AnimatedNumber.vue</td>
+    <td>数字动画效果</td>
+    <td>统计卡片</td>
+  </tr>
+</table>
+
+<!-- 部署架构 -->
+<h2 id="deploy" class="page-break">8. 部署架构</h2>
+
+<h3>GitHub Actions 工作流</h3>
+<div class="diagram">
+Push to main
+      │
+      ▼
+┌─────────────────┐
+│ Checkout 代码    │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Setup Node 20   │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ npm ci          │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ build-ci.sh     │
+│ 生成统计数据     │
+│ VitePress 构建   │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ 部署 GitHub     │
+│ Pages           │
+└─────────────────┘
+</div>
+
+<h3>部署命令</h3>
+<pre><code># 本地一键同步（包含构建+部署）
+npm run sync</code></pre>
+
+<!-- 快速开始 -->
+<h2 id="quickstart">9. 快速开始</h2>
+
+<h3>环境要求</h3>
+<ul>
+  <li>Node.js >= 18</li>
+  <li>Git</li>
+  <li>macOS / Linux / Windows</li>
+</ul>
+
+<h3>安装步骤</h3>
+<pre><code># 1. 进入 docs 目录
+cd /path/to/WorldTourCasino/docs
+
+# 2. 安装依赖
+npm install
+
+# 3. 启动开发服务器
+npm run dev
+
+# 4. 访问
+open http://localhost:5173/WTC-Docs/</code></pre>
+
+<h3>常用命令</h3>
+<table>
+  <tr>
+    <th>命令</th>
+    <th>用途</th>
+  </tr>
+  <tr>
+    <td><code>npm run dev</code></td>
+    <td>启动开发服务器</td>
+  </tr>
+  <tr>
+    <td><code>npm run build</code></td>
+    <td>本地构建</td>
+  </tr>
+  <tr>
+    <td><code>npm run sync</code></td>
+    <td>构建并部署到 GitHub Pages</td>
+  </tr>
+  <tr>
+    <td><code>npm run status</code></td>
+    <td>查看 Git 状态</td>
+  </tr>
+  <tr>
+    <td><code>npm run convert-docx</code></td>
+    <td>DOCX 转 Markdown</td>
+  </tr>
+</table>
+
+<!-- 技术亮点总结 -->
+<h2 class="page-break">技术亮点总结</h2>
+
+<table>
+  <tr>
+    <th>特性</th>
+    <th>实现方案</th>
+    <th>效果</th>
+  </tr>
+  <tr>
+    <td>中文搜索</td>
+    <td>Intl.Segmenter + MiniSearch</td>
+    <td>精准分词，模糊匹配</td>
+  </tr>
+  <tr>
+    <td>图片管理</td>
+    <td>MD5 哈希 + 自动清理</td>
+    <td>零重复，零冗余</td>
+  </tr>
+  <tr>
+    <td>侧边栏</td>
+    <td>递归扫描 + 配置排序</td>
+    <td>自动生成，灵活配置</td>
+  </tr>
+  <tr>
+    <td>部署</td>
+    <td>GitHub Actions</td>
+    <td>推送即发布</td>
+  </tr>
+  <tr>
+    <td>统计</td>
+    <td>Git 记录分析</td>
+    <td>实时更新，数据准确</td>
+  </tr>
+  <tr>
+    <td>文件名修复</td>
+    <td>正则检测 + 自动修复</td>
+    <td>跨平台兼容</td>
+  </tr>
+</table>
+
+<div class="footer">
+  <p>WTC-Docs 文档系统 · WorldTourCasino 项目组</p>
+  <p>https://zhaoheng666.github.io/WTC-Docs/</p>
+</div>
+
+</body>
+</html>

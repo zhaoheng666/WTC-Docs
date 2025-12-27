@@ -83,6 +83,20 @@
   - 📝 [近期VS Code配置优化总结](vscode/%E8%BF%91%E6%9C%9FVS%20Code%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96%E6%80%BB%E7%BB%93)
 
 
+#### 📁 优化重构
+
+  - **📂 resource-v2**
+    - 📝 [ActivityMan资源依赖检查优化](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/resource-v2/ActivityMan%E8%B5%84%E6%BA%90%E4%BE%9D%E8%B5%96%E6%A3%80%E6%9F%A5%E4%BC%98%E5%8C%96)
+    - 📝 [ResourceManV2-技术架构报告](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/resource-v2/ResourceManV2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E6%8A%A5%E5%91%8A)
+    - 📝 [ResourceManV2内存优化](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/resource-v2/ResourceManV2%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96)
+    - 📝 [WTC-res-load-improve](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/resource-v2/WTC-res-load-improve)
+    - 📝 [活动补单-回调未执行导致进度卡住](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/resource-v2/%E6%B4%BB%E5%8A%A8%E8%A1%A5%E5%8D%95-%E5%9B%9E%E8%B0%83%E6%9C%AA%E6%89%A7%E8%A1%8C%E5%AF%BC%E8%87%B4%E8%BF%9B%E5%BA%A6%E5%8D%A1%E4%BD%8F)
+    - 📝 [活动资源优化-后置加载方案](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/resource-v2/%E6%B4%BB%E5%8A%A8%E8%B5%84%E6%BA%90%E4%BC%98%E5%8C%96-%E5%90%8E%E7%BD%AE%E5%8A%A0%E8%BD%BD%E6%96%B9%E6%A1%88)
+  - **📂 动态帧负载均衡**
+    - 📝 [FrameScheduler使用指南](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/%E5%8A%A8%E6%80%81%E5%B8%A7%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/FrameScheduler%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
+    - 📝 [PerformanceMonitor使用指南](%E4%BC%98%E5%8C%96%E9%87%8D%E6%9E%84/%E5%8A%A8%E6%80%81%E5%B8%A7%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/PerformanceMonitor%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
+
+
 #### 📁 配置管理
 
   - 📝 [settings-json-读取规范](%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/settings-json-%E8%AF%BB%E5%8F%96%E8%A7%84%E8%8C%83)
@@ -92,10 +106,8 @@
 
 - 📝 [Charles 抓包工具使用方法](Charles%20%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)
 - 📝 [Cocos2d-TMX地图支持限制](Cocos2d-TMX%E5%9C%B0%E5%9B%BE%E6%94%AF%E6%8C%81%E9%99%90%E5%88%B6)
-- 📝 [FrameScheduler使用指南](FrameScheduler%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
 - 📝 [Macos Rosetta 兼容模式(x86_64) 覆盖原生版本(arm64)的问题](Macos%20Rosetta%20%E5%85%BC%E5%AE%B9%E6%A8%A1%E5%BC%8F(x86_64)%20%E8%A6%86%E7%9B%96%E5%8E%9F%E7%94%9F%E7%89%88%E6%9C%AC(arm64)%E7%9A%84%E9%97%AE%E9%A2%98)
 - 📝 [OpenSpec分享稿](OpenSpec%E5%88%86%E4%BA%AB%E7%A8%BF)
-- 📝 [ResourceManV2-技术架构报告](ResourceManV2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E6%8A%A5%E5%91%8A)
 - 📝 [Symbol-CCB创建工具](Symbol-CCB%E5%88%9B%E5%BB%BA%E5%B7%A5%E5%85%B7)
 - 📝 [UI 模板库插件](UI%20%E6%A8%A1%E6%9D%BF%E5%BA%93%E6%8F%92%E4%BB%B6)
 - 📝 [WTC-DOCS-MIGRATION](WTC-DOCS-MIGRATION)

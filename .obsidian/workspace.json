@@ -20,8 +20,21 @@
               "icon": "lucide-file",
               "title": "README"
             }
+          },
+          {
+            "id": "034d7438ac5e0a8f",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.10.6"
+              },
+              "icon": "lucide-book-up",
+              "title": "版本说明 1.10.6"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -142,13 +155,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "README 的大纲"
+              "title": "大纲"
             }
           }
         ],
@@ -169,7 +181,7 @@
       "bases:创建新数据库": false
     }
   },
-  "active": "8fbbc79c708c8194",
+  "active": "034d7438ac5e0a8f",
   "lastOpenFiles": [
     "故障排查/ActivityMan资源依赖检查优化.md",
     "其他/优化重构/resource-v2/ResourceManV2内存优化.md",
