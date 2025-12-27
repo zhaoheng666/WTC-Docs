@@ -147,6 +147,93 @@ FrameScheduler 自动读取引擎帧率，默认使用 70% 的帧时间作为预
 FrameScheduler.getInstance().setBudgetRatio(0.8);  // 使用 80% 帧时间
 ```
 
+## 与 PerformanceMonitor 的集成
+
+FrameScheduler 的帧时间和预算计算统一委托给 PerformanceMonitor，保证调度器与资源加载使用同一套帧预算模型。
+
+| 集成点 | 调用 | 说明 |
+|-------|------|------|
+| 目标帧时间 | `getTargetFrameTime()` | 从引擎读取目标帧时间（60fps 时约 16.67ms） |
+| 帧预算 | `getFrameBudget()` | 目标帧时间 * 0.7（预留 30% 给引擎） |
+| 剩余预算 | `getRemainingBudget()` | 帧预算 - 已消耗时间 |
+
+**预算计算模型**:
+
+- 目标帧时间 = `cc.director.getAnimationInterval() * 1000`
+- 任务预算 = 目标帧时间 * 0.7
+- 剩余预算 = 任务预算 - `getFrameElapsed()`
+
+```javascript
+var FrameScheduler = require("../common/util/FrameScheduler");
+var PerformanceMonitor = require("../common/util/PerformanceMonitor");
+
+var monitor = PerformanceMonitor.getInstance();
+if (monitor.isFrameIdle(FrameScheduler.Cost.HEAVY)) {
+    FrameScheduler.getInstance().addTask(function() {
+        doHeavyWork();
+    }, {
+        cost: FrameScheduler.Cost.HEAVY
+    });
+}
+```
+
+## 资源加载场景中的应用
+
+| 场景 | 使用方式 | 目的 |
+|------|----------|------|
+| ActivityLoader | 通过 FrameScheduler 调度活动激活与事件派发 | 避免同一帧集中创建 UI |
+| CanvasDownloader | 基于 PerformanceMonitor 动态计算批次并等待帧空闲 | 控制 cc.loader 阻塞时间 |
+
+### ActivityLoader 示例
+
+```javascript
+FrameScheduler.getInstance().addTask(function() {
+    game.ActivityMan.getInstance()._activateLagLoadActivity(activityObj);
+}, {
+    cost: FrameScheduler.Cost.VERY_HEAVY
+});
+
+FrameScheduler.getInstance().addTask(function() {
+    game.eventDispatcher.dispatchEvent(CommonEvent.ACTIVITY_RESOURCE_DOWNLOAD_COMPLETE, {
+        activityInfo: eventInfo
+    });
+}, {
+    cost: FrameScheduler.Cost.MEDIUM
+});
+```
+
+### CanvasDownloader 示例
+
+```javascript
+var PerformanceMonitor = require("../common/util/PerformanceMonitor");
+
+var monitor = PerformanceMonitor.getInstance();
+var remainingBudget = monitor.getRemainingBudget();
+var batchSize = Math.max(3, Math.min(10, Math.floor(remainingBudget / avgTimePerResource)));
+
+if (monitor.isFrameIdle()) {
+    loadBatch(batchSize);
+} else {
+    requestAnimationFrame(loadNextBatch);
+}
+```
+
+## 内存安全性分析
+
+### 关键清理点
+
+| 场景 | 清理动作 | 作用 |
+|------|----------|------|
+| 任务执行完成 | `taskInfo.task = null`、`taskInfo.group = null` | 释放闭包引用，降低内存占用 |
+| TaskGroup 完成 | `onComplete`/`onProgress` 置空 | 防止回调长期持有外部对象 |
+| 调度停止 | `_cleanupCompletedGroups()` 调用 `group.dispose()` | 清理 TaskGroup 与统计数据 |
+
+### 实践建议
+
+- 任务函数避免捕获大对象，优先传入最小必要参数
+- 任务组完成后无需手动清理，调度器会回收 TaskGroup
+- 独立任务不创建 TaskGroup，不会积累长期引用
+
 ## 已应用的文件
 
 以下文件已应用此模式：

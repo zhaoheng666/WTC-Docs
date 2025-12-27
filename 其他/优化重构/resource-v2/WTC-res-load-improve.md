@@ -616,5 +616,52 @@ cd scripts && ./build_local_oldvegas.sh
 
 ---
 
+## 动态帧负载平衡优化（2025-12-28）
+
+### 优化背景
+
+- 资源批量加载集中在同一帧执行，导致卡帧与进度抖动
+- 活动下载完成后大量事件同步派发，引发 UI 峰值开销
+- 固定批次大小无法适配设备性能与实时帧压力
+
+### 核心策略（三层防护：加载层、调度层、队列层）
+
+| 层级 | 防护策略 | 关键组件 |
+|------|----------|----------|
+| 加载层 | 动态批次大小 + 帧空闲检测 | CanvasDownloader、PerformanceMonitor |
+| 调度层 | 重任务与事件分帧执行 | FrameScheduler、ActivityLoader |
+| 队列层 | 帧感知的队列启动节流 | DownloadQueue、FrameScheduler |
+
+### 关键组件改动
+
+| 提交 | 变更 | 影响 |
+|------|------|------|
+| `ae116c2b378` | LoadingProgressIndicator 优化超时策略 | 减少误判与抖动 |
+| `c292d07dacd` | ActivityLoader 通过 FrameScheduler 调度激活与事件派发 | 避免同帧集中开销 |
+| `68fe49b2d1a` | 统一帧预算模型 + CanvasDownloader 动态批次 | 任务预算更稳定 |
+| `b5b2861ea58` | CanvasDownloader 帧空闲检测 + 动态调整 batchSize | 降低单帧阻塞 |
+
+### 代码示例
+
+```javascript
+var PerformanceMonitor = require("../common/util/PerformanceMonitor");
+
+var monitor = PerformanceMonitor.getInstance();
+var remaining = monitor.getRemainingBudget();
+var batchSize = Math.max(3, Math.min(10, Math.floor(remaining / avgTimePerResource)));
+
+if (monitor.isFrameIdle()) {
+    loadBatch(batchSize);
+} else {
+    requestAnimationFrame(loadNextBatch);
+}
+```
+
+### 优化效果
+
+- 资源加载与 UI 创建解耦，峰值开销分散到多帧
+- 批次大小随帧预算动态调整，卡帧概率降低
+- 活动激活与事件派发分帧执行，主线程更稳定
+
 **最后更新**: 2025-11-06
 **维护者**: WTC Team
