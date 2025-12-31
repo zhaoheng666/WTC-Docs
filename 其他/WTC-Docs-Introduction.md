@@ -44,7 +44,7 @@ WTC-Docs 基于 VitePress 构建，提供：
 ### 访问地址
 
 - **线上地址**: https://zhaoheng666.github.io/WTC-Docs/
-- **本地开发**: http://localhost:5173/WTC-Docs/
+- **本地开发**: `http://localhost:5173/WTC-Docs/`
 
 ---
 
@@ -358,8 +358,8 @@ npm install
 # 3. 启动开发服务器
 npm run dev
 
-# 4. 访问
-open http://localhost:5173/WTC-Docs/
+# 4. 访问浏览器
+# 打开 http://localhost:5173/WTC-Docs/
 ```
 
 ### 常用命令
