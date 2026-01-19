@@ -44,6 +44,8 @@
     - 📝 [git-commits](ai-rules/WTC/git-commits)
     - 📝 [shell-scripts](ai-rules/WTC/shell-scripts)
     - 📝 [terminology](ai-rules/WTC/terminology)
+  - **📂 code-review**
+    - 📝 [RULES](ai-rules/code-review/RULES)
   - **📂 docs**
     - 📝 [auto-commits](ai-rules/docs/auto-commits)
     - 📝 [feishu-integration](ai-rules/docs/feishu-integration)
@@ -101,11 +103,14 @@
 - 📝 [Wails 重构 CCB 生成工具](Wails%20%E9%87%8D%E6%9E%84%20CCB%20%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7)
 - 📝 [adb 同步脚本使用说明](adb%20%E5%90%8C%E6%AD%A5%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
 - 📝 [docx转markdown规范](docx%E8%BD%ACmarkdown%E8%A7%84%E8%8C%83)
+- 📝 [pomelo依赖库管理](pomelo%E4%BE%9D%E8%B5%96%E5%BA%93%E7%AE%A1%E7%90%86)
+- 📝 [resource_v2日志上报清单](resource_v2%E6%97%A5%E5%BF%97%E4%B8%8A%E6%8A%A5%E6%B8%85%E5%8D%95)
 - 📝 [webstorm启用本地资源访问](webstorm%E5%90%AF%E7%94%A8%E6%9C%AC%E5%9C%B0%E8%B5%84%E6%BA%90%E8%AE%BF%E9%97%AE)
 - 📝 [图片资源压缩](%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90%E5%8E%8B%E7%BC%A9)
 - 📝 [本地搭建发版环境](%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA%E5%8F%91%E7%89%88%E7%8E%AF%E5%A2%83)
 - 📝 [模糊图标生成脚本说明](%E6%A8%A1%E7%B3%8A%E5%9B%BE%E6%A0%87%E7%94%9F%E6%88%90%E8%84%9A%E6%9C%AC%E8%AF%B4%E6%98%8E)
 - 📝 [美术 macOS 14 环境工具使用说明](%E7%BE%8E%E6%9C%AF%20macOS%2014%20%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
+- 📝 [美术资源-图集大小与内存占用规范](%E7%BE%8E%E6%9C%AF%E8%B5%84%E6%BA%90-%E5%9B%BE%E9%9B%86%E5%A4%A7%E5%B0%8F%E4%B8%8E%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E8%A7%84%E8%8C%83)
 
 
 ---

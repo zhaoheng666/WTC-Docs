@@ -25,6 +25,7 @@
 | removeAllChildrenWithCleanup | `removeAllChildrenWithCleanup` | 显式清理 | 确认是否预期 |
 | release | `.release(` | 手动释放引用计数，可能野指针 | 确认 retain/release 配对 |
 | cleanup | `.cleanup(` | 手动清理 | 确认时机正确 |
+| setSearchPaths | `setSearchPaths` | 设置资源搜索路径，影响资源加载优先级 | 必须用 unshift 添加到头部，确保热更资源优先 |
 
 ### 深度分析模板
 
@@ -148,6 +149,7 @@
 
 | 日期 | 变更 | 操作人 |
 |-----|------|-------|
+| 2025-01-19 | 新增 setSearchPaths 高风险 API | AI |
 | 2025-01-19 | 初始版本，从 SKILL.md 提取规则 | AI |
 
 ---
