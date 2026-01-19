@@ -108,9 +108,37 @@ rm package-lock.json
 rm -rf node_modules/@me2zen
 npm install
 
-# 提交
+# 提交（必须包含 package-lock.json）
 git add package.json package-lock.json
 git commit -m "cv: 更新 pomelo 依赖"
+git push
+```
+
+### ⚠️ package-lock.json 同步规则（强制）
+
+**历史原因**：`package-lock.json` 已纳入 Git 版本控制。
+
+**必须遵守**：
+1. 每次更新 pomelo 或其他 npm 依赖时，**必须删除并重新生成** `package-lock.json`
+2. **必须提交** 新的 `package-lock.json` 到 Git
+3. 如果只提交 `package.json` 而不提交 `package-lock.json`，其他机器 `git pull` 后会被重置为旧版本的依赖
+
+**错误示例**：
+```bash
+# ❌ 只提交 package.json，忘记提交 package-lock.json
+git add package.json
+git commit -m "更新依赖"
+# 结果：其他机器 pull 后 package-lock.json 仍是旧版本，npm install 会安装旧依赖
+```
+
+**正确流程**：
+```bash
+# ✅ 完整流程
+rm package-lock.json
+rm -rf node_modules/@me2zen
+npm install
+git add package.json package-lock.json  # 两个文件都要提交
+git commit -m "更新依赖"
 git push
 ```
 
@@ -183,8 +211,8 @@ npm install
 
 | 库 | commit | 说明 |
 |---|--------|-----|
-| pomelo-cocos2d-js | `#fe09fe3` | main 分支 |
-| pomelo-jsclient-websocket | `#c5c8f1c` | 使用 compressGzip 字段判断解压 |
+| pomelo-cocos2d-js | `#b4e3c87` | main 分支 |
+| pomelo-jsclient-websocket | `#7ee1965` | 使用 compressGzip 字段判断解压 |
 | pomelo-protocol | 默认分支 | 无特殊修改 |
 
 ---
