@@ -114,33 +114,33 @@ git commit -m "cv: 更新 pomelo 依赖"
 git push
 ```
 
-### ⚠️ package-lock.json 同步规则（强制）
+### ⚠️ package-lock.json 同步规则
 
 **历史原因**：`package-lock.json` 已纳入 Git 版本控制。
 
-**必须遵守**：
-1. 每次更新 pomelo 或其他 npm 依赖时，**必须删除并重新生成** `package-lock.json`
-2. **必须提交** 新的 `package-lock.json` 到 Git
-3. 如果只提交 `package.json` 而不提交 `package-lock.json`，其他机器 `git pull` 后会被重置为旧版本的依赖
+**核心原则**：确保 `package-lock.json` 中的依赖版本与 `package.json` 一致后再提交。
 
-**错误示例**：
+**提交前检查**：
 ```bash
-# ❌ 只提交 package.json，忘记提交 package-lock.json
-git add package.json
-git commit -m "更新依赖"
-# 结果：其他机器 pull 后 package-lock.json 仍是旧版本，npm install 会安装旧依赖
+# 检查 package-lock.json 中的版本是否符合预期
+grep -A2 "pomelo-cocos2d-js" package-lock.json
 ```
 
-**正确流程**：
+**如果版本不符合预期**：
 ```bash
-# ✅ 完整流程
 rm package-lock.json
 rm -rf node_modules/@me2zen
 npm install
+```
+
+**提交时必须包含 package-lock.json**：
+```bash
 git add package.json package-lock.json  # 两个文件都要提交
 git commit -m "更新依赖"
 git push
 ```
+
+**注意**：如果只提交 `package.json` 而不提交 `package-lock.json`，其他机器 `git pull` 后会被重置为旧版本的依赖。
 
 ---
 
