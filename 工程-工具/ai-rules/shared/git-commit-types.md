@@ -17,6 +17,7 @@
 | **ci** | 持续集成配置更改 | ci: 更新 GitHub Actions 工作流 |
 | **build** | 构建系统或依赖变更 | build: 升级 webpack 到版本 5 |
 | **revert** | 回滚提交 | revert: 撤销某次功能提交 |
+| **temp** | 临时变更（需后续回退） | temp: 临时关闭某功能 |
 
 ## 通用规则
 
