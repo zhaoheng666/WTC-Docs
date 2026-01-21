@@ -25,12 +25,14 @@
             "id": "034d7438ac5e0a8f",
             "type": "leaf",
             "state": {
-              "type": "release-notes",
+              "type": "markdown",
               "state": {
-                "currentVersion": "1.10.6"
+                "file": "工程-工具/ai-rules/code-review/RULES.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-book-up",
-              "title": "版本说明 1.10.6"
+              "icon": "lucide-file",
+              "title": "RULES"
             }
           }
         ],
@@ -155,12 +157,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "工程-工具/ai-rules/code-review/RULES.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "大纲"
+              "title": "RULES 的大纲"
             }
           }
         ],
@@ -183,6 +186,9 @@
   },
   "active": "034d7438ac5e0a8f",
   "lastOpenFiles": [
+    "README.md",
+    "index.md",
+    "最近更新.md",
     "故障排查/ActivityMan资源依赖检查优化.md",
     "其他/优化重构/resource-v2/ResourceManV2内存优化.md",
     "其他/优化重构/resource-v2/活动资源优化-后置加载方案.md",
@@ -194,8 +200,6 @@
     "其他/优化重构",
     "故障排查/ResourceManV2内存优化.md",
     "故障排查/活动补单-回调未执行导致进度卡住.md",
-    "index.md",
-    "README.md",
     "故障排查/25-02-21-故障恢复记录.md",
     "故障排查/index.md",
     "未命名.canvas",
