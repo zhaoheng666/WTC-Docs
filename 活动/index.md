@@ -28,6 +28,9 @@
 
 #### 📝 其他
 
+- 📝 [Casino Royale 业务开发记录-2026-01-23](Casino%20Royale%20%E4%B8%9A%E5%8A%A1%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95-2026-01-23)
+- 📝 [Casino Royale 小游戏移植流程](Casino%20Royale%20%E5%B0%8F%E6%B8%B8%E6%88%8F%E7%A7%BB%E6%A4%8D%E6%B5%81%E7%A8%8B)
+- 📝 [Casino Royale 路线图绘制工具使用说明](Casino%20Royale%20%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
 - 📝 [HR 赛季资源替换](HR%20%E8%B5%9B%E5%AD%A3%E8%B5%84%E6%BA%90%E6%9B%BF%E6%8D%A2)
 - 📝 [MOB 活动小机台资源优化](MOB%20%E6%B4%BB%E5%8A%A8%E5%B0%8F%E6%9C%BA%E5%8F%B0%E8%B5%84%E6%BA%90%E4%BC%98%E5%8C%96)
 - 📝 [头像模块操作手册](%E5%A4%B4%E5%83%8F%E6%A8%A1%E5%9D%97%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C)
