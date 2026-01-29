@@ -96,6 +96,7 @@
 - 📝 [Cocos2d-TMX地图支持限制](Cocos2d-TMX%E5%9C%B0%E5%9B%BE%E6%94%AF%E6%8C%81%E9%99%90%E5%88%B6)
 - 📝 [Macos Rosetta 兼容模式(x86_64) 覆盖原生版本(arm64)的问题](Macos%20Rosetta%20%E5%85%BC%E5%AE%B9%E6%A8%A1%E5%BC%8F(x86_64)%20%E8%A6%86%E7%9B%96%E5%8E%9F%E7%94%9F%E7%89%88%E6%9C%AC(arm64)%E7%9A%84%E9%97%AE%E9%A2%98)
 - 📝 [OpenSpec分享稿](OpenSpec%E5%88%86%E4%BA%AB%E7%A8%BF)
+- 📝 [Plist批量打包解包工具](Plist%E6%89%B9%E9%87%8F%E6%89%93%E5%8C%85%E8%A7%A3%E5%8C%85%E5%B7%A5%E5%85%B7)
 - 📝 [Symbol-CCB创建工具](Symbol-CCB%E5%88%9B%E5%BB%BA%E5%B7%A5%E5%85%B7)
 - 📝 [UI 模板库插件](UI%20%E6%A8%A1%E6%9D%BF%E5%BA%93%E6%8F%92%E4%BB%B6)
 - 📝 [WTC-DOCS-MIGRATION](WTC-DOCS-MIGRATION)
