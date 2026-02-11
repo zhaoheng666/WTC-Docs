@@ -60,6 +60,9 @@ this.maxSeasonId = 19; //修改赛季ID
 #### 玩家寄语处理
 寄语 `playerWordDesc` 在实际使用时，存在过长需要手动换行的情况，这时可以通过修改 `CardInfoController.js` 文件中的 `initCard` 方法，根据情况进行调试，每次只会生效一条，修改后，再复制回 `card_names.json` 的 `playerWordDesc` 中。
 
+### 2.2.3修改card_system_lagload/version.json
+将CardSysLagloadVersion修改为最新的赛季ID
+
 ### 2.3 赛季资源处理
 
 #### 2.3.1 清理老资源，发布新资源

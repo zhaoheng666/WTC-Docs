@@ -95,7 +95,7 @@ Spreadsheet ID: 1LkOg3XJCzpillkdQSQ-THPTfgz-iRi1EAnfAz0Sl1z0
 ✅ 代码调整完成（CardSystemMan.js）
 ✅ 配置获取完成（20 个卡册，200 张卡片）
 ⚠️  赛季视频缺失，已跳过
-✅ 资源生成完成
+✅ 资源生成完成（card_names.json, album_name_config.json, version.json）
 ✅ 旧资源清理完成（9 项）
 ✅ 资源发布完成（4 组）
 ✅ 构建验证完成
@@ -118,7 +118,7 @@ Spreadsheet ID: 1LkOg3XJCzpillkdQSQ-THPTfgz-iRi1EAnfAz0Sl1z0
     ↓
 5. 资源检查（音效 & 视频）
     ↓
-6. 资源生成（配置文件）
+6. 资源生成（card_names.json, album_name_config.json, version.json）
     ↓
 7. 资源清理（删除旧赛季）
     ↓
@@ -233,6 +233,29 @@ WorldTourCasinoResource/{资源目录}/Resources/casino/card_system/album/s_{赛
 - 示例：`CV S22卡牌详情`
 - 提取 20 个卡册名称
 
+### 4.3 version.json
+
+**位置**：
+```
+WorldTourCasinoResource/{资源目录}/Resources/card_system_lagload/version.json
+```
+
+**结构**：
+```json
+{
+  "CardSysLagloadVersion": 22
+}
+```
+
+**更新逻辑**：
+- 读取现有文件
+- 修改 `CardSysLagloadVersion` 字段为新赛季 ID
+- 写入更新后的内容
+
+**作用**：
+- 控制卡册收集系统延迟加载资源的版本号
+- 确保客户端加载正确赛季的资源
+
 ---
 
 ## 五、资源清理
@@ -297,7 +320,7 @@ Skill 自动搜索并删除所有包含旧赛季 ID 的文件和目录：
 ✅ 已完成：
   ✓ 代码调整（CardSystemMan.js：maxSeasonId = 22）
   ✓ 配置获取（从 Google Sheets）
-  ✓ 资源生成（card_names.json, album_name_config.json）
+  ✓ 资源生成（card_names.json, album_name_config.json, version.json）
   ✓ 资源清理（删除 S21 旧资源）
   ✓ 资源发布（4 组资源发布完成）
   ✓ 构建验证（build_local_oldvegas.sh）
@@ -317,6 +340,7 @@ Skill 自动搜索并删除所有包含旧赛季 ID 的文件和目录：
 📦 配置文件位置：
   • WorldTourCasino/res_oldvegas/casino/card_system/album/s_22/album_name_config.json
   • WorldTourCasino/res_oldvegas/casino/card_system/cards/s_22/card_names.json
+  • WorldTourCasino/res_oldvegas/card_system_lagload/version.json
 
 📊 配置数据：
   • 卡册数量：20
@@ -430,6 +454,7 @@ Error: No plugin exists using the extension ccbi.
    ```bash
    ls -lh res_oldvegas/casino/card_system/album/s_22/album_name_config.json
    ls -lh res_oldvegas/casino/card_system/cards/s_22/card_names.json
+   cat res_oldvegas/card_system_lagload/version.json
    ```
 
 3. 手动运行构建脚本查看详细错误：
