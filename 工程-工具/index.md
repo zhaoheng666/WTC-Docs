@@ -10,7 +10,6 @@
   - 📝 [AI编程模型 RooCode 配置教程](AI/AI%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%20RooCode%20%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B)
   - 📝 [Claude Code Schedule Coordinator Agent 配置指南](AI/Claude%20Code%20Schedule%20Coordinator%20Agent%20%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97)
   - 📝 [Claude Code 模块化拆分+标注机制实验报告](AI/Claude%20Code%20%E6%A8%A1%E5%9D%97%E5%8C%96%E6%8B%86%E5%88%86%2B%E6%A0%87%E6%B3%A8%E6%9C%BA%E5%88%B6%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A)
-  - 📝 [OpenCode配置](AI/OpenCode%E9%85%8D%E7%BD%AE)
 
 
 #### 📁 CocosBuilder
