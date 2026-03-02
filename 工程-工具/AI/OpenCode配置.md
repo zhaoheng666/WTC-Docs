@@ -19,7 +19,7 @@ next: false
   "$schema": "https://opencode.ai/config.json",
   "provider": {
     "ghoststudio-anthropic": {
-      "npm": "@ai-sdk/openai-compatible",
+      "npm": "@ai-sdk/anthropic",
       "name": "Anthropic (GhostStudio)",
       "options": {
         "baseURL": "https://chatgpt-corp.ghoststudio.net/v1",
