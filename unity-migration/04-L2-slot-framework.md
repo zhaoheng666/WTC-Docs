@@ -821,4 +821,40 @@ namespace WTC.Slot.Compat2022.Core
 
 ---
 
+## 4.9 转译依赖与优先级（src/newdesign_slot）
+
+基于 `require()` 静态扫描得到的目录级依赖，作为先后顺序指导（只统计 `src/newdesign_slot/` 内部依赖）。
+
+### 目录依赖概览（文件数/主要依赖）
+
+| 目录 | 文件数 | 主要依赖 | 说明 |
+|------|-------|-----------|------|
+| **config/protocol (外部前置)** | — | — | **配置解析/协议模型，必须优先转译**：`src/slot/config/SlotConfigMan.js`（`getSubject`/`getSubjectTmpl`/`getEditableConfig` 解析 `res_oldvegas/config/subject_tmpl_list/*.json` + `editable_config_list/*.json`），数据中心 `src/slot/ClassicSlotMan.js` 继承 `SlotMan`，以及协议文件 `src/slot/protocol/{C2S,S2C}{EnterRoom,LeaveRoom,Spin,SlotParam}.js` |
+| enum | 4 | — | 全局枚举，其他目录广泛引用 |
+| customShader | 2 | — | Shader 占位，独立可先转 |
+| controller_new2022 | 16 | enum | 新版 UI 控制器，供组件/动作引用 |
+| actions | 27 | enum, controller_new2022 | SlotAction 基类族 |
+| controller | 34 | tools, animation, actions | 与 tools 互相依赖（需要拆环） |
+| tools | 8 | controller, enum | SlotUtil/WinEffectHelper 等工具，引用部分控制器 |
+| animation | 3 | tools | 动画辅助，轻量 |
+| process | 35 | enum, actions, tools, controller(+new2022) | 流程基类及变体 |
+| component | 57 | enum, process, controller, tools, actions, customShader | 旧版组件族 |
+| component_new2022 | 20 | component, enum, actions, controller(+new2022), tools, customShader | 2022 版组件族 |
+| scene | 413 | controller, component_new2022, component, actions, process, enum, tools, (customShader/animation) | 所有关卡，依赖最重 |
+
+### 推荐转译顺序（按依赖拓扑）
+
+0. **配置/协议前置**：先转 `SlotConfigMan`（含 subject_tmpl/editable_config JSON 解析）、`ClassicSlotMan`/`SlotMan` 数据中心，以及 `C2S/S2C EnterRoom/LeaveRoom/Spin/SlotParam` 协议模型，确保机器配置与协议数据结构在 C# 端可用。
+1. **enum + customShader**：无外部依赖，最先落地。
+2. **controller_new2022**：仅依赖 enum，供 Action/组件引用。
+3. **actions**：依赖 enum + controller_new2022，完成后支撑流程和组件。
+4. **controller / tools / animation**：存在互相引用，建议先转 Controller 基类与接口，再补齐 Tools（可用接口或占位注入拆环），最后补动画辅助。
+5. **process**：依赖 enum/actions/tools/controller，完成后 FlowDispatcher 相关代码可编译。
+6. **component → component_new2022**：按旧版组件到 2022 版的顺序推进，确保依赖的流程/控制器已就绪。
+7. **scene（各关卡）**：依赖最重，待以上目录均可编译后再逐关卡推进。
+
+> 数据来源：`node` 脚本对 `src/newdesign_slot/**/*.js` 的 `require()` 路径解析（仅统计相对路径且仍在 newdesign_slot 目录内）。
+
+---
+
 [下一章：05 - L3 Slot 框架适配层详细设计](05-L3-slot-adaptation.md)

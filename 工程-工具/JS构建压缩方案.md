@@ -237,6 +237,19 @@ uglifyjs 压缩时会输出大量 `WARN` 信息，均为安全操作：
 | uglifyjs -c（仅压缩） | ~25.9 MB | 压缩，不混淆 |
 | uglifyjs -c -m（压缩+混淆） | ~20 MB | 压缩 + 变量名缩短 |
 
+## 压缩前备份
+
+所有启用 uglifyjs `-c` 压缩的脚本，在压缩前会自动保存 browserify 原始输出：
+
+| 脚本 | 备份文件 |
+|------|---------|
+| `build_fb.sh` | `main.js.origin`、`$resPath/game.js.origin` |
+| `build_fb_alpha.sh` | `main.js.origin`、`$resPath/game.js.origin` |
+| `build_native.sh` | `$resPath/gameLoader.js.origin`、`$resPath/game.js.origin` |
+| `build_native_alpha.sh` | `$resPath/gameLoader.js.origin`、`$resPath/game.js.origin` |
+
+`.origin` 文件为 browserify 打包输出、uglifyjs 压缩前的状态，保留完整变量名，可直接用于压缩问题的对比排查。
+
 ## 已知限制
 
 1. **uglifyjs 2.x 与 Node.js v24 的 source map 兼容性问题**：uglifyjs 2.x 的 `--source-map` 和 `--in-source-map` 选项在 Node.js v24 下会报 `ERR_INVALID_ARG_TYPE` 错误（`writeFileSync` 收到 Object 而非 String）。因此当前构建不使用 uglifyjs 的 source map 功能。如需压缩后的 source map，需升级至 uglifyjs v3 或 terser。
@@ -291,4 +304,5 @@ uglifyjs 压缩时会输出大量 `WARN` 信息，均为安全操作：
 
 ## 修改记录
 
+- 2026-03-13：在所有启用 uglifyjs -c 的脚本中，压缩前新增 `.origin` 文件备份
 - 2026-02-27：启用 uglifyjs 安全压缩，配置三套构建脚本差异化策略
