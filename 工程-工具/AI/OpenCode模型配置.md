@@ -3,9 +3,9 @@ title: OpenCode 模型配置
 date: '2026-03-02 11:52:37'
 head: []
 outline: deep
-sidebar: false
-prev: false
-next: false
+sidebar: true
+prev: true
+next: true
 ---
 
 
@@ -47,17 +47,17 @@ next: false
         "apiKey": "cr_89cafa291bfbba447ae63c21c65db9be4344514c2d911acff77128adf70c54aa"
       },
       "models": {
-        "gpt-5.2-codex": {
-          "name": "[GS] GPT-5.2 Codex"
+        "gpt-5.1-codex-mini": {
+          "name": "[GS] gpt-5.1-codex-mini"
         },
         "gpt-5.1-codex-max": {
-          "name": "[GS] GPT-5.1 Codex Max"
+          "name": "[GS] gpt-5.1-codex-max"
         },
-        "gpt-5.1-codex-mini": {
-          "name": "[GS] GPT-5.1 Codex Mini"
+        "gpt-5.4-codex": {
+          "name": "[GS] gpt-5.4-codex"
         },
-        "gpt-5.3-codex": {
-          "name": "[GS] GPT-5.3 Codex"
+        "gpt-5.2-codex": {
+          "name": "[GS] gpt-5.2-codex"
         }
       }
     }
@@ -105,8 +105,10 @@ next: false
 
   查看代理服务器支持模型：
 
-  ​`curl -s https://chatgpt-corp.ghoststudio.net/v1/models \ -H "Authorization: Bearer sk-au3fWPoVtB54KSwm0356F35915464dD1Bd56120d02A842D2"`
-
+  ```bash
+  ​`curl -s https://chatgpt-corp.ghoststudio.net/v1/models \
+    -H "Authorization: Bearer sk-au3fWPoVtB54KSwm0356F35915464dD1Bd56120d02A842D2"`
+  ```
   ![image](/assets/image-20260302135652-rpsu18c.png)
 
 ‍
