@@ -99,6 +99,6 @@ next: true
 
 - #### 支持的模型：
 
-  [ghoststudio 代理支持模型](./ghoststudio支持模型.md)  
+  [ghoststudio 代理支持模型](/工程-工具/AI/ghoststudio支持模型.md)  
 
 ‍
