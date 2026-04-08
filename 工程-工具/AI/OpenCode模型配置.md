@@ -99,8 +99,6 @@ next: true
 
 - #### 支持的模型：
 
-  详细说明已拆分到：
-
   [ghoststudio 代理支持模型](./ghoststudio支持模型.md)  
 
 ‍
