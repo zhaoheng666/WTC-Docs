@@ -99,16 +99,8 @@ next: true
 
 - #### 支持的模型：
 
-  opencode 配置中，必须使用我们代理服务器支持的模型 id；
+  详细说明已拆分到：
 
-  支持的模型取决于，我们的代理服务器采购部署了哪些模型（未来可能会有变化）；
-
-  查看代理服务器支持模型：
-
-  ```bash
-  ​`curl -s https://chatgpt-corp.ghoststudio.net/v1/models \
-    -H "Authorization: Bearer sk-au3fWPoVtB54KSwm0356F35915464dD1Bd56120d02A842D2"`
-  ```
-  ![image](/assets/image-20260302135652-rpsu18c.png)
+  [ghoststudio 代理支持模型](./ghoststudio支持模型.md)  
 
 ‍
