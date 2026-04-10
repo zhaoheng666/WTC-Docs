@@ -18,6 +18,7 @@
 - 📝 [CCB嵌套-加载时序差异问题](CCB%E5%B5%8C%E5%A5%97-%E5%8A%A0%E8%BD%BD%E6%97%B6%E5%BA%8F%E5%B7%AE%E5%BC%82%E9%97%AE%E9%A2%98)
 - 📝 [Coupon 资源相互覆盖-issue](Coupon%20%E8%B5%84%E6%BA%90%E7%9B%B8%E4%BA%92%E8%A6%86%E7%9B%96-issue)
 - 📝 [Coupon关卡-活动入口异常显示问题](Coupon%E5%85%B3%E5%8D%A1-%E6%B4%BB%E5%8A%A8%E5%85%A5%E5%8F%A3%E5%BC%82%E5%B8%B8%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98)
+- 📝 [DH机台入口-同台加载未适配占位入口问题](DH%E6%9C%BA%E5%8F%B0%E5%85%A5%E5%8F%A3-%E5%90%8C%E5%8F%B0%E5%8A%A0%E8%BD%BD%E6%9C%AA%E9%80%82%E9%85%8D%E5%8D%A0%E4%BD%8D%E5%85%A5%E5%8F%A3%E9%97%AE%E9%A2%98)
 - 📝 [DH线上crash_ProgressTimer__initWithSprite问题](DH%E7%BA%BF%E4%B8%8Acrash_ProgressTimer__initWithSprite%E9%97%AE%E9%A2%98)
 - 📝 [DH资源异常-manifest和文件访问预警](DH%E8%B5%84%E6%BA%90%E5%BC%82%E5%B8%B8-manifest%E5%92%8C%E6%96%87%E4%BB%B6%E8%AE%BF%E9%97%AE%E9%A2%84%E8%AD%A6)
 - 📝 [EaseTableView 刷新偏移问题](EaseTableView%20%E5%88%B7%E6%96%B0%E5%81%8F%E7%A7%BB%E9%97%AE%E9%A2%98)
