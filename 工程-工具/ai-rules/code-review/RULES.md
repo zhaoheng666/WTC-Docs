@@ -71,6 +71,7 @@
 | unschedule | `unschedule` | 取消定时器 | 确认取消正确 |
 | unscheduleAllCallbacks | `unscheduleAllCallbacks` | 取消所有定时器 | 确认范围正确 |
 | stopAllActions | `stopAllActions` | 停止所有动作 | 确认范围正确 |
+| isActivityVisible | `isActivityVisible(` | 仅 BaseActivity 有此方法，直接继承 Activity 的子类（如 JackpotFeverActivity、HighRollerActivity）没有此方法 | 确认调用方是否来自 forEachActivites 等全量遍历；若是，需加 typeof 保护：`typeof activity.isActivityVisible === 'function'` |
 
 ---
 
@@ -149,6 +150,7 @@
 
 | 日期 | 变更 | 操作人 |
 |-----|------|-------|
+| 2026-04-28 | 新增 isActivityVisible 中风险 API（BaseActivity 专属方法，全量遍历时需 typeof 保护） | AI |
 | 2025-01-19 | 新增 setSearchPaths 高风险 API | AI |
 | 2025-01-19 | 初始版本，从 SKILL.md 提取规则 | AI |
 
