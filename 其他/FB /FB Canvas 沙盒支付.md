@@ -2,9 +2,8 @@
 
 ## 操作人员：王建、李沂峰
 
-## 1、Meta developer 后台添加角色：
-
-#### 方法：[Q3’24-Slots-Facebook Canvas 测试服添加用户身份-程序](https://drive.google.com/file/d/1os2BRKI4Oq45sj0ZUFIVT-sPVrK-U1XL/view?usp=sharing)
+## 1、获取 fbid：
+方法：[如何获取 fbId](./如何获取%20fbId.md)
 
 ## 2、Meta developer 后台添加 Web Payment Tester：
 
