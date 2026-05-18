@@ -2,7 +2,7 @@
 
 ## 1. 摘要 (TL;DR)
 
-iOS 包 `OldVegasCasino`（Classic Vegas）线上 crash，发生在 `cocos2d::Texture2D::convertRGB888ToFormat`，类型 `EXC_BAD_ACCESS (KERN_INVALID_ADDRESS) at 0x0`。95% 集中在 iPadOS 26，2026-04 起明显上升。
+iOS 包 `OldVegasCasino`（Classic Vegas）线上 crash，发生在 `cocos2d::Texture2D::convertRGB888ToFormat`，类型 `EXC_BAD_ACCESS (KERN_INVALID_ADDRESS) at 0x0`。95% 集中在 iPadOS 26，2026-04 起明显上升。**关键观测：crash 时设备可用 RAM 普遍 < 100 MiB、多数在 50 MiB 左右**——这是后续 OOM 根因判断的决定性现场证据（详见 §2.2、§3.2）。
 
 经多轮分析，结论是：**这是一次由 OOM 触发的空指针解引用 crash，而非数据损坏。**
 
