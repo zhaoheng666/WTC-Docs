@@ -8,9 +8,14 @@
 
   - 📝 [AI 上下文膨胀问题](AI/AI%20%E4%B8%8A%E4%B8%8B%E6%96%87%E8%86%A8%E8%83%80%E9%97%AE%E9%A2%98)
   - 📝 [AI编程模型 RooCode 配置教程](AI/AI%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%20RooCode%20%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B)
+  - 📝 [Claude Code Opusplan 混合模型](AI/Claude%20Code%20Opusplan%20%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8B)
   - 📝 [Claude Code Schedule Coordinator Agent 配置指南](AI/Claude%20Code%20Schedule%20Coordinator%20Agent%20%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97)
+  - 📝 [Claude Code effort 推理能力配置](AI/Claude%20Code%20effort%20%E6%8E%A8%E7%90%86%E8%83%BD%E5%8A%9B%E9%85%8D%E7%BD%AE)
   - 📝 [Claude Code 模块化拆分+标注机制实验报告](AI/Claude%20Code%20%E6%A8%A1%E5%9D%97%E5%8C%96%E6%8B%86%E5%88%86%2B%E6%A0%87%E6%B3%A8%E6%9C%BA%E5%88%B6%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A)
+  - 📝 [CodexCLI 配置](AI/CodexCLI%20%E9%85%8D%E7%BD%AE)
+  - 📝 [OpenClaw 飞书授权问题排查与解决方案](AI/OpenClaw%20%E9%A3%9E%E4%B9%A6%E6%8E%88%E6%9D%83%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88)
   - 📝 [OpenCode模型配置](AI/OpenCode%E6%A8%A1%E5%9E%8B%E9%85%8D%E7%BD%AE)
+  - 📝 [ghoststudio代理支持模型](AI/ghoststudio%E4%BB%A3%E7%90%86%E6%94%AF%E6%8C%81%E6%A8%A1%E5%9E%8B)
 
 
 #### 📁 CocosBuilder
@@ -64,6 +69,14 @@
     - 📝 [git-commit-types](ai-rules/shared/git-commit-types)
     - 📝 [rule-maintenance](ai-rules/shared/rule-maintenance)
   - 📝 [规则架构演进史](ai-rules/%E8%A7%84%E5%88%99%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E5%8F%B2)
+
+
+#### 📁 rider
+
+  - 📝 [Rider-禁用保存时代码字段重排](rider/Rider-%E7%A6%81%E7%94%A8%E4%BF%9D%E5%AD%98%E6%97%B6%E4%BB%A3%E7%A0%81%E5%AD%97%E6%AE%B5%E9%87%8D%E6%8E%92)
+  - 🖼️ [rider-actions-on-save-settings.jpg](http://localhost:5173/WTC-Docs%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/rider/rider-actions-on-save-settings.jpg)
+  - 🖼️ [rider-code-cleanup-settings.jpg](http://localhost:5173/WTC-Docs%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/rider/rider-code-cleanup-settings.jpg)
+  - 🖼️ [rider-file-layout-xml.jpg](http://localhost:5173/WTC-Docs%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7/rider/rider-file-layout-xml.jpg)
 
 
 #### 📁 vscode
