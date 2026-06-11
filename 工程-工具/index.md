@@ -7,6 +7,7 @@
 #### 📁 AI
 
   - 📝 [AI 上下文膨胀问题](AI/AI%20%E4%B8%8A%E4%B8%8B%E6%96%87%E8%86%A8%E8%83%80%E9%97%AE%E9%A2%98)
+  - 📝 [AI 工具推荐](AI/AI%20%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90)
   - 📝 [AI编程模型 RooCode 配置教程](AI/AI%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%20RooCode%20%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B)
   - 📝 [Claude Code Opusplan 混合模型](AI/Claude%20Code%20Opusplan%20%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8B)
   - 📝 [Claude Code Schedule Coordinator Agent 配置指南](AI/Claude%20Code%20Schedule%20Coordinator%20Agent%20%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97)
