@@ -12,6 +12,7 @@
 - 📝 [Link 玩法异常](Link%20%E7%8E%A9%E6%B3%95%E5%BC%82%E5%B8%B8)
 - 📝 [Link 玩法结算](Link%20%E7%8E%A9%E6%B3%95%E7%BB%93%E7%AE%97)
 - 📝 [SlotAction-优化记录](SlotAction-%E4%BC%98%E5%8C%96%E8%AE%B0%E5%BD%95)
+- 📝 [SlotAction-使用规范](SlotAction-%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83)
 - 📝 [Winline 组件选择](Winline%20%E7%BB%84%E4%BB%B6%E9%80%89%E6%8B%A9)
 - 📝 [fastSpin 组件](fastSpin%20%E7%BB%84%E4%BB%B6)
 - 📝 [freeSpin流程封装Action](freeSpin%E6%B5%81%E7%A8%8B%E5%B0%81%E8%A3%85Action)
