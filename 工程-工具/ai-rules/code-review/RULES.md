@@ -134,6 +134,31 @@
 
 ---
 
+## 8. 语法校验（强制 · eslint ES5 解析）
+
+grep 规则（第 5 节）只能匹配**固定文本模式**，无法发现**语法级错误**。典型漏网案例：**函数调用的尾逗号** `f(a,)` —— ES2017 合法、ES5 非法；browserify（acorn 高版本）构建时容忍不报错，现代运行时（JSC/V8）也容忍，但违反项目 ES5 强制规范，老引擎会 `SyntaxError`。
+
+**唯一能拦下此类问题的是 ES5 解析器**（项目 `.eslintrc` 已配 `ecmaVersion:5`）。因此 code-review **必须对本次改动的 JS 文件跑一次 eslint**：
+
+```bash
+# 仅校验本次改动（含未跟踪）的 src JS，命中语法错误即阻断提交
+{ git diff --name-only HEAD -- 'src/**/*.js'; git ls-files --others --exclude-standard -- 'src/**/*.js'; } | sort -u | xargs -r npx eslint
+```
+
+| 检测方式 | 能否发现尾逗号等语法错误 | 用途 |
+|---------|:---:|------|
+| grep 规则匹配（第 5 节） | ❌ | 只匹配固定模式（const/let/=>/debugger 等） |
+| browserify 构建 | ❌ | 语法宽容，可解析即通过，"无 error/warning" |
+| **eslint（ecmaVersion:5）** | ✅ | **ES5 语法级校验，本节强制执行** |
+
+**处理方式**：
+
+- eslint 报 `Parsing error` → 🔴 **阻断提交**（ES5 语法违规）
+- eslint 报 error（规则级，如 `no-undef`）→ 🟡 关注并在报告中列出
+- eslint 报 warning → 🟢 提示
+
+---
+
 ## 跳过 Review 条件
 
 满足以下任一条件可跳过深度 review：
@@ -150,6 +175,7 @@
 
 | 日期 | 变更 | 操作人 |
 |-----|------|-------|
+| 2026-07-20 | 新增第 8 节「语法校验（强制 · eslint ES5）」：grep 与 browserify 均无法发现函数调用尾逗号等 ES5 语法错误，强制对改动 JS 跑 eslint | AI |
 | 2026-04-28 | 新增 isActivityVisible 中风险 API（BaseActivity 专属方法，全量遍历时需 typeof 保护） | AI |
 | 2025-01-19 | 新增 setSearchPaths 高风险 API | AI |
 | 2025-01-19 | 初始版本，从 SKILL.md 提取规则 | AI |
