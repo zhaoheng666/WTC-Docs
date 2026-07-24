@@ -128,7 +128,7 @@
 - **日志成为全流水线通用语言**：提取阶段=行为规格；重实现阶段=AI 参考资料；验收阶段=双端 diff 基质（Unity 侧经同语义 logging facade 发同名事件，JSONL 直接 diff——N2 的比对基质就此确定）；Unity 干净层可将同套语义事件做成常驻调试设施；
 - 人工视觉验收保留为验收阶段活动（QA 双端并排试玩），不再是提取阶段产物；可选：日志事件触发的关键帧截图（待定）。
 
-**规格包 schema（第 5 轮修订）**：spec_<id>/ = manifest + 6 个结构化 JSON + choreography/（.src.js + .intent.md）+ scenarios/（脚本化 spin 结果）+ probes.json（本关插桩计划）+ traces/（分场景分片 JSONL 日志）。~~recordings/ 录屏~~ 已移除。
+**规格包 schema（第 5 轮修订）**：`spec_<id>/` = manifest + 6 个结构化 JSON + choreography/（.src.js + .intent.md）+ scenarios/（脚本化 spin 结果）+ probes.json（本关插桩计划）+ traces/（分场景分片 JSONL 日志）。~~recordings/ 录屏~~ 已移除。
 
 **已识别死角/边界**：条件配置（isHighResolution 等保留原表达式+环境标记）；方法体内动态 require；Action↔Scene 数据脐带（记录依赖边）；轨迹不含"为什么"（靠场景标签关联）；场景枚举组合爆炸（单变量覆盖+高频组合，遗漏分支进 manifest 风险清单）。
 
@@ -242,7 +242,7 @@
 ### 2026-07-09 第 8 轮：工具链立项 —— Schema-first 决策 + 双样本适配性调研
 
 - 用户确认：新工具放 `tools/analyzer`，先做完 analyzer 再推进；核心疑问——独立做 analyzer 会不会与后续规格包脱节？
-- **定案：Schema-first**。规格包 schema（spec-package.schema.json，版本化）是第一个交付物，先于工具代码存在；analyzer 不是独立工具而是规格包的第一个 producer；spec_<id>/ 是 analyzer/recorder/coverage-verifier 三工具的共享工作产品（analyzer 写静态槽位+probes.json，recorder 追加 traces/，verifier 读包出报告）；槽位可空不可缺（schema 完备性与实现进度解耦）；schema 演进走版本号。
+- **定案：Schema-first**。规格包 schema（spec-package.schema.json，版本化）是第一个交付物，先于工具代码存在；analyzer 不是独立工具而是规格包的第一个 producer；`spec_<id>/` 是 analyzer/recorder/coverage-verifier 三工具的共享工作产品（analyzer 写静态槽位+probes.json，recorder 追加 traces/，verifier 读包出报告）；槽位可空不可缺（schema 完备性与实现进度解耦）；schema 演进走版本号。
 - **双样本解剖调研**（2 agent 并行细读，DashingWin 单文件 1373 行 + 287 模块化 16 文件 2076 行），三个结构性缺口：
   1. **单文件关卡 60% 代码在原 schema 无处安放**：module.exports 后 6 个内联类承载主体行为；零 SlotAction 公约；mixed（数据+演出缠绕）占 38.6%；"overrides=scene 方法"假设崩塌 → 类成为一等公民，overrides 扩展为 {className, baseClass, methodName, code}；
   2. **五层模型漏了第⑥层 UI 数据绑定**：controller（读全局数据→写 label）③/④ 两头不靠，双样本同时命中 → 新增 ui-bindings 槽；
