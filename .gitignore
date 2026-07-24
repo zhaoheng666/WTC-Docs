@@ -71,3 +71,6 @@ public/stats.json
 
 # 图片符号链接（编辑器预览用）
 images
+
+# AI 工具缓存（不入库）
+.goose/
