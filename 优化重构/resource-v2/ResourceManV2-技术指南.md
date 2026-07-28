@@ -175,7 +175,16 @@ _getFlagstoneQueueMaxConcurrent: function() { return 1; }
 5. 任一 assets 缺失 → **删除 manifest 强制重下**（自愈）
 6. 校验通过 → 注册搜索路径（`jsb.fileUtils.addSearchPath`）
 
-> ⚠️ **Canvas 端没有持久化校验**：只有内存 map + 浏览器 HTTP 缓存，刷新页面后"已下载"状态丢失，重复 load 依赖浏览器缓存兜底。
+> ⚠️ **Canvas 端不做持久化校验（有意的设计取舍，非缺陷）**：只有内存 map，刷新页面后"已下载"状态丢失，重复 load 重新走请求、由浏览器 HTTP 缓存裁决（命中 → disk cache/304 秒回；未命中 → 自动补下）。
+>
+> **设计依据（两条前提，缺一不可）**：
+>
+> 1. **标记不可靠**：浏览器缓存对应用**不可查询、不可保证**（LRU 淘汰/清缓存/无痕模式），应用层持久化标记（如 localStorage）只能证明"曾经下载过"，无法证明"字节现在还在"。凭标记跳过下载，缓存失效时故障会推迟到使用现场（同步 API 如 `cc.spriteFrameCache.getSpriteFrame` 拿到空值 → 逻辑错误）。
+> 2. **标记无收益（更根本）**：Canvas 端"下载"的真实产物是 **`cc.loader` 内存缓存**（`CanvasDownloader._loadAll` 通过 `cc.loader.load` 将图片/plist/JSON 解析结果载入内存），大量使用现场是假设资源已在内存的同步 API。刷新后内存缓存必然为空，**无论浏览器磁盘缓存是否健在，请求流程都必须重走以重建内存缓存**——持久化标记唯一能跳过的流程恰恰不可跳过。即使浏览器缓存 100% 可靠，标记依然无意义。
+>
+> 现状"重新走请求、由浏览器 HTTP 缓存裁决"（命中 → disk cache/304 快速重建内存缓存；未命中 → 自动补下）实质是一次廉价的有效性复验。**必须保证资源有效性 > 节省请求开销**。禁止用应用层标记绕过此机制。
+>
+> 附：浏览器缓存还是**任务重试机制的隐性依赖**——`cc.loader.load` 单文件失败会导致整个目录任务报错重试（最多 3 次），已成功文件靠浏览器缓存使重试变廉价。因此 CDN 强缓存配置对 Canvas 端不是可选项。
 
 ### 3.3 LoaderEventBus + LoaderMonitor
 
@@ -318,7 +327,7 @@ module.exports = HighRollerLoader;
 1. **优先级方向反直觉**：数值越**小**越优先。《技术架构报告》附录 B 的旧表方向与数值均已过时，以本文 3.1 节为准。
 2. **LoadingController 不归 V2 管**：一段 loading 早于 V2 初始化，直连 SlotAssetsManager；改一段 loading 行为不要在 V2 里找入口（Canvas 端真正入口在 `main.js` L125 `GameLoaderScene.preload`）。
 3. **SlotLoader 不走共享队列**：关卡下载有独立通道，全局并发统计不含它；做全局限流时须单独考虑。
-4. **Canvas 端无持久化缓存校验**：`isDownloaded` 刷新即失效，重复加载依赖浏览器缓存；做 Canvas 优化前先确认这一点。
+4. **Canvas 端无持久化缓存校验（有意设计，勿"修复"）**：`isDownloaded` 刷新即失效，重复加载重新走请求、由浏览器缓存裁决。这是保证资源有效性的取舍——浏览器缓存不可查询不可保证，应用层标记（localStorage 等）会造成两层记忆失配，把故障推迟到使用现场。详见 3.2 节设计依据。
 5. **注释与代码不符**：ConfigManager 注释称 Canvas 并发为 1，实际 `getMaxConcurrent` 返回 5；CouponLoader 注释仍写旧基值 2600（实际 7500）。改代码时顺手修正注释。
 6. **flagstone 专用队列并发硬编码为 1**（`_getFlagstoneQueueMaxConcurrent`），且全局队列并发动态让位给它；调整总并发（3）时两处联动。
 7. **BaseLoader 后台监听器生命周期**：`_markBatchStart` 惰性注册 EVENT_HIDE 监听，必须通过 `destroy()` 清理，否则 Loader 重建会泄漏监听器。
