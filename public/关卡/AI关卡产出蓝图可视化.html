@@ -1,0 +1,1203 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>304 Sweet Gala AI 关卡蓝图</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7f8;
+      --surface: #ffffff;
+      --surface-soft: #eef2f3;
+      --surface-strong: #e3e9eb;
+      --text: #20272b;
+      --muted: #657077;
+      --line: #d2dade;
+      --line-strong: #aebbc1;
+      --focus: #1f6d8b;
+      --series-1: #206b55;
+      --series-1-soft: #e1f0e9;
+      --series-2: #256b91;
+      --series-2-soft: #e1edf4;
+      --series-3: #855b22;
+      --series-3-soft: #f3eadb;
+      --series-4: #8f454d;
+      --series-4-soft: #f5e5e7;
+      --series-5: #66549a;
+      --series-5-soft: #ebe7f5;
+      --series-6: #34777c;
+      --series-6-soft: #e2eff0;
+      --danger: #9b3038;
+      --danger-soft: #f8e5e6;
+      --warning: #8b631d;
+      --warning-soft: #f7edda;
+      --ok: #256b4a;
+      --ok-soft: #e2f0e8;
+      --shadow: 0 10px 28px rgba(32, 47, 54, 0.08);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --bg: #171b1d;
+        --surface: #202629;
+        --surface-soft: #293034;
+        --surface-strong: #333c40;
+        --text: #edf1f2;
+        --muted: #a9b4b9;
+        --line: #3d484d;
+        --line-strong: #66757b;
+        --focus: #74bdd9;
+        --series-1: #78c3a4;
+        --series-1-soft: #243e34;
+        --series-2: #78b7d8;
+        --series-2-soft: #253d49;
+        --series-3: #d4ae68;
+        --series-3-soft: #443822;
+        --series-4: #dd9097;
+        --series-4-soft: #472c30;
+        --series-5: #b1a0df;
+        --series-5-soft: #38314c;
+        --series-6: #79c0c4;
+        --series-6-soft: #294044;
+        --danger: #f1a1a7;
+        --danger-soft: #4a292d;
+        --warning: #e2c27e;
+        --warning-soft: #463b27;
+        --ok: #8ed2b0;
+        --ok-soft: #274237;
+        --shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    button,
+    select {
+      font: inherit;
+    }
+
+    button:focus-visible,
+    select:focus-visible,
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    code {
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: var(--surface-soft);
+      padding: 1px 4px;
+      font-family: Menlo, Consolas, monospace;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      margin-bottom: 3px;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    h2 {
+      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    h3 {
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .page {
+      width: min(1540px, 100%);
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 18px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .subtitle,
+    .muted {
+      color: var(--muted);
+    }
+
+    .doc-links,
+    .control-group,
+    .legend,
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .doc-links {
+      justify-content: flex-end;
+    }
+
+    .doc-links a,
+    .control-button,
+    .flow-select {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--text);
+      padding: 6px 10px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .control-button[aria-pressed="true"] {
+      border-color: var(--text);
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .metric {
+      min-height: 76px;
+      border-left: 3px solid var(--series-2);
+      background: var(--surface);
+      padding: 11px 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .metric:nth-child(2) { border-left-color: var(--series-1); }
+    .metric:nth-child(3) { border-left-color: var(--series-5); }
+    .metric:nth-child(4) { border-left-color: var(--series-3); }
+    .metric:nth-child(5) { border-left-color: var(--series-4); }
+    .metric:nth-child(6) { border-left-color: var(--series-6); }
+
+    .metric strong {
+      display: block;
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .workspace {
+      margin: 0 -22px 20px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .workspace-toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 13px 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .workspace-toolbar .right-controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .legend {
+      padding: 9px 22px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 2px;
+      background: var(--line-strong);
+    }
+
+    .swatch.process { background: var(--series-2); }
+    .swatch.action { background: var(--series-1); }
+    .swatch.entity { background: var(--series-5); }
+    .swatch.protocol { background: var(--series-3); }
+    .swatch.presentation { background: var(--series-4); }
+    .swatch.gate { background: var(--series-6); }
+
+    .workspace-view {
+      padding: 16px 22px 8px;
+    }
+
+    .workspace-view[hidden] {
+      display: none;
+    }
+
+    .timeline-axis,
+    .timeline-lane {
+      display: grid;
+      grid-template-columns: 118px repeat(10, minmax(0, 1fr));
+    }
+
+    .timeline-axis {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      border-bottom: 1px solid var(--line-strong);
+      background: var(--surface);
+    }
+
+    .axis-corner,
+    .axis-stage,
+    .lane-label,
+    .timeline-cell {
+      min-width: 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .axis-stage,
+    .axis-corner {
+      min-height: 46px;
+      padding: 8px 6px;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .axis-stage strong {
+      display: block;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .timeline-lane {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .lane-label {
+      padding: 9px;
+      background: var(--surface-soft);
+      font-weight: 500;
+    }
+
+    .timeline-cell {
+      position: relative;
+      min-height: 96px;
+      padding: 5px;
+      background-image: linear-gradient(to bottom, transparent 49%, var(--line) 50%, transparent 51%);
+      background-size: 100% 24px;
+    }
+
+    .timeline-node,
+    .graph-node {
+      width: 100%;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      overflow-wrap: anywhere;
+    }
+
+    .timeline-node {
+      position: relative;
+      z-index: 1;
+      display: block;
+      min-height: 38px;
+      margin-bottom: 5px;
+      padding: 5px 6px;
+      background: var(--surface-soft);
+      font-size: 11px;
+    }
+
+    .timeline-node::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      border-radius: 4px 0 0 4px;
+      background: var(--line-strong);
+    }
+
+    .timeline-node.kind-process::before { background: var(--series-2); }
+    .timeline-node.kind-action::before { background: var(--series-1); }
+    .timeline-node.kind-hook::before { background: var(--series-5); }
+    .timeline-node.kind-state::before,
+    .timeline-node.kind-cleanup::before { background: var(--series-3); }
+    .timeline-node.kind-presentation::before,
+    .timeline-node.kind-popup::before { background: var(--series-4); }
+    .timeline-node.kind-gate::before { background: var(--series-6); }
+
+    .timeline-node .node-id {
+      display: block;
+      color: var(--muted);
+      font-family: Menlo, Consolas, monospace;
+      font-size: 10px;
+    }
+
+    .timeline-node.is-selected,
+    .graph-node.is-selected {
+      border-color: var(--focus);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--focus) 28%, transparent);
+    }
+
+    .timeline-node.is-muted,
+    .graph-node.is-muted {
+      opacity: 0.22;
+    }
+
+    .mobile-timeline {
+      display: none;
+    }
+
+    .graph-canvas {
+      position: relative;
+      min-height: 880px;
+      isolation: isolate;
+    }
+
+    .graph-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 112px repeat(8, minmax(0, 1fr));
+      align-items: stretch;
+    }
+
+    .graph-phase,
+    .graph-corner,
+    .graph-lane-label,
+    .graph-cell {
+      min-width: 0;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .graph-corner,
+    .graph-phase {
+      min-height: 44px;
+      padding: 8px 5px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .graph-phase strong {
+      display: block;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .graph-lane-label {
+      padding: 9px;
+      background: var(--surface-soft);
+      font-weight: 500;
+    }
+
+    .graph-cell {
+      min-height: 134px;
+      padding: 5px;
+    }
+
+    .graph-node {
+      position: relative;
+      display: block;
+      min-height: 50px;
+      margin-bottom: 6px;
+      padding: 0;
+      background: var(--surface);
+      box-shadow: 0 2px 6px rgba(26, 40, 47, 0.09);
+    }
+
+    .graph-node-header {
+      display: block;
+      min-height: 23px;
+      padding: 4px 7px;
+      border-radius: 4px 4px 0 0;
+      background: var(--surface-strong);
+      font-size: 10px;
+      font-family: Menlo, Consolas, monospace;
+    }
+
+    .graph-node.type-process .graph-node-header { background: var(--series-2-soft); border-top: 3px solid var(--series-2); }
+    .graph-node.type-action .graph-node-header { background: var(--series-1-soft); border-top: 3px solid var(--series-1); }
+    .graph-node.type-entity .graph-node-header { background: var(--series-5-soft); border-top: 3px solid var(--series-5); }
+    .graph-node.type-protocol .graph-node-header { background: var(--series-3-soft); border-top: 3px solid var(--series-3); }
+    .graph-node.type-presentation .graph-node-header { background: var(--series-4-soft); border-top: 3px solid var(--series-4); }
+    .graph-node.type-gate .graph-node-header { background: var(--series-6-soft); border-top: 3px solid var(--series-6); }
+
+    .graph-node-title {
+      display: block;
+      padding: 6px 7px 7px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .pin {
+      position: absolute;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border: 2px solid var(--surface);
+      border-radius: 50%;
+      background: var(--line-strong);
+      transform: translateY(-50%);
+    }
+
+    .pin.input { left: -5px; }
+    .pin.output { right: -5px; }
+
+    .graph-edges {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .graph-edge {
+      fill: none;
+      stroke: var(--line-strong);
+      stroke-width: 1.4;
+      opacity: 0.42;
+    }
+
+    .graph-edge.edge-control,
+    .graph-edge.edge-branch { stroke: var(--series-2); }
+    .graph-edge.edge-read { stroke: var(--series-3); stroke-dasharray: 4 3; }
+    .graph-edge.edge-write { stroke: var(--series-5); }
+    .graph-edge.edge-render { stroke: var(--series-4); stroke-dasharray: 2 3; }
+    .graph-edge.edge-cleanup { stroke: var(--danger); }
+    .graph-edge.edge-verify { stroke: var(--series-6); stroke-dasharray: 6 3; }
+    .graph-edge.is-active { stroke-width: 2.6; opacity: 0.95; }
+    .graph-edge.is-muted { opacity: 0.06; }
+
+    .selected-detail {
+      display: grid;
+      grid-template-columns: minmax(180px, 0.8fr) minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 14px;
+      min-height: 122px;
+      margin: 10px 22px 18px;
+      border-top: 1px solid var(--line);
+      padding-top: 13px;
+    }
+
+    .detail-block {
+      min-width: 0;
+    }
+
+    .detail-label {
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .detail-title {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 23px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: var(--surface-soft);
+      padding: 2px 6px;
+      font-size: 11px;
+      overflow-wrap: anywhere;
+    }
+
+    .review-list {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .review-row {
+      display: grid;
+      grid-template-columns: 110px minmax(190px, 0.8fr) minmax(280px, 1.3fr) 100px 86px;
+      gap: 10px;
+      align-items: start;
+      padding: 11px 6px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .status {
+      display: inline-flex;
+      width: fit-content;
+      border-radius: 5px;
+      padding: 2px 6px;
+      font-size: 11px;
+    }
+
+    .status.resolved { background: var(--ok-soft); color: var(--ok); }
+    .status.must-fix { background: var(--danger-soft); color: var(--danger); }
+    .status.compat { background: var(--warning-soft); color: var(--warning); }
+
+    .section {
+      margin: 24px 0;
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 7px;
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 13px;
+    }
+
+    .panel-item {
+      min-width: 0;
+      border-left: 4px solid var(--series-6);
+      background: var(--surface);
+      padding: 12px;
+    }
+
+    .panel-board {
+      display: grid;
+      gap: 3px;
+      width: 100%;
+      max-width: 420px;
+      margin-top: 10px;
+    }
+
+    .panel-cell {
+      aspect-ratio: 1.45;
+      min-height: 18px;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--series-2-soft);
+    }
+
+    .panel-board.base .panel-cell { background: var(--series-1-soft); }
+    .panel-board.super .panel-cell:nth-child(n + 16) { background: var(--series-5-soft); }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+      gap: 0;
+      margin-top: 13px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .pipeline-step {
+      position: relative;
+      min-height: 96px;
+      border-right: 1px solid var(--line);
+      padding: 10px 8px;
+    }
+
+    .pipeline-step:last-child { border-right: 0; }
+
+    .pipeline-step strong {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    .pipeline-step span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .pipeline-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      margin-bottom: 6px;
+      border-radius: 50%;
+      background: var(--text);
+      color: var(--bg);
+      font-size: 11px;
+    }
+
+    details.reference-group {
+      border-bottom: 1px solid var(--line);
+    }
+
+    details.reference-group:first-of-type {
+      border-top: 1px solid var(--line);
+    }
+
+    details.reference-group summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 48px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    details.reference-group summary span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      padding-bottom: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table-scroll table {
+      min-width: 820px;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--surface-soft);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    td {
+      font-size: 12px;
+    }
+
+    .entity-list,
+    .protocol-list,
+    .resource-list,
+    .config-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      padding: 4px 0 14px;
+    }
+
+    .reference-item {
+      min-width: 0;
+      border-left: 3px solid var(--line-strong);
+      background: var(--surface);
+      padding: 9px 10px;
+    }
+
+    .reference-item p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 1120px) {
+      .summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .pipeline { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .pipeline-step:nth-child(5n) { border-right: 0; }
+      .entity-list,
+      .protocol-list,
+      .resource-list,
+      .config-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .selected-detail { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 900px) {
+      .desktop-timeline { display: none; }
+      .mobile-timeline { display: grid; gap: 8px; }
+      .mobile-timeline .timeline-node { min-height: 48px; }
+      .graph-edges { display: none; }
+      .graph-grid { display: block; }
+      .graph-corner,
+      .graph-phase { display: none; }
+      .graph-lane-label {
+        border-right: 0;
+        padding: 10px 4px 6px;
+        background: transparent;
+      }
+      .graph-cell {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        min-height: 0;
+        border-right: 0;
+        padding: 6px 0;
+      }
+      .graph-node { margin-bottom: 0; }
+      .graph-canvas { min-height: 0; }
+      .review-row { grid-template-columns: 100px 1fr; }
+      .review-row > :nth-child(3),
+      .review-row > :nth-child(4),
+      .review-row > :nth-child(5) { grid-column: 2; }
+    }
+
+    @media (max-width: 720px) {
+      .page { padding: 14px; }
+      .topbar { grid-template-columns: 1fr; }
+      .doc-links { justify-content: flex-start; }
+      .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .workspace { margin-right: -14px; margin-left: -14px; }
+      .workspace-toolbar { grid-template-columns: 1fr; padding: 12px 14px; }
+      .workspace-toolbar .right-controls { justify-content: flex-start; }
+      .legend,
+      .workspace-view { padding-right: 14px; padding-left: 14px; }
+      .selected-detail { grid-template-columns: 1fr; margin-right: 14px; margin-left: 14px; }
+      .panel-grid { grid-template-columns: 1fr; }
+      .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .pipeline-step,
+      .pipeline-step:nth-child(5n) { border-right: 1px solid var(--line); }
+      .pipeline-step:nth-child(2n) { border-right: 0; }
+      .entity-list,
+      .protocol-list,
+      .resource-list,
+      .config-list { grid-template-columns: 1fr; }
+      .graph-cell { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div>
+        <h1>304 Sweet Gala AI 关卡蓝图</h1>
+        <div class="subtitle">证据、需求、实体、协议、完整时序、节点关系、代码产物与验收门禁</div>
+      </div>
+      <nav class="doc-links" aria-label="相关文档">
+        <a href="../../关卡/AI关卡产出蓝图模板.md" data-doc="AI关卡产出蓝图模板">蓝图模板</a>
+        <a href="../../关卡/304-SweetGala-可视化手册.md" data-doc="304-SweetGala-可视化手册">可视化手册</a>
+        <a href="../../关卡/304-sweet-gala-研发手册.md" data-doc="304-sweet-gala-研发手册">研发手册</a>
+      </nav>
+    </header>
+
+    <section class="summary" id="summary" aria-label="蓝图摘要"></section>
+
+    <section class="workspace" aria-label="运行蓝图工作区">
+      <div class="workspace-toolbar">
+        <div class="control-group" role="group" aria-label="视图">
+          <button type="button" class="control-button" data-view="timeline" aria-pressed="true">完整时序</button>
+          <button type="button" class="control-button" data-view="graph" aria-pressed="false">节点蓝图</button>
+          <button type="button" class="control-button" data-view="review" aria-pressed="false">冲突评审</button>
+        </div>
+        <div class="right-controls">
+          <label for="flowSelect" class="muted">流程</label>
+          <select id="flowSelect" class="flow-select">
+            <option value="all">全部</option>
+            <option value="base">Base</option>
+            <option value="respin">普通 Respin</option>
+            <option value="super">Super Respin</option>
+            <option value="reconnect">断线重连</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="legend" id="legend" aria-label="图例"></div>
+
+      <div id="timelineView" class="workspace-view">
+        <div id="desktopTimeline" class="desktop-timeline"></div>
+        <div id="mobileTimeline" class="mobile-timeline"></div>
+      </div>
+
+      <div id="graphView" class="workspace-view" hidden>
+        <div id="graphCanvas" class="graph-canvas">
+          <svg id="graphEdges" class="graph-edges" role="img" aria-label="节点之间的控制、读写、渲染和校验连线"></svg>
+          <div id="graphGrid" class="graph-grid"></div>
+        </div>
+      </div>
+
+      <div id="reviewView" class="workspace-view" hidden>
+        <div id="reviewList" class="review-list"></div>
+      </div>
+
+      <aside id="selectedDetail" class="selected-detail" aria-live="polite"></aside>
+    </section>
+
+    <section class="section" aria-labelledby="pipelineTitle">
+      <div class="section-header">
+        <h2 id="pipelineTitle">Agent 生成流水线</h2>
+        <span class="muted">阻断项在 Resolve 阶段终止生成</span>
+      </div>
+      <div id="pipeline" class="pipeline"></div>
+    </section>
+
+    <section class="section" aria-labelledby="panelTitle">
+      <div class="section-header">
+        <h2 id="panelTitle">Panel 与坐标</h2>
+        <span class="muted"><code>cols x rows</code> · backend row 0 在底部 · Super 右盘 colOffset=5</span>
+      </div>
+      <div id="panelGrid" class="panel-grid"></div>
+    </section>
+
+    <section class="section" aria-labelledby="referenceTitle">
+      <div class="section-header">
+        <h2 id="referenceTitle">完整生成合约</h2>
+        <span class="muted">同一蓝图数据的可追踪明细</span>
+      </div>
+
+      <details class="reference-group" open>
+        <summary>需求基线 <span id="requirementCount"></span></summary>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>ID</th><th>目标行为</th><th>Owner</th><th>证据</th></tr></thead>
+            <tbody id="requirementRows"></tbody>
+          </table>
+        </div>
+      </details>
+
+      <details class="reference-group">
+        <summary>实体与状态 <span id="entityCount"></span></summary>
+        <div id="entityList" class="entity-list"></div>
+      </details>
+
+      <details class="reference-group">
+        <summary>文件与方法 <span id="fileCount"></span></summary>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>文件</th><th>继承</th><th>事件</th><th>requiredMethods</th></tr></thead>
+            <tbody id="fileRows"></tbody>
+          </table>
+        </div>
+      </details>
+
+      <details class="reference-group">
+        <summary>协议结构 <span id="protocolCount"></span></summary>
+        <div id="protocolList" class="protocol-list"></div>
+      </details>
+
+      <details class="reference-group">
+        <summary>配置快照 <span id="configCount"></span></summary>
+        <div id="configList" class="config-list"></div>
+      </details>
+
+      <details class="reference-group">
+        <summary>资源与时序 <span id="resourceCount"></span></summary>
+        <div id="resourceList" class="resource-list"></div>
+      </details>
+
+      <details class="reference-group">
+        <summary>验收门禁 <span id="gateCount"></span></summary>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Gate</th><th>检查</th><th>通过条件</th></tr></thead>
+            <tbody id="gateRows"></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <script>
+    if (window.location.protocol !== "file:") {
+      const levelPathIndex = window.location.pathname.lastIndexOf("/关卡/");
+      const docsRoot = levelPathIndex >= 0 ? window.location.pathname.slice(0, levelPathIndex + 1) : "/";
+      document.querySelectorAll("[data-doc]").forEach(link => {
+        link.href = `${docsRoot}关卡/${encodeURIComponent(link.dataset.doc)}`;
+      });
+    }
+
+    const blueprint = {
+      meta: {
+        id: "slot-304-sweet-gala",
+        version: "2.0",
+        reviewedPages: 89,
+        requirements: 27,
+        entities: 16,
+        timelineNodes: 50,
+        graphNodes: 61,
+        files: 19,
+        gates: 27,
+        resourcesPerTheme: 234
+      },
+      stages: [
+        { id: "boot", label: "Boot", sub: "装载" },
+        { id: "enter", label: "Enter", sub: "进房" },
+        { id: "round", label: "Round", sub: "开轮" },
+        { id: "spin", label: "Spin", sub: "结果" },
+        { id: "stop", label: "Reel Stop", sub: "停轮" },
+        { id: "feature", label: "Feature", sub: "玩法" },
+        { id: "win", label: "Win", sub: "赢分" },
+        { id: "bonus", label: "Bonus", sub: "入场" },
+        { id: "settle", label: "Settlement", sub: "结算" },
+        { id: "return", label: "Return", sub: "回 Base" }
+      ],
+      timelineLanes: ["Lifecycle", "Framework Process", "Scene Hook", "Panel Spin", "Custom Action", "Entity / State", "Presentation", "Validation"],
+      timeline: [
+        { id: "L00", title: "Load Scene / Config / Components", stage: 0, lane: "Lifecycle", kind: "state", flows: ["all"], next: ["L01"], detail: "装载 MachineConfig、Scene、3 个 Panel、Controller、Component 与 Process。" },
+        { id: "L01", title: "EnterRoomCheckingProcess", stage: 1, lane: "Framework Process", kind: "process", flows: ["all", "reconnect"], next: ["C00", "L02"], detail: "检查 bonusRecord；无记录直接进入等待。" },
+        { id: "C00", eventId: "enterRoom.reconnect", title: "普通 / Super 重连弹板", stage: 1, lane: "Custom Action", kind: "action", flows: ["reconnect"], next: ["L02"], reads: ["bonusRecord[0]"], writes: ["PopupPanel"], resources: ["duanxian.ccbi", "duanxian_sp.ccbi"], detail: "根据 link_game / super_link_game 选择弹板，完成后仅调用一次 onEnterRoomEnd。" },
+        { id: "L02", title: "WaitForSpinProcess", stage: 2, lane: "Framework Process", kind: "process", flows: ["all", "base"], next: ["L03"], detail: "Base 等待 SPIN，或 Feature 子轮结束后继续外层流程。" },
+        { id: "L03", title: "FreeSpinBeginCheckingProcess", stage: 2, lane: "Framework Process", kind: "process", flows: ["all"], next: ["L04"], detail: "框架占位流程；304 needFreeSpinAction=false。" },
+        { id: "L04", title: "RoundStartProcess", stage: 2, lane: "Framework Process", kind: "process", flows: ["all", "base"], next: ["L05"], detail: "开始一轮并进入 subRoundLoop。" },
+        { id: "L05", title: "SubRoundStartProcess", stage: 2, lane: "Framework Process", kind: "process", flows: ["all", "respin", "super"], next: ["S00"], detail: "每个 Base/Respin 子轮的统一入口。" },
+        { id: "S00", title: "onSubRoundStart", stage: 2, lane: "Scene Hook", kind: "hook", flows: ["respin", "super"], next: ["L06"], reads: ["respinTriggered"], writes: ["RespinCounter"], detail: "Feature 中分别扣减普通或左右盘计数器。" },
+        { id: "L06", title: "SpinProcess", stage: 3, lane: "Framework Process", kind: "process", flows: ["all", "base", "respin", "super"], next: ["S01"], detail: "Base 收发协议；Link 后消费 Scene 预编译的 synthetic spinResult。" },
+        { id: "S01", title: "onPreprocessSpinResult", stage: 3, lane: "Scene Hook", kind: "hook", flows: ["all", "respin", "super"], next: ["P00"], reads: ["SpinPanel.extraInfo"], writes: ["LinkSession", "synthetic results"], detail: "缓存 JP，拆分左右 RespinInfo，构造每轮盘面并把结算字段放到最后一轮。" },
+        { id: "P00", title: "Active PanelSpinProcess", stage: 4, lane: "Panel Spin", kind: "process", flows: ["all", "base", "respin", "super"], next: ["A00", "A01", "A02"], detail: "按 panel0/1/2 分发列停止和 SymbolLayer。" },
+        { id: "A00", eventId: "base.slowDrum", title: "R3 慢 Drum", stage: 4, lane: "Custom Action", kind: "action", flows: ["base"], next: ["A01"], reads: ["payline", "1103/1104"], resources: ["fx-reel-stop-drum-roll"], detail: "Base 非前摇且前两列满足命中条件时，R3 延迟 20.5 帧进入强制 Drum。" },
+        { id: "A03", eventId: "base.drum", title: "Base Drum", stage: 4, lane: "Custom Action", kind: "action", flows: ["base"], next: ["A01"], reads: ["received panel", "win lines"], resources: ["_drum"], detail: "播放 Base Drum 并管理图标 Drum 节点的创建、重播与清理。" },
+        { id: "A01", eventId: "base.collectCandy", title: "糖果飞锅 / 锅升级", stage: 4, lane: "Custom Action", kind: "action", flows: ["base", "respin", "super"], next: ["L07"], reads: ["bonusInfoList", "collectLevels"], writes: ["CollectPot"], resources: ["tang_fly.ccbi"], detail: "按列收集，15 帧后更新锅；回调不等待飞行动画，保持 SPIN 节奏。" },
+        { id: "A02", eventId: "respin.coinAppear", title: "金饼落定 / 锁格 / 恢复次数", stage: 4, lane: "Custom Action", kind: "action", flows: ["respin", "super"], next: ["L07"], reads: ["newBonusInfoList", "BlueArea"], writes: ["LinkBoard", "RespinCounter"], resources: ["coin appear", "candy2coin"], detail: "flattened stop index 使用 col*3+(2-row)，左右盘只恢复各自计数。" },
+        { id: "V00", title: "锁列与蓝区即时状态", stage: 4, lane: "Entity / State", kind: "state", flows: ["respin", "super"], next: ["L07"], writes: ["left/right occupied map", "region glow"], detail: "落定状态写入 owner 实体，供差一格 Drum 和满区判断。" },
+        { id: "L07", title: "CloverClashWaitProcess", stage: 5, lane: "Framework Process", kind: "process", flows: ["all"], next: ["L08"], detail: "框架等待点。" },
+        { id: "L08", title: "SpecialGameProcess", stage: 5, lane: "Framework Process", kind: "process", flows: ["all", "respin", "super"], next: ["A10"], detail: "执行 specialGameComponent 的固定 Action 序列。" },
+        { id: "A10", eventId: "respin.redFeature", title: "1 红：单饼变双饼", stage: 5, lane: "Custom Action", kind: "action", flows: ["respin", "super"], next: ["A11"], reads: ["reTriggerRedBonusInfoList"], writes: ["LinkCoin.index1"], resources: ["to_2"], detail: "固定顺序第 1；50 帧。" },
+        { id: "A11", eventId: "respin.blueFeature", title: "2 蓝：倍数区域", stage: 5, lane: "Custom Action", kind: "action", flows: ["respin", "super"], next: ["A12"], reads: ["reTriggerBlueArea"], writes: ["BlueAreaRegion"], resources: ["zone appear"], detail: "固定顺序第 2；倍数角标、背景格和边界线同步；50 帧。" },
+        { id: "A12", eventId: "respin.purpleFeature", title: "3 紫：协议指定槽加值", stage: 5, lane: "Custom Action", kind: "action", flows: ["respin", "super"], next: ["A13"], reads: ["purpleAddInfoList"], writes: ["LinkCoin.param"], resources: ["boost add"], detail: "固定顺序第 3；逐条消费 toPos+index，不做客户端随机。" },
+        { id: "A13", eventId: "respin.greenFeature", title: "4 绿：3 次升 4 次", stage: 5, lane: "Custom Action", kind: "action", flows: ["respin", "super"], next: ["A14"], reads: ["reTriggerColors"], writes: ["RespinCounter"], resources: ["to_4"], detail: "固定顺序第 4；50 帧。" },
+        { id: "A14", eventId: "respin.checkDrum", title: "5 差一格满 Drum", stage: 5, lane: "Custom Action", kind: "action", flows: ["respin", "super"], next: ["A15"], reads: ["occupied map", "BlueArea"], writes: ["DrumProbe"], detail: "非最后一轮，左右 5x3 盘独立检查唯一空格。" },
+        { id: "A15", eventId: "respin.settlement", title: "6 最后一轮结束判断", stage: 5, lane: "Custom Action", kind: "action", flows: ["respin", "super"], next: ["E00", "L09"], reads: ["isLastSpinIndex"], detail: "仅最后一轮进入结算；否则继续通用赢分流程并循环。" },
+        { id: "G00", title: "Action 顺序门禁", stage: 5, lane: "Validation", kind: "gate", flows: ["respin", "super"], next: ["L09"], detail: "red -> blue -> purple -> green -> checkDrum -> settlement，逐项比对注册表。" },
+        { id: "L09", title: "Jackpot / Level / VIP", stage: 6, lane: "Framework Process", kind: "process", flows: ["all"], next: ["L12"], detail: "依次执行 JackpotProcess、LevelUpProcess、VipLevelUpProcess。" },
+        { id: "L12", title: "BlinkAllWinLineProcess", stage: 6, lane: "Framework Process", kind: "process", flows: ["all", "base"], next: ["L13"], detail: "先闪全部赢钱线。" },
+        { id: "L13", title: "SpinResultDelayMultiUpProcess", stage: 6, lane: "Framework Process", kind: "process", flows: ["all"], next: ["L14"], detail: "BigWin / multi-up 延时节点。" },
+        { id: "L14", title: "ShowWinEffectProcess", stage: 6, lane: "Framework Process", kind: "process", flows: ["all"], next: ["A20"], detail: "2025 BigWin 流程。" },
+        { id: "A20", eventId: "process.panelWinUpdate", title: "Win Label 更新", stage: 6, lane: "Custom Action", kind: "action", flows: ["all", "base", "respin", "super"], next: ["L15"], reads: ["currentIsRespin", "alreadySettlementWin"], writes: ["winLabel"], detail: "BigWin/Respin 立即更新，Base 正常滚动，advanceToNext 一次。" },
+        { id: "L15", title: "BlinkBonusProcess", stage: 7, lane: "Framework Process", kind: "process", flows: ["all", "base"], next: ["A21", "L16"], detail: "hasBonus 时执行 bonusGameComponent，Link 入场在这里发生。" },
+        { id: "A21", eventId: "link.enter", title: "Link 入场编排", stage: 7, lane: "Custom Action", kind: "action", flows: ["respin", "super"], next: ["E10"], reads: ["triggeredColorFlags", "initBonusInfoList", "BlueArea"], writes: ["LinkSession", "Panel", "BetMode"], detail: "title -> 锅 -> 弹板 -> panel/盘面/蓝区/计数初始化 -> BGM。" },
+        { id: "E10", title: "进度与 title trigger", stage: 7, lane: "Presentation", kind: "presentation", flows: ["respin", "super"], next: ["E11"], resources: ["_bonus0..6", "_bonusTitle"], detail: "Super 进度固定 7 步。" },
+        { id: "E11", title: "锅 trigger / 非 Bonus 压暗", stage: 7, lane: "Presentation", kind: "presentation", flows: ["respin", "super"], next: ["E12"], resources: ["_guo0..3"], detail: "2 秒推进，2.5 秒清理 dim。" },
+        { id: "E12", title: "开始弹板", stage: 7, lane: "Presentation", kind: "popup", flows: ["respin", "super"], next: ["E13"], detail: "普通手点 START；Super 3 秒自动；实际关闭回调是唯一完成边界。" },
+        { id: "E13", title: "切 Panel / 初始盘面 / 蓝区 / 计数", stage: 7, lane: "Entity / State", kind: "state", flows: ["respin", "super"], next: ["L16"], writes: ["Panel", "LinkBoard", "BlueAreaRegion", "RespinCounter", "BetMode"], detail: "Super 仅初始金饼镜像，后续右盘只消费 secondRespinInfo。" },
+        { id: "E00", title: "服务端 Grand 展示", stage: 8, lane: "Custom Action", kind: "action", flows: ["respin", "super"], next: ["E01"], reads: ["linkJackpotWin"], detail: "客户端不按满盘重算奖项。" },
+        { id: "E01", title: "满蓝区倍数砸盘", stage: 8, lane: "Custom Action", kind: "action", flows: ["respin", "super"], next: ["E02"], reads: ["blueArea", "secondblueArea"], writes: ["LinkCoin.final value"], detail: "先区域倍数，再逐币；左右盘 colOffset 独立。" },
+        { id: "E02", title: "排序金饼 / JP 队列", stage: 8, lane: "Custom Action", kind: "action", flows: ["respin", "super"], next: ["E03"], reads: ["finalBonusInfoList"], writes: ["SettlementQueue"], detail: "col asc -> backend row desc -> index asc。" },
+        { id: "E03", title: "结算弹板", stage: 8, lane: "Presentation", kind: "popup", flows: ["respin", "super"], next: ["E04"], resources: ["respin_collect", "sp_respin_collect"], detail: "4 秒自动关闭；confirm/disappear exactly-once。" },
+        { id: "G01", title: "金额 / 顺序 / 回调门禁", stage: 8, lane: "Validation", kind: "gate", flows: ["respin", "super"], next: ["E04"], detail: "协议金额、区域倍数、双槽顺序和回调闭环必须同时通过。" },
+        { id: "E04", title: "respin2Base 幂等清理", stage: 9, lane: "Entity / State", kind: "cleanup", flows: ["respin", "super"], next: ["L16"], writes: ["clear locks/areas/pots/counters/bet/BGM/record"], detail: "仅由结算弹板关闭完成触发；重复调用无副作用。" },
+        { id: "L16", title: "BlinkScatter / SubRoundEnd", stage: 9, lane: "Framework Process", kind: "process", flows: ["all", "respin", "super"], next: ["L05", "L18"], detail: "Feature 未结束回到 SubRoundStart；结束后进入 RoundEnd 链。" },
+        { id: "L18", title: "PreRoundEnd -> RoundEnd", stage: 9, lane: "Framework Process", kind: "process", flows: ["all", "base"], next: ["L20"], detail: "包含 HR 前置与一轮结束。" },
+        { id: "L20", title: "Free/Coupon/Interactive/Ad Checks", stage: 9, lane: "Framework Process", kind: "process", flows: ["all"], next: ["L02"], detail: "依次执行四个框架检查后回 WaitForSpin。" },
+        { id: "G02", title: "Base 恢复门禁", stage: 9, lane: "Validation", kind: "gate", flows: ["respin", "super", "reconnect"], next: ["L02"], detail: "Panel0、SpinUI、活动入口、音频和共享状态全部恢复。" }
+      ],
+      graphPhases: ["Entry", "Base", "Result", "Reel Stop", "Feature", "Win / Bonus", "Settlement", "Return"],
+      graphLanes: ["Process", "Action", "Entity", "Protocol", "Presentation", "Gate"],
+      graph: { nodes: [], edges: [] },
+      conflicts: [
+        { id: "CF-304-01", issue: "Super 触发存在第 7 次与第 10 次两种口径", source: "PDF 多处第 7 次；p.17 旧图第 10 次；代码 7 节点；赔率页 Step 7", decision: "统一第 7 次；第 10 次是过期图文", owner: "策划/客户端", status: "resolved", label: "已决" },
+        { id: "CF-304-02", issue: "紫锅双金饼独立加值与每格仅一个加值表述冲突", source: "PDF p.13；Purple Action 支持 index0/1", decision: "服务端 purpleAddInfoList 唯一权威；客户端逐条执行，可处理两个槽", owner: "服务端/客户端", status: "resolved", label: "客户端已决" },
+        { id: "CF-304-03", issue: "策划 3x5 与项目 5x3 口径相反", source: "PDF 行x列；代码和配置列x行", decision: "蓝图统一 cols x rows；普通 Respin=5x3", owner: "全链路", status: "resolved", label: "已决" },
+        { id: "CF-304-04", issue: "普通/Super 入场弹板时序与现有实现不一致", source: "策划：普通手点、Super 3s；现有源码两者 2s 后转场", decision: "普通确认后转场；Super 3s 自动；关闭回调 exactly-once", owner: "客户端/CCB", status: "must-fix", label: "必修" },
+        { id: "CF-304-05", issue: "结算自然语言可能产生不同遍历", source: "PDF p.16；buildSortedSettlementList", decision: "col asc -> backend row desc -> index asc", owner: "客户端/验收", status: "resolved", label: "已决" },
+        { id: "CF-304-06", issue: "结束弹板关闭与回 Base 未绑定", source: "策划关闭后转场；源码独立 delayCall(10/30)", decision: "仅 disappear/confirm 回调触发 respin2Base；watchdog 必须幂等", owner: "客户端", status: "must-fix", label: "必修" },
+        { id: "CF-304-07", issue: "Grand 可能被客户端按满盘重算", source: "策划 15 格满；源码 linkJackpotWin>0", decision: "服务端奖项权威；客户端只展示并记录一致性诊断", owner: "服务端/客户端", status: "resolved", label: "已决" },
+        { id: "CF-304-08", issue: "subject template 八组赔率均为 10", source: "PDF p.61 为 50/30/20/10/10/7/5/2", decision: "配置、FAQ、服务端数学统一为 PDF 审批值", owner: "策划/服务端/配置", status: "must-fix", label: "必修" },
+        { id: "CF-304-09", issue: "Average Bet 文案提到本地 1~10 次平均", source: "PDF p.17；协议 avgTotalBet", decision: "客户端只消费服务端 avgTotalBet，不本地重算", owner: "服务端/客户端", status: "resolved", label: "已决" },
+        { id: "CF-304-10", issue: "Purple Action 文件无 .js 后缀", source: "现有精确路径和 require 可运行", decision: "304 对账保留；新关卡统一 .js；迁移需同改 require", owner: "客户端", status: "compat", label: "兼容项" }
+      ],
+      requirements: [
+        ["REQ-304-001", "Base 3x3、5 条线，空符号不参与中奖", "配置+服务端", "PDF p.4-10 / subject template"],
+        ["REQ-304-002", "Wild=1；1101~1104 对应 2x/5x/10x/50x", "配置+服务端", "PDF / symbols"],
+        ["REQ-304-003", "1200~1204 为紫绿红蓝彩糖；彩糖作用于仍可收集的锅", "服务端+客户端表现", "PDF p.7-13"],
+        ["REQ-304-004", "锅协议等级 0~4；CCB 序列 1~5；4 为激活", "服务端+客户端", "CollectItemsAction"],
+        ["REQ-304-005", "Base 糖果飞锅不阻断下一次 SPIN", "客户端", "PDF / CollectItemsAction"],
+        ["REQ-304-006", "R1/R2 命中线含有效符号和 10x/50x 时 R3 慢 Drum", "客户端", "SlowDrumModeAction"],
+        ["REQ-304-007", "Link 触发、初始金饼、颜色和后续轮次由协议决定", "服务端", "extraInfo.respinInfo"],
+        ["REQ-304-008", "普通 Respin 5x3；Super 为左右两个 5x3，总 10x3", "客户端配置", "PDF / panels"],
+        ["REQ-304-009", "Super 第 7 次；初始盘镜像；右盘后续读 secondRespinInfo", "服务端+客户端", "Scene / TriggerLink"],
+        ["REQ-304-010", "初始计数 3，绿锅为 4；新图标恢复对应盘计数", "服务端+客户端", "counter methods"],
+        ["REQ-304-011", "Respin 只允许未激活颜色糖果；仍有未激活锅才允许彩糖", "服务端+客户端安全过滤", "LinkSymbolLayer"],
+        ["REQ-304-012", "新糖果先糖变饼，再作为 1501 锁定", "客户端", "LinkColumnStop"],
+        ["REQ-304-013", "再触发顺序红->蓝->紫->绿->Drum->结束判断", "客户端", "actionRegistry"],
+        ["REQ-304-014", "红锅单饼变双饼；index0 先于 index1 结算", "服务端+客户端", "Red / Settlement"],
+        ["REQ-304-015", "紫锅只执行 purpleAddInfoList 指定槽位", "服务端+客户端", "Purple Action"],
+        ["REQ-304-016", "绿锅 3 次升 4 次并恢复次数", "服务端+客户端", "Green Action"],
+        ["REQ-304-017", "蓝区目标 4 区；每区 2~6 格、共享边连通、横<=3、纵<=2、x2~x5", "服务端校验+客户端渲染", "PDF p.11-16"],
+        ["REQ-304-018", "满蓝区先倍数飞入砸盘，再逐币结算", "客户端", "LinkOver"],
+        ["REQ-304-019", "每个 5x3 盘只空一格且非最后一轮时播放 Drum", "客户端", "CheckDrum"],
+        ["REQ-304-020", "Grand 由服务端 linkJackpotWin 权威返回", "服务端+客户端表现", "PDF / LinkOver"],
+        ["REQ-304-021", "JP：Grand progressive 500x、Major 25x、Minor 10x、Mini 5x", "服务端+客户端显示", "PDF p.61-72"],
+        ["REQ-304-022", "结算 col 升序、backend row 降序、index 升序", "客户端", "PDF p.16 / comparator"],
+        ["REQ-304-023", "Super 使用服务端 avgTotalBet；普通使用触发时 Total Bet", "服务端+客户端", "Scene bet methods"],
+        ["REQ-304-024", "普通/Super 使用独立入场、结束和重连表现", "客户端+CCB", "resources"],
+        ["REQ-304-025", "回 Base 清锁列、蓝区、锅、计数、平均 bet、BGM、活动入口和 record", "客户端", "respin2Base"],
+        ["REQ-304-026", "前摇概率、RTP、Feature 率由服务端/数学决定", "服务端/数学", "PDF p.61-72"],
+        ["REQ-304-027", "八组 Base 赔率 50/30/20/10/10/7/5/2", "服务端+配置+FAQ", "PDF p.61 / CF-304-08"]
+      ],
+      entities: [
+        { id: "Panel", owner: "Scene / SpinPanelComponent", state: "active panel、panel0/1/2", life: "scene", flows: ["all"] },
+        { id: "LinkSession", owner: "MachineScene", state: "respinTriggered、respinIndex、isSuperRespin、linkData", life: "feature", flows: ["respin", "super"] },
+        { id: "CollectPot", owner: "MachineScene", state: "mCollectLevels、mOldCollectLevels、triggerLinkType", life: "room + feature", flows: ["base", "respin", "super"] },
+        { id: "RespinProgress", owner: "MachineScene", state: "mCollectTriggerTimes、7 个节点", life: "room", flows: ["base", "respin", "super"] },
+        { id: "RespinCounter", owner: "MachineScene", state: "left/right index、all respin count", life: "feature", flows: ["respin", "super"] },
+        { id: "LinkBoard", owner: "MachineScene / SpinPanel", state: "left/right occupied map、locked categories", life: "feature", flows: ["respin", "super"] },
+        { id: "LinkCoin", owner: "Link_SymbolController", state: "BonusInfo、slot0/1、AddMulti", life: "symbol pool", flows: ["respin", "super"] },
+        { id: "ColorFeature", owner: "special Action sequence", state: "purple/green/red/blue flags", life: "respin step", flows: ["respin", "super"] },
+        { id: "BlueAreaRegion", owner: "MachineScene", state: "left/right BlueArea、cell color", life: "feature", flows: ["respin", "super"] },
+        { id: "MultiplierCorner", owner: "MachineScene / CCB", state: "x2/x3/x4/x5 corner nodes", life: "feature", flows: ["respin", "super"] },
+        { id: "RegionLineLayer", owner: "MachineScene / CCB", state: "border and glow lines", life: "feature", flows: ["respin", "super"] },
+        { id: "SettlementQueue", owner: "LinkOverAction", state: "sorted queue、curWinChips、JP", life: "settlement", flows: ["respin", "super"] },
+        { id: "PopupPanel", owner: "BasePopupPanelController", state: "start/end/JP/reconnect callback", life: "transient", flows: ["respin", "super", "reconnect"] },
+        { id: "BetMode", owner: "MachineScene / SpinUI", state: "respinAvgTotalBet、_useAverageBet", life: "feature", flows: ["respin", "super"] },
+        { id: "DrumProbe", owner: "Drum Actions", state: "slow/base/one-empty Drum", life: "subround", flows: ["base", "respin", "super"] },
+        { id: "WinUpdateProcess", owner: "PanelWinUpdateProcess", state: "win label、settled amount", life: "subround", flows: ["all"] }
+      ],
+      files: [
+        ["SweetGalaMachineConfig304.js", "object", "config", ["registerDefaultMachineConfig"]],
+        ["SweetGalaMachineScene304.js", "SlotMachineScene2022", "lifecycle / all", ["appendExtraConfig", "getSceneComponentConfig", "getSpinPanelComponentsConfig", "getPanelSpinProcesses", "getProcessesNewVersion2025", "afterInitialize", "initSlotActions", "addEventListener", "removeEventListener", "onSpinEnabled", "onSpinDisabled", "switchTipQiPao", "initRoomExtraInfo", "onSubRoundStart", "handleSpinResult", "getReceivedExtraSpinResult", "getSpinExtraData", "clearJackpotEffect", "usingFeatureDependentSpinBet", "getFeatureDependentSpinBet", "enableFeatureSpinBet", "disableFeatureSpinBet", "initRespinCountCCB", "regainRespinCount", "updateRespinsCount", "isTriggerRed", "isTriggerGreen", "clearLinkState", "onPreprocessSpinResult", "isTriggerLink", "generateSpinResult", "getDefaultSymbolId", "getDefaultExtraPanel", "mergeBonusInfoByPosition", "getRespinTitleNode", "getRespinCountListNode", "initRespinCountNode", "flipCellRow", "flipMultiData", "getRandomColor", "getSuperMultiplierNodeList", "getMultiplierNodeList", "resetMultiplierNodes", "applyMultiplierNodes", "initAllLinesVisible", "setAllLinesVisible", "applyLineVisibility", "getRegionBorderNodes", "playRegionWinAnimation", "isRegionFull", "checkAndPlayTriggerAnimation", "resetAllCellBg", "applyCellBgColors", "getPotNodeList", "initPotState"]],
+        ["304_action/SweetGala_CollectItemsAction.js", "SlotAction", "base.collectCandy", ["onStartSpin", "triggerFliter", "onTrigger", "getTypeColMax", "startTrygger", "startFlyItem", "playEffect", "flyCoinToTitle", "flyCoinToTitleByColor", "updateBoxCCBState"]],
+        ["304_action/SweetGala_LinkColumnStopAniAction.js", "SlotAction", "respin.coinAppear", ["onStartSpin", "triggerFliter", "clearAllDrumBuyCount", "onTrigger", "updateLandedAndCheckRegion", "playEffect", "playAppearAnim"]],
+        ["304_action/SweetGala_TriggerLinkGameAction.js", "SlotAction", "link.enter", ["triggerFliter", "onTrigger", "playLinkTriggerAnim", "playPotAnim", "openLinkRespinPanel", "changeToTurnTableGame", "initBonusInfoListSymbol", "placeBonusSymbols", "initMultiplierNodes", "initLinesVisible"]],
+        ["304_action/SweetGala_TriggerRedGameAction.js", "SlotAction", "respin.redFeature", ["triggerFliter", "onTrigger", "playPotTriggerAnim", "convertAllSingleToDouble"]],
+        ["304_action/SweetGala_TriggerBlueGameAction.js", "SlotAction", "respin.blueFeature", ["triggerFliter", "checkIsHasMulti", "onTrigger", "playPotTriggerAnim", "initMultiplierNodes", "checkFullRegionAndPlayAnim"]],
+        ["304_action/SweetGala_TriggerPurpleGameAction", "SlotAction", "respin.purpleFeature", ["triggerFliter", "onTrigger", "playPotTriggerAnim", "groupByPosition", "addInfoByData", "getAddAnimName"]],
+        ["304_action/SweetGala_TriggerGreenGameAction.js", "SlotAction", "respin.greenFeature", ["triggerFliter", "onTrigger", "playPotTriggerAnim"]],
+        ["304_action/SweetGala_CheckDrumAction.js", "SlotAction", "respin.checkDrum", ["triggerFliter", "onTrigger", "checkAndShowDrum"]],
+        ["304_action/SweetGala_LinkOverGameAction.js", "SlotAction", "respin.settlement", ["triggerFliter", "onTrigger", "checkGrandJackpot", "processFullRegions", "getFullRegions", "processOneFullRegion", "flyMultiItemEndAdd", "getRegionCenterWorldPos", "buildSortedSettlementList", "getCellRegionMulti", "settleSingleCoin", "showJpTitleWin", "showJpPanel", "getJpChips", "showJieSuanEndPanel", "respin2Base", "clearAllDrum"]],
+        ["304_action/SweetGala_DrumModeAction.js", "SlotAction", "base.drum", ["isDrumModeEnabled", "showDrumAnimation", "getSlowDrumModeSymbolSpriteList", "_replayAllSymbolDrumAnim", "newPlayshowDrumAnimation", "stopDrumAnimation", "_clearDrumNodeSpriteList", "getSymbolOpacity", "getSymbolColor", "onStartSpin"]],
+        ["304_action/SweetGala_SlowDrumModeAction.js", "SlowDrumModeAction", "base.slowDrum", ["checkNeedShowForceDrum", "forceShowDrumAnimation"]],
+        ["304_components/SweetGala_CellSpinPanelComponent.js", "CellSpinPanelComponent", "panel cell", ["getStepIncreaseMultiplier", "getPanelCellPositionX", "getPanelCellPositionY", "getPanelCellByColRow"]],
+        ["304_components/SweetGala_LinkSymbolLayerComponent.js", "CellSymbolLayerComponent", "symbol filter", ["getSymbolIsValid", "localCheckSymbolIDIsValid", "checkSymbolIsValid", "needMaskLayer", "createSymbol", "createCellContainer"]],
+        ["304_components/Link_ClassicSymbolTransformComponent.js", "ClassicSymbolTransformComponent", "transform", ["calSymbolTransfom"]],
+        ["304_components/SweetGala_EnterRoomBonusCheckingComponent.js", "EnterRoomBonusCheckingComponent", "enterRoom.reconnect", ["startEnterRoom"]],
+        ["304_controller/Link_SymbolController.js", "SymbolController", "LinkCoin", ["onDidLoadFromCCB", "onEnter", "upCoinNumAni", "onExit", "onBetChanged", "setSymbolData", "getSymbolData", "reset", "updateTotalWinChips"]],
+        ["304_process/SweetGala_PanelWinUpdateProcess.js", "PanelWinUpdateProcess", "process.panelWinUpdate", ["onEnter"]]
+      ],
+      protocols: [
+        { id: "RoomExtraInfo", fields: ["collectLevels:int[4]", "collectTriggerTimes:int", "fakeJackpotConfig:number[4]", "bonusRecord"] },
+        { id: "SpinPanelRoot", fields: ["panel", "chips", "extraChips", "jackpotWin", "jackpotTriggered", "winLevel", "extraInfo"] },
+        { id: "ExtraInfo", fields: ["collectLevels", "collectTriggerTimes", "bonusInfoList", "triggeredColorFlags", "isSuperRespin", "avgTotalBet", "initBonusInfoList", "initBlueArea", "secondInitBlueArea", "respinInfo", "secondRespinInfo", "clearCollectLevels", "clearCollectTriggerTimes", "jackpotSymbolPositionsMap?"] },
+        { id: "RespinInfo", fields: ["respins:SpinInfo[]", "finalBonusInfoList:BonusInfo[]", "blueArea:BlueArea?"] },
+        { id: "SpinInfo", fields: ["newBonusInfoList", "purpleAddInfoList", "reTriggerColors", "reTriggerRedBonusInfoList", "reTriggerBlueArea"] },
+        { id: "BonusInfo", fields: ["pos{col,row}", "color:0..4", "type:1|2", "param", "finalParam", "index:0|1"] },
+        { id: "BlueArea", fields: ["{x2?,x3?,x4?,x5?}", "cellId=localCol*3+backendRow", "2..6 edge-connected cells", "horizontal<=3", "vertical<=2"] }
+      ],
+      configGroups: [
+        { id: "UI / Paytable", text: "Classic SpinUI/FAQ、Store、Tournament/PhoneTitle、machineUI 设备分支" },
+        { id: "WinLine / Dim", text: "blink 时长、线宽、颜色压暗、overlay、all-line 策略" },
+        { id: "Symbol / Transform", text: "CCB symbol、3 Panel transform、缩放、对象池 reset、初始序列" },
+        { id: "Reel / Drum", text: "20/30 列延时、Drum 层级/时机、前摇全列停轮、Symbol Drum 配置" },
+        { id: "Audio", text: "非 Classic、Respin BGM loop、qianyao、drum、scatter" },
+        { id: "Trigger", text: "Bonus/JP blink、mask、音效和 null contract" },
+        { id: "Popup", text: "FreeSpin/Link 通用弹板 null contract、reconnect=4s" },
+        { id: "Process", text: "BigWin2025、0.5s、禁用通用 JP、Settlement、AutoSpin 修复" },
+        { id: "Fast / MultiPanel", text: "FastSpin、EarlyStop、useMultiPanelRespin=false、Clover/HRJP" },
+        { id: "Appear", text: "HookAppearData、1200~1204/1501、Wild 线规则、音效映射" },
+        { id: "Subject Template", text: "panel0=3x3、panel1=5x3、panel2=10x3、20 symbols、5 lines" },
+        { id: "Editable Config", text: "7 spin schemes；panel map 1/4/4；fastRespins=6；两主题 byte-identical" },
+        { id: "Theme Diff", text: "spinUiTitleName 差异；doublehit dailyMissionStyle/Offset" }
+      ],
+      resources: [
+        { id: "Resource Package", text: "每主题 234：71 CCB、83 PNG、37 plist、30 MP3、10 FNT、3 JPG" },
+        { id: "Main / FAQ", text: "sweet_gala_main(.ccbi/_pad.ccbi)、sweet_gala_faq.ccbi" },
+        { id: "Start / End", text: "respin / sp_respin start、collect、reconnect 共 6 套弹板" },
+        { id: "Jackpot", text: "sweet_gala_dialog_jackpot.ccbi；fakeJackpotConfig -> JackpotRatioList" },
+        { id: "Fly / Drum", text: "link_fly、tang_fly、whee_beishu_add、wheel_effect_drum" },
+        { id: "Dynamic Nodes", text: "_guo0..3、_bonus0..6、3 counters、左右 panels、region lines、coin slots" },
+        { id: "Timing", text: "30fps；21 帧 coin、50 帧四色、45 帧满区、4s JP/End、Super start 3s target" },
+        { id: "Audio", text: "3 BGM + 27 关卡音效；两主题 resource_list/manifest 必须解析" }
+      ],
+      gates: [
+        ["G-SRC-01", "证据完整性", "每条 Requirement 有来源，路径/版本/hash 可追溯"],
+        ["G-CNF-01", "冲突完整性", "无未决 blocking；决议有 owner 和理由"],
+        ["G-REQ-01", "需求覆盖", "每条 Requirement 映射到代码节点和验收"],
+        ["G-FILE-01", "文件完整性", "19/19 文件存在，路径和大小写精确"],
+        ["G-METHOD-01", "方法完整性", "requiredMethods 100% 存在且非空"],
+        ["G-INHERIT-01", "继承关系", "每文件继承/require 与 manifest 一致"],
+        ["G-CONFIG-01", "MachineConfig", "可执行赋值、表达式、设备分支一致"],
+        ["G-CONFIG-02", "JSON 配置", "Panel、符号、线、赔率、spin scheme、主题差异正确"],
+        ["G-PROTO-01", "协议字段", "字段、类型、可选性和 owner 明确"],
+        ["G-SERVER-01", "责任边界", "客户端不重算概率、RTP、中奖、Grand 或紫锅目标"],
+        ["G-COORD-01", "坐标", "backend/visual row、flattened index、right offset 单测通过"],
+        ["G-STATE-01", "状态归属", "每个跨 Action 字段有唯一 Entity owner"],
+        ["G-FLOW-01", "Process 链", "通用 Process 顺序逐项一致"],
+        ["G-ACTION-01", "Action 注册", "panel0/1/2、special、bonus、drum 顺序一致"],
+        ["G-FILTER-01", "Guard 纯度", "triggerFliter 无副作用"],
+        ["G-CALLBACK-01", "异步闭环", "所有分支 exactly-once；手点/自动不双触发"],
+        ["G-RES-01", "资源", "所有资源存在于两主题和 manifest"],
+        ["G-NODE-01", "CCB 契约", "动态节点和动画序列可解析"],
+        ["G-TIME-01", "时序", "每个 wait 映射 timing；无未登记 magic delay"],
+        ["G-SUPER-01", "双盘", "右盘数据、坐标、计数、蓝区、结算独立"],
+        ["G-RECONNECT-01", "重连", "普通/Super 可恢复并继续完成"],
+        ["G-CLEAN-01", "清理", "锁列、动画、锅、蓝区、计数、bet、BGM、入口清零"],
+        ["G-POOL-01", "对象池", "LinkCoin 复用无 UI/数据残留"],
+        ["G-PAY-01", "金额", "finalParam、avgTotalBet、regionMulti、JP 夹具一致"],
+        ["G-RUN-01", "可运行", "构建和 Base/Respin/Super/重连 smoke test 通过"],
+        ["G-ZERO-01", "零占位", "TODO/FIXME/空实现/臆造字段为 0"],
+        ["G-REPORT-01", "最终报告", "覆盖、测试、资源、冲突、变更和残余风险齐全"]
+      ],
+      pipeline: [
+        ["Discover", "读取 PDF、协议、代码、配置、CCB、资源"],
+        ["Normalize", "统一 ID、术语、cols x rows 与坐标"],
+        ["Resolve", "冲突唯一决议；blocking 时停止"],
+        ["Model", "需求、实体、协议、状态机"],
+        ["Compile", "完整时序节点和有类型边"],
+        ["Scaffold", "19 文件与全部方法签名"],
+        ["Implement", "按依赖实现且无占位"],
+        ["Static Verify", "配置/协议/方法/资源/坐标"],
+        ["Runtime Verify", "Base/Respin/Super/重连"],
+        ["Report", "Requirement -> Code -> Test 三向覆盖"]
+      ],
+      panels: [
+        { id: 0, name: "Base", cols: 3, rows: 3, component: "ClassicSpinPanelComponent", note: "5 paylines · backend row0 bottom" },
+        { id: 1, name: "Respin", cols: 5, rows: 3, component: "SweetGala_CellSpinPanelComponent", note: "flattened stop=col*3+(2-row)" },
+        { id: 2, name: "Super Respin", cols: 10, rows: 3, component: "SweetGala_CellSpinPanelComponent", note: "left 5x3 + right 5x3 · right colOffset=5" }
+      ]
+    };

@@ -2,7 +2,7 @@
 
 **制定时间**：2026-07-24
 **适用范围**：`src/newdesign_slot/scene/304_sweet_gala/` 全量逆向 + 新关卡生成模板
-**关联文档**：[AI关卡研发流程](/关卡/AI关卡研发流程)、[SlotAction-使用规范](/关卡/SlotAction-使用规范)、[多轮盘spin相关注意事项](/关卡/多轮盘spin相关注意事项)、[注意事项](/关卡/注意事项)
+**关联文档**：[AI关卡研发流程](/关卡/AI关卡研发流程)、[AI关卡产出蓝图模板](/关卡/AI关卡产出蓝图模板)、[AI关卡产出蓝图可视化](/关卡/AI关卡产出蓝图可视化.html)、[SlotAction-使用规范](/关卡/SlotAction-使用规范)、[多轮盘spin相关注意事项](/关卡/多轮盘spin相关注意事项)、[注意事项](/关卡/注意事项)
 
 ---
 
@@ -10,7 +10,7 @@
 
 Sweet Gala（304）是一个 **收集 + 多色 Respin** 玩法关卡：
 
-- **Base 玩法**：普通 5×3 轮盘，转轴过程中收集彩色糖果飞入 4 个大锅（紫/绿/红/蓝），大锅升级 5 级后触发 Respin
+- **Base 玩法**：普通 3×3 轮盘，转轴过程中收集彩色糖果飞入 4 个大锅（紫/绿/红/蓝），大锅升级 5 级后触发 Respin
 - **Respin 玩法**：5×3 棋盘，Bonus 图标落定后锁定，消耗 respin 次数（默认 3 次，绿色触发后 4 次）
 - **Super Respin**：收集次数达到第 7 次时触发，左右双 5×3 棋盘同时 respin
 - **四色玩法**（Respin 中再触发）：
@@ -27,7 +27,7 @@ Sweet Gala（304）是一个 **收集 + 多色 Respin** 玩法关卡：
 
 ```text
 src/newdesign_slot/scene/304_sweet_gala/
-├── 304_action/              # SlotAction 文件（10 个）
+├── 304_action/              # SlotAction 文件（11 个）
 │   ├── SweetGala_CollectItemsAction.js         # Base 收集糖果→大锅升级
 │   ├── SweetGala_LinkColumnStopAniAction.js    # Respin 停轮→金饼 appear
 │   ├── SweetGala_TriggerLinkGameAction.js      # Respin 入场（弹板+转场+初始化）

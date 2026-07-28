@@ -13,7 +13,7 @@
 
 | 维度 | 内容 |
 |---|---|
-| **轮盘布局** | 5列 × 3行（Base），Respin 5×3，Super Respin 10×3（左右各5列） |
+| **轮盘布局** | Base 3×3，Respin 5×3，Super Respin 10×3（左右各5列） |
 | **轮盘数量** | 3个 Panel（panel0=Base，panel1=普通Respin，panel2=Super Respin） |
 | **核心机制** | 糖块收集 → 触发 Link Respin，4色大锅各有独立玩法 |
 | **JP系统** | Mini(0) / Minor(1) / Major(2) / Grand(3)，共4级 |
