@@ -4,7 +4,7 @@
 > **版本**: v2.0
 > **作者**: WorldTourCasino Team
 
-> ⚠️ **阅读提示（2026-07-28）**：本报告为架构设计时期的历史文档，部分章节与当前代码存在偏差（如缺少 FlagStoneLoader / ClubActivityLoader / CouponLoader / LobbyThemeLoader / StoreLoader 章节）。**扩展或优化 ResourceManV2 请优先阅读** [ResourceManV2-技术指南](http://localhost:5173/WTC-Docs/优化重构/resource-v2/ResourceManV2-技术指南)，两者冲突时以技术指南和 `src/resource_v2/` 代码为准。
+> ⚠️ **阅读提示（2026-07-28）**：本报告为架构设计时期的历史文档，部分章节与当前代码存在偏差（如缺少 FlagStoneLoader / ClubActivityLoader / CouponLoader / LobbyThemeLoader / StoreLoader 章节）。**扩展或优化 ResourceManV2 请优先阅读** [ResourceManV2-技术指南](/优化重构/resource-v2/ResourceManV2-技术指南)，两者冲突时以技术指南和 `src/resource_v2/` 代码为准。
 
 ---
 
@@ -2836,7 +2836,7 @@ resource_v2/
 
 ### D. 参考文档
 
-- [WTC-res-load-improve.md](http://localhost:5173/WTC-Docs/其他/工作记录/WTC-res-load-improve) - 资源加载优化工作记录
+- [WTC-res-load-improve.md](/其他/工作记录/WTC-res-load-improve) - 资源加载优化工作记录
 - **CLAUDE.md** - 项目 AI 上下文文件（主项目根目录）
 - **OpenSpec - add-critical-priority-resource-loading** - 关键资源优先加载规范（`openspec/changes/archive/2025-11-06-add-critical-priority-resource-loading`）
 - **OpenSpec - add-resource-dependency-management** - 资源依赖管理规范（`openspec/changes/archive/2025-11-06-add-resource-dependency-management`）

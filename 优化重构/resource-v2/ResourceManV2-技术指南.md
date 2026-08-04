@@ -336,10 +336,10 @@ module.exports = HighRollerLoader;
 
 ## 附：相关文档
 
-- [ResourceManV2-技术架构报告](http://localhost:5173/WTC-Docs/优化重构/resource-v2/ResourceManV2-技术架构报告)（历史设计过程，部分内容已过时）
-- [BigFlagStone-资源加载优化](http://localhost:5173/WTC-Docs/优化重构/resource-v2/BigFlagStone-资源加载优化)（占位符→下载→替换完整流程）
-- [活动资源优化-后置加载方案](http://localhost:5173/WTC-Docs/优化重构/resource-v2/活动资源优化-后置加载方案)
-- [后台切换导致资源下载卡死-修复方案](http://localhost:5173/WTC-Docs/优化重构/resource-v2/后台切换导致资源下载卡死-修复方案)
+- [ResourceManV2-技术架构报告](/优化重构/resource-v2/ResourceManV2-技术架构报告)（历史设计过程，部分内容已过时）
+- [BigFlagStone-资源加载优化](/优化重构/resource-v2/BigFlagStone-资源加载优化)（占位符→下载→替换完整流程）
+- [活动资源优化-后置加载方案](/优化重构/resource-v2/活动资源优化-后置加载方案)
+- [后台切换导致资源下载卡死-修复方案](/优化重构/resource-v2/后台切换导致资源下载卡死-修复方案)
 - `docs/工程-工具/整理机台资源工具使用文档.md`（CV flagstone 移植依赖的资源整理工具）
 
 ---
