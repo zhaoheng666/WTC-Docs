@@ -33,6 +33,8 @@
 | 07 | [07-execution-standards.md](07-execution-standards.md) | 执行规范 | **必读** — 所有执行者必须遵守 |
 | 08 | [08-roadmap.md](08-roadmap.md) | 实施路线图与验证计划 | 项目计划和里程碑 |
 | 09 | [09-appendix-api-reference.md](09-appendix-api-reference.md) | 完整 API 映射速查表 | 实施时的快速查表工具 |
+| 10 | [10-discussion-log.md](10-discussion-log.md) | 方案讨论记录（持续更新） | **决策时间线** — 已定案决策、否决方案理由、待议条目 |
+| 11 | [11-handoff.md](11-handoff.md) | 会话交接文档 | 新 Agent 会话接续工作的完整上下文（任务栈、工具链现状、核心设计、工作约定） |
 
 ---
 
@@ -100,3 +102,4 @@
 | 日期 | 版本 | 变更内容 |
 |------|------|----------|
 | 2026-03-10 | v1.0 | 初始版本 |
+| 2026-07-08 | v1.1 | 新增 10-discussion-log.md；迁移路线调整为"规格提取 + AI 重实现"为主干（DEC-02），v1.0 的 L1 全量兼容层方案降级为逃生舱，详见讨论记录 |

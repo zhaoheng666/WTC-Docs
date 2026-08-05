@@ -4,6 +4,10 @@
 
 ## 📋 目录结构
 
+- 📝 [304-SweetGala-可视化手册](304-SweetGala-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%89%8B%E5%86%8C)
+- 📝 [304-sweet-gala-研发手册](304-sweet-gala-%E7%A0%94%E5%8F%91%E6%89%8B%E5%86%8C)
+- 📝 [AI关卡产出蓝图模板](AI%E5%85%B3%E5%8D%A1%E4%BA%A7%E5%87%BA%E8%93%9D%E5%9B%BE%E6%A8%A1%E6%9D%BF)
+- 📝 [AI关卡研发流程](AI%E5%85%B3%E5%8D%A1%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B)
 - 📝 [DH HR 大厅入口](DH%20HR%20%E5%A4%A7%E5%8E%85%E5%85%A5%E5%8F%A3)
 - 📝 [DailyMission入口样式](DailyMission%E5%85%A5%E5%8F%A3%E6%A0%B7%E5%BC%8F)
 - 📝 [FreeGame-spin间隔调整](FreeGame-spin%E9%97%B4%E9%9A%94%E8%B0%83%E6%95%B4)
@@ -12,6 +16,7 @@
 - 📝 [Link 玩法异常](Link%20%E7%8E%A9%E6%B3%95%E5%BC%82%E5%B8%B8)
 - 📝 [Link 玩法结算](Link%20%E7%8E%A9%E6%B3%95%E7%BB%93%E7%AE%97)
 - 📝 [SlotAction-优化记录](SlotAction-%E4%BC%98%E5%8C%96%E8%AE%B0%E5%BD%95)
+- 📝 [SlotAction-使用规范](SlotAction-%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83)
 - 📝 [Winline 组件选择](Winline%20%E7%BB%84%E4%BB%B6%E9%80%89%E6%8B%A9)
 - 📝 [fastSpin 组件](fastSpin%20%E7%BB%84%E4%BB%B6)
 - 📝 [freeSpin流程封装Action](freeSpin%E6%B5%81%E7%A8%8B%E5%B0%81%E8%A3%85Action)

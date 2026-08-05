@@ -17,6 +17,7 @@
   - 📝 [FB Canvas 风险评估与优化](FB%20/FB%20Canvas%20%E9%A3%8E%E9%99%A9%E8%AF%84%E4%BC%B0%E4%B8%8E%E4%BC%98%E5%8C%96)
   - 📝 [FB 违规申诉](FB%20/FB%20%E8%BF%9D%E8%A7%84%E7%94%B3%E8%AF%89)
   - 📝 [Facebook ARC年龄分级证书问题](FB%20/Facebook%20ARC%E5%B9%B4%E9%BE%84%E5%88%86%E7%BA%A7%E8%AF%81%E4%B9%A6%E9%97%AE%E9%A2%98)
+  - 📝 [如何获取 fbId](FB%20/%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%20fbId)
 
 
 #### 📁 工作记录

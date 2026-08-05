@@ -4,6 +4,8 @@
 > **版本**: v2.0
 > **作者**: WorldTourCasino Team
 
+> ⚠️ **阅读提示（2026-07-28）**：本报告为架构设计时期的历史文档，部分章节与当前代码存在偏差（如缺少 FlagStoneLoader / ClubActivityLoader / CouponLoader / LobbyThemeLoader / StoreLoader 章节）。**扩展或优化 ResourceManV2 请优先阅读** [ResourceManV2-技术指南](/优化重构/resource-v2/ResourceManV2-技术指南)，两者冲突时以技术指南和 `src/resource_v2/` 代码为准。
+
 ---
 
 ## 目录
@@ -2764,22 +2766,32 @@ resource_v2/
 │   ├── DownloadQueue.js       # 下载队列
 │   ├── LoaderRegistry.js      # 加载器注册表
 │   ├── ConfigManager.js       # 配置管理器
+│   ├── CacheManager.js        # 缓存管理器
 │   ├── DownloadTask.js        # 下载任务
-│   ├── LoaderEventBus.js      # 事件总线
+│   ├── LoaderEventBus.js      # 事件总线（LoaderEvent 枚举定义于此文件内）
 │   ├── LoaderMonitor.js       # 监控器
-│   └── LoaderEvent.js         # 事件类型枚举
+│   └── ControllerPool.js      # 进度 UI 控制器池
+├── enum/
+│   └── LoaderTypes.js         # Loader 类型枚举
 ├── loaders/
 │   ├── BaseLoader.js          # 基础加载器
 │   ├── ActivityLoader.js      # 活动加载器
-│   ├── PosterLoader.js        # 海报加载器
-│   ├── SlotLoader.js          # 老虎机加载器
-│   ├── LobbyBoardLoader.js    # 大厅公告板加载器
 │   ├── CardSystemLoader.js    # 卡牌系统加载器
+│   ├── FlagStoneLoader.js     # 大厅机台入口加载器
 │   ├── FeatureLoader.js       # 功能资源加载器
+│   ├── SlotLoader.js          # 老虎机加载器（不走共享队列）
+│   ├── ClubActivityLoader.js  # 工会活动加载器
+│   ├── PosterLoader.js        # 海报加载器
+│   ├── LobbyBoardLoader.js    # 大厅广告牌加载器
+│   ├── LobbyThemeLoader.js    # 大厅主题加载器
+│   ├── StoreLoader.js         # 商店加载器
+│   ├── CouponLoader.js        # 优惠券加载器
 │   └── GenericLoader.js       # 通用加载器
 ├── adapters/
 │   ├── CanvasDownloader.js    # Canvas 下载适配器
 │   └── NativeDownloader.js    # Native 下载适配器
+├── controller/
+│   └── LoadingProgressIndicatorController.js  # 进度指示器
 └── ResourceManV2.js           # 主入口
 ```
 
@@ -2787,15 +2799,22 @@ resource_v2/
 
 ### B. 优先级参考表
 
-| 资源类型      | 优先级范围 | 基础优先级 | 最高优先级 |
-| ------------- | ---------- | ---------- | ---------- |
-| LobbyBoard    | 3000-4000  | 3000       | 3800       |
-| Activity      | 2000-3000  | 2000       | 2900       |
-| Poster        | 1500-2500  | 1500       | 2400       |
-| CardSystem    | 1200-1500  | 1200       | 1500       |
-| Slot          | 1000-1500  | 1000       | 1500       |
-| Feature       | 800-1400   | 800        | 1400       |
-| Generic       | 500-1000   | 500        | 1000       |
+> ⚠️ **数值越小越优先**（与旧版文档相反）。权威定义见 `ConfigManager.DOWNLOADER_PRIORITY_BASE`，计算方式 `priority = 基值 + offset`。
+
+| 资源类型      | 基值  | 说明                       |
+| ------------- | ----- | -------------------------- |
+| CARD_SYSTEM   | 500   | 最高优先级                 |
+| LOBBY_THEME   | 1500  | 大厅主题（Loading 界面）   |
+| POSTER        | 2500  | 海报                       |
+| ACTIVITY      | 3500  | 活动资源                   |
+| STORE         | 4500  | 商店                       |
+| CLUB_ACTIVITY | 5500  | 工会活动                   |
+| LOBBY_BOARD   | 6500  | 大厅广告牌                 |
+| COUPON        | 7500  | 优惠券                     |
+| FEATURE       | 8500  | 功能资源                   |
+| FLAGSTONE     | 9000  | 大厅机台入口（SLOT 之前）  |
+| SLOT          | 9500  | 关卡资源                   |
+| GENERIC       | 10500 | 最低优先级（兜底）         |
 
 ---
 
@@ -2804,7 +2823,7 @@ resource_v2/
 | 术语              | 说明                                     |
 | ----------------- | ---------------------------------------- |
 | **forceCritical** | 强制关键标志,绕过并发限制                |
-| **priority**      | 优先级数值,越大越优先                    |
+| **priority**      | 优先级数值,越小越优先                    |
 | **pending**       | 等待执行的任务队列                       |
 | **active**        | 正在执行的任务列表                       |
 | **completed**     | 已完成的任务列表                         |
@@ -2817,7 +2836,7 @@ resource_v2/
 
 ### D. 参考文档
 
-- [WTC-res-load-improve.md](http://localhost:5173/WTC-Docs/其他/工作记录/WTC-res-load-improve) - 资源加载优化工作记录
+- [WTC-res-load-improve.md](/其他/工作记录/WTC-res-load-improve) - 资源加载优化工作记录
 - **CLAUDE.md** - 项目 AI 上下文文件（主项目根目录）
 - **OpenSpec - add-critical-priority-resource-loading** - 关键资源优先加载规范（`openspec/changes/archive/2025-11-06-add-critical-priority-resource-loading`）
 - **OpenSpec - add-resource-dependency-management** - 资源依赖管理规范（`openspec/changes/archive/2025-11-06-add-resource-dependency-management`）
