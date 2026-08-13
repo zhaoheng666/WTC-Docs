@@ -159,20 +159,20 @@ grep 规则（第 5 节）只能匹配**固定文本模式**，无法发现**语
 
 ---
 
-## 9. OpenSpec 交付与语言门禁（强制）
+## 9. OpenSpec 校验与归档提醒
 
-涉及 `openspec/` 时，code-review **必须**执行：
+code-review **每次必须**执行：
 
 ```bash
-openspec list --json
-npm run check:openspec
+npm run --silent remind:openspec-archive
 ```
 
-- active change 集合、任务进度和状态以官方 `openspec list --json` 为权威来源，项目脚本不得重建生命周期状态。
-- change ID、capability ID 和目录名必须使用英文 ASCII kebab-case。
-- 提案标题、正文、任务、Requirement 和 Scenario 的人读内容默认使用中文；OpenSpec 模板结构标题、固定解析关键字和技术标识可保持原文。
-- active change 任务达到 100% 后，必须归档，或明确报告部署未确认等具体阻塞原因。
-- 语言检查或 strict validation 失败时，阻断提交。
+- active change 集合和任务进度以提醒命令内部调用的官方 `openspec list --json` 为权威来源。
+- active change 任务达到 100% 后，在 review 回复中使用独立标题和 change ID 显著提醒归档。
+- 没有匹配项时保持静默，不输出 OpenSpec 提醒标题、空列表或“检查通过”信息。
+- 归档提醒不阻断当前 review 或提交，不要求当前协作者处理无关 change。
+- 跳过深度 review 不会跳过归档提醒。
+- 涉及 `openspec/` 时另外运行 `npm run check:openspec`；语言检查或 strict validation 失败时阻断提交。
 
 ---
 
@@ -192,6 +192,7 @@ npm run check:openspec
 
 | 日期 | 变更 | 操作人 |
 |-----|------|-------|
+| 2026-08-13 | 将完成态 active change 从全局阻断调整为 review/commit 回复中的非阻断归档提醒 | WorldTourCasino Team |
 | 2026-08-12 | 新增第 9 节「OpenSpec 交付与语言门禁」：强制检查中文人读内容、机器 ID、完成态和严格校验 | WorldTourCasino Team |
 | 2026-07-20 | 新增第 8 节「语法校验（强制 · eslint ES5）」：grep 与 browserify 均无法发现函数调用尾逗号等 ES5 语法错误，强制对改动 JS 跑 eslint | AI |
 | 2026-04-28 | 新增 isActivityVisible 中风险 API（BaseActivity 专属方法，全量遍历时需 typeof 保护） | AI |
