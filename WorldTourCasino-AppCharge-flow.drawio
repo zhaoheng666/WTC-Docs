@@ -1,0 +1,250 @@
+<mxfile host="65bd71144e">
+    <diagram id="appcharge-otp" name="AppCharge OTP 流程">
+        <mxGraphModel dx="614" dy="468" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1820" pageHeight="1504" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="s2" value="AppCharge 第三方商城 · OTP 登录与购买返回流程时序图" style="text;html=1;fontSize=20;fontStyle=1;align=center;verticalAlign=middle;fontColor=#1F4E79;" parent="1" vertex="1">
+                    <mxGeometry x="200" y="4" width="1400" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="s3" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#BBBBBB;strokeWidth=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="40" y="682" as="sourcePoint"/>
+                        <mxPoint x="1780" y="682" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s4" value="阶段 1 · 进入商城并 OTP 登录" style="rounded=1;html=1;fillColor=#EAF2FA;strokeColor=#2E75B6;fontSize=12;fontStyle=1;align=center;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="44" y="672" width="210" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="s5" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#BBBBBB;strokeWidth=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="40" y="1128" as="sourcePoint"/>
+                        <mxPoint x="1780" y="1128" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s6" value="阶段 2 · 游戏内 OTP 验证" style="rounded=1;html=1;fillColor=#EAF5EA;strokeColor=#548235;fontSize=12;fontStyle=1;align=center;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="44" y="1118" width="210" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="s7" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#BBBBBB;strokeWidth=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="40" y="1418" as="sourcePoint"/>
+                        <mxPoint x="1780" y="1418" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s8" value="阶段 3 · 购买并返回游戏" style="rounded=1;html=1;fillColor=#FDF2E2;strokeColor=#BF9000;fontSize=12;fontStyle=1;align=center;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="44" y="1408" width="210" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="s9" value="用户" style="shape=actor;whiteSpace=wrap;html=1;fillColor=#DEEBF7;strokeColor=#1F4E79;fontSize=11;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="110" y="46" width="40" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="s10" value="AppCharge 商城前端&lt;br&gt;&lt;span style=&quot;font-size:10px&quot;&gt;OTP登录页 / 验证页 / 商城&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2E75B6;fontSize=11;fontStyle=1;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="325" y="46" width="210" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="s11" value="AppCharge 服务器" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#2E75B6;fontSize=11;fontStyle=1;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="625" y="46" width="210" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="s12" value="游戏服务器&lt;br&gt;&lt;span style=&quot;font-size:10px&quot;&gt;回调接口 + 协议&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#548235;fontSize=11;fontStyle=1;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="925" y="46" width="210" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="s13" value="Deeplink 服务&lt;br&gt;&lt;span style=&quot;font-size:10px&quot;&gt;(游戏后端)&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#548235;fontSize=11;fontStyle=1;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="1225" y="46" width="210" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="s14" value="游戏前端&lt;br&gt;&lt;span style=&quot;font-size:10px&quot;&gt;Web / App&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#548235;fontSize=11;fontStyle=1;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="1525" y="46" width="210" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="s15" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#AAAAAA;strokeWidth=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="130" y="118" as="sourcePoint"/>
+                        <mxPoint x="130" y="1464" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s16" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#AAAAAA;strokeWidth=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="430" y="118" as="sourcePoint"/>
+                        <mxPoint x="430" y="1464" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s17" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#AAAAAA;strokeWidth=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="730" y="118" as="sourcePoint"/>
+                        <mxPoint x="730" y="1464" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s18" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#AAAAAA;strokeWidth=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1030" y="118" as="sourcePoint"/>
+                        <mxPoint x="1030" y="1464" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s19" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#AAAAAA;strokeWidth=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1330" y="118" as="sourcePoint"/>
+                        <mxPoint x="1330" y="1464" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s20" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#AAAAAA;strokeWidth=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1630" y="118" as="sourcePoint"/>
+                        <mxPoint x="1630" y="1464" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s21" value="1 · 触发 AppCharge Domain（进入商城）" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#2E75B6;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="130" y="168" as="sourcePoint"/>
+                        <mxPoint x="430" y="168" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s22" value="2 · 跳转到 OTP 登录页 /login" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF2FA;strokeColor=#2E75B6;fontSize=10.5;fontStyle=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="444" y="203" width="230" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="s23" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#2E75B6;strokeWidth=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="430" y="220" as="sourcePoint"/>
+                        <mxPoint x="444" y="220" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s24" value="3 · 点击「OTP 登录」按钮" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#2E75B6;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="130" y="272" as="sourcePoint"/>
+                        <mxPoint x="430" y="272" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s25" value="4 · 发送登录请求" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#2E75B6;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="430" y="324" as="sourcePoint"/>
+                        <mxPoint x="730" y="324" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s26" value="5 · 回调 /appcharge/otp-deeplink" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#2E75B6;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="730" y="376" as="sourcePoint"/>
+                        <mxPoint x="1030" y="376" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s27" value="6 · 返回 游戏跳转 deeplink + accessToken" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#2E75B6;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;dashed=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1030" y="428" as="sourcePoint"/>
+                        <mxPoint x="730" y="428" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s28" value="7 · 返回 游戏跳转 deeplink" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#2E75B6;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;dashed=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="730" y="480" as="sourcePoint"/>
+                        <mxPoint x="430" y="480" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s29" value="8 · 跳转到游戏跳转 deeplink&lt;br&gt;open.html?path=appsource&amp;opentype=otp" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#2E75B6;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="430" y="532" as="sourcePoint"/>
+                        <mxPoint x="1330" y="532" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s30" value="9 · 按设备类型重定向 → web 游戏(cdn) / APP 启动链接" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#2E75B6;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1330" y="584" as="sourcePoint"/>
+                        <mxPoint x="1630" y="584" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s31" value="10 · 游戏载入、进入 lobby" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF2FA;strokeColor=#2E75B6;fontSize=10.5;fontStyle=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="1386" y="619" width="230" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="s32" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#2E75B6;strokeWidth=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1630" y="636" as="sourcePoint"/>
+                        <mxPoint x="1616" y="636" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s33" value="11 · 发送 C2SGetOTPCode 协议" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#548235;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1630" y="718" as="sourcePoint"/>
+                        <mxPoint x="1030" y="718" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s34" value="12 · 返回 S2CGetOTPCode：storeOtpDomain + proofKey(playerCode)" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#548235;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;dashed=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1030" y="770" as="sourcePoint"/>
+                        <mxPoint x="1630" y="770" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s35" value="13 · 浏览器打开 OTP 验证页 /login/otp?proofKey=xxx" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#548235;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1630" y="822" as="sourcePoint"/>
+                        <mxPoint x="430" y="822" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s36" value="14 · 请求验证用户身份（proofKey）" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#548235;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="430" y="874" as="sourcePoint"/>
+                        <mxPoint x="730" y="874" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s37" value="15 · 回调 /appCharge/report" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#548235;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="730" y="926" as="sourcePoint"/>
+                        <mxPoint x="1030" y="926" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s38" value="16 · 校验 playerCode + token，返回结果" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#548235;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;dashed=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1030" y="978" as="sourcePoint"/>
+                        <mxPoint x="730" y="978" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s39" value="17 · 返回 OTP 验证结果" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#548235;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;dashed=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="730" y="1030" as="sourcePoint"/>
+                        <mxPoint x="430" y="1030" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s40" value="18 · 验证页刷新 → 跳转商城主页" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF5EA;strokeColor=#548235;fontSize=10.5;fontStyle=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="444" y="1065" width="230" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="s41" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#548235;strokeWidth=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="430" y="1082" as="sourcePoint"/>
+                        <mxPoint x="444" y="1082" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s42" value="19 · 购买付款操作完成" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#BF9000;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="130" y="1164" as="sourcePoint"/>
+                        <mxPoint x="430" y="1164" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s43" value="20 · 弹出 back to game 选项" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#BF9000;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="430" y="1216" as="sourcePoint"/>
+                        <mxPoint x="130" y="1216" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s44" value="21 · 点击 back to game" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#BF9000;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="130" y="1268" as="sourcePoint"/>
+                        <mxPoint x="430" y="1268" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s45" value="22 · 跳转到游戏跳转 deeplink" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#BF9000;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="430" y="1320" as="sourcePoint"/>
+                        <mxPoint x="1330" y="1320" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s46" value="23 · 重定向回游戏" style="html=1;rounded=0;endArrow=block;endFill=1;strokeColor=#BF9000;strokeWidth=1.4;fontSize=10.5;fontStyle=1;labelBackgroundColor=#FFFFFF;align=center;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1330" y="1372" as="sourcePoint"/>
+                        <mxPoint x="1630" y="1372" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="s47" value="&lt;b&gt;图例&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:#2E75B6&quot;&gt;■&lt;/span&gt; 阶段1 登录 &amp;nbsp;&amp;nbsp; &lt;span style=&quot;color:#548235&quot;&gt;■&lt;/span&gt; 阶段2 OTP验证 &amp;nbsp;&amp;nbsp; &lt;span style=&quot;color:#BF9000&quot;&gt;■&lt;/span&gt; 阶段3 购买返回&lt;br&gt;实线=请求/调用 &amp;nbsp;&amp;nbsp; 虚线=响应/返回" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F7F7F7;strokeColor=#999999;fontSize=10.5;align=left;verticalAlign=middle;spacingLeft=8;" parent="1" vertex="1">
+                    <mxGeometry x="44" y="1450" width="380" height="66" as="geometry"/>
+                </mxCell>
+                <mxCell id="s48" value="&lt;b&gt;游戏跳转 deeplink&lt;/b&gt;&lt;br&gt;https://slots-cdn-resource.me2zengame.com/deeplink/open.html?path=appsource&amp;opentype=otp" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7E0;strokeColor=#BF9000;fontSize=9.5;align=left;verticalAlign=middle;spacingLeft=8;" parent="1" vertex="1">
+                    <mxGeometry x="575" y="1450" width="560" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="s49" value="&lt;b&gt;AppCharge 商城 domain&lt;/b&gt;&lt;br&gt;ghoststudio-classic-vegas-slots-store.me2zengame.com" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7E0;strokeColor=#BF9000;fontSize=9.5;align=left;verticalAlign=middle;spacingLeft=8;" parent="1" vertex="1">
+                    <mxGeometry x="1160" y="1450" width="560" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
