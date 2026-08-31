@@ -164,10 +164,10 @@ grep 规则（第 5 节）只能匹配**固定文本模式**，无法发现**语
 code-review **每次必须**执行：
 
 ```bash
-npm run --silent remind:openspec-archive
+npm run --silent list:openspec
 ```
 
-- active change 集合和任务进度以提醒命令内部调用的官方 `openspec list --json` 为权威来源。
+- active change 集合和任务进度以该命令返回的官方 `openspec list --json` 结构化结果为权威来源。
 - active change 任务达到 100% 后，在 review 回复中使用独立标题和 change ID 显著提醒归档。
 - 没有匹配项时保持静默，不输出 OpenSpec 提醒标题、空列表或“检查通过”信息。
 - 归档提醒不阻断当前 review 或提交，不要求当前协作者处理无关 change。
@@ -192,6 +192,7 @@ npm run --silent remind:openspec-archive
 
 | 日期 | 变更 | 操作人 |
 |-----|------|-------|
+| 2026-08-31 | 统一使用存在的 `npm run list:openspec`，删除失效命令与 fallback | WorldTourCasino Team |
 | 2026-08-13 | 将完成态 active change 从全局阻断调整为 review/commit 回复中的非阻断归档提醒 | WorldTourCasino Team |
 | 2026-08-12 | 新增第 9 节「OpenSpec 交付与语言门禁」：强制检查中文人读内容、机器 ID、完成态和严格校验 | WorldTourCasino Team |
 | 2026-07-20 | 新增第 8 节「语法校验（强制 · eslint ES5）」：grep 与 browserify 均无法发现函数调用尾逗号等 ES5 语法错误，强制对改动 JS 跑 eslint | AI |
