@@ -4,6 +4,7 @@
 
 ## 📋 目录结构
 
+- 📝 [304-SweetGala-AI首次深度研发案例](304-SweetGala-AI%E9%A6%96%E6%AC%A1%E6%B7%B1%E5%BA%A6%E7%A0%94%E5%8F%91%E6%A1%88%E4%BE%8B)
 - 📝 [304-SweetGala-可视化手册](304-SweetGala-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%89%8B%E5%86%8C)
 - 📝 [304-sweet-gala-研发手册](304-sweet-gala-%E7%A0%94%E5%8F%91%E6%89%8B%E5%86%8C)
 - 📝 [AI关卡产出蓝图模板](AI%E5%85%B3%E5%8D%A1%E4%BA%A7%E5%87%BA%E8%93%9D%E5%9B%BE%E6%A8%A1%E6%9D%BF)
