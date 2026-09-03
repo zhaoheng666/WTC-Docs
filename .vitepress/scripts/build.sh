@@ -255,6 +255,8 @@ BUILD_LOG="/tmp/vitepress-build.log"
 
 # 本地构建使用本地 URL
 export VITE_BASE_URL="http://localhost:5173/WTC-Docs"
+# 将 Office 演示文稿作为静态资源处理，避免被误判为页面死链。
+export VITE_EXTRA_EXTENSIONS="${VITE_EXTRA_EXTENSIONS:+${VITE_EXTRA_EXTENSIONS},}pptx"
 
 # 覆盖式写入构建日志
 if npx vitepress build > "$BUILD_LOG" 2>&1; then
