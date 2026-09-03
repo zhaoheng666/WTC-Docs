@@ -21,7 +21,6 @@
   - 📝 [OpenCode模型配置](AI/OpenCode%E6%A8%A1%E5%9E%8B%E9%85%8D%E7%BD%AE)
   - 📝 [ghoststudio代理支持模型](AI/ghoststudio%E4%BB%A3%E7%90%86%E6%94%AF%E6%8C%81%E6%A8%A1%E5%9E%8B)
   - 📝 [从上下文膨胀到可治理的 Agent 工程实践](AI/%E4%BB%8E%E4%B8%8A%E4%B8%8B%E6%96%87%E8%86%A8%E8%83%80%E5%88%B0%E5%8F%AF%E6%B2%BB%E7%90%86%E7%9A%84%20Agent%20%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5)
-  - 📎 Agent 综合治理经验分享.pptx
 
 
 #### 📁 CocosBuilder

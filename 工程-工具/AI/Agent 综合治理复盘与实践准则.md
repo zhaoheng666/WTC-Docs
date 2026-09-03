@@ -184,7 +184,7 @@ flowchart TD
 
 ## 相关文档
 
-- [Agent 综合治理经验分享（PPT）](./Agent%20综合治理经验分享.pptx)
+- [Agent 综合治理经验分享（PPT）](/pptx/Agent%20综合治理经验分享.pptx)
 - [AI 上下文膨胀问题](./AI%20上下文膨胀问题.md)
 - [从上下文膨胀到可治理：项目 Agent 工程实践](./从上下文膨胀到可治理的%20Agent%20工程实践.md)
 - `AGENTS.md`

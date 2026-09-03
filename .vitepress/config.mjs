@@ -2,6 +2,13 @@ import { defineConfig } from 'vitepress'
 import { generateMultiSidebar } from './sidebar.mjs'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 
+// 避免 VitePress 将可下载的演示文稿误判为 HTML 页面。
+const extraExtensions = new Set(
+  (process.env.VITE_EXTRA_EXTENSIONS || '').split(',').filter(Boolean)
+)
+extraExtensions.add('pptx')
+process.env.VITE_EXTRA_EXTENSIONS = Array.from(extraExtensions).join(',')
+
 // https://vitepress.dev/reference/site-config
 export default withMermaid(defineConfig({
   title: "WorldTourCasino",
