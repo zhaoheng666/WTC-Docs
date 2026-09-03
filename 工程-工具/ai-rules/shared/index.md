@@ -13,4 +13,5 @@
 
 ---
 
-详细说明请参阅主项目 [CLAUDE.md](https://github.com/zhaoheng666/WorldTourCasino/blob/classic_vegas/CLAUDE.md)
+当前共享常驻规则与条件路由以主项目 `AGENTS.md` 为唯一共享入口；
+`CLAUDE.md` 是指向它的符号链接。

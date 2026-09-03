@@ -12,4 +12,5 @@
 
 ---
 
-详细说明请参阅主项目 [CLAUDE.md](https://github.com/zhaoheng666/WorldTourCasino/blob/classic_vegas/CLAUDE.md)
+共享基础上下文请参阅主项目
+[AGENTS.md](https://github.com/zhaoheng666/WorldTourCasino/blob/classic_vegas/AGENTS.md)。

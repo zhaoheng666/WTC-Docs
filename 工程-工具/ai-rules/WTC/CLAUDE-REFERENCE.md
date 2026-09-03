@@ -4,7 +4,8 @@
 
 本文档提供项目架构概览和快速参考。**仅供查阅，不会自动加载**。
 
-详细规则请查看主项目 [CLAUDE.md](https://github.com/zhaoheng666/WorldTourCasino/blob/classic_vegas/CLAUDE.md) 和规则索引。
+现行共享规则与条件路由请查看主项目 `AGENTS.md`；`CLAUDE.md` 是指向它的
+符号链接。本文档仅是按需项目参考，不是当前仓库状态的权威来源。
 
 ---
 
@@ -19,7 +20,8 @@ AI 规则文件按项目分类存储：
 
 **完整索引**: `docs/工程-工具/ai-rules/`
 
-**注意**: 这是文件目录结构，不是加载机制。关于三层规则架构（第一层内联/第二层外部/第三层 Slash Commands），请查看主项目 `CLAUDE.md` 的"规则维护"章节
+**注意**: 这是文件目录结构，不是加载机制。当前分层见
+[项目规则与基础上下文维护](/工程-工具/ai-rules/shared/rule-maintenance)。
 
 | 子项目 | 路径 | 规则目录 |
 |--------|------|---------|
@@ -33,27 +35,32 @@ AI 规则文件按项目分类存储：
 
 ### 核心构建命令
 
-**本地开发**:
+**本地开发**（从 `scripts/` 目录执行）:
 ```bash
-scripts/build_local_oldvegas.sh    # CV - Classic Vegas
-scripts/build_local_doublehit.sh   # DH - Double Hit
-scripts/build_local_doublex.sh     # DHX - Double X
-scripts/build_local_vegasstar.sh   # VS - Vegas Star
-npm run lint                        # ES5 代码检查
+cd scripts
+./build_local_oldvegas.sh    # CV - Classic Vegas
+./build_local_doublehit.sh   # DH - Double Hit
+./build_local_doublex.sh     # DHX - Double X
+./build_local_vegasstar.sh   # VS - Vegas Star
 ```
 
-**测试部署**:
+主项目根目录下使用 `npm run lint` 执行 ES5 代码检查。验证本地构建时，只检查命令退出状态
+以及有界的 error/warning 输出；不读取或解析生成的 `game.js`。
+
+**测试部署**（从 `scripts/` 目录执行，并传入目标资源目录）:
 ```bash
-scripts/deploy_fb_alpha_normal.sh  # Facebook 测试版
-scripts/deploy_fb_alpha_dynamic.sh # Facebook 折扣测试版
+cd scripts
+./deploy_fb_alpha_normal.sh <resPath>  # Facebook 测试版
+./deploy_fb_alpha_dynamic.sh <resPath> # Facebook 折扣测试版
 ```
 
-**生产部署**（需先升级 resource_dirs.json 版本号）:
+**生产部署**（从 `scripts/` 目录执行；发布前按对应流程更新资源版本）:
 ```bash
-scripts/sync_flavor.sh             # 同步风格文件
-scripts/gen_res_list.sh            # 生成资源列表
-scripts/build_fb.sh                # Facebook 版本
-scripts/build_native.sh            # 原生版本
+cd scripts
+./sync_flavor.sh <resPath>   # 同步风格文件
+./gen_res_list.py <resPath>  # 生成资源列表
+./build_fb.sh <resPath>      # Facebook 版本
+./build_native.sh <resPath>  # 原生版本
 ```
 
 ### 文档子项目
@@ -80,7 +87,7 @@ npm run sync   # 同步到 GitHub Pages (https://zhaoheng666.github.io/WTC-Docs/
 
 ```
 WorldTourCasino/
-├── src/                   # 5,762+ 共享 JS 文件
+├── src/                   # 共享 JS 文件
 ├── res_*/                 # 风格特定资源
 │   ├── res_oldvegas/      # CV - Classic Vegas
 │   ├── res_doublehit/     # DH - Double Hit
@@ -126,7 +133,7 @@ WorldTourCasino/
 
 1. 检查当前分支和风格
 2. 修改代码（`src/` 或 `res_*/flavor/`）
-3. 运行构建：`scripts/build_local_[flavor].sh`
+3. 进入 `scripts/` 并运行 `./build_local_[flavor].sh`
 4. 浏览器测试
 5. 代码检查：`npm run lint`
 

@@ -16,7 +16,7 @@
 
 ### Git 工作流
 
-- [Git 提交](/工程-工具/ai-rules/WTC/git-commits) - 提交格式和确认流程 📜 **强制**
+- [Git 提交](/工程-工具/ai-rules/WTC/git-commits) - 提交格式和收口边界 📜 **强制**
 
 ### 文档管理
 
@@ -28,10 +28,12 @@
 
 以下文件作为历史参考保留（不会自动加载）：
 
-- [core-rules.md](/工程-工具/ai-rules/WTC/core-rules) - 旧规则体系核心规则（已重构并内联到 CLAUDE.md）
+- [core-rules.md](/工程-工具/ai-rules/WTC/core-rules) - 旧规则体系的转发页
 - [CLAUDE-REFERENCE.md](/工程-工具/ai-rules/WTC/CLAUDE-REFERENCE) - 综合参考文档（仅供查阅）
 
-**当前规则体系**: 核心规则已采用三层架构，详见主项目 `CLAUDE.md`
+**当前规则体系**: OpenSpec 定义权威语义，`AGENTS.md` 保留共享常驻内核与条件路由，
+`CLAUDE.md` 是指向它的符号链接。详见
+[项目规则与基础上下文维护](/工程-工具/ai-rules/shared/rule-maintenance)。
 
 ---
 

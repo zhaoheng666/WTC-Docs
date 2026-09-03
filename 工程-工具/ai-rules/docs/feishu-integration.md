@@ -137,7 +137,7 @@ uid=3_73 image "飞书文档 - 图片" url="https://internal-api-drive-stream.fe
 mcp__chrome_devtools__take_screenshot({
   uid: '3_73',
   format: 'png',
-  filePath: '/Users/ghost/work/WorldTourCasino/docs/assets/xxx.png'
+  filePath: 'docs/assets/xxx.png'
 })
 ```
 
@@ -336,7 +336,7 @@ Wiki token not found or document deleted
 
 - **Skill 完整规范**: `.claude/skills/feishu-to-docs/SKILL.md`
 - **VitePress 规范**: `docs/工程-工具/ai-rules/docs/vitepress.md`
-- **文档分类规范**: `CLAUDE.md > 文档记录原则`
+- **文档分类规范**: `docs/工程-工具/ai-rules/WTC/doc-workflow.md`
 - **Git 提交规范**: `.claude/skills/git-commit/SKILL.md`
 - **lark-mcp 文档**: https://github.com/larksuiteoapi/lark-mcp
 
