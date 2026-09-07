@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "WorldTourCasino 客户端架构总览",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1080,
+      640
+    ],
+    "views": [
+      {
+        "id": "client-runtime",
+        "label": "客户端运行链路",
+        "focus": [
+          "runtime",
+          "engine",
+          "src",
+          "resv2",
+          "res"
+        ],
+        "note": "入口引导 → 引擎/SDK → 业务代码 → 资源加载 → 多风格资源。"
+      },
+      {
+        "id": "build-release",
+        "label": "构建与发布",
+        "focus": [
+          "build",
+          "res",
+          "cdn",
+          "runtime"
+        ],
+        "note": "scripts/ 编译风格产物并上传 CDN，客户端分块下载/热更。"
+      },
+      {
+        "id": "server-external",
+        "label": "服务端与第三方",
+        "focus": [
+          "src",
+          "pomelo",
+          "pay",
+          "fb"
+        ],
+        "note": "WebSocket 长连接、支付与社交平台接入。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "runtime",
+      "type": "frontend",
+      "label": "客户端入口",
+      "sublabel": "index.html · gameLoader.js · main.js",
+      "tag": "Web / iOS / Android",
+      "pos": [
+        70,
+        90
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "engine",
+      "type": "frontend",
+      "label": "引擎 & SDK",
+      "sublabel": "cocos2d-html5 / cocos2d-x · libZenSDK",
+      "pos": [
+        70,
+        200
+      ],
+      "size": [
+        190,
+        60
+      ],
+      "tag": "v3.13-lite-wtc"
+    },
+    {
+      "id": "src",
+      "type": "frontend",
+      "label": "核心业务 src/",
+      "sublabel": "ES5 · Browserify · MVC · 20+ 业务域",
+      "pos": [
+        70,
+        310
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "resv2",
+      "type": "frontend",
+      "label": "resource_v2/ 资源加载",
+      "sublabel": "ResourceManV2 · 专题加载器 · 下载调度",
+      "pos": [
+        70,
+        420
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "res",
+      "type": "database",
+      "label": "res_* 风格资源",
+      "sublabel": "8 风格共壳 · flavor 产物 · resource_list",
+      "pos": [
+        70,
+        530
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "build",
+      "type": "backend",
+      "label": "构建 & 发布 scripts/",
+      "sublabel": "browserify · CCB 编译 · deploy/hotfix",
+      "pos": [
+        400,
+        530
+      ],
+      "size": [
+        200,
+        60
+      ]
+    },
+    {
+      "id": "pomelo",
+      "type": "backend",
+      "label": "Pomelo 游戏服务器",
+      "sublabel": "WebSocket · 协议注册 · 心跳/重连",
+      "pos": [
+        800,
+        130
+      ],
+      "size": [
+        200,
+        60
+      ]
+    },
+    {
+      "id": "pay",
+      "type": "external",
+      "label": "支付",
+      "sublabel": "AppCharge · Checkout.com",
+      "pos": [
+        800,
+        235
+      ],
+      "size": [
+        200,
+        60
+      ]
+    },
+    {
+      "id": "fb",
+      "type": "external",
+      "label": "Facebook 平台",
+      "sublabel": "zen_facebook.js 登录/分享",
+      "pos": [
+        800,
+        340
+      ],
+      "size": [
+        200,
+        60
+      ]
+    },
+    {
+      "id": "cdn",
+      "type": "cloud",
+      "label": "CDN / 资源服务器",
+      "sublabel": "分块下载 · 热更新资源",
+      "pos": [
+        800,
+        445
+      ],
+      "size": [
+        200,
+        60
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "客户端（浏览器 / 原生壳）",
+      "wraps": [
+        "runtime",
+        "engine",
+        "src",
+        "resv2"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "boot",
+      "from": "runtime",
+      "to": "engine",
+      "label": "初始化",
+      "labelDy": 24
+    },
+    {
+      "id": "require",
+      "from": "engine",
+      "to": "src",
+      "label": "require 依赖",
+      "labelDy": 24
+    },
+    {
+      "id": "load-res",
+      "from": "src",
+      "to": "resv2",
+      "label": "加载资源",
+      "labelDy": 24
+    },
+    {
+      "id": "read-flavor",
+      "from": "resv2",
+      "to": "res",
+      "label": "按风格读取",
+      "labelDy": 24
+    },
+    {
+      "id": "build-flavor",
+      "from": "build",
+      "to": "res",
+      "label": "编译风格产物"
+    },
+    {
+      "id": "publish",
+      "from": "build",
+      "to": "cdn",
+      "label": "发布产物上传",
+      "variant": "dashed"
+    },
+    {
+      "id": "download",
+      "from": "resv2",
+      "to": "cdn",
+      "label": "分块下载 / 热更",
+      "variant": "dashed"
+    },
+    {
+      "id": "ws",
+      "from": "src",
+      "to": "pomelo",
+      "label": "PomeloClient WebSocket",
+      "variant": "emphasis"
+    },
+    {
+      "id": "payment",
+      "from": "src",
+      "to": "pay",
+      "label": "store/ 支付",
+      "labelDx": 140
+    },
+    {
+      "id": "social",
+      "from": "src",
+      "to": "fb",
+      "label": "social/ 登录分享",
+      "labelDy": 18
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "多风格共壳（res_*）",
+      "items": [
+        "8 个风格：oldvegas(CV) · doublehit(DH) · vegasstar(VS) · doublex(DHX) · wtc · rapidhit · vegasdeluxe · vegasgrand",
+        "每风格含 flavor 编译产物、js_src 覆盖层、resource_dirs.json / resource_list 清单"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "构建 & 子项目",
+      "items": [
+        "scripts/ 亦负责服务器部署与热更（deploy_*.sh · hotfix）",
+        "docs/ VitePress 文档站 · vscode-extensions/ 4 个扩展",
+        "Submodule：cocos2d-html5 · cocos2d-x · libZenSDK"
+      ]
+    }
+  ]
+}

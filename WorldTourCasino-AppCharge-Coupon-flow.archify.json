@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "AppCharge 第三方商城 · Coupon 入口购买时序",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      1080,
+      720
+    ],
+    "views": [
+      {
+        "id": "coupon-entry",
+        "label": "Inbox 领券进入",
+        "focus": [
+          "user",
+          "gamefe",
+          "gamesrv",
+          "storefe"
+        ],
+        "note": "Coupon 直接触发 C2SGetOTPCode，跳过 OTP 登录页与 deeplink 首跳。"
+      },
+      {
+        "id": "otp-verify",
+        "label": "OTP 验证",
+        "focus": [
+          "storefe",
+          "acsrv",
+          "gamesrv"
+        ],
+        "note": "AppCharge 经两次回调向游戏服务器换取 deeplink 并校验身份。"
+      },
+      {
+        "id": "purchase-return",
+        "label": "购买并返回游戏",
+        "focus": [
+          "user",
+          "storefe",
+          "deeplink",
+          "gamefe"
+        ],
+        "note": "付款完成后经 deeplink 服务重定向回游戏。"
+      }
+    ]
+  },
+  "participants": [
+    {
+      "id": "user",
+      "type": "external",
+      "label": "用户",
+      "sublabel": "玩家"
+    },
+    {
+      "id": "storefe",
+      "type": "frontend",
+      "label": "AppCharge 商城前端",
+      "sublabel": "OTP 验证页 / 商城"
+    },
+    {
+      "id": "acsrv",
+      "type": "cloud",
+      "label": "AppCharge 服务器",
+      "sublabel": "第三方商城后端"
+    },
+    {
+      "id": "gamesrv",
+      "type": "backend",
+      "label": "游戏服务器",
+      "sublabel": "回调接口 + 协议"
+    },
+    {
+      "id": "deeplink",
+      "type": "backend",
+      "label": "Deeplink 服务",
+      "sublabel": "游戏后端"
+    },
+    {
+      "id": "gamefe",
+      "type": "frontend",
+      "label": "游戏前端",
+      "sublabel": "Web / App · Inbox"
+    }
+  ],
+  "segments": [
+    {
+      "from": 152,
+      "to": 294,
+      "label": "阶段 1 · Inbox 领券进入"
+    },
+    {
+      "from": 300,
+      "to": 486,
+      "label": "阶段 2 · OTP 验证"
+    },
+    {
+      "from": 492,
+      "to": 647,
+      "label": "阶段 3 · 购买并返回游戏"
+    }
+  ],
+  "messages": [
+    {
+      "id": "click-coupon",
+      "from": "user",
+      "to": "gamefe",
+      "y": 185,
+      "label": "点击 Inbox 中的 Coupon",
+      "variant": "emphasis",
+      "note": "Coupon 由运营/活动发放至游戏内 Inbox"
+    },
+    {
+      "id": "get-otp-code",
+      "from": "gamefe",
+      "to": "gamesrv",
+      "y": 217,
+      "label": "C2SGetOTPCode",
+      "variant": "default"
+    },
+    {
+      "id": "otp-code-resp",
+      "from": "gamesrv",
+      "to": "gamefe",
+      "y": 249,
+      "label": "S2CGetOTPCode：storeOtpDomain + proofKey",
+      "variant": "return"
+    },
+    {
+      "id": "open-otp-page",
+      "from": "gamefe",
+      "to": "storefe",
+      "y": 281,
+      "label": "浏览器打开 /login/otp?proofKey=xxx",
+      "variant": "emphasis"
+    },
+    {
+      "id": "verify-identity",
+      "from": "storefe",
+      "to": "acsrv",
+      "y": 312,
+      "label": "验证用户身份（proofKey）",
+      "variant": "security"
+    },
+    {
+      "id": "cb-otp-deeplink",
+      "from": "acsrv",
+      "to": "gamesrv",
+      "y": 344,
+      "label": "回调 /appcharge/otp-deeplink",
+      "variant": "default"
+    },
+    {
+      "id": "deeplink-resp",
+      "from": "gamesrv",
+      "to": "acsrv",
+      "y": 376,
+      "label": "deeplink + accessToken",
+      "variant": "return"
+    },
+    {
+      "id": "cb-report",
+      "from": "acsrv",
+      "to": "gamesrv",
+      "y": 408,
+      "label": "回调 /appCharge/report",
+      "variant": "security"
+    },
+    {
+      "id": "report-resp",
+      "from": "gamesrv",
+      "to": "acsrv",
+      "y": 440,
+      "label": "校验 playerCode + token，返回结果",
+      "variant": "return"
+    },
+    {
+      "id": "otp-result",
+      "from": "acsrv",
+      "to": "storefe",
+      "y": 472,
+      "label": "OTP 验证结果",
+      "variant": "return",
+      "note": "验证页刷新 → 跳转商城主页"
+    },
+    {
+      "id": "purchase",
+      "from": "user",
+      "to": "storefe",
+      "y": 504,
+      "label": "购买付款操作完成",
+      "variant": "emphasis"
+    },
+    {
+      "id": "back-option",
+      "from": "storefe",
+      "to": "user",
+      "y": 536,
+      "label": "弹出 back to game 选项",
+      "variant": "return"
+    },
+    {
+      "id": "click-back",
+      "from": "user",
+      "to": "storefe",
+      "y": 568,
+      "label": "点击 back to game",
+      "variant": "default"
+    },
+    {
+      "id": "jump-deeplink",
+      "from": "storefe",
+      "to": "deeplink",
+      "y": 600,
+      "label": "跳转游戏 deeplink open.html",
+      "variant": "default",
+      "note": "open.html?path=appsource&opentype=otp（slots-cdn-resource.me2zengame.com）"
+    },
+    {
+      "id": "redirect-game",
+      "from": "deeplink",
+      "to": "gamefe",
+      "y": 632,
+      "label": "重定向回游戏",
+      "variant": "return"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "gamefe",
+      "from": 180,
+      "to": 288,
+      "type": "frontend"
+    },
+    {
+      "participant": "gamesrv",
+      "from": 212,
+      "to": 256,
+      "type": "backend"
+    },
+    {
+      "participant": "storefe",
+      "from": 276,
+      "to": 478,
+      "type": "frontend"
+    },
+    {
+      "participant": "acsrv",
+      "from": 307,
+      "to": 476,
+      "type": "cloud"
+    },
+    {
+      "participant": "gamesrv",
+      "from": 339,
+      "to": 446,
+      "type": "backend"
+    },
+    {
+      "participant": "storefe",
+      "from": 499,
+      "to": 605,
+      "type": "frontend"
+    },
+    {
+      "participant": "deeplink",
+      "from": 595,
+      "to": 638,
+      "type": "backend"
+    },
+    {
+      "participant": "gamefe",
+      "from": 626,
+      "to": 644,
+      "type": "frontend"
+    }
+  ]
+}
