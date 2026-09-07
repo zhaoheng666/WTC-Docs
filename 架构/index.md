@@ -5,7 +5,8 @@
 | 图表 | 说明 |
 | --- | --- |
 | [客户端架构总览](/架构/客户端架构总览) | 运行链路 / 构建发布 / 服务端与第三方 |
-| [AppCharge Coupon 支付时序](/架构/AppCharge-Coupon-支付时序) | 游戏内 Inbox 领券 → OTP 验证 → 购买返回 |
+| [AppCharge OTP 支付时序](/架构/AppCharge-OTP-支付时序) | 完整流程：商城 OTP 登录 → 游戏内验证 → 购买返回 |
+| [AppCharge Coupon 支付时序](/架构/AppCharge-Coupon-支付时序) | 简化入口：游戏内 Inbox 领券 → OTP 验证 → 购买返回 |
 
 ## 维护方式
 

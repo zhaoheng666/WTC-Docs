@@ -2,6 +2,8 @@
 
 > 交互式时序图：三阶段（Inbox 领券进入 / OTP 验证 / 购买并返回游戏），可按 `P` 播放故事、`T` 切主题、`E` 导出。
 > [全屏打开 ↗](/WTC-Docs/diagrams/WorldTourCasino-AppCharge-Coupon-flow.archify.html){target="_blank"}
+>
+> 完整流程（OTP 登录入口）见：[AppCharge OTP 支付时序](/架构/AppCharge-OTP-支付时序)
 
 <iframe src="/WTC-Docs/diagrams/WorldTourCasino-AppCharge-Coupon-flow.archify.html" style="width:100%;height:82vh;border:1px solid var(--vp-c-divider);border-radius:8px;" title="AppCharge Coupon 支付时序"></iframe>
 
