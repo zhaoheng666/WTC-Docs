@@ -63,6 +63,11 @@ features:
     # details: 待办事项
     link: /待办/
 
+  - icon: 🏛️
+    title: 架构图
+    # details: 交互式架构与时序图
+    link: /架构/
+
   - icon: 📁
     title: 其他文档
     # details: 其他文档
