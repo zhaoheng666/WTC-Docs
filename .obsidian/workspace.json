@@ -188,6 +188,10 @@
   },
   "active": "b73d40a0906fcb58",
   "lastOpenFiles": [
+    "架构/客户端架构总览.md",
+    "架构/index.md",
+    "架构/AppCharge-Coupon-支付时序.md",
+    "架构",
     "WorldTourCasino-AppCharge-Coupon-flow.archify.json",
     "WorldTourCasino-architecture.archify.json",
     "public/diagrams/WorldTourCasino-AppCharge-Coupon-flow.archify.html",
@@ -224,8 +228,6 @@
     "其他/优化重构/resource-v2/活动补单-回调未执行导致进度卡住.md",
     "其他/优化重构/resource-v2",
     "其他/优化重构/活动补单-回调未执行导致进度卡住.md",
-    "其他/优化重构/活动资源优化-后置加载方案.md",
-    "其他/优化重构/ResourceManV2内存优化.md",
     "其他/优化重构",
     "未命名 1.canvas"
   ]
