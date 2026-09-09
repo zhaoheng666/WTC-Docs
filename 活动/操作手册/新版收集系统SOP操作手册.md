@@ -4,11 +4,30 @@
 
 ## 1、代码调整
 
+### 1.1 赛季ID
+
 **PATH**: `src/social/model/CardSystemMan.js`
 
 ```javascript
 this.maxSeasonId = 19; //修改赛季ID
 ```
+
+### 1.2 赛季名称配置（s25新增）
+
+**PATH**: `src/social/controller/card_system/card_rank/CardRankHonorPageController.js`
+
+荣誉榜页面通过文件顶部的 `seanNameConfig` 显示赛季名称和年份（`_lbName` 赛季名 + `_lbYear` 年份，两个不同字体的 label）。每次赛季更新需补充新赛季条目：
+
+```javascript
+var seanNameConfig = {
+    24: "Summer of Honor 2026",
+    25: "Harvest of the Heart 2026" //格式："赛季名称 年份"，年份4位数字结尾
+}
+```
+
+- 赛季名称以卡牌计划文档/运营提供的为准
+- 运行时会自动拆分名称与年份、名称转大写（字体无小写字符）、年份动态排到名称右侧，代码无需改动，只需补配置
+- 详见 [收集系统赛季更新Skill增量说明-2026-09](/活动/操作手册/收集系统赛季更新Skill增量说明-2026-09)
 
 ## 2、资源调整
 
@@ -112,7 +131,7 @@ this.maxSeasonId = 19; //修改赛季ID
 
 新版收集系统SOP操作主要包含以下几个关键步骤：
 
-1. **代码调整**：修改 `CardSystemMan.js` 中的赛季ID
+1. **代码调整**：修改 `CardSystemMan.js` 中的赛季ID，补充 `CardRankHonorPageController.js` 中的 `seanNameConfig` 赛季名称
 2. **资源处理**：更新音效、视频、配置文件
 3. **资源部署**：部署主体资源、coupon资源、激励卡包图标
 4. **问题排查**：处理引用报错、配置错误等常见问题
