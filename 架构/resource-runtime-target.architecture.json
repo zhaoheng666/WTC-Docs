@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Resource Runtime 目标架构",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [1320, 760],
+    "views": [
+      {"id":"dispatch","label":"统一调度","focus":["business","dispatcher","root","bundle","list","manifest"],"note":"业务只提交资源意图，统一调度者一次选择 Runtime。"},
+      {"id":"bundle","label":"Bundle 内部","focus":["bundle","bundle-core","catalog","compat","residency"],"note":"Bundle 内部自洽完成资源生命周期，不直接干预业务代码。"},
+      {"id":"boundary","label":"隔离边界","focus":["business","dispatcher","result","bundle","list","manifest"],"note":"三种 Runtime 互斥隔离，结果通过统一领域端口返回。"}
+    ]
+  },
+  "components": [
+    {"id":"business","type":"external","label":"原有业务逻辑","sublabel":"Lobby / Slot / Activity / Feature","pos":[40,350],"size":[190,76]},
+    {"id":"dispatcher","type":"backend","label":"统一顶层调度者","sublabel":"资源意图、控制流、生命周期","pos":[300,350],"size":[220,82]},
+    {"id":"root","type":"security","label":"ResourceCompositionRoot","sublabel":"一次选择并固定会话 Runtime","pos":[590,350],"size":[220,76]},
+    {"id":"bundle","type":"backend","label":"BundleResourceRuntime","sublabel":"DH Browser","pos":[870,180],"size":[220,76],"tag":"RUNTIME A"},
+    {"id":"list","type":"backend","label":"ResourceListRuntime","sublabel":"Browser 保留路径","pos":[870,350],"size":[220,76],"tag":"RUNTIME B"},
+    {"id":"manifest","type":"backend","label":"ManifestRuntime","sublabel":"Native 保留路径","pos":[870,520],"size":[220,76],"tag":"RUNTIME C"},
+    {"id":"result","type":"messagebus","label":"统一领域结果","sublabel":"一次终态 / cancel / release / prefetch","pos":[300,600],"size":[220,76]},
+    {"id":"bundle-core","type":"backend","label":"Bundle 内部核心","sublabel":"Catalog / Coordinator","pos":[1130,120],"size":[170,82]},
+    {"id":"catalog","type":"database","label":"发布元数据","sublabel":"Catalog + version.json","pos":[1130,270],"size":[170,70]},
+    {"id":"compat","type":"backend","label":"受控兼容路由","sublabel":"登记的动态资源","pos":[1130,400],"size":[170,70]},
+    {"id":"residency","type":"security","label":"引擎驻留保护","sublabel":"缓存键 / 别名 / 释放","pos":[1130,530],"size":[170,70]}
+  ],
+  "connections": [
+    {"id":"business-request","from":"business","to":"dispatcher","label":"资源意图","variant":"emphasis"},
+    {"id":"dispatch-root","from":"dispatcher","to":"root","label":"统一选择","variant":"emphasis"},
+    {"id":"root-bundle","from":"root","to":"bundle","label":"DH Browser"},
+    {"id":"root-list","from":"root","to":"list"},
+    {"id":"root-manifest","from":"root","to":"manifest"},
+    {"id":"dispatch-result","from":"dispatcher","to":"result","label":"统一交付","fromSide":"bottom","toSide":"top","labelDy":28},
+    {"id":"bundle-core-link","from":"bundle","to":"bundle-core"},
+    {"id":"core-catalog","from":"bundle-core","to":"catalog","fromSide":"bottom","toSide":"top"},
+    {"id":"core-compat","from":"bundle-core","to":"compat","fromSide":"right","toSide":"right","via":[[1320,161],[1320,435]]},
+    {"id":"core-residency","from":"bundle-core","to":"residency","fromSide":"right","toSide":"right","via":[[1340,161],[1340,565]]}
+  ],
+  "cards": [
+    {"dot":"cyan","title":"目标结论","items":["BundleSession 不暴露给原有业务逻辑","业务只面向统一顶层调度者与领域结果","Runtime 类型只在组合根完成选择"]},
+    {"dot":"amber","title":"隔离原则","items":["Bundle、resource-list、manifest 三套实现互斥","Runtime 内部不调用业务 manager 或 UI 工厂","Bundle 失败不得切换 Runtime 或旧清单兜底"]},
+    {"dot":"rose","title":"当前差距","items":["现有 BundleSession 已被多个业务入口直接 require","ActivityRuntimeBridge 仍反向依赖 BundleSession","这些调用点是后续收敛的侵入边界"]}
+  ]
+}
