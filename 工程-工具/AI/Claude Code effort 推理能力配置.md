@@ -22,7 +22,7 @@
 
 ## 任务场景推荐
 
-搭配模型选择使用，参考 [Claude Code Opusplan 混合模型](./Claude%20Code%20Opusplan%20混合模型.md)。
+搭配模型选择使用，参考 [Claude Code Opusplan 混合模型](/工程-工具/AI/Claude%20Code%20Opusplan%20混合模型)。
 
 ## 调整方法
 

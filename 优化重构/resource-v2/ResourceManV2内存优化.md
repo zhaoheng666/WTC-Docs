@@ -197,7 +197,7 @@ taskConfigs.forEach(function(config, index) {
 ## 相关文档
 
 -OpenSpec 提案
-- [活动补单回调未执行问题](/../其他/优化重构/活动补单-回调未执行导致进度卡住)
+- [活动补单回调未执行问题](/优化重构/resource-v2/活动补单-回调未执行导致进度卡住)
 -ResourceManV2 架构
 
 ## 技术要点

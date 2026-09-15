@@ -2836,7 +2836,7 @@ resource_v2/
 
 ### D. 参考文档
 
-- [WTC-res-load-improve.md](/其他/工作记录/WTC-res-load-improve) - 资源加载优化工作记录
+- [WTC-res-load-improve.md](/优化重构/resource-v2/WTC-res-load-improve) - 资源加载优化工作记录
 - **CLAUDE.md** - 项目 AI 上下文文件（主项目根目录）
 - **OpenSpec - add-critical-priority-resource-loading** - 关键资源优先加载规范（`openspec/changes/archive/2025-11-06-add-critical-priority-resource-loading`）
 - **OpenSpec - add-resource-dependency-management** - 资源依赖管理规范（`openspec/changes/archive/2025-11-06-add-resource-dependency-management`）

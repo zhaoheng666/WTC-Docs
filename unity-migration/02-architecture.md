@@ -1,6 +1,6 @@
 # 02 - 4 层架构设计方案
 
-[返回目录](00-index.md) | [上一章](01-overview.md)
+[返回目录](/unity-migration/00-index) | [上一章](/unity-migration/01-overview)
 
 ---
 
@@ -430,4 +430,4 @@ Assets/Project/AddressableRes/
 
 ---
 
-[下一章：03 - L1 Cocos 兼容层详细设计](03-L1-cocos-compat.md)
+[下一章：03 - L1 Cocos 兼容层详细设计](/unity-migration/03-L1-cocos-compat)

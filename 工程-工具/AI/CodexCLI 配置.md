@@ -41,7 +41,7 @@ hide_full_access_warning = true
 "gpt-5.2-codex" = "gpt-5.2-codex"
 
 ```
-[ghoststudio 代理支持模型](/工程-工具/AI/ghoststudio支持模型.md)  
+[ghoststudio 代理支持模型](/工程-工具/AI/ghoststudio代理支持模型)  
 
 ### 三、配置 Auth Key
 打开配置文件 `~/.codex/config.toml` 没有就创建一个

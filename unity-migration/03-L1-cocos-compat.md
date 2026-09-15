@@ -1,6 +1,6 @@
 # 03 - L1 Cocos 兼容层详细设计
 
-[返回目录](00-index.md) | [上一章](02-architecture.md)
+[返回目录](/unity-migration/00-index) | [上一章](/unity-migration/02-architecture)
 
 ---
 
@@ -52,7 +52,7 @@
 | **状态** | `待实现` / `已实现` / `不需要`（C# 天然解决） |
 
 > **执行规范**：每实现一个方法，必须将状态从 `待实现` 更新为 `已实现`，并补充实际的 C# 方法签名。
-> 参见 [07-execution-standards.md](07-execution-standards.md) 第 7.1 节。
+> 参见 [07-execution-standards.md](/unity-migration/07-execution-standards) 第 7.1 节。
 
 ---
 
@@ -488,7 +488,7 @@ CCAction.RunAction(transform, CCAction.Sequence(
 **调用总量**：~5,275
 
 > 注：ActivityUtil 中有相当比例的方法是活动系统（Activity）专用的，不在 Slot 关卡中直接使用。
-> 此处仅列出在 Slot 关卡代码中实际被调用的方法。完整列表见 [09-appendix-api-reference.md](09-appendix-api-reference.md)。
+> 此处仅列出在 Slot 关卡代码中实际被调用的方法。完整列表见 [09-appendix-api-reference.md](/unity-migration/09-appendix-api-reference)。
 
 #### Slot 关卡高频使用
 
@@ -620,7 +620,7 @@ public class WildsStarburstMachine : SlotMachineBase
 | `addMaskLayer(root, opacity, cb)` | `UIHelper.AddMask(Transform, float, Action)` | 低 | 待实现 |
 | `removeMaskLayer(root)` | `UIHelper.RemoveMask(Transform)` | 低 | 待实现 |
 | `createTouchPanel(root, cb)` | `UIHelper.CreateTouchPanel(Transform, Action)` | 低 | 待实现 |
-| 其余 ~27 个方法 | 见 [09-appendix-api-reference.md](09-appendix-api-reference.md) | | 待实现 |
+| 其余 ~27 个方法 | 见 [09-appendix-api-reference.md](/unity-migration/09-appendix-api-reference) | | 待实现 |
 
 #### EventDispatcher.cs
 
@@ -736,4 +736,4 @@ P3（低频/可延后）
 
 ---
 
-[下一章：04 - L2 Slot 框架层详细设计](04-L2-slot-framework.md)
+[下一章：04 - L2 Slot 框架层详细设计](/unity-migration/04-L2-slot-framework)

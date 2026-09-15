@@ -1,6 +1,6 @@
 # 06 - L4 关卡业务逻辑迁移规范
 
-[返回目录](00-index.md) | [上一章](05-L3-slot-adaptation.md)
+[返回目录](/unity-migration/00-index) | [上一章](/unity-migration/05-L3-slot-adaptation)
 
 ---
 
@@ -322,4 +322,4 @@ Assets/Project/AddressableRes/Slots/slot_287_wilds_starburst/
 
 ---
 
-[下一章：07 - 执行规范](07-execution-standards.md)
+[下一章：07 - 执行规范](/unity-migration/07-execution-standards)

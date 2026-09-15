@@ -1,6 +1,6 @@
 # 08 - 实施路线图与验证计划
 
-[返回目录](00-index.md) | [上一章](07-execution-standards.md)
+[返回目录](/unity-migration/00-index) | [上一章](/unity-migration/07-execution-standards)
 
 ---
 
@@ -165,4 +165,4 @@ L1 兼容层     →   L2 框架层      →   试点验证           →   批�
 
 ---
 
-[下一章：09 - 附录 API 映射速查表](09-appendix-api-reference.md)
+[下一章：09 - 附录 API 映射速查表](/unity-migration/09-appendix-api-reference)

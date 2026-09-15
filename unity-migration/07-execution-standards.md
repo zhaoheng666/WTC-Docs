@@ -1,6 +1,6 @@
 # 07 - 执行规范
 
-[返回目录](00-index.md) | [上一章](06-L4-game-migration.md)
+[返回目录](/unity-migration/00-index) | [上一章](/unity-migration/06-L4-game-migration)
 
 > **本章是所有执行者（人工 + AI）的必读规范。任何不遵守本章规范的交付物将被退回。**
 
@@ -386,4 +386,4 @@ AI 完成单关卡转换后，人工审阅时检查：
 
 ---
 
-[下一章：08 - 实施路线图与验证计划](08-roadmap.md)
+[下一章：08 - 实施路线图与验证计划](/unity-migration/08-roadmap)

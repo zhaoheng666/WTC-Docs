@@ -1,9 +1,9 @@
 # 09 - 附录：完整 API 映射速查表
 
-[返回目录](00-index.md) | [上一章](08-roadmap.md)
+[返回目录](/unity-migration/00-index) | [上一章](/unity-migration/08-roadmap)
 
 > **用途**：实施时的快速查表工具。扁平化列出所有 JS API → C# 映射，无叙述。  
-> **更新规范**：每实现一个方法，必须将状态从 `待实现` 更新为 `已实现`。参见 [07-execution-standards.md](07-execution-standards.md) 第 7.1 节。
+> **更新规范**：每实现一个方法，必须将状态从 `待实现` 更新为 `已实现`。参见 [07-execution-standards.md](/unity-migration/07-execution-standards) 第 7.1 节。
 
 ---
 

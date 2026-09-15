@@ -3,7 +3,7 @@
 ## 操作人员：王建、李沂峰
 
 ## 1、获取 fbid：
-方法：[如何获取 fbId](./如何获取%20fbId.md)
+方法：[如何获取 fbId](/其他/FB%20/如何获取%20fbId)
 
 ## 2、Meta developer 后台添加 Web Payment Tester：
 

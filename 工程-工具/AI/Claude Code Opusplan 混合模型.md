@@ -23,4 +23,4 @@ Opusplan 是 Claude Code CLI 目前**最智能、最实用的工作模式**。�
 
 ## 相关文档
 
-- [Claude Code effort 推理能力配置](./Claude%20Code%20effort%20推理能力配置.md)
+- [Claude Code effort 推理能力配置](/工程-工具/AI/Claude%20Code%20effort%20推理能力配置)

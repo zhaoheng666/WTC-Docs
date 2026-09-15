@@ -1,6 +1,6 @@
 # 01 - 项目概述与迁移目标
 
-[返回目录](00-index.md)
+[返回目录](/unity-migration/00-index)
 
 ---
 
@@ -273,4 +273,4 @@ src/gameCommon.js                    # 全局命名空间注册中心（125 行�
 
 ---
 
-[下一章：02 - 4 层架构设计方案](02-architecture.md)
+[下一章：02 - 4 层架构设计方案](/unity-migration/02-architecture)

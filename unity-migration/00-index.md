@@ -24,17 +24,17 @@
 
 | 编号 | 文件 | 内容 | 用途 |
 |------|------|------|------|
-| 01 | [01-overview.md](01-overview.md) | 项目概述与迁移目标 | 理解全貌和范围 |
-| 02 | [02-architecture.md](02-architecture.md) | 4 层架构设计方案 | 理解分层策略和设计原则 |
-| 03 | [03-L1-cocos-compat.md](03-L1-cocos-compat.md) | L1 Cocos 兼容层详细设计 | 实现 L1 层的完整参考 |
-| 04 | [04-L2-slot-framework.md](04-L2-slot-framework.md) | L2 Slot 框架层详细设计 | 实现 L2 层的完整参考 |
-| 05 | [05-L3-slot-adaptation.md](05-L3-slot-adaptation.md) | L3 Slot 框架适配层详细设计 | 理解关卡覆写模式 |
-| 06 | [06-L4-game-migration.md](06-L4-game-migration.md) | L4 关卡业务逻辑迁移规范 | 单关卡转换的操作手册 |
-| 07 | [07-execution-standards.md](07-execution-standards.md) | 执行规范 | **必读** — 所有执行者必须遵守 |
-| 08 | [08-roadmap.md](08-roadmap.md) | 实施路线图与验证计划 | 项目计划和里程碑 |
-| 09 | [09-appendix-api-reference.md](09-appendix-api-reference.md) | 完整 API 映射速查表 | 实施时的快速查表工具 |
-| 10 | [10-discussion-log.md](10-discussion-log.md) | 方案讨论记录（持续更新） | **决策时间线** — 已定案决策、否决方案理由、待议条目 |
-| 11 | [11-handoff.md](11-handoff.md) | 会话交接文档 | 新 Agent 会话接续工作的完整上下文（任务栈、工具链现状、核心设计、工作约定） |
+| 01 | [01-overview.md](/unity-migration/01-overview) | 项目概述与迁移目标 | 理解全貌和范围 |
+| 02 | [02-architecture.md](/unity-migration/02-architecture) | 4 层架构设计方案 | 理解分层策略和设计原则 |
+| 03 | [03-L1-cocos-compat.md](/unity-migration/03-L1-cocos-compat) | L1 Cocos 兼容层详细设计 | 实现 L1 层的完整参考 |
+| 04 | [04-L2-slot-framework.md](/unity-migration/04-L2-slot-framework) | L2 Slot 框架层详细设计 | 实现 L2 层的完整参考 |
+| 05 | [05-L3-slot-adaptation.md](/unity-migration/05-L3-slot-adaptation) | L3 Slot 框架适配层详细设计 | 理解关卡覆写模式 |
+| 06 | [06-L4-game-migration.md](/unity-migration/06-L4-game-migration) | L4 关卡业务逻辑迁移规范 | 单关卡转换的操作手册 |
+| 07 | [07-execution-standards.md](/unity-migration/07-execution-standards) | 执行规范 | **必读** — 所有执行者必须遵守 |
+| 08 | [08-roadmap.md](/unity-migration/08-roadmap) | 实施路线图与验证计划 | 项目计划和里程碑 |
+| 09 | [09-appendix-api-reference.md](/unity-migration/09-appendix-api-reference) | 完整 API 映射速查表 | 实施时的快速查表工具 |
+| 10 | [10-discussion-log.md](/unity-migration/10-discussion-log) | 方案讨论记录（持续更新） | **决策时间线** — 已定案决策、否决方案理由、待议条目 |
+| 11 | [11-handoff.md](/unity-migration/11-handoff) | 会话交接文档 | 新 Agent 会话接续工作的完整上下文（任务栈、工具链现状、核心设计、工作约定） |
 
 ---
 

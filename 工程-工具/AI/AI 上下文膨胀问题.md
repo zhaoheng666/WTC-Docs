@@ -21,7 +21,7 @@
 | 常驻基础上下文 | [AGENTS.md](https://github.com/LuckyZen/WorldTourCasino/blob/classic_vegas_web_refactor/AGENTS.md) | 只保留跨任务硬约束、通用路由和硬门禁 |
 | Claude Code 兼容入口 | [CLAUDE.md](https://github.com/LuckyZen/WorldTourCasino/blob/classic_vegas_web_refactor/CLAUDE.md) | 以符号链接复用 `AGENTS.md`，不保存独立内容 |
 | 任务工作流 | [项目 Skills](https://github.com/LuckyZen/WorldTourCasino/tree/classic_vegas_web_refactor/.claude/skills) | 在命中特定任务时加载完整操作流程 |
-| 专项参考 | [ai-rules](/../工程-工具/ai-rules) | 保存项目地图、脚本、工作区、文档等详细规则 |
+| 专项参考 | [ai-rules](/工程-工具/ai-rules/) | 保存项目地图、脚本、工作区、文档等详细规则 |
 | 在途工作 | OpenSpec Change / Program | 保存当前变更或长期项目的目标、设计、任务和验收状态 |
 
 长期且庞杂的项目工作，例如 DH 浏览器渐进式资源 Program，只保留在对应 Program 工件中。它不是所有任务都必须携带的基础知识，因此不进入 `AGENTS.md`。

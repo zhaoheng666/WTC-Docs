@@ -1,6 +1,6 @@
 # 04 - L2 Slot 框架层详细设计
 
-[返回目录](00-index.md) | [上一章](03-L1-cocos-compat.md)
+[返回目录](/unity-migration/00-index) | [上一章](/unity-migration/03-L1-cocos-compat)
 
 ---
 
@@ -857,4 +857,4 @@ namespace WTC.Slot.Compat2022.Core
 
 ---
 
-[下一章：05 - L3 Slot 框架适配层详细设计](05-L3-slot-adaptation.md)
+[下一章：05 - L3 Slot 框架适配层详细设计](/unity-migration/05-L3-slot-adaptation)

@@ -182,4 +182,4 @@ open -a createSymbols.app --args --template "/path/to/templates" "/path/to/file.
 
 ## 问题排查
 
-[Wails 重构 CCB 生成工具-问题排查记录](/故障排查/Wails%20重构%20CCB%20生成工具-问题排查记录)
+[Wails 重构 CCB 生成工具-问题排查记录](/故障排查/Wails%20重构%20CCB%20生成工具-issue)

@@ -10,7 +10,7 @@
 - `openspec/specs/agent-execution-governance/spec.md`：Agent 执行治理的正式契约。
 - DH Resource Program 工件：DH 资源重组的领域状态、阶段边界和验收事实。
 
-上下文架构、按需加载和 Git 确定性流程的专项治理见 [AI 上下文膨胀问题](./AI%20上下文膨胀问题.md)。本文讨论的范围更广，且将上下文治理放回它应处的辅助位置。
+上下文架构、按需加载和 Git 确定性流程的专项治理见 [AI 上下文膨胀问题](/工程-工具/AI/AI%20上下文膨胀问题)。本文讨论的范围更广，且将上下文治理放回它应处的辅助位置。
 
 ## 真实触发场景
 
@@ -185,7 +185,7 @@ flowchart TD
 ## 相关文档
 
 - [Agent 综合治理经验分享（PPT）](/pptx/Agent%20综合治理经验分享.pptx)
-- [AI 上下文膨胀问题](./AI%20上下文膨胀问题.md)
-- [从上下文膨胀到可治理：项目 Agent 工程实践](./从上下文膨胀到可治理的%20Agent%20工程实践.md)
+- [AI 上下文膨胀问题](/工程-工具/AI/AI%20上下文膨胀问题)
+- [从上下文膨胀到可治理：项目 Agent 工程实践](/工程-工具/AI/从上下文膨胀到可治理的%20Agent%20工程实践)
 - `AGENTS.md`
 - `openspec/specs/agent-execution-governance/spec.md`
