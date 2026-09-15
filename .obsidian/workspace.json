@@ -52,7 +52,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "换肤",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -73,8 +73,7 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -169,7 +168,7 @@
       "markdown-importer:打开 Markdown 格式转换器": false
     }
   },
-  "active": "3a75d14fb524a282",
+  "active": "b73d40a0906fcb58",
   "lastOpenFiles": [
     "关卡研发测试自动化/00-Note.md",
     "public/feishu/Note/00-Note/img-2.png",

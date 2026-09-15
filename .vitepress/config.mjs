@@ -24,6 +24,8 @@ export default withMermaid(defineConfig({
   ignoreDeadLinks: [
     // 忽略 URL 编码的中文路径（暂时）
     /\/%E/,
+    // 文档中的 localhost 地址是本地工具示例，不应在 CI 构建时探测。
+    /^https?:\/\/localhost(?::\d+)?(?:\/|$)/,
     // 忽略 base URL 后的 /index 路径（VitePress 路由机制导致的误报）
     // 当链接到 http://localhost:5173/WTC-Docs/ 时，VitePress 会将其解析为 /WTC-Docs/index
     // 但实际文件是 index.md，死链检测器会误报为死链
