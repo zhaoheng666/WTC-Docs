@@ -1,6 +1,6 @@
 # 05 - L3 Slot 框架适配层详细设计
 
-[返回目录](/unity-migration/00-index) | [上一章](/unity-migration/04-L2-slot-framework)
+[返回目录](/架构/unity-migration/00-index) | [上一章](/架构/unity-migration/04-L2-slot-framework)
 
 ---
 
@@ -369,4 +369,4 @@ public class WS_SymbolAnimComponent : SymbolAnimComponent
 
 ---
 
-[下一章：06 - L4 关卡业务逻辑迁移规范](/unity-migration/06-L4-game-migration)
+[下一章：06 - L4 关卡业务逻辑迁移规范](/架构/unity-migration/06-L4-game-migration)
