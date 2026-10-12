@@ -37,6 +37,8 @@
 
 #### 📝 其他
 
+- 📝 [00-Note](00-Note)
+- 📝 [AppCharge-接入-SOP](AppCharge-%E6%8E%A5%E5%85%A5-SOP)
 - 📝 [Appcharge Checkout 问题记录](Appcharge%20Checkout%20%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95)
 - 📝 [Cocos2dx 升级记录](Cocos2dx%20%E5%8D%87%E7%BA%A7%E8%AE%B0%E5%BD%95)
 - 📝 [FNT 文件解析](FNT%20%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90)
