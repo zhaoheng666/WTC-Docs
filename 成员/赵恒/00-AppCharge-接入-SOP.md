@@ -534,7 +534,7 @@ Android 外链还须加入 UI_MESSAGE_APPCHARGE_CHECKOUT_URI_ERROR，提示无�
 - questAppchargeCheckoutOnAndroid 保留 CV 的地址映射、参数拼接、日志、事件和 openURL 顺序。只增加 VS 的 Debug/正式 URI；productFuncType 优先使用入口参数（包括 0），undefined 时回退 ShopProduct.funcType。
 - 补齐 CommonEvent.APPCHARGE_CHECKOUT_ON_ANDROID，并在 ActivityBaseController.onEnter 中原样注册：
 ```
-this.addListener(game.commonEvent.APPCHARGE_CHECKOUT_ON_ANDROID, this.AppChargeCHECKOUTLINK, this);
+  this.addListener(game.commonEvent.APPCHARGE_CHECKOUT_ON_ANDROID, this.AppChargeCHECKOUTLINK, this);
 ```
 
 - AppChargeCHECKOUTLINK 由有需要的活动子类实现。SmartCCBController.addListener 会忽略空 handler；基类没有默认回调不代表可以省略监听，也不要擅自给所有活动添加关闭动作。
@@ -544,7 +544,7 @@ VS 使用用户提供的实际中转地址：
 | 环境 | 中转地址 |
 | --- | --- |
 | Debug | [https://slots-team-test-server-v0.me2zengame.com/appcharge_bridge_vs/](https://slots-team-test-server-v0.me2zengame.com/appcharge_bridge_vs/) |
-| Release | [https://slots-vegasstar-gate.me2zengame.com/appcharge_bridge_vs/](https://slots-vegasstar-gate.me2zengame.com/appcharge_bridge_vs/) |
+| 非 Debug | [https://slots-vegasstar-gate.me2zengame.com/appcharge_bridge_vs/](https://slots-vegasstar-gate.me2zengame.com/appcharge_bridge_vs/) |
 
 ## 6. 构建与发布
 
